@@ -1,0 +1,58 @@
+<Person>
+	<Username>{{user.username}}</Username>
+	<SendPhoneNumber>{{user.sendPhoneNumber}}</SendPhoneNumber>
+	<SendFaxNumber>{{user.sendFaxNumber}}</SendFaxNumber>
+	<SendEmail>{{user.sendEmail}}</SendEmail>
+	<RequiredJobs>{{user.RequiredJobs}}</RequiredJobs>
+	<RequiredTraining>{{user.RequiredTraining}}</RequiredTraining>
+	<CV>
+		<Firstname>{{cv.Firstname}}</Firstname>
+		<Surname>{{cv.Surname}}</Surname>
+		<Gender>{{cv.Gender}}</Gender>
+		<Email>{{cv.Email}}</Email>
+		<TelephoneNumber>{{cv.TelephoneNumber}}</TelephoneNumber>
+		<Location>{{cv.Location}}</Location>
+		<HouseNumber>{{cv.HouseNumber}}</HouseNumber>
+		<StreetName>{{cv.StreetName}}</StreetName>
+		<School>{{cv.School}}</School>
+		<HighestGrade>{{cv.HighestGrade}}</HighestGrade>
+		<HighestGradeYear>{{cv.HighestGradeYear}}</HighestGradeYear>
+		<DateOfBirth>{{cv.DateOfBirth}}</DateOfBirth>
+		<Certificates>
+		{% for cert in certs %}
+			<Certificate>
+				<Name>{{cert.name}}</Name>
+				<Institution>{{cert.institution}}</Institution>
+				<Year>{{cert.year}}</Year>
+			</Certificate>
+		{% endfor %}
+		</Certificates>
+		<References>
+		{% for ref in refs %}		
+			<Reference>
+				<Fullname>{{ref.fullname}}</Fullname>
+				<Relationship>{{ref.relationship}}</Relationship>
+				<Contactno>{{ref.contactno}}</Contactno>
+			</Reference>
+		{% endfor %}
+		</References>
+		<WorkExperiences>
+		{% for work in works %}
+			<WorkExperience>
+				<Name>{{work.title}}</Name>
+				<Company>{{work.company}}</Company>
+				<StartYear>{{work.startyear}}</StartYear>
+				<EndYear>{{work.endyear}}</EndYear>
+			</WorkExperience>
+		{% endfor %}
+		</WorkExperiences>
+		<Languages>
+		{% for lang in langs %}
+			<Language>
+				<Name>{{lang.language}}</Name>
+				<ReadWrite>{{lang.readwrite}}</ReadWrite>
+			</Language>
+		{% endfor %}
+		</Languages>
+	</CV>
+<Person>
