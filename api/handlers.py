@@ -1,6 +1,7 @@
 from piston.handler import BaseHandler
 from piston.utils import rc
 from ummeli.webservice.models import *
+from django.shortcuts import get_object_or_404
 
 class CertificateHandler(BaseHandler):
 	model = Certificate
@@ -33,7 +34,8 @@ class UserHandler(BaseHandler):
 	fields = ('username',('cv',()))
 	
 	def read(self, request, username=None):
-		if username:
+		return get_object_or_404(User,username = username)
+		'''if username:
 			user = User.objects.filter(username = username)
 			if user:
 				return user[0]
@@ -45,3 +47,4 @@ class UserHandler(BaseHandler):
 			response = rc.BAD_REQUEST	
 			response.write(' - no user specified')
 			return response
+		'''

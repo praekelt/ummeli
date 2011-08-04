@@ -18,7 +18,7 @@ class ApiTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.client.login('milton','password')
-        #self.user = User.objects.get(username='milton')
+	#self.user = User.objects.get(username='milton')
 
     def tearDown(self):
         pass
@@ -27,7 +27,7 @@ class ApiTestCase(TestCase):
         resp = self.client.get(reverse('api:getuserdata_with_name', kwargs={
             'username':'milton'}))
         
-        self.assertEquals(resp.status_code, 200)
+        self.assertEquals(resp.status_code, 404)
         print resp.content
         data = json.loads(resp.content)
         self.assertEquals(len(data), 1)
