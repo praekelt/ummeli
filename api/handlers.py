@@ -30,12 +30,13 @@ class CurriculumvitaeHandler(BaseHandler):
 
 class UserHandler(BaseHandler):
     allowed_methods = ('GET','POST',)
-    model = User
+    model = UserProfile
     fields = ('username',('cv',()))
     
     def read(self, request):
-        username = request.GET.get('username')
-        return get_object_or_404(User,username = username)
+        username = request.GET.get('username')       
+        user = get_object_or_404(User,username = username)
+        return user.get_profile()
         '''if username:
             user = User.objects.filter(username = username)
             if user:

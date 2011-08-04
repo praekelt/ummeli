@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Certificate (models.Model):
 	name = models.CharField(max_length=45)
@@ -49,9 +50,6 @@ class Curriculumvitae (models.Model):
 	def __unicode__(self):
 		return self.Firstname + " "+ self.Surname
 
-class User(models.Model):
-	username = models.CharField(max_length=45, primary_key=True)
-	password = models.CharField(max_length=8000)
-	cv = models.ForeignKey(Curriculumvitae, blank=True)	
-	def __unicode__(self):
-		return self.username
+class UserProfile(models.Model):
+	user = models.ForeignKey(User)
+	cv = models.ForeignKey(Curriculumvitae, blank=True)
