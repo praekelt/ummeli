@@ -33,7 +33,8 @@ class UserHandler(BaseHandler):
 	model = User
 	fields = ('username',('cv',()))
 	
-	def read(self, request, username=None):
+	def read(self, request):
+		username = request.GET.get('username')
 		return get_object_or_404(User,username = username)
 		'''if username:
 			user = User.objects.filter(username = username)
