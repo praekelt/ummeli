@@ -11,6 +11,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from ummeli.webservice.utils import APIClient
 from ummeli.webservice.models import *
+import json
 
 class ApiTestCase(TestCase):
     
@@ -23,9 +24,10 @@ class ApiTestCase(TestCase):
         pass
 
     def test_get_data(self):
-        resp = self.client.get(reverse('api:getuserdata', kwargs={'username':'milton'}))
-
-        from django.utils import simplejson
-        data = simplejson.loads(resp.content)
-        self.assertEquals(len(data), 1)
+        resp = self.client.get(reverse('api:getuserdata_with_name', kwargs={
+            'username':'milton'}))
+        
         self.assertEquals(resp.status_code, 200)
+        print resp.content
+        data = json.loads(resp.content)
+        self.assertEquals(len(data), 1)

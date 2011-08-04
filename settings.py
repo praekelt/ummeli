@@ -121,6 +121,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_nose',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -145,3 +147,7 @@ LOGGING = {
         },
     }
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+SKIP_SOUTH_TESTS = True
+SOUTH_TESTS_MIGRATE = False
