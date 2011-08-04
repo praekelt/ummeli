@@ -4,48 +4,48 @@ from ummeli.webservice.models import *
 from django.shortcuts import get_object_or_404
 
 class CertificateHandler(BaseHandler):
-	model = Certificate
-	exclude = ('_state','id')
+    model = Certificate
+    exclude = ('_state','id')
 
 class LanguageHandler(BaseHandler):
-	model = Language
-	exclude = ('_state','id')
+    model = Language
+    exclude = ('_state','id')
 
 class WorkexperienceHandler(BaseHandler):
-	model = Workexperience
-	exclude = ('_state','id')
+    model = Workexperience
+    exclude = ('_state','id')
 
 class ReferenceHandler(BaseHandler):
-	model = Reference
-	exclude = ('_state','id')
+    model = Reference
+    exclude = ('_state','id')
 
 class CurriculumvitaeHandler(BaseHandler):
-	model = Curriculumvitae
-	fields = (('Firstname', 'Surname', 'Gender', 'Email',
-		'TelephoneNumber','Location', 'StreetName', 
-		'School', 'HighestGrade', 'HighestGradeYear', 
-		'DateOfBirth', 'HouseNumber', ('certificates',()) ,
-		('languages',()) , ('workExperiences',()) , ('references',()) ))
-	exclude = ('_state','id')
+    model = Curriculumvitae
+    fields = (('Firstname', 'Surname', 'Gender', 'Email',
+        'TelephoneNumber','Location', 'StreetName', 
+        'School', 'HighestGrade', 'HighestGradeYear', 
+        'DateOfBirth', 'HouseNumber', ('certificates',()) ,
+        ('languages',()) , ('workExperiences',()) , ('references',()) ))
+    exclude = ('_state','id')
 
 class UserHandler(BaseHandler):
-	allowed_methods = ('GET','POST',)
-	model = User
-	fields = ('username',('cv',()))
-	
-	def read(self, request):
-		username = request.GET.get('username')
-		return get_object_or_404(User,username = username)
-		'''if username:
-			user = User.objects.filter(username = username)
-			if user:
-				return user[0]
-			else:
-				response = rc.NOT_FOUND	
-				response.write(' - user not found')
-				return response				
-		else:
-			response = rc.BAD_REQUEST	
-			response.write(' - no user specified')
-			return response
-		'''
+    allowed_methods = ('GET','POST',)
+    model = User
+    fields = ('username',('cv',()))
+    
+    def read(self, request):
+        username = request.GET.get('username')
+        return get_object_or_404(User,username = username)
+        '''if username:
+            user = User.objects.filter(username = username)
+            if user:
+                return user[0]
+            else:
+                response = rc.NOT_FOUND    
+                response.write(' - user not found')
+                return response                
+        else:
+            response = rc.BAD_REQUEST    
+            response.write(' - no user specified')
+            return response
+        '''
