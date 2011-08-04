@@ -1,13 +1,43 @@
 from piston.handler import BaseHandler
+from piston.utils import rc
 from ummeli.webservice.models import *
 
+class CertificateHandler(BaseHandler):
+	model = Certificate
+	exclude = ('_state','id')
+
+class LanguageHandler(BaseHandler):
+	model = Language
+	exclude = ('_state','id')
+
+class WorkexperienceHandler(BaseHandler):
+	model = Workexperience
+	exclude = ('_state','id')
+
+class ReferenceHandler(BaseHandler):
+	model = Reference
+	exclude = ('_state','id')
+
+class CurriculumvitaeHandler(BaseHandler):
+	model = Curriculumvitae
+	fields = (('Firstname', 'Surname', 'Gender', 'Email', 'TelephoneNumber', 'Location', 'StreetName', 'School', 'HighestGrade', 'HighestGradeYear', 'DateOfBirth', 'HouseNumber', ('certificates',()) , ('languages',()) , ('workExperiences',()) , ('references',()) ))
+	exclude = ('_state','id')
+
 class UserHandler(BaseHandler):
-	allowed_methods = ('GET',)
+	allowed_methods = ('GET','POST',)
 	model = User
-	fields = ('username',('cv',('Firstname', 'Surname', 'Gender', 'Email', 'TelephoneNumber', 'Location', 'StreetName', 'School', 'HighestGrade', 'HighestGradeYear', 'DateOfBirth', 'HouseNumber', ('certificates',()) , ('languages',()) , ('workExperiences',()) , ('references',()) )))
+	fields = ('username',('cv',()))
 	
 	def read(self, request, username=None):
 		if username:
-		    return User.objects.select_related().get(username = username)
+			user = User.objects.filter(username = username)
+			if user:
+				return user[0]
+			else:
+				response = rc.NOT_FOUND	
+				response.write(' - user not found')
+				return response				
 		else:
-		    return 'no user requested'
+			response = rc.BAD_REQUEST	
+			response.write(' - no user specified')
+			return response
