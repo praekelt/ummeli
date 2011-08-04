@@ -20,7 +20,11 @@ class ReferenceHandler(BaseHandler):
 
 class CurriculumvitaeHandler(BaseHandler):
 	model = Curriculumvitae
-	fields = (('Firstname', 'Surname', 'Gender', 'Email', 'TelephoneNumber', 'Location', 'StreetName', 'School', 'HighestGrade', 'HighestGradeYear', 'DateOfBirth', 'HouseNumber', ('certificates',()) , ('languages',()) , ('workExperiences',()) , ('references',()) ))
+	fields = (('Firstname', 'Surname', 'Gender', 'Email',
+		'TelephoneNumber','Location', 'StreetName', 
+		'School', 'HighestGrade', 'HighestGradeYear', 
+		'DateOfBirth', 'HouseNumber', ('certificates',()) ,
+		('languages',()) , ('workExperiences',()) , ('references',()) ))
 	exclude = ('_state','id')
 
 class UserHandler(BaseHandler):
