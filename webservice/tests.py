@@ -28,7 +28,6 @@ class ApiTestCase(TestCase):
         password = 'password'
         
         user = User.objects.create(username=username, password=password)
-        UserProfile.objects.get_or_create(user=user, cv = Curriculumvitae.objects.create())
         resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
             urllib.urlencode({
                 'username': username
@@ -40,12 +39,28 @@ class ApiTestCase(TestCase):
         data = json.loads(resp.content)
         self.assertEquals(len(data), 1)
         
+    def test_get_data_for_user_with_no_profile(self):
+        username = 'user'
+        password = 'password'
+        
+        user = User.objects.create(username=username, password=password)
+        resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
+            urllib.urlencode({
+                'username': username
+            }))
+        )
+        
+        print resp.content
+        self.assertIsNotNone(user.get_profile())
+        self.assertEquals(resp.status_code, 200)
+        data = json.loads(resp.content)
+        self.assertEquals(len(data), 1)
+        
     def test_get_data_for_invalid_user(self):
         username = 'user'
         password = 'password'
         
         user = User.objects.create(username=username, password=password)
-        UserProfile.objects.get_or_create(user=user, cv = Curriculumvitae.objects.create())
         resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
             urllib.urlencode({
                 'username': 'wronguser'

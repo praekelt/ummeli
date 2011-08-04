@@ -36,6 +36,7 @@ class UserHandler(BaseHandler):
     def read(self, request):
         username = request.GET.get('username')       
         user = get_object_or_404(User,username = username)
+        UserProfile.objects.get_or_create(user = user, defaults = {'cv': Curriculumvitae.objects.create(Firstname='',Surname='')})
         return user.get_profile()
         '''if username:
             user = User.objects.filter(username = username)
