@@ -7,10 +7,8 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 
-from django.test import TestCase
 from django.core.urlresolvers import reverse
 from ummeli.webservice.utils import APIClient
-from ummeli.webservice.models import UserProfile, Curriculumvitae
 from django.contrib.auth.models import User
 import json
 import urllib
@@ -26,36 +24,37 @@ class ApiTestCase(TestCase):
     def test_get_data(self):
         username = 'user'
         password = 'password'
-        
-        user = User.objects.create(username=username, password=password)
+        user = User.objects.create_user(username, '%s@domain.com' % username, 
+                                        password)
         resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
             urllib.urlencode({
                 'username': username
             }))
         )
         
-        print resp.content
         self.assertEquals(resp.status_code, 200)
         data = json.loads(resp.content)
-        self.assertEquals(len(data), 1)
+        self.assertEquals(len(data), 16)
         
-    def test_get_data_for_user_with_no_profile(self):
+    def test_user_profile_creation(self):
         username = 'user'
         password = 'password'
         
-        user = User.objects.create(username=username, password=password)
-        resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
-            urllib.urlencode({
-                'username': username
-            }))
-        )
+        user = User.objects.create(username=username, password=password, 
+            first_name='name', last_name='surname', email='test@test.com')
         
-        print resp.content
-        self.assertIsNotNone(user.get_profile())
-        self.assertEquals(resp.status_code, 200)
-        data = json.loads(resp.content)
-        self.assertEquals(len(data), 1)
+        profile = user.get_profile()
+        self.assertEquals(profile.Firstname, 'name')
+        self.assertEquals(profile.Surname, 'surname')
+        self.assertEquals(profile.Email, 'test@test.com')
         
+        user.first_name = 'something'
+        user.last_name = 'else'
+        user.save()
+        profile = user.get_profile()
+        self.assertEquals(profile.Firstname, 'something')
+        self.assertEquals(profile.Surname, 'else')
+
     def test_get_data_for_invalid_user(self):
         username = 'user'
         password = 'password'

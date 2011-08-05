@@ -1,7 +1,7 @@
-from webservice.models import *
+from webservice.models import (Curriculumvitae, Certificate,
+                                Language, Workexperience, Reference)
 from django.contrib import admin
 
-admin.site.register(UserProfile)
 admin.site.register(Curriculumvitae)
 admin.site.register(Certificate)
 admin.site.register(Language)
