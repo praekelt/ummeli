@@ -50,10 +50,7 @@ class Curriculumvitae(models.Model):
     user = models.OneToOneField('auth.User')
 
     def __unicode__(self):
-        if self.Firstname:
-            return self.Firstname
-        else:
-            return str(self.id)
+        return u"Curriculumvitae %s - %s" % (self.pk, self.Firstname)
 
 def create_cv(sender, instance, created, **kwargs):
     if created:
