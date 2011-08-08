@@ -116,7 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webservice',
+    'api',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -152,4 +152,4 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SKIP_SOUTH_TESTS = True
 SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
-AUTH_PROFILE_MODULE = "webservice.Curriculumvitae"
+AUTH_PROFILE_MODULE = "api.Curriculumvitae"

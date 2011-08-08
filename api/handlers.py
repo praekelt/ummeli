@@ -1,5 +1,5 @@
 from piston.handler import BaseHandler
-from ummeli.webservice.models import (Certificate, Language, Workexperience,
+from ummeli.api.models import (Certificate, Language, Workexperience,
     Reference, Curriculumvitae)
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404

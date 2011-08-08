@@ -8,10 +8,10 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 
 from django.core.urlresolvers import reverse
-from ummeli.webservice.utils import APIClient
+from ummeli.api.utils import APIClient
 from django.contrib.auth.models import User
 
-from ummeli.webservice.models import Curriculumvitae
+from ummeli.api.models import Curriculumvitae
 
 import json
 import urllib
