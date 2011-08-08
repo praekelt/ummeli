@@ -69,5 +69,3 @@ class ApiTestCase(TestCase):
         
         print resp.content
         self.assertEquals(resp.status_code, 404)
-        data = json.loads(resp.content)
-        self.assertEquals(len(data), 1)
