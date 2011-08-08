@@ -10,6 +10,9 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from ummeli.webservice.utils import APIClient
 from django.contrib.auth.models import User
+
+from ummeli.webservice.models import Curriculumvitae
+
 import json
 import urllib
 
@@ -35,7 +38,6 @@ class ApiTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
         data = json.loads(resp.content)
         self.assertEquals(len(data), 16)
-        user.delete()
         
     def test_user_profile_creation(self):
         username = 'user'
@@ -55,7 +57,6 @@ class ApiTestCase(TestCase):
         profile = user.get_profile()
         self.assertEquals(profile.Firstname, 'something')
         self.assertEquals(profile.Surname, 'else')
-        user.delete()
 
     def test_get_data_for_invalid_user(self):
         username = 'user'
@@ -70,4 +71,3 @@ class ApiTestCase(TestCase):
         
         print resp.content
         self.assertEquals(resp.status_code, 404)
-        user.delete()

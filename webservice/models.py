@@ -57,6 +57,7 @@ def create_cv(sender, instance, created, **kwargs):
         cv = Curriculumvitae.objects.create(Firstname=instance.first_name, 
                 Surname=instance.last_name, Email=instance.email,
                 user=instance)
+        
     else:
         cv = instance.get_profile()
         cv.Firstname = instance.first_name
@@ -64,4 +65,4 @@ def create_cv(sender, instance, created, **kwargs):
         cv.Email = instance.email
         cv.save()
 
-post_save.connect(create_cv, sender=User)
+post_save.connect(create_cv, sender=User, dispatch_uid="users-profilecreation-signal")
