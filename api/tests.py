@@ -71,3 +71,26 @@ class ApiTestCase(TestCase):
         
         print resp.content
         self.assertEquals(resp.status_code, 404)
+    
+    def test_registration(self):
+        username = 'user'
+        password = 'password'
+        
+        resp = self.client.get('%s?%s' % (reverse('api:register'),
+            urllib.urlencode({
+                'username': username,
+                'password': password
+            }))
+        )
+        
+        data = json.loads(resp.content)
+        self.assertEquals(len(data), 16)
+        
+        resp = self.client.get('%s?%s' % (reverse('api:register'),
+            urllib.urlencode({
+                'username': username,
+                'password': password
+            }))
+        )
+        
+        self.assertEquals(resp.status_code, 409)
