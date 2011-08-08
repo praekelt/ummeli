@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
 class Certificate (models.Model):
@@ -29,7 +30,7 @@ class Reference (models.Model):
     def __unicode__(self):
         return self.fullname
 
-class Curriculumvitae (models.Model):
+class Curriculumvitae(models.Model):
     Firstname = models.CharField(max_length=45, null=True, blank=True)
     Surname = models.CharField(max_length=45, null=True, blank=True)
     Gender = models.CharField(max_length=45, null=True, blank=True)
@@ -46,15 +47,21 @@ class Curriculumvitae (models.Model):
     languages = models.ManyToManyField(Language, blank=True)
     workExperiences = models.ManyToManyField(Workexperience, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
+    user = models.OneToOneField('auth.User')
 
     def __unicode__(self):
-        if self.Firstname:
-            return self.Firstname
-        else:
-            return str(self.id)
+        return u"Curriculumvitae %s - %s" % (self.pk, self.Firstname)
 
-class UserProfile(models.Model):
-    user = models.ForeignKey(User)
-    cv = models.ForeignKey(Curriculumvitae, blank=True)
-    def __unicode__(self):
-        return self.user.username
+def create_cv(sender, instance, created, **kwargs):
+    if created:
+        cv = Curriculumvitae.objects.create(Firstname=instance.first_name, 
+                Surname=instance.last_name, Email=instance.email,
+                user=instance)
+    else:
+        cv = instance.get_profile()
+        cv.Firstname = instance.first_name
+        cv.Surname = instance.last_name
+        cv.Email = instance.email
+        cv.save()
+
+post_save.connect(create_cv, sender=User)

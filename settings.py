@@ -20,8 +20,6 @@ DATABASES = {
     }
 }
 
-AUTH_PROFILE_MODULE = "webservice.UserProfile"
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -154,3 +152,4 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SKIP_SOUTH_TESTS = True
 SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
+AUTH_PROFILE_MODULE = "webservice.Curriculumvitae"
