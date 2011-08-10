@@ -1,3 +1,7 @@
 /ve/
 *.pyc
 *.db
+.coverage
+/cover/
+coverage.xml
+nosetests.xml
