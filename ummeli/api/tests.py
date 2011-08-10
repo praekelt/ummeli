@@ -117,4 +117,31 @@ class ApiTestCase(TestCase):
         resp = self.client.put(reverse('api:userdata'),cv)
         
         self.assertEquals(resp.status_code, 200)
-        print resp.content
+        
+        cv = {
+                "TelephoneNumber": '0123456789', 
+                "School": 'Some school', 
+                "Surname": "surname", 
+                "HighestGrade": '12', 
+                "Firstname": "name", 
+                "Gender": 'male', 
+                "workExperiences": [], 
+                "languages": [], 
+                "DateOfBirth": None, 
+                "references": [], 
+                "Location": None, 
+                "certificates": [], 
+                "HighestGradeYear": 0, 
+                "HouseNumber": None, 
+                "Email": "an@email.com", 
+                "StreetName": None,
+                "id": 1,
+                "user": User.objects.get(username = username).pk
+            }
+        resp = self.client.put(reverse('api:userdata'),cv)
+        
+        self.assertEquals(resp.status_code, 200)
+        
+        cv = User.objects.get(username = username).get_profile()
+        self.assertEquals(cv.School,'Some school')
+        self.assertEquals(cv.HighestGrade,'12')
