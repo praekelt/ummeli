@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 class Certificate (models.Model):
     name = models.CharField(max_length=45)
@@ -12,7 +13,7 @@ class Certificate (models.Model):
 class Language (models.Model):
     language = models.CharField(max_length=45)
     readwrite = models.IntegerField(default=0)
-    def __unicode__(self):
+    def __unicode__(self): # pragma: no cover
         return self.language
         
 class Workexperience (models.Model):
@@ -20,14 +21,14 @@ class Workexperience (models.Model):
     company = models.CharField(max_length=45, null=True, blank=True)
     startyear = models.IntegerField(default=0, null=True, blank=True)
     endyear = models.IntegerField(default=0, null=True, blank=True)
-    def __unicode__(self):
+    def __unicode__(self): # pragma: no cover
         return self.title + " @ "+ self.company
         
 class Reference (models.Model):
     fullname = models.CharField(max_length=45)
     relationship = models.CharField(max_length=45, null=True, blank=True)
     contactno = models.CharField(max_length=45, null=True, blank=True)
-    def __unicode__(self):
+    def __unicode__(self): # pragma: no cover
         return self.fullname
 
 class Curriculumvitae(models.Model):
@@ -49,8 +50,12 @@ class Curriculumvitae(models.Model):
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
 
-    def __unicode__(self):
+    def __unicode__(self): # pragma: no cover
         return u"Curriculumvitae %s - %s" % (self.pk, self.Firstname)
+
+class ArticleForm(ModelForm):
+    class Meta:
+        model = Curriculumvitae
 
 def create_cv(sender, instance, created, **kwargs):
     if created:

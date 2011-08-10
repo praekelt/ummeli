@@ -31,15 +31,12 @@ class CurriculumvitaeHandler(BaseHandler):
     exclude = ('_state','id')
 
 class UserHandler(BaseHandler):
-    allowed_methods = ('GET','POST',)
+    allowed_methods = ('GET','POST','PUT',)
     
     def read(self, request):
         username = request.GET.get('username')
         user = get_object_or_404(User, username = username)
         return user.get_profile()
-
-class RegistrationHandler(BaseHandler):
-    allowed_methods = ('POST',)
     
     def create(self, request):
         username = request.POST.get('username')

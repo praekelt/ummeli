@@ -29,7 +29,7 @@ class ApiTestCase(TestCase):
         password = 'password'
         user = User.objects.create_user(username, '%s@domain.com' % username, 
                                         password)
-        resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
+        resp = self.client.get('%s?%s' % (reverse('api:userdata'),
             urllib.urlencode({
                 'username': username
             }))
@@ -63,7 +63,7 @@ class ApiTestCase(TestCase):
         password = 'password'
         
         user = User.objects.create(username=username, password=password)
-        resp = self.client.get('%s?%s' % (reverse('api:getuserdata'),
+        resp = self.client.get('%s?%s' % (reverse('api:userdata'),
             urllib.urlencode({
                 'username': 'wronguser'
             }))
@@ -76,13 +76,13 @@ class ApiTestCase(TestCase):
         username = 'user'
         password = 'password'
 
-        resp = self.client.post(reverse('api:register'),
+        resp = self.client.post(reverse('api:userdata'),
                                 {'username': username,'password': password})
         
         data = json.loads(resp.content)
         self.assertEquals(len(data), 16)
         
-        resp = self.client.post(reverse('api:register'),
+        resp = self.client.post(reverse('api:userdata'),
                                 {'username': username,'password': password})
         
         self.assertEquals(resp.status_code, 409)
