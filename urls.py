@@ -10,5 +10,5 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include('core.api.urls', namespace='api')),
+    url(r'^api/', include('ummeli.api.urls', namespace='api')),
 )
