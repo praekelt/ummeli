@@ -39,11 +39,11 @@ class UserHandler(BaseHandler):
         return user.get_profile()
 
 class RegistrationHandler(BaseHandler):
-    allowed_methods = ('POST','GET',)
+    allowed_methods = ('POST',)
     
-    def read(self, request):
-        username = request.GET.get('username')
-        password = request.GET.get('password')
+    def create(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         
         if User.objects.filter(username = username):
             response = rc.DUPLICATE_ENTRY
