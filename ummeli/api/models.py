@@ -53,7 +53,7 @@ class Curriculumvitae(models.Model):
     def __unicode__(self): # pragma: no cover
         return u"Curriculumvitae %s - %s" % (self.pk, self.Firstname)
 
-class ArticleForm(ModelForm):
+class CurriculumvitaeForm(ModelForm):
     class Meta:
         model = Curriculumvitae
 
