@@ -6,7 +6,7 @@ class Certificate (models.Model):
     name = models.CharField(max_length=45)
     institution = models.CharField(max_length=200, null=True, blank=True)
     year = models.IntegerField(default=0, null=True, blank=True)
-    def __unicode__(self):
+    def __unicode__(self): # pragma: no cover
         return self.name + " @ "+ self.institution
         
 class Language (models.Model):
