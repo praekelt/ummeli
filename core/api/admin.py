@@ -1,4 +1,4 @@
-from api.models import (Curriculumvitae, Certificate,
+from core.api.models import (Curriculumvitae, Certificate,
                                 Language, Workexperience, Reference)
 from django.contrib import admin
 

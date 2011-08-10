@@ -1,6 +1,6 @@
 from piston.handler import BaseHandler
 from piston.utils import rc
-from ummeli.api.models import (Certificate, Language, Workexperience,
+from core.api.models import (Certificate, Language, Workexperience,
     Reference, Curriculumvitae)
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404

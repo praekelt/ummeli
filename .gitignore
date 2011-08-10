@@ -1,5 +1,6 @@
 /ve/
 *.pyc
+*.py~
 *.db
 .coverage
 /cover/
