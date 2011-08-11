@@ -1,5 +1,7 @@
 import base64
 from django.test.client import Client
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth import authenticate
 
 class APIClient(Client):
     
@@ -21,3 +23,15 @@ class APIClient(Client):
 we're using HTTP Basic Auth instead."""
         self.username = username
         self.password = password
+
+class UserHelper:
+    @staticmethod
+    def get_user_or_403(username, password):
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            if user.is_active:
+                return user
+            else:
+                raise PermissionDenied
+        else:
+            raise PermissionDenied

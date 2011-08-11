@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from piston.utils import rc
 
-from ummeli.api.utils import APIClient
+from ummeli.api.utils import APIClient, UserHelper
 from ummeli.api.models import Curriculumvitae
 
 import json
@@ -25,7 +25,8 @@ class ApiTestCase(TestCase):
                                         password)
         resp = self.client.get('%s?%s' % (reverse('api:userdata'),
             urllib.urlencode({
-                'username': username
+                'username': username,
+                'password': password
             }))
         )
         
@@ -64,7 +65,7 @@ class ApiTestCase(TestCase):
         )
         
         print resp.content
-        self.assertEquals(resp.status_code, rc.NOT_FOUND.status_code)
+        self.assertEquals(resp.status_code, 403) #Forbidden
     
     def test_registration(self):
         username = 'user'
@@ -139,3 +140,39 @@ class ApiTestCase(TestCase):
         cv = User.objects.get(username = username).get_profile()
         self.assertEquals(cv.School,'Some school')
         self.assertEquals(cv.HighestGrade,'12')
+        
+    def test_authentication(self):
+        username = 'user'
+        password = 'password'
+
+        resp = self.client.post(reverse('api:userdata'),
+                                {'username': username,'password': password})
+        
+        resp = self.client.get('%s?%s' % (reverse('api:userdata'),
+            urllib.urlencode({
+                'username': username,
+                'password': password
+            }))
+        )
+        self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
+        
+        resp = self.client.get('%s?%s' % (reverse('api:userdata'),
+            urllib.urlencode({
+                'username': username,
+                'password': 'wrong_password'
+            }))
+        )
+        self.assertEquals(resp.status_code, 403) #Forbidden
+        
+        user = UserHelper.get_user_or_403(username, password)
+        user.is_active = False #test for user disabled
+        user.save()
+        
+        resp = self.client.get('%s?%s' % (reverse('api:userdata'),
+            urllib.urlencode({
+                'username': username,
+                'password': password
+            }))
+        )
+        
+        self.assertEquals(resp.status_code, 403) #forbidden
