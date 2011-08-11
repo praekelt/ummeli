@@ -23,7 +23,7 @@ class ReferenceHandler(BaseHandler):
 
 class CurriculumvitaeHandler(BaseHandler):
     model = Curriculumvitae
-    fields = (('id','Firstname', 'Surname', 'Gender', 'Email',
+    fields = (('Firstname', 'Surname', 'Gender', 'Email',
         'TelephoneNumber','Location', 'StreetName', 
         'School', 'HighestGrade', 'HighestGradeYear', 
         'DateOfBirth', 'HouseNumber', ('certificates',()) ,
@@ -35,6 +35,7 @@ class UserHandler(BaseHandler):
     
     def read(self, request):
         username = request.GET.get('username')
+        password = request.GET.get('password')
         user = get_object_or_404(User, username = username)
         return user.get_profile()
     
@@ -47,11 +48,13 @@ class UserHandler(BaseHandler):
             response.write('User already exists')
             return response
         else:
-            user = User.objects.create(username=username, password=password)
+            user = User.objects.create(username=username)
             return user.get_profile()
     
     def update(self, request):
-        cv_id = request.POST.get('id')
-        cv = get_object_or_404(Curriculumvitae, pk=cv_id)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = get_object_or_404(User, username = username)
+        cv = user.get_profile()        
         cvform = CurriculumvitaeForm(request.POST, instance=cv)
         return cvform.save()

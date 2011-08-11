@@ -56,6 +56,7 @@ class Curriculumvitae(models.Model):
 class CurriculumvitaeForm(ModelForm):
     class Meta:
         model = Curriculumvitae
+        exclude = ('user')
 
 def create_cv(sender, instance, created, **kwargs):
     if created:

@@ -31,7 +31,7 @@ class ApiTestCase(TestCase):
         
         self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         data = json.loads(resp.content)
-        self.assertEquals(len(data), 17)
+        self.assertEquals(len(data), 16)
         
     def test_user_profile_creation(self):
         username = 'user'
@@ -74,7 +74,7 @@ class ApiTestCase(TestCase):
                                 {'username': username,'password': password})
         
         data = json.loads(resp.content)
-        self.assertEquals(len(data), 17)
+        self.assertEquals(len(data), 16)
         
         resp = self.client.post(reverse('api:userdata'),
                                 {'username': username,'password': password})
@@ -89,48 +89,48 @@ class ApiTestCase(TestCase):
                                 {'username': username,'password': password})
         
         cv = {
-                "TelephoneNumber": '0123456789', 
-                "School": None, 
-                "Surname": "surname", 
-                "HighestGrade": None, 
-                "Firstname": "name", 
-                "Gender": 'male', 
-                "workExperiences": [], 
-                "languages": [], 
-                "DateOfBirth": None, 
-                "references": [], 
-                "Location": None, 
-                "certificates": [], 
-                "HighestGradeYear": 0, 
-                "HouseNumber": None, 
-                "Email": "an@email.com", 
-                "StreetName": None,
-                "id": 1,
-                "user": User.objects.get(username = username).pk
+                'TelephoneNumber': '0123456789', 
+                'School': None, 
+                'Surname': 'surname', 
+                'HighestGrade': None, 
+                'Firstname': 'name', 
+                'Gender': 'male', 
+                'workExperiences': [], 
+                'languages': [], 
+                'DateOfBirth': None, 
+                'references': [], 
+                'Location': None, 
+                'certificates': [], 
+                'HighestGradeYear': 0, 
+                'HouseNumber': None, 
+                'Email': 'an@email.com', 
+                'StreetName': None,
+                'username': username,
+                'password': password
             }
         resp = self.client.put(reverse('api:userdata'),cv)
         
         self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         
         cv = {
-                "TelephoneNumber": '0123456789', 
-                "School": 'Some school', 
-                "Surname": "surname", 
-                "HighestGrade": '12', 
-                "Firstname": "name", 
-                "Gender": 'male', 
-                "workExperiences": [], 
-                "languages": [], 
-                "DateOfBirth": None, 
-                "references": [], 
-                "Location": None, 
-                "certificates": [], 
-                "HighestGradeYear": 0, 
-                "HouseNumber": None, 
-                "Email": "an@email.com", 
-                "StreetName": None,
-                "id": 1,
-                "user": User.objects.get(username = username).pk
+                'TelephoneNumber': '0123456789', 
+                'School': 'Some school', 
+                'Surname': 'surname', 
+                'HighestGrade': '12', 
+                'Firstname': 'name', 
+                'Gender': 'male', 
+                'workExperiences': [], 
+                'languages': [], 
+                'DateOfBirth': None, 
+                'references': [], 
+                'Location': None, 
+                'certificates': [], 
+                'HighestGradeYear': 0, 
+                'HouseNumber': None, 
+                'Email': 'an@email.com', 
+                'StreetName': None,
+                'username': username,
+                'password': password
             }
         resp = self.client.put(reverse('api:userdata'),cv)
         
