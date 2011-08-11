@@ -1,16 +1,10 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
-
 from django.core.urlresolvers import reverse
-from ummeli.api.utils import APIClient
 from django.contrib.auth.models import User
 
+from piston.utils import rc
+
+from ummeli.api.utils import APIClient
 from ummeli.api.models import Curriculumvitae
 
 import json
@@ -35,7 +29,7 @@ class ApiTestCase(TestCase):
             }))
         )
         
-        self.assertEquals(resp.status_code, 200)
+        self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         data = json.loads(resp.content)
         self.assertEquals(len(data), 17)
         
@@ -70,7 +64,7 @@ class ApiTestCase(TestCase):
         )
         
         print resp.content
-        self.assertEquals(resp.status_code, 404)
+        self.assertEquals(resp.status_code, rc.NOT_FOUND.status_code)
     
     def test_registration(self):
         username = 'user'
@@ -85,7 +79,7 @@ class ApiTestCase(TestCase):
         resp = self.client.post(reverse('api:userdata'),
                                 {'username': username,'password': password})
         
-        self.assertEquals(resp.status_code, 409)
+        self.assertEquals(resp.status_code, rc.DUPLICATE_ENTRY.status_code)
         
     def test_cv_updating(self):
         username = 'user'
@@ -116,7 +110,7 @@ class ApiTestCase(TestCase):
             }
         resp = self.client.put(reverse('api:userdata'),cv)
         
-        self.assertEquals(resp.status_code, 200)
+        self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         
         cv = {
                 "TelephoneNumber": '0123456789', 
@@ -140,7 +134,7 @@ class ApiTestCase(TestCase):
             }
         resp = self.client.put(reverse('api:userdata'),cv)
         
-        self.assertEquals(resp.status_code, 200)
+        self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         
         cv = User.objects.get(username = username).get_profile()
         self.assertEquals(cv.School,'Some school')
