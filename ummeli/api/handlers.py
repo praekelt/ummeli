@@ -60,4 +60,5 @@ class UserHandler(BaseHandler):
         user = UserHelper.get_user_or_403(username, password)
         cv = user.get_profile()        
         cvform = CurriculumvitaeForm(request.POST, instance=cv)
+        #TODO: check cvform.is_valid() to check and return BAD REQUEST
         return cvform.save()
