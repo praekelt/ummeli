@@ -12,63 +12,63 @@ class Certificate (models.Model):
         
 class Language (models.Model):
     language = models.CharField(max_length=45)
-    readwrite = models.IntegerField(default=0)
+    readWrite = models.IntegerField(default=0)
     def __unicode__(self): # pragma: no cover
         return self.language
         
-class Workexperience (models.Model):
+class WorkExperience (models.Model):
     title = models.CharField(max_length=45)
     company = models.CharField(max_length=45, null=True, blank=True)
-    startyear = models.IntegerField(default=0, null=True, blank=True)
-    endyear = models.IntegerField(default=0, null=True, blank=True)
+    startYear = models.IntegerField(default=0, null=True, blank=True)
+    endYear = models.IntegerField(default=0, null=True, blank=True)
     def __unicode__(self): # pragma: no cover
         return self.title + " @ "+ self.company
         
 class Reference (models.Model):
     fullname = models.CharField(max_length=45)
     relationship = models.CharField(max_length=45, null=True, blank=True)
-    contactno = models.CharField(max_length=45, null=True, blank=True)
+    contactNo = models.CharField(max_length=45, null=True, blank=True)
     def __unicode__(self): # pragma: no cover
         return self.fullname
 
-class Curriculumvitae(models.Model):
-    Firstname = models.CharField(max_length=45, null=True, blank=True)
-    Surname = models.CharField(max_length=45, null=True, blank=True)
-    Gender = models.CharField(max_length=45, null=True, blank=True)
-    Email = models.CharField(max_length=45, null=True, blank=True)
-    TelephoneNumber = models.CharField(max_length=45, null=True, blank=True)
-    Location = models.CharField(max_length=45, null=True, blank=True)
-    StreetName = models.CharField(max_length=45, null=True, blank=True)
-    School = models.CharField(max_length=45, null=True, blank=True)
-    HighestGrade = models.CharField(max_length=45, null=True, blank=True)
-    HighestGradeYear = models.IntegerField(default=0, null=True, blank=True)
-    DateOfBirth = models.CharField(max_length=45, null=True, blank=True)
-    HouseNumber = models.CharField(max_length=45, null=True, blank=True)
+class CurriculumVitae(models.Model):
+    firstName = models.CharField(max_length=45, null=True, blank=True)
+    surname = models.CharField(max_length=45, null=True, blank=True)
+    gender = models.CharField(max_length=45, null=True, blank=True)
+    email = models.CharField(max_length=45, null=True, blank=True)
+    telephoneNumber = models.CharField(max_length=45, null=True, blank=True)
+    location = models.CharField(max_length=45, null=True, blank=True)
+    streetName = models.CharField(max_length=45, null=True, blank=True)
+    school = models.CharField(max_length=45, null=True, blank=True)
+    highestGrade = models.CharField(max_length=45, null=True, blank=True)
+    highestGradeYear = models.IntegerField(default=0, null=True, blank=True)
+    dateOfBirth = models.CharField(max_length=45, null=True, blank=True)
+    houseNumber = models.CharField(max_length=45, null=True, blank=True)
     certificates = models.ManyToManyField(Certificate, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
-    workExperiences = models.ManyToManyField(Workexperience, blank=True)
+    workExperiences = models.ManyToManyField(WorkExperience, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
 
     def __unicode__(self): # pragma: no cover
-        return u"Curriculumvitae %s - %s" % (self.pk, self.Firstname)
+        return u"CurriculumVitae %s - %s" % (self.pk, self.firstName)
 
-class CurriculumvitaeForm(ModelForm):
+class CurriculumVitaeForm(ModelForm):
     class Meta:
-        model = Curriculumvitae
+        model = CurriculumVitae
         exclude = ('user')
 
 def create_cv(sender, instance, created, **kwargs):
     if created:
-        cv = Curriculumvitae.objects.create(Firstname=instance.first_name, 
-                Surname=instance.last_name, Email=instance.email,
+        cv = CurriculumVitae.objects.create(firstName=instance.first_name, 
+                surname=instance.last_name, email=instance.email,
                 user=instance)
         
     else:
         cv = instance.get_profile()
-        cv.Firstname = instance.first_name
-        cv.Surname = instance.last_name
-        cv.Email = instance.email
+        cv.firstName = instance.first_name
+        cv.surname = instance.last_name
+        cv.email = instance.email
         cv.save()
 
 post_save.connect(create_cv, sender=User, dispatch_uid="users-profilecreation-signal")

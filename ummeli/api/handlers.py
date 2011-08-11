@@ -1,7 +1,7 @@
 from piston.handler import BaseHandler
 from piston.utils import rc
-from ummeli.api.models import (Certificate, Language, Workexperience,
-    Reference, Curriculumvitae, CurriculumvitaeForm)
+from ummeli.api.models import (Certificate, Language, WorkExperience,
+    Reference, CurriculumVitae, CurriculumVitaeForm)
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from ummeli.api.utils import UserHelper
@@ -14,20 +14,20 @@ class LanguageHandler(BaseHandler):
     model = Language
     exclude = ('_state')
 
-class WorkexperienceHandler(BaseHandler):
-    model = Workexperience
+class WorkExperienceHandler(BaseHandler):
+    model = WorkExperience
     exclude = ('_state')
 
 class ReferenceHandler(BaseHandler):
     model = Reference
     exclude = ('_state')
 
-class CurriculumvitaeHandler(BaseHandler):
-    model = Curriculumvitae
-    fields = (('Firstname', 'Surname', 'Gender', 'Email',
-        'TelephoneNumber','Location', 'StreetName', 
-        'School', 'HighestGrade', 'HighestGradeYear', 
-        'DateOfBirth', 'HouseNumber', ('certificates',()) ,
+class CurriculumVitaeHandler(BaseHandler):
+    model = CurriculumVitae
+    fields = (('firstName', 'surname', 'gender', 'email',
+        'telephoneNumber','location', 'streetName', 
+        'school', 'highestGrade', 'highestGradeYear', 
+        'dateOfBirth', 'houseNumber', ('certificates',()) ,
         ('languages',()) , ('workExperiences',()) , ('references',()) ))
     exclude = ('_state')
     
@@ -59,6 +59,6 @@ class UserHandler(BaseHandler):
         password = request.POST.get('password')
         user = UserHelper.get_user_or_403(username, password)
         cv = user.get_profile()        
-        cvform = CurriculumvitaeForm(request.POST, instance=cv)
+        cvform = CurriculumVitaeForm(request.POST, instance=cv)
         #TODO: check cvform.is_valid() to check and return BAD REQUEST
         return cvform.save()

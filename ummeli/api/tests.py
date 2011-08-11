@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from piston.utils import rc
 
 from ummeli.api.utils import APIClient, UserHelper
-from ummeli.api.models import Curriculumvitae
+from ummeli.api.models import CurriculumVitae
 
 import json
 import urllib
@@ -42,16 +42,16 @@ class ApiTestCase(TestCase):
             first_name='name', last_name='surname', email='test@test.com')
         
         profile = user.get_profile()
-        self.assertEquals(profile.Firstname, 'name')
-        self.assertEquals(profile.Surname, 'surname')
-        self.assertEquals(profile.Email, 'test@test.com')
+        self.assertEquals(profile.firstName, 'name')
+        self.assertEquals(profile.surname, 'surname')
+        self.assertEquals(profile.email, 'test@test.com')
         
         user.first_name = 'something'
         user.last_name = 'else'
         user.save()
         profile = user.get_profile()
-        self.assertEquals(profile.Firstname, 'something')
-        self.assertEquals(profile.Surname, 'else')
+        self.assertEquals(profile.firstName, 'something')
+        self.assertEquals(profile.surname, 'else')
 
     def test_get_data_for_invalid_user(self):
         username = 'user'
@@ -90,22 +90,22 @@ class ApiTestCase(TestCase):
                                 {'username': username,'password': password})
         
         cv = {
-                'TelephoneNumber': '0123456789', 
-                'School': None, 
-                'Surname': 'surname', 
-                'HighestGrade': None, 
-                'Firstname': 'name', 
-                'Gender': 'male', 
+                'telephoneNumber': '0123456789', 
+                'school': None, 
+                'surname': 'surname', 
+                'highestGrade': None, 
+                'firstName': 'name', 
+                'gender': 'male', 
                 'workExperiences': [], 
                 'languages': [], 
-                'DateOfBirth': None, 
+                'dateOfBirth': None, 
                 'references': [], 
-                'Location': None, 
+                'location': None, 
                 'certificates': [], 
-                'HighestGradeYear': 0, 
-                'HouseNumber': None, 
-                'Email': 'an@email.com', 
-                'StreetName': None,
+                'highestGradeYear': 0, 
+                'houseNumber': None, 
+                'email': 'an@email.com', 
+                'streetName': None,
                 'username': username,
                 'password': password
             }
@@ -114,22 +114,22 @@ class ApiTestCase(TestCase):
         self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         
         cv = {
-                'TelephoneNumber': '0123456789', 
-                'School': 'Some school', 
-                'Surname': 'surname', 
-                'HighestGrade': '12', 
-                'Firstname': 'name', 
-                'Gender': 'male', 
+                'telephoneNumber': '0123456789', 
+                'school': 'Some school', 
+                'surname': 'surname', 
+                'highestGrade': '12', 
+                'firstname': 'name', 
+                'gender': 'male', 
                 'workExperiences': [], 
                 'languages': [], 
-                'DateOfBirth': None, 
+                'dateOfBirth': None, 
                 'references': [], 
-                'Location': None, 
+                'location': None, 
                 'certificates': [], 
-                'HighestGradeYear': 0, 
-                'HouseNumber': None, 
-                'Email': 'an@email.com', 
-                'StreetName': None,
+                'highestGradeYear': 0, 
+                'houseNumber': None, 
+                'email': 'an@email.com', 
+                'streetName': None,
                 'username': username,
                 'password': password
             }
@@ -138,8 +138,8 @@ class ApiTestCase(TestCase):
         self.assertEquals(resp.status_code, rc.ALL_OK.status_code)
         
         cv = User.objects.get(username = username).get_profile()
-        self.assertEquals(cv.School,'Some school')
-        self.assertEquals(cv.HighestGrade,'12')
+        self.assertEquals(cv.school,'Some school')
+        self.assertEquals(cv.highestGrade,'12')
         
     def test_authentication(self):
         username = 'user'
