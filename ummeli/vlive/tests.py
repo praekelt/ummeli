@@ -22,6 +22,7 @@ class VliveTestCase(TestCase):
                                         password)
         self.client.login(username, password)
         resp = self.client.get(reverse('vlive:index'))
-        
-        print resp.content
-        self.assertEquals(resp.status_code, 302)
+        # there shouldn't be a Location header as this would mean a redirect
+        # to a login URL
+        self.assertEquals(resp.get('Location', None), None)
+        self.assertEquals(resp.status_code, 200)
