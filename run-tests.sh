@@ -5,4 +5,6 @@ source ve/bin/activate && \
     find ./ -name '*.pyc' -delete && \
     ./manage.py test --with-coverage --cover-erase --cover-package=ummeli --cover-html --with-xunit && \
     coverage xml --omit="ve/*" && \
+    (pyflakes ummeli/ > pyflakes.log || true) && \
+    (pep8 ummeli/ > pep8.log || true ) && \
 deactivate
