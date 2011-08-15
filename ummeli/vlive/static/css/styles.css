@@ -1,0 +1,84 @@
+/*
+CSS Styles
+*/
+@import url("reset.css");
+
+body{background: #f7f8f4 url(../images/bg.gif) repeat-x; padding: 3px 0px 0px 0px; font: 12px Arial, sans-serif; width: 100%;}
+a{text-decoration: none; font-weight: bold;}
+p,h1,h2,h3,ol,ul{margin-bottom: 5px;}
+div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #2e5333; height: 18px; padding: 8px 10px 5px; margin-bottom: 0px;}
+
+.header{background-color: #3c6c44; width: 100%;	height: 47px;}
+
+.breadcrumb{background-color: #345e3a; height: 18px; padding: 8px 10px 5px;	font-size: 11px; color: #fff;}
+.breadcrumb a, .tabs a{color: #efe579; font-weight: normal; font-size: 11px;}
+
+.content{}
+.content p{color: #fff;	font-size: 12px;}
+
+.forgotsuccess{padding: 10px; background-color: #3C6C43;}
+
+/*==Menu ==*/
+.menu{background-color: #a8ca93;	margin-bottom: 0px;}
+.menu .item{border-bottom: 1px solid #98b785; padding: 5px 10px;	list-style-type: none;}
+.menu img{margin-right: 5px; position: relative; top: 2px;}
+.menu .item a{color: #2e5333;}
+
+/*==lists==*/
+.list{margin-bottom: 0px; background-color: #f7f8f4;}
+.list .item{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
+.list .item a{color: #f96400; font-size: 14px;}
+.list .item label{color: #000;}
+
+span.subtitle{text-transform: uppercase; font-size: 11px; color: #545454;}
+span.area{font-size: 11px; color: #000;}
+span.text{ color: #000;}
+
+.pagination{border-bottom: 0px solid; color: #555555; font-size: 12px; padding: 5px 10px;}
+.pagination a{font-size: 12px; color: #f96400;}
+
+a.del{color: #e61b1b; font-size: 12px;}
+
+/*==Meta information ==*/
+.meta{padding: 5px 10px; background-color: #f7f8f4;}
+.meta .h2{color: #000; font-size: 14px; margin-bottom: 0px; background: none; padding: 0px;}
+.meta .h2 span{font-size: 11px; font-weight: normal;}
+.meta span.title{font-size: 14px;}
+
+/*==Tabs ==*/
+.tabs{font-size: 13px; color: #f1f6d1; background-color: #2e5333; height: 18px; padding: 8px 10px 5px; font-weight: bold;}
+
+/*==Forms ==*/
+form.signin, form.recover, form.search{padding: 10px; background-color: #3c6c43;}
+form.standard {padding: 10px;}
+form.standard p{color: #000;}
+form input, form select{ display: block; margin-bottom: 10px;}
+textarea{ margin-bottom: 5px; font: 12px Arial, sans-serif;}
+form label{color: #000;	font-size: 12px; margin-bottom: 3px; display: block;}
+form.signin label, form.recover label{color: #fff;}
+label span, span.helptext {font-size: 11px; color: #545454;}
+
+form input.submit{ background-color: #efe579; color: #2e5333; font-weight: bold; font-size: 11px; border-bottom: 1px solid #36623d; border-right: 1px solid #36623d; border-left: 0px none; border-top: 0px none; padding: 3px;}
+
+.content form input.submit{border-right: 1px solid #d1d2cf; border-bottom: 1px solid #d1d2cf;}
+.forgotsuccess a{color: #a8ca93;}
+form a{color: #F96400;}
+form.signin a, form.recover a{color: #a8ca93;}
+form.search input{ display: inline;	margin-bottom: 0px;}
+
+select#form-day, select#form-month, select#form-year, select#form-hour, select#form-minute, select.date-form{display: inline;}
+div.error, div.success{color: #fff; font-weight: bold; font-size: 12px; padding: 5px; margin-bottom: 5px;}
+div.error{ background-color: #e62b2b;}
+div.success{ background-color: #6eb558;}
+form label.error, ul.errorlist li { color: #e62b2b;}
+
+.overflow{margin-bottom: 10px !important;}
+.overflow input{display: inline; margin-bottom: 0px;}
+.overflow label{display: inline;}
+
+/*==Footer ==*/
+.footer{padding: 5px 10px;	color: #a6a6a6; font-size: 10px;}
+.footer a{color: #3c6c43; font-weight: normal;}
+
+
+

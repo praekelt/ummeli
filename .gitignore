@@ -2,6 +2,7 @@
 *.pyc
 *.py~
 *.db
+*.html~
 .coverage
 /cover/
 coverage.xml
