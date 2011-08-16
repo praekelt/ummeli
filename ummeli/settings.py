@@ -105,6 +105,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'vlive.auth.middleware.VodafoneLiveUserMiddleware',
+    'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
