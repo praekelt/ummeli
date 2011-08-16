@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <ul>
+            <li><a href="{% url vlive:edit %}">Edit CV</a></li>
+            <li><a href="{% url vlive:send %}">Send CV</a></li>
+            <li><a href="{% url vlive:jobs %}">View Jobs</a></li>
+        </ul>
+    </div>
+{% endblock %}

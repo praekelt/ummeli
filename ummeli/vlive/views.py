@@ -63,7 +63,19 @@ def login(request, template_name='registration/login.html',
                               context_instance=RequestContext(request, current_app=current_app))
 
 
+
 @login_required
 def index(request):    
-    cv = request.user.get_profile()
-    return render_to_response('vlive/cv.html', {'cv': cv})
+    return render_to_response('vlive/index.html')
+
+@login_required
+def edit(request):    
+    return render_to_response('vlive/blank.html')
+
+@login_required
+def send(request):    
+    return render_to_response('vlive/blank.html')
+
+@login_required
+def jobs(request):    
+    return render_to_response('vlive/blank.html')
