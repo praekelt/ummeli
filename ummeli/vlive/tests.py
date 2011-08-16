@@ -19,8 +19,6 @@ class VliveTestCase(TestCase):
         password = 'password'
         user = User.objects.create_user(username, '%s@domain.com' % username, 
                                         password)
-        user.is_superuser = True
-        user.save()
         self.client.login(username=username, password=password)
         resp = self.client.get(reverse('vlive:index'))
         # there shouldn't be a Location header as this would mean a redirect
