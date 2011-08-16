@@ -6,15 +6,13 @@
         {% if form.errors %}
             <div class="error">Sign in failed.<br />Please try again.</div>
         {% endif %}
-
-        <label for="form-cell">Cell number</label>
-        {{form.username}}<br>
-
+        
         <label for="form-pin">Pin</label>
         {{form.password}}
 
         <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
         <input type="hidden" name="next" value="{{next}}">
+        <input type="hidden" name="username" value="{{msisdn}}">
         {% csrf_token %}
 
         <p><a href="{% url vlive:index %}forgot/">Forgotton your Pin?</a></p>
