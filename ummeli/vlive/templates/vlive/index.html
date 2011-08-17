@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <form class='standard'>
     <div>
         <ul>
             <li><a href="{% url vlive:edit %}">Edit CV</a></li>
@@ -8,4 +9,5 @@
             <li><a href="{% url vlive:jobs %}">View Jobs</a></li>
         </ul>
     </div>
+    </form>
 {% endblock %}

@@ -5,6 +5,7 @@ from ummeli.vlive import views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.login, {'template_name': 'vlive/login.html'}, name='login'),
+    url(r'^register/$', views.register, name='register'),
     url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url': '../login'}, name='logout'),
     url(r'^edit/$', views.edit, name='edit'),
     url(r'^send/$', views.send, name='send'),

@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.sites.models import get_current_site
 
 def login(request, template_name='registration/login.html',
@@ -57,13 +57,32 @@ def login(request, template_name='registration/login.html',
         'site': current_site,
         'site_name': current_site.name,
         'msisdn': request.vlive.msisdn,
+        'user_exists': len(User.objects.filter(username=request.vlive.msisdn)) == 1
     }
     context.update(extra_context or {})
     return render_to_response(template_name, context,
                               context_instance=RequestContext(request, current_app=current_app))
 
 
-
+def register(request):
+    if request.method == 'POST':
+        print 'hwere'
+        form = UserCreationForm(data = request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("/vlive/")
+    else:
+        form = UserCreationForm()
+    
+    current_site = get_current_site(request)
+    
+    context = {
+        'form': form,
+        'msisdn': request.vlive.msisdn,
+    }
+    return render_to_response('vlive/register.html', context,
+                              context_instance=RequestContext(request))
+    
 @login_required
 def index(request):    
     return render_to_response('vlive/index.html')

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Create pin for <strong>{{msisdn}}</strong></div>
+    <form class="signin" method="post">
+        {% if form.errors %}
+            <div class="error">Sign in failed.<br />Please try again.</div>
+        {% endif %}
+        
+        <label for="form-pin1">Pin</label>
+        {{form.password1}}
+        <label for="form-pin2">Confirm Pin</label>
+        {{form.password2}}
+        <input type="submit" class="submit" value="Create pin &raquo;" name="submit" />
+        <input type="hidden" name="next" value="{{next}}">
+        <input type="hidden" name="username" value="{{msisdn}}">
+        {% csrf_token %}
+    </form>
+{% endblock %}
