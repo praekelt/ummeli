@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Create pin for <strong>{{msisdn}}</strong></div>
+    <div class="h2">Create pin for {{msisdn}}</div>
     <form class="signin" method="post">
         {% if form.errors %}
-            <div class="error">Sign in failed.<br />Please try again.</div>
+            <div class="error">Pin codes don&apos;t match.<br />Please try again.</div>
         {% endif %}
         
         <label for="form-pin1">Pin</label>

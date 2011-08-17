@@ -66,7 +66,6 @@ def login(request, template_name='registration/login.html',
 
 def register(request):
     if request.method == 'POST':
-        print 'hwere'
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
