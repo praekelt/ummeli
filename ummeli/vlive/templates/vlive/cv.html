@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>Hello: {{ cv.firstName }}</div>
+    <div class="h2">Edit profile</div>
+    <form class='standard'>
+    <div>
+        <ul>
+            <li><a href="{% url vlive:edit %}/personal">Personal details</a></li>
+        </ul>
+    </div>
+    </form>
 {% endblock %}
