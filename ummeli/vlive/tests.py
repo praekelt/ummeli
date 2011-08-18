@@ -83,3 +83,22 @@ class VliveTestCase(TestCase):
                                 'password2': 'wrong'})
         print resp
         self.assertContains(resp, 'Pin codes don&apos;t match.')
+        
+
+class VliveCVTestCase(TestCase):
+    
+    def setUp(self):
+        self.client = Client()
+        username = 'user'
+        password = 'password'
+        user = User.objects.create_user(username, '%s@domain.com' % username, 
+                                        password)
+        self.client.login(username=username, password=password)
+    
+    def tearDown(self):
+        pass
+        
+    def test_edit_personal_page(self):
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'))
+        self.assertEquals(resp.status_code, 200)

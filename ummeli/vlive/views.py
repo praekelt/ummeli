@@ -90,7 +90,7 @@ def index(request):
 
 @login_required
 def edit(request):    
-    return render_to_response('vlive/blank.html')
+    return render_to_response('vlive/cv.html')
 
 @login_required
 def send(request):    
