@@ -6,6 +6,8 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+
 #imports for login
 from django.http import HttpResponseRedirect
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
@@ -57,7 +59,7 @@ def login(request, template_name='registration/login.html',
         'site': current_site,
         'site_name': current_site.name,
         'msisdn': request.vlive.msisdn,
-        'user_exists': len(User.objects.filter(username=request.vlive.msisdn)) == 1
+        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
     }
     context.update(extra_context or {})
     return render_to_response(template_name, context,
@@ -69,7 +71,7 @@ def register(request):
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return HttpResponseRedirect("/vlive/")
+            return HttpResponseRedirect(reverse('vlive:index'))
     else:
         form = UserCreationForm()
     
