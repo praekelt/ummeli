@@ -91,7 +91,7 @@ class VliveCVTestCase(TestCase):
         self.client = Client()
         username = 'user'
         password = 'password'
-        user = User.objects.create_user(username, '%s@domain.com' % username, 
+        self.user = User.objects.create_user(username, '%s@domain.com' % username, 
                                         password)
         self.client.login(username=username, password=password)
     
@@ -99,6 +99,23 @@ class VliveCVTestCase(TestCase):
         pass
         
     def test_edit_personal_page(self):
+        resp = self.client.get(reverse('vlive:edit'))
+        self.assertEquals(resp.status_code, 200)
+        
         resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
                                         'personal'))
         self.assertEquals(resp.status_code, 200)
+        
+        post_data = {'firstName': 'Milton', 'gender': 'Male'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'), post_data)
+        
+        cv = self.user.get_profile()
+        self.assertEquals(cv.firstName, 'Milton')
+        self.assertEquals(cv.gender, 'Male')
+        
+        post_data = {'cancel': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'), post_data)
+        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
