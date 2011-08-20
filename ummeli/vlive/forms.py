@@ -13,3 +13,8 @@ class ContactDetailsForm(ModelForm):
         fields = ('telephoneNumber', 'email', 'houseNumber', 'streetName',
                 'location')
 
+class EducationDetailsForm(ModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('highestGrade', 'highestGradeYear', 'school')
+

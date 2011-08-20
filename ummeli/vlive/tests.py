@@ -141,3 +141,27 @@ class VliveCVTestCase(TestCase):
                                         'contact'), post_data)
         self.assertEquals(resp.status_code, 302) #redirect to edit menu
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
+        
+    def test_edit_education_details_page(self):
+        resp = self.client.get(reverse('vlive:edit'))
+        self.assertEquals(resp.status_code, 200)
+        
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'education'))
+        self.assertEquals(resp.status_code, 200)
+        
+        post_data = {'highestGrade': '12', 'highestGradeYear': 2005,
+                    'school': 'Some school'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'education'), post_data)
+        
+        cv = self.user.get_profile()
+        self.assertEquals(cv.highestGrade, '12')
+        self.assertEquals(cv.highestGradeYear, 2005)
+        self.assertEquals(cv.school, 'Some school')
+        
+        post_data = {'cancel': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'education'), post_data)
+        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
