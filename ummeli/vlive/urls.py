@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^logout$', 'django.contrib.auth.views.logout_then_login', {'login_url': '../login'}, name='logout'),
     url(r'^edit$', views.edit, name='edit'),
     url(r'^edit/personal$', cv_views.personal_details),
+    url(r'^edit/contact$', cv_views.contact_details),
     url(r'^send$', views.send, name='send'),
     url(r'^jobs$', views.jobs, name='jobs'),
 )

@@ -5,6 +5,11 @@ from django.forms import ModelForm
 class PersonalDetailsForm(ModelForm):
     class Meta:
         model = CurriculumVitae
-        exclude = ('user', 'references', 'workExperiences', 'languages',
-                'certificates')
+        fields = ('firstName', 'surname', 'dateOfBirth', 'gender')
+
+class ContactDetailsForm(ModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('telephoneNumber', 'email', 'houseNumber', 'streetName',
+                'location')
 
