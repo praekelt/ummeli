@@ -58,12 +58,6 @@ class CurriculumVitaeForm(ModelForm):
         model = CurriculumVitae
         exclude = ('user')
         
-class PersonalDetailsForm(ModelForm):
-    class Meta:
-        model = CurriculumVitae
-        exclude = ('user', 'references', 'workExperiences', 'languages',
-                'certificates')
-
 def create_cv(sender, instance, created, **kwargs):
     if created:
         cv = CurriculumVitae.objects.create(firstName=instance.first_name, 
