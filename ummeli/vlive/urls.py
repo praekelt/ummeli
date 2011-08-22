@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^edit/personal$', cv_views.personal_details),
     url(r'^edit/contact$', cv_views.contact_details),
     url(r'^edit/education$', cv_views.education_details),
+    url(r'^edit/certificates$', cv_views.certificates_details),
+    url(r'^edit/certificates/add$', cv_views.certificate_details),
     url(r'^send$', views.send, name='send'),
     url(r'^jobs$', views.jobs, name='jobs'),
 )

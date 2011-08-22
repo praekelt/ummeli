@@ -1,5 +1,6 @@
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
-                                EducationDetailsForm)
+                                EducationDetailsForm, CertificatesDetailsForm,
+                                CertificateForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -34,3 +35,11 @@ def contact_details(request):
 @login_required
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 'education details')
+
+@login_required
+def certificates_details(request):
+    return process_edit_request(request, CertificatesDetailsForm, 'certificates details')
+
+@login_required
+def certificate_details(request):
+    return process_edit_request(request, CertificateForm, 'certificate details')

@@ -18,3 +18,13 @@ class EducationDetailsForm(ModelForm):
         model = CurriculumVitae
         fields = ('highestGrade', 'highestGradeYear', 'school')
 
+class CertificatesDetailsForm(ModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('firstName','certificates')
+        exclude = ('firstName')
+
+class CertificateForm(ModelForm):
+    class Meta:
+        model = Certificate
+
