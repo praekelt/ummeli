@@ -338,3 +338,61 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 302) #redirect to edit menu
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/edit/languages')
+                                
+    def test_edit_references_details_page(self):
+        resp = self.client.get(reverse('vlive:edit'))
+        self.assertEquals(resp.status_code, 200)
+        
+        #test listing
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'references'))
+        self.assertEquals(resp.status_code, 200)
+        
+        #test add form
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/add'))
+        self.assertEquals(resp.status_code, 200)
+        
+        #test add action
+        post_data = {'fullname': 'Test', 'relationship': 'Manager'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/add'), post_data)
+        
+        #test listing of new reference
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'references'))
+        self.assertEquals(resp.status_code, 200)
+        self.assertContains(resp, 'Test')
+        
+        #test editing of created language
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/1'))
+        self.assertEquals(resp.status_code, 200)
+        
+        post_data = {'fullname': 'Somebody', 'relationship': 'Manager',
+                    'action': 'edit'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/1'), post_data)
+        
+        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
+                                        'references'))
+        self.assertContains(resp, 'Somebody')
+        
+        certs = self.user.get_profile().references
+        self.assertEquals(len(certs.all()), 1)
+        
+        #test delete action
+        post_data = {'delete': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/1'), post_data)
+        certs = self.user.get_profile().references
+        self.assertEquals(len(certs.all()), 0)
+        
+        #test cancel action
+        post_data = {'cancel': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'references/add'), post_data)
+        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.get('Location', None), 
+                                'http://testserver/vlive/edit/references')
+                                

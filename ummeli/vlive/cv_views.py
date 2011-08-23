@@ -1,6 +1,6 @@
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm, 
-                                WorkExperienceForm, LanguageForm)
+                                WorkExperienceForm, LanguageForm, ReferenceForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -128,6 +128,21 @@ def language_details(request, pk_id = None):
     redirect_url = ('%s/%s' % (reverse('vlive:edit'),'languages'))
     list_items = request.user.get_profile().languages
     return process_edit_list_items(request, LanguageForm, list_items,
+                                    page_title, redirect_url, pk_id,
+                                    'vlive/edit_list_item.html')
+                                    
+@login_required
+def references_details(request):
+    cv = request.user.get_profile()
+    return render_item_list(request, cv.references, 'references', 
+                            'references')
+
+@login_required
+def reference_details(request, pk_id = None):
+    page_title = 'references'
+    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'references'))
+    list_items = request.user.get_profile().references
+    return process_edit_list_items(request, ReferenceForm, list_items,
                                     page_title, redirect_url, pk_id,
                                     'vlive/edit_list_item.html')
                                     

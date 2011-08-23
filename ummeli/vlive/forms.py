@@ -31,3 +31,7 @@ class LanguageForm(ModelForm):
         model = Language
         widgets = {'readWrite': CheckboxInput(),}
 
+class ReferenceForm(ModelForm):
+    class Meta:
+        model = Reference
+
