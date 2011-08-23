@@ -25,10 +25,11 @@ div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #53
 .menu .item a{color: #2e5333;}
 
 /*==lists==*/
-ul{margin-bottom: 0px; background-color: #f7f8f4;}
-ul li{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
-ul li a{color: #f96400; font-size: 14px;}
-ul li label{color: #000;}
+ul, ol{margin-bottom: 0px; background-color: #f7f8f4;}
+ol{padding-left: 20px; list-style-type: decimal}
+ul li, ol li{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
+ul li a, ol li a{color: #f96400; font-size: 14px;}
+ul li label,ol li label{color: #000;}
 
 span.subtitle{text-transform: uppercase; font-size: 11px; color: #545454;}
 span.area{font-size: 11px; color: #000;}
