@@ -6,9 +6,9 @@ CSS Styles
 body{background: #f7f8f4 url(../images/bg.gif) repeat-x; padding: 3px 0px 0px 0px; font: 12px Arial, sans-serif; width: 100%;}
 a{text-decoration: none; font-weight: bold;}
 p,h1,h2,h3,ol,ul{margin-bottom: 5px;}
-div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #2e5333; height: 18px; padding: 8px 10px 5px; margin-bottom: 0px;}
+div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #535353; border-bottom: 1px solid #add373; height: 18px; padding: 8px 10px 5px; margin-bottom: 0px;}
 
-.header{background-color: #3c6c44; width: 100%;	height: 47px;}
+.header{background-color: #fff; width: 100%;	height: 50px; border-top: 1px solid #add373; border-bottom: 1px solid #add373;}
 
 .breadcrumb{background-color: #345e3a; height: 18px; padding: 8px 10px 5px;	font-size: 11px; color: #fff;}
 .breadcrumb a, .tabs a{color: #efe579; font-weight: normal; font-size: 11px;}
@@ -25,10 +25,11 @@ div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #2e
 .menu .item a{color: #2e5333;}
 
 /*==lists==*/
-.list{margin-bottom: 0px; background-color: #f7f8f4;}
-.list .item{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
-.list .item a{color: #f96400; font-size: 14px;}
-.list .item label{color: #000;}
+ul, ol{margin-bottom: 0px; background-color: #f7f8f4;}
+ol{padding-left: 20px; list-style-type: decimal}
+ul li, ol li{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
+ul li a, ol li a{color: #f96400; font-size: 14px;}
+ul li label,ol li label{color: #000;}
 
 span.subtitle{text-transform: uppercase; font-size: 11px; color: #545454;}
 span.area{font-size: 11px; color: #000;}

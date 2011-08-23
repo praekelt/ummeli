@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Edit {{page_title}}</div>
+    <form class='standard' method="post">
+        <ul>
+        {% for item in items.all %}
+            <li><a href='{% url vlive:edit %}/{{list_name}}/{{ item.pk }}'>{{ item }}</a></li>
+        {% endfor %}
+        </ul>
+        <br/>
+        <p><a href="{% url vlive:edit %}/{{list_name}}/add"> + Add new</a></p>
+        <br/>
+        <p><a href="{% url vlive:edit %}">&lt;&lt; Back</a></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Edit {{page_title}}</div>
+    <form class='standard' method="post">
+        <div>{{ form.as_p }}</div>
+        <input type="submit" class="submit" value="Save" name="submit" />
+        <input name="cancel" class="submit" type="submit" value="Cancel" />
+        <input name="delete" class="submit" type="submit" value="Delete" />
+        <input type="hidden" name="action" value="{{action}}"
+        {% csrf_token %}
+    </form>
+{% endblock %}
