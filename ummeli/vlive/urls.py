@@ -25,4 +25,5 @@ urlpatterns = patterns('',
     url(r'^edit/references/add$', cv_views.reference_details),
     url(r'^send$', views.send, name='send'),
     url(r'^jobs$', views.jobs, name='jobs'),
+    url(r'^pdf$', cv_views.pdf, name='pdf'),
 )

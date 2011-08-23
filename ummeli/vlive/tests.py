@@ -3,6 +3,8 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
+from ummeli.vlive.utils import render_to_pdf
+
 import json
 import urllib
 
@@ -396,3 +398,11 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/edit/references')
                                 
+    def test_convert_to_pdf(self):
+        post_data = {'firstName': 'Test', 'surname': 'User', 'gender': 'Male'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'), post_data)
+                                        
+        cv = self.user.get_profile()
+        result = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+        self.assertEquals(result == None, False)

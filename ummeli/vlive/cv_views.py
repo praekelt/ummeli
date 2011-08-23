@@ -6,6 +6,9 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+
+from ummeli.vlive.utils import render_to_pdf
 
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -145,4 +148,14 @@ def reference_details(request, pk_id = None):
     return process_edit_list_items(request, ReferenceForm, list_items,
                                     page_title, redirect_url, pk_id,
                                     'vlive/edit_list_item.html')
-                                    
+
+@login_required
+def pdf(request):
+    cv = request.user.get_profile()
+    result = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+    
+    #return render_to_response('vlive/pdf_template.html', 
+    #                        {'model': cv},
+    #                        context_instance=RequestContext(request))
+                            
+    return HttpResponse(result, mimetype='application/pdf')
