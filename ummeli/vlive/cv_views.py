@@ -51,45 +51,50 @@ def certificates_details(request):
                             'certificates')
 
 @login_required
-def certificate_details(request, cert_pk = None):
+def certificate_details(request, pk_id = None):
     page_title = 'certificate'
-    cv = request.user.get_profile()
-    certificates_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
+    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
+    list_items = request.user.get_profile().certificates
+    return process_edit_list_items(request, CertificateForm, list_items,
+                                    page_title, redirect_url, pk_id,
+                                    'vlive/edit_list_item.html')
     
+def process_edit_list_items(request, model_form, list_items, page_title,
+                            redirect_url, pk_id, template_name):
     if request.method == 'POST':
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return HttpResponseRedirect(certificates_url)
+            return HttpResponseRedirect(redirect_url)
         
         delete = request.POST.get('delete', None)
         if delete:
-            if cert_pk:
-                cv.certificates.get(pk = cert_pk).delete()
-            return HttpResponseRedirect(certificates_url)
+            if pk_id:
+                list_items.get(pk = pk_id).delete()
+            return HttpResponseRedirect(redirect_url)
         
         post_action = request.POST.get('action', None)
         if post_action == 'edit':
-            print cert_pk
-            form = CertificateForm(request.POST, 
-                                instance = cv.certificates.get(pk = cert_pk))
+            print pk_id
+            form = model_form(request.POST, 
+                                instance = list_items.get(pk = pk_id))
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect(certificates_url)
+                return HttpResponseRedirect(redirect_url)
         else:
-            form = CertificateForm(request.POST)
+            form = model_form(request.POST)
             action = 'add'
             if form.is_valid():
                 new_form = form.save()
-                cv.certificates.add(new_form)
-                return HttpResponseRedirect(certificates_url)        
-    elif cert_pk:
-        form = CertificateForm(instance = cv.certificates.get(pk = cert_pk))
+                list_items.add(new_form)
+                return HttpResponseRedirect(redirect_url)        
+    elif pk_id:
+        form = model_form(instance = list_items.get(pk = pk_id))
         action = 'edit'
     else:
-        form = CertificateForm()
+        form = model_form()
         action = 'create'
     
-    return render_to_response('vlive/edit_list_item.html', 
+    return render_to_response(template_name, 
                             {'form': form, 'page_title': page_title,
                             'action': action},
                             context_instance=RequestContext(request))
