@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+	<title>Curriculum Vitae | {{model.firstName}} {{model.surname}}</title>
+	<style type='text/css'>
+		@page {
+                size: A4;
+                margin: 0.4in;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 9cm;
+                    margin-right: 9cm;
+                    height: 1cm;
+                }
+            }
+		html{
+			background-color:#FFF;
+			}
+		body {
+			background-color:#FFF;
+			font-family:Georgia, 'Times New Roman', Times, serif;
+			font-size: 14px;
+            padding:1em;
+			margin:1em auto;
+			}
+		#address{
+			height:5em;
+			width:48em;
+			padding:1em;
+			}
+		#address div{
+			width:16em;
+			float:left;
+			}
+		#address h3{
+			border-bottom: none;
+			font-variant: small-caps;
+			margin-top: 0;
+			}	
+		.date {
+			font-size:.8em;
+			}
+		abbr, acronym{
+			border-bottom:1px dotted #333;
+			cursor:help;
+			}	
+		address{
+			font-style:italic;
+			color:#333;
+			font-size:.9em;
+			}
+		.content{
+			width:32em;
+			margin:0 0 0 16em;
+            border: none;
+            padding: 0;
+			}	
+		.section{
+			border-top: 1px solid #ccc;
+			margin:1em 0;
+			padding:1em;
+			}
+		ul{
+			padding-left:.5em;
+			margin-left:.5em;
+			}
+		h1{
+			margin:1em 0 0 9.5em;
+			font-size:2em;
+			font-family:Georgia, 'Times New Roman', Times, serif;
+			}
+		h2 {
+			width:14em;
+			float:left;
+			font-size:1em;
+			font-variant: small-caps;
+			letter-spacing: .06em;
+			margin-bottom: 0;
+			}
+        h3{font-size: 1.2em}
+		h3,div, table {margin: 0; padding: 0}
+        td{vertical-align: top}
+	</style>
+</head><body>
+	<h1>{{model.firstName}} {{model.surname}}</h1>
+	<table width='100%'>
+	<tbody>
+	<tr>
+		<td>
+		<div>
+			<h3>Local Address</h3>
+			{{model.houseNumber}}<br>
+			{{model.streetName}}<br>
+			{{model.location}}
+		</div>
+		</td>
+		<td>
+		<div id='first'>
+			<h3>Contact Details</h3>
+			{{model.telephoneNumber}}<br/>
+			<a href='mailto:$Email'>{{model.email}}</a>
+		</div>
+		</td>
+		<td>
+		<div>
+			<h3>Other Information</h3>
+			Date of birth: <strong>{{model.dateOfBirth}}</strong><br>
+			Gender: <strong>{{model.gender}}</strong>
+		</div>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	<div class='section'>
+		<h2>Summary of Qualifications</h2>
+		<div class='content'>
+			{% for certificate in model.certificates.all %}
+            <div>
+                <span class='date'>{{certificate.year}}</span>
+                <h3>{{certificate.name}}</h3>
+                <address>{{certificate.institution}}</address>
+            </div><br/>
+            {% endfor %}
+		</div>
+	</div>
+	
+	<div class='section'>
+		<h2>Work Experience</h2>
+		<div class='content'>
+			{% for work in model.workExperiences.all%}
+            <div><span class='date'>{{work.startYear}} » {{work.endYear}} </span>
+                <h3>{{work.title}}</h3>
+                <address>{{work.company}}</address>
+            </div><br/>
+            {% endfor %}
+		</div>
+	</div>
+	
+	<div class='section'>
+		<h2>Languages</h2>
+		<div class='content'>
+            <ul>
+			{% for lang in model.languages.all %}
+                {% if lang.readWrite %}
+                    <li>{{lang.language}} (Read/Write)</li>
+                {% else %}
+                    <li>{{lang.language}} (Speak only)</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+		</div>
+	</div>
+	
+	<div class='section'>
+		<h2>Education</h2>
+		<div class='content'>
+			<ul>
+				<li>{{model.school}}, Grade {{model.grade}} {{model.highestGrade}}, {{model.highestGradeYear}}</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class='section' style='page-break-before:always;'>
+		<h2>References</h2>
+		<div class='content'>
+			<ul>
+            {% for ref in model.references.all %}
+                <li>{{ref.fullname}}, {{ref.relationship}}, {{ref.contactNo}}</li>
+            {% endfor %}
+            </ul>
+		</div>
+	</div>
+	<div id="footerContent">
+            {%block page_foot%}
+                Page <pdf:pagenumber>
+            {%endblock%}
+        </div>
+</body></html>
