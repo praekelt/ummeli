@@ -208,6 +208,13 @@ class VliveCVTestCase(TestCase):
         certs = self.user.get_profile().certificates
         self.assertEquals(len(certs.all()), 1)
         
+        #test delete action
+        post_data = {'delete': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'certificates/1'), post_data)
+        certs = self.user.get_profile().certificates
+        self.assertEquals(len(certs.all()), 0)
+        
         #test cancel action
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 

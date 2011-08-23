@@ -54,26 +54,34 @@ def certificates_details(request):
 def certificate_details(request, cert_pk = None):
     page_title = 'certificate'
     cv = request.user.get_profile()
+    certificates_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
+    
     if request.method == 'POST':
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return HttpResponseRedirect('%s/%s' % (reverse('vlive:edit'),
-                                                    'certificates'))
+            return HttpResponseRedirect(certificates_url)
+        
+        delete = request.POST.get('delete', None)
+        if delete:
+            if cert_pk:
+                cv.certificates.get(pk = cert_pk).delete()
+            return HttpResponseRedirect(certificates_url)
+        
+        post_action = request.POST.get('action', None)
+        if post_action == 'edit':
+            print cert_pk
+            form = CertificateForm(request.POST, 
+                                instance = cv.certificates.get(pk = cert_pk))
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(certificates_url)
         else:
-            post_action = request.POST.get('action', None)
-            if post_action == 'edit':
-                print cert_pk
-                form = CertificateForm(request.POST, 
-                                    instance = cv.certificates.get(pk = cert_pk))
-                if form.is_valid():
-                    form.save()
-                    return HttpResponseRedirect(reverse('vlive:edit'))
-            else:
-                form = CertificateForm(request.POST)
-                if form.is_valid():
-                    new_form = form.save()
-                    cv.certificates.add(new_form)
-                    return HttpResponseRedirect(reverse('vlive:edit'))        
+            form = CertificateForm(request.POST)
+            action = 'add'
+            if form.is_valid():
+                new_form = form.save()
+                cv.certificates.add(new_form)
+                return HttpResponseRedirect(certificates_url)        
     elif cert_pk:
         form = CertificateForm(instance = cv.certificates.get(pk = cert_pk))
         action = 'edit'
@@ -81,7 +89,7 @@ def certificate_details(request, cert_pk = None):
         form = CertificateForm()
         action = 'create'
     
-    return render_to_response('vlive/edit_details.html', 
+    return render_to_response('vlive/edit_list_item.html', 
                             {'form': form, 'page_title': page_title,
                             'action': action},
                             context_instance=RequestContext(request))
