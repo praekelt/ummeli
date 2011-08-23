@@ -1,6 +1,6 @@
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
-                                EducationDetailsForm, CertificatesDetailsForm,
-                                CertificateForm, WorkExperienceForm)
+                                EducationDetailsForm, CertificateForm, 
+                                WorkExperienceForm, LanguageForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -41,7 +41,7 @@ def process_edit_list_items(request, model_form, list_items, page_title,
         
         post_action = request.POST.get('action', None)
         if post_action == 'edit':
-            print pk_id
+            action = 'edit'
             form = model_form(request.POST, 
                                 instance = list_items.get(pk = pk_id))
             if form.is_valid():
@@ -113,6 +113,21 @@ def workExperience_details(request, pk_id = None):
     redirect_url = ('%s/%s' % (reverse('vlive:edit'),'workExperiences'))
     list_items = request.user.get_profile().workExperiences
     return process_edit_list_items(request, WorkExperienceForm, list_items,
+                                    page_title, redirect_url, pk_id,
+                                    'vlive/edit_list_item.html')
+
+@login_required
+def languages_details(request):
+    cv = request.user.get_profile()
+    return render_item_list(request, cv.languages, 'languages', 
+                            'languages')
+
+@login_required
+def language_details(request, pk_id = None):
+    page_title = 'languages'
+    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'languages'))
+    list_items = request.user.get_profile().languages
+    return process_edit_list_items(request, LanguageForm, list_items,
                                     page_title, redirect_url, pk_id,
                                     'vlive/edit_list_item.html')
                                     

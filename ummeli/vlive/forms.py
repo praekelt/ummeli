@@ -1,6 +1,6 @@
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
-from django.forms import ModelForm
+from django.forms import ModelForm, CheckboxInput
         
 class PersonalDetailsForm(ModelForm):
     class Meta:
@@ -18,23 +18,16 @@ class EducationDetailsForm(ModelForm):
         model = CurriculumVitae
         fields = ('highestGrade', 'highestGradeYear', 'school')
 
-class CertificatesDetailsForm(ModelForm):
-    class Meta:
-        model = CurriculumVitae
-        fields = ('firstName','certificates')
-        exclude = ('firstName')
-
 class CertificateForm(ModelForm):
     class Meta:
         model = Certificate
         
 class WorkExperienceForm(ModelForm):
     class Meta:
-        model = CurriculumVitae
-        fields = ('firstName','workExperiences')
-        exclude = ('firstName')
-
-class WorkExperienceForm(ModelForm):
-    class Meta:
         model = WorkExperience
+
+class LanguageForm(ModelForm):
+    class Meta:
+        model = Language
+        widgets = {'readWrite': CheckboxInput(),}
 

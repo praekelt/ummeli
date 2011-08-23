@@ -12,7 +12,7 @@ class Certificate (models.Model):
         
 class Language (models.Model):
     language = models.CharField(max_length=45)
-    readWrite = models.IntegerField(default=0)
+    readWrite = models.BooleanField(default=False)
     def __unicode__(self): # pragma: no cover
         return self.language
         
