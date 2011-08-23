@@ -27,4 +27,14 @@ class CertificatesDetailsForm(ModelForm):
 class CertificateForm(ModelForm):
     class Meta:
         model = Certificate
+        
+class WorkExperienceForm(ModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('firstName','workExperiences')
+        exclude = ('firstName')
+
+class WorkExperienceForm(ModelForm):
+    class Meta:
+        model = WorkExperience
 

@@ -1,6 +1,6 @@
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificatesDetailsForm,
-                                CertificateForm)
+                                CertificateForm, WorkExperienceForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -26,39 +26,6 @@ def process_edit_request(request, model_form, page_title):
                             'method': 'post'},
                             context_instance=RequestContext(request))
                             
-@login_required
-def personal_details(request):
-    return process_edit_request(request, PersonalDetailsForm, 'personal details')
-
-@login_required
-def contact_details(request):
-    return process_edit_request(request, ContactDetailsForm, 'contact details')
-
-@login_required
-def education_details(request):
-    return process_edit_request(request, EducationDetailsForm, 'education details')
-
-def render_item_list(request, items, page_title, list_name):
-    return render_to_response('vlive/item_list.html', 
-                            {'items': items, 'page_title': page_title, 
-                            'list_name': list_name},
-                            context_instance=RequestContext(request))
-
-@login_required
-def certificates_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.certificates, 'certificates', 
-                            'certificates')
-
-@login_required
-def certificate_details(request, pk_id = None):
-    page_title = 'certificate'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
-    list_items = request.user.get_profile().certificates
-    return process_edit_list_items(request, CertificateForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-    
 def process_edit_list_items(request, model_form, list_items, page_title,
                             redirect_url, pk_id, template_name):
     if request.method == 'POST':
@@ -98,3 +65,54 @@ def process_edit_list_items(request, model_form, list_items, page_title,
                             {'form': form, 'page_title': page_title,
                             'action': action},
                             context_instance=RequestContext(request))
+
+def render_item_list(request, items, page_title, list_name):
+    return render_to_response('vlive/item_list.html', 
+                            {'items': items, 'page_title': page_title, 
+                            'list_name': list_name},
+                            context_instance=RequestContext(request))
+                            
+@login_required
+def personal_details(request):
+    return process_edit_request(request, PersonalDetailsForm, 'personal details')
+
+@login_required
+def contact_details(request):
+    return process_edit_request(request, ContactDetailsForm, 'contact details')
+
+@login_required
+def education_details(request):
+    return process_edit_request(request, EducationDetailsForm, 'education details')
+
+@login_required
+def certificates_details(request):
+    cv = request.user.get_profile()
+    return render_item_list(request, cv.certificates, 'certificates', 
+                            'certificates')
+
+@login_required
+def certificate_details(request, pk_id = None):
+    page_title = 'certificate'
+    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
+    list_items = request.user.get_profile().certificates
+    return process_edit_list_items(request, CertificateForm, list_items,
+                                    page_title, redirect_url, pk_id,
+                                    'vlive/edit_list_item.html')
+                                    
+
+@login_required
+def workExperiences_details(request):
+    cv = request.user.get_profile()
+    return render_item_list(request, cv.workExperiences, 'work experience', 
+                            'workExperiences')
+
+
+@login_required
+def workExperience_details(request, pk_id = None):
+    page_title = 'work experience'
+    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'workExperiences'))
+    list_items = request.user.get_profile().workExperiences
+    return process_edit_list_items(request, WorkExperienceForm, list_items,
+                                    page_title, redirect_url, pk_id,
+                                    'vlive/edit_list_item.html')
+                                    
