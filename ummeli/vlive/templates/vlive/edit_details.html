@@ -6,6 +6,7 @@
         <div>{{ form.as_p }}</div>
         <input type="submit" class="submit" value="Save" name="submit" />
         <input name="cancel" class="submit" type="submit" value="Cancel" />
+        <input type="hidden" name="action" value="{{action}}"
         {% csrf_token %}
     </form>
 {% endblock %}

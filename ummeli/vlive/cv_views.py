@@ -20,8 +20,10 @@ def process_edit_request(request, model_form, page_title):
                 return HttpResponseRedirect(reverse('vlive:edit'))
     else:
         form = model_form(instance=cv)
+        
     return render_to_response('vlive/edit_details.html', 
-                            {'form': form, 'page_title': page_title},
+                            {'form': form, 'page_title': page_title,
+                            'method': 'post'},
                             context_instance=RequestContext(request))
                             
 @login_required
@@ -36,10 +38,50 @@ def contact_details(request):
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 'education details')
 
-@login_required
-def certificates_details(request):
-    return process_edit_request(request, CertificatesDetailsForm, 'certificates details')
+def render_item_list(request, items, page_title, list_name):
+    return render_to_response('vlive/item_list.html', 
+                            {'items': items, 'page_title': page_title, 
+                            'list_name': list_name},
+                            context_instance=RequestContext(request))
 
 @login_required
-def certificate_details(request):
-    return process_edit_request(request, CertificateForm, 'certificate details')
+def certificates_details(request):
+    cv = request.user.get_profile()
+    return render_item_list(request, cv.certificates, 'certificates', 
+                            'certificates')
+
+@login_required
+def certificate_details(request, cert_pk = None):
+    page_title = 'certificate'
+    cv = request.user.get_profile()
+    if request.method == 'POST':
+        cancel = request.POST.get('cancel', None)
+        if cancel:
+            return HttpResponseRedirect('%s/%s' % (reverse('vlive:edit'),
+                                                    'certificates'))
+        else:
+            post_action = request.POST.get('action', None)
+            if post_action == 'edit':
+                print cert_pk
+                form = CertificateForm(request.POST, 
+                                    instance = cv.certificates.get(pk = cert_pk))
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(reverse('vlive:edit'))
+            else:
+                form = CertificateForm(request.POST)
+                if form.is_valid():
+                    new_form = form.save()
+                    cv.certificates.add(new_form)
+                    return HttpResponseRedirect(reverse('vlive:edit'))        
+    elif cert_pk:
+        form = CertificateForm(instance = cv.certificates.get(pk = cert_pk))
+        action = 'edit'
+    else:
+        form = CertificateForm()
+        action = 'create'
+    
+    return render_to_response('vlive/edit_details.html', 
+                            {'form': form, 'page_title': page_title,
+                            'action': action},
+                            context_instance=RequestContext(request))
