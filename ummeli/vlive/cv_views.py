@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from ummeli.vlive.utils import render_to_pdf
+from django.core import mail
 
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -159,3 +160,13 @@ def pdf(request):
     #                        context_instance=RequestContext(request))
                             
     return HttpResponse(result, mimetype='application/pdf')
+
+@login_required
+def email(request):
+    emails = (
+        ('Test 1', "This is a test email..", 'madandat@gmail.com', ['madandat@gmail.com']),
+        ('Test 2', "This is the second email..'.", 'madandat@gmail.com', ['madandat@gmail.com']),
+    )
+    results = mail.send_mass_mail(emails)
+    print results
+    return HttpResponseRedirect(reverse('vlive:index'))

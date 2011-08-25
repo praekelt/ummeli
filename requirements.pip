@@ -9,3 +9,5 @@ pisa
 html5lib
 pypdf
 reportlab
+django-celery
+django-celery-email

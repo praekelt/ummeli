@@ -1,5 +1,8 @@
 # Django settings for ummeli project.
 import os.path
+import djcelery
+
+djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 def abspath(*args): 
@@ -133,6 +136,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south',
     'django_nose',
+    'djcelery',
+    'djcelery_email',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -165,3 +170,11 @@ PISTON_DISPLAY_ERRORS = False
 AUTH_PROFILE_MODULE = "api.Curriculumvitae"
 LOGIN_URL = '/vlive/login'
 LOGIN_REDIRECT_URL = '/vlive'
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_VHOST = "/"
+
+#EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
