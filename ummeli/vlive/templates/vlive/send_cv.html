@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Send CV</div>
+    <form class='standard'>
+    <div>
+        <ol>
+            <li><a href="{% url vlive:send %}/email">via Email</a></li>
+            <li><a href="{% url vlive:send %}/fax">via Fax</a></li>
+        </ol>
+        <br/>
+        <p><a href="{% url vlive:index %}">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}

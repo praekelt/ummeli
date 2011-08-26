@@ -3,10 +3,14 @@ from django.conf import settings
 
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
+from ummeli.vlive.utils import render_to_pdf
+from ummeli.vlive.forms import SendEmailForm
+    
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail,  EmailMessage
 
 #imports for login
 from django.http import HttpResponseRedirect
@@ -94,8 +98,56 @@ def edit(request):
 
 @login_required
 def send(request):    
+    return render_to_response('vlive/send_cv.html')
+    
+def send_email(request, email_address):
+    cv = request.user.get_profile()
+    fullname = '%s %s' % (cv.firstName,  cv.surname)
+    email = EmailMessage('CV for %s' % fullname, 
+                                        '''
+Hi,
+%s has chosen to send you their CV.
+See attachment for details.
+
+Brought to you by,
+Ummeli
+www.praekeltfoundation.org/ummeli
+ ''' % fullname, 
+                                        'no-reply@ummeli.org',
+                                        [email_address])
+    pdf = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+    email.attach('curriculum_vitae_for_%s_%s' % (cv.firstName,  
+                                                                                cv.surname), 
+                        pdf,  'application/pdf')
+    return email.send(fail_silently=False)
+    
+@login_required
+def send_via_email(request):    
+    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
+    if request.method == 'POST': 
+        cancel = request.POST.get('cancel', None)
+        if cancel:
+            return HttpResponseRedirect(reverse('vlive:send'))
+            
+        form = SendEmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            send_email(request,  email)
+            return HttpResponseRedirect(redirect_url) 
+    else:
+        form = SendEmailForm() 
+
+    return render_to_response('vlive/via_email.html', {'form': form,}, 
+                                            context_instance=RequestContext(request))
+
+@login_required
+def send_via_fax(request):    
     return render_to_response('vlive/blank.html')
 
+@login_required
+def send_thanks(request):    
+    return render_to_response('vlive/send_thanks.html')
+    
 @login_required
 def jobs(request):    
     return render_to_response('vlive/blank.html')
