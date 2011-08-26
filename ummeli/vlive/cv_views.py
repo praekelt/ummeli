@@ -168,5 +168,4 @@ def email(request):
         ('Test 2', "This is the second email..'.", 'madandat@gmail.com', ['madandat@gmail.com']),
     )
     results = mail.send_mass_mail(emails)
-    print results
     return HttpResponseRedirect(reverse('vlive:index'))
