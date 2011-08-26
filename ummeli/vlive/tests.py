@@ -2,6 +2,9 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core import mail
+
+from ummeli.vlive.utils import render_to_pdf
 
 import json
 import urllib
@@ -396,3 +399,19 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/edit/references')
                                 
+    def test_convert_to_pdf(self):
+        post_data = {'firstName': 'Test', 'surname': 'User', 'gender': 'Male'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'), post_data)
+                                        
+        cv = self.user.get_profile()
+        result = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+        self.assertEquals(result == None, False)
+
+    def test_email(self):
+        resp = self.client.post(reverse('vlive:email'))
+        # Test that two messages has been sent.
+        self.assertEqual(len(mail.outbox), 2)
+
+        # Verify that the subject of the first message is correct.
+        self.assertEqual(mail.outbox[0].subject, 'Test 1')

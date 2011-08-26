@@ -5,3 +5,9 @@ South==0.7.3
 coverage==3.5
 pyflakes
 pep8
+pisa
+html5lib
+pypdf
+reportlab
+django-celery
+django-celery-email
