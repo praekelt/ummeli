@@ -181,8 +181,3 @@ BROKER_VHOST = "/"
 # immediate instead of deferring them to the queue / workers.
 CELERY_ALWAYS_EAGER = DEBUG
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "madandat@gmail.com"
-EMAIL_HOST_PASSWORD = "tony4me4me"
-EMAIL_USE_TLS = True
