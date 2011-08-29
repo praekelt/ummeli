@@ -419,8 +419,7 @@ class VliveCVTestCase(TestCase):
         post_data = {'email': 'madandat@gmail.com'}
         resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
                                         'email'), post_data)
-        # Test that two messages has been sent.
-        print mail.outbox[0].body
+        
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
@@ -434,6 +433,42 @@ class VliveCVTestCase(TestCase):
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
                                         'email'), post_data)
+        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.get('Location', None), 
+                                'http://testserver/vlive/send')
+
+    def test_fax(self):
+        #setup user's firstName and surname
+        post_data = {'firstName': 'Test', 'surname': 'User'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
+                                        'personal'), post_data)
+                                        
+        resp = self.client.get(reverse('vlive:send'))
+        self.assertEquals(resp.status_code, 200)
+        
+        resp = self.client.get('%s/%s' % (reverse('vlive:send'), 'fax'))
+        self.assertEquals(resp.status_code, 200)
+        
+        post_data = {'fax': '+27123456789'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
+                                        'fax'), post_data)
+        
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox[0].to), 1)
+        self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
+        self.assertEqual(mail.outbox[0].from_email, 'no-reply@ummeli.org')
+        self.assertEqual(len(mail.outbox[0].attachments), 1)
+        self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
+        
+        self.assertEquals(resp.get('Location', None), 
+                                'http://testserver/vlive/send/thanks')        
+        resp = self.client.get(resp.get('Location', None))
+        self.assertEquals(resp.status_code, 200)
+        
+        #test cancel action
+        post_data = {'cancel': 'True'}
+        resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
+                                        'fax'), post_data)
         self.assertEquals(resp.status_code, 302) #redirect to edit menu
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/send')

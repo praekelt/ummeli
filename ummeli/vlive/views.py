@@ -4,7 +4,8 @@ from django.conf import settings
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.vlive.forms import SendEmailForm
+from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
+
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -137,12 +138,30 @@ def send_via_email(request):
     else:
         form = SendEmailForm() 
 
-    return render_to_response('vlive/via_email.html', {'form': form,}, 
+    return render_to_response('vlive/send_via.html', 
+                                            {'form': form,'via': 'Email'}, 
                                             context_instance=RequestContext(request))
 
 @login_required
 def send_via_fax(request):    
-    return render_to_response('vlive/blank.html')
+    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
+    if request.method == 'POST': 
+        cancel = request.POST.get('cancel', None)
+        if cancel:
+            return HttpResponseRedirect(reverse('vlive:send'))
+            
+        form = SendFaxForm(request.POST)
+        if form.is_valid():
+            fax = form.cleaned_data['fax']
+            send_email(request,  '%s@faxfx.net' % fax.replace(' ', ''))
+            return HttpResponseRedirect(redirect_url) 
+    else:
+        form = SendFaxForm() 
+
+    return render_to_response('vlive/send_via.html', 
+                                            {'form': form, 'via':  'Fax'}, 
+                                            context_instance=RequestContext(request))
+                                            
 
 @login_required
 def send_thanks(request):    

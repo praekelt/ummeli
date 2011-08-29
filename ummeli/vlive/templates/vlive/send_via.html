@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Send CV via Email</div>
+    <div class="h2">Send CV via {{via}}</div>
     <form class='standard' method="post">
         <div>{{ form.as_p }}</div>
         <input type="submit" class="submit" value="Send" name="submit" />

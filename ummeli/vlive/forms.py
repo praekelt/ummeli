@@ -1,6 +1,7 @@
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
-from django.forms import ModelForm, CheckboxInput,  Form, EmailField
+from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
+                                            CharField)
         
 class PersonalDetailsForm(ModelForm):
     class Meta:
@@ -37,3 +38,7 @@ class ReferenceForm(ModelForm):
 
 class SendEmailForm(Form):
     email = EmailField()
+
+class SendFaxForm(Form):
+    fax = CharField()
+
