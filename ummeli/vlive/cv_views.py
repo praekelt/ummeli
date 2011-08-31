@@ -9,7 +9,11 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from ummeli.vlive.utils import render_to_pdf
+from ummeli.api.models import Certificate
+
 from django.core import mail
+
+from django.views.generic import list_detail, create_update
 
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -89,20 +93,42 @@ def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 'education details')
 
 @login_required
-def certificates_details(request):
+def certificate_list(request):
     cv = request.user.get_profile()
-    return render_item_list(request, cv.certificates, 'certificates', 
-                            'certificates')
+    return list_detail.object_list(request,  queryset = cv.certificates.all(),  
+                                                template_name = 'vlive/list_objects.html', 
+                                                extra_context = {'list_name': 'certificates'})
 
 @login_required
-def certificate_details(request, pk_id = None):
-    page_title = 'certificate'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
-    list_items = request.user.get_profile().certificates
-    return process_edit_list_items(request, CertificateForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-                                    
+def certificate_edit(request,  id):
+    return create_update.update_object(request,
+        model=Certificate,
+        object_id=id,
+        template_name='vlive/edit_object.html',
+        extra_context={'cancel_url': reverse("vlive:certificate_list"), 
+                       'list_name': 'certificates'}, 
+        post_save_redirect=reverse("vlive:certificate_list")
+    )
+    
+@login_required
+def certificate_new(request):
+    return create_update.create_object(request,
+        model=Certificate,
+        template_name='vlive/edit_object.html',
+        extra_context={'cancel_url': reverse("vlive:certificate_list"), 
+                       'list_name': 'certificates'}, 
+        post_save_redirect=reverse("vlive:certificate_list")
+    )
+
+@login_required
+def certificate_delete(request,  id):
+    return create_update.delete_object(request,
+        model=Certificate,
+        object_id=id,
+        template_name='vlive/delete.html',
+        extra_context={'cancel_url': reverse("vlive:certificate_list")}, 
+        post_delete_redirect=reverse("vlive:certificate_list")
+    )
 
 @login_required
 def workExperiences_details(request):

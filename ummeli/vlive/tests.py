@@ -174,23 +174,20 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
         
         #test certificates listing
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates'))
+        resp = self.client.get(reverse('vlive:certificate_list'))
         self.assertEquals(resp.status_code, 200)
         
         #test certificates add form
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/add'))
+        resp = self.client.get(reverse('vlive:certificate_new'))
         self.assertEquals(resp.status_code, 200)
         
         #test certificates add action
         post_data = {'name': 'BSc', 'institution': 'UCT', 'year': 2007}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/add'), post_data)
+        resp = self.client.post(reverse('vlive:certificate_new'),  post_data)
         
         #test certificates listing of new certificate
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates'))
+        resp = self.client.get(reverse('vlive:certificate_list'))
+        print resp
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'BSc')
         
