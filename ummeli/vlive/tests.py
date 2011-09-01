@@ -187,42 +187,31 @@ class VliveCVTestCase(TestCase):
         resp = self.client.post(reverse('vlive:certificate_new'),  post_data)
         
         #test certificates listing of new certificate
-        resp = self.client.get(reverse('vlive:certificate_list'))
-        print Certificate.objects.all()
+        resp = self.client.get(reverse('vlive:certificate_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'BSc')
         
         #test editing of created certificate
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/1'))
+        resp = self.client.get(reverse('vlive:certificate_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'name': 'BSc in IT', 'institution': 'UCT', 'year': 2007,
-                    'action': 'edit'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/1'), post_data)
+        post_data = {'name': 'BSc in IT', 'institution': 'UCT', 'year': 2007}
+        resp = self.client.post(reverse('vlive:certificate_edit', args=[1]),  
+                                post_data)
         
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates'))
+        resp = self.client.get(reverse('vlive:certificate_list'))
         self.assertContains(resp, 'BSc in IT')
         
         certs = self.user.get_profile().certificates
         self.assertEquals(len(certs.all()), 1)
         
         #test delete action
-        post_data = {'delete': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/1'), post_data)
-        certs = self.user.get_profile().certificates
-        self.assertEquals(len(certs.all()), 0)
+        resp = self.client.get(reverse('vlive:certificate_delete',  args=[1]))
+        self.assertContains(resp, 'Are you sure')
         
-        #test cancel action
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'certificates/add'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/edit/certificates')
+        resp = self.client.post(reverse('vlive:certificate_delete',  args=[1]))
+        certs = self.user.get_profile().certificates
+        self.assertEquals(len(certs.all()), 0)        
                                 
     def test_edit_work_experiences_details_page(self):
         resp = self.client.get(reverse('vlive:edit'))

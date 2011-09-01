@@ -130,6 +130,11 @@ class CertificateCreateView(CreateView):
         context['list_name'] = 'certificates'
         context['cancel_url'] = reverse("vlive:certificate_list")
         return context
+    
+    def form_valid(self, form):
+        new_cert = form.save()
+        self.request.user.get_profile().certificates.add(new_cert)
+        return HttpResponseRedirect(self.get_success_url())
 
 class CertificateDeleteView(DeleteView):
     model=Certificate
