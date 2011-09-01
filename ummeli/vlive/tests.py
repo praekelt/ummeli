@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 
 from ummeli.vlive.utils import render_to_pdf
+from ummeli.api.models import Certificate
 
 import json
 import urllib
@@ -187,7 +188,7 @@ class VliveCVTestCase(TestCase):
         
         #test certificates listing of new certificate
         resp = self.client.get(reverse('vlive:certificate_list'))
-        print resp
+        print Certificate.objects.all()
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'BSc')
         

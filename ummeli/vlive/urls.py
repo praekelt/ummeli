@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 from ummeli.api.handlers import UserHandler
 from ummeli.vlive import views, cv_views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
@@ -12,10 +13,18 @@ urlpatterns = patterns('',
     url(r'^edit/contact$', cv_views.contact_details),
     url(r'^edit/education$', cv_views.education_details),
     
-    url(r'^edit/certificates/$', cv_views.certificate_list,  name='certificate_list'),
-    url(r'^edit/certificates/(?P<id>\d+)/$', cv_views.certificate_edit,  name='certificate_edit'),
-    url(r'^edit/certificates/new/$', cv_views.certificate_new,  name='certificate_new'),
-    url(r'^edit/certificates/delete/(?P<id>\d+)/$', cv_views.certificate_delete,  name='certificate_delete'),
+    url(r'^edit/certificates/$', 
+        login_required(cv_views.CertificateListView.as_view()),  
+        name='certificate_list'),
+    url(r'^edit/certificates/(?P<pk>\d+)/$', 
+        login_required(cv_views.CertificateEditView.as_view()),  
+        name='certificate_edit'),
+    url(r'^edit/certificates/new/$', 
+        login_required(cv_views.CertificateCreateView.as_view()), 
+        name='certificate_new'),
+    url(r'^edit/certificates/delete/(?P<pk>\d+)/$', 
+        login_required(cv_views.CertificateDeleteView.as_view()),  
+        name='certificate_delete'),
     
     url(r'^edit/workExperiences$', cv_views.workExperiences_details),
     url(r'^edit/workExperiences/(?P<pk_id>\d+)$', cv_views.workExperience_details),

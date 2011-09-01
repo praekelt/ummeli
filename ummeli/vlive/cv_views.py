@@ -14,6 +14,8 @@ from ummeli.api.models import Certificate
 from django.core import mail
 
 from django.views.generic import list_detail, create_update
+from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -92,43 +94,55 @@ def contact_details(request):
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 'education details')
 
-@login_required
-def certificate_list(request):
-    cv = request.user.get_profile()
-    return list_detail.object_list(request,  queryset = cv.certificates.all(),  
-                                                template_name = 'vlive/list_objects.html', 
-                                                extra_context = {'list_name': 'certificates'})
-
-@login_required
-def certificate_edit(request,  id):
-    return create_update.update_object(request,
-        model=Certificate,
-        object_id=id,
-        template_name='vlive/edit_object.html',
-        extra_context={'cancel_url': reverse("vlive:certificate_list"), 
-                       'list_name': 'certificates'}, 
-        post_save_redirect=reverse("vlive:certificate_list")
-    )
+class CertificateListView(ListView):
+    template_name = 'vlive/list_objects.html'
     
-@login_required
-def certificate_new(request):
-    return create_update.create_object(request,
-        model=Certificate,
-        template_name='vlive/edit_object.html',
-        extra_context={'cancel_url': reverse("vlive:certificate_list"), 
-                       'list_name': 'certificates'}, 
-        post_save_redirect=reverse("vlive:certificate_list")
-    )
+    def get_context_data(self, **kwargs):
+        context = super(CertificateListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().certificates.all()
+        
+class CertificateEditView(UpdateView):
+    model=Certificate
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
+    
+class CertificateCreateView(CreateView):
+    model=Certificate
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
 
-@login_required
-def certificate_delete(request,  id):
-    return create_update.delete_object(request,
-        model=Certificate,
-        object_id=id,
-        template_name='vlive/delete.html',
-        extra_context={'cancel_url': reverse("vlive:certificate_list")}, 
-        post_delete_redirect=reverse("vlive:certificate_list")
-    )
+class CertificateDeleteView(DeleteView):
+    model=Certificate
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
 
 @login_required
 def workExperiences_details(request):
