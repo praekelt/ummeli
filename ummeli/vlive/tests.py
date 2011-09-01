@@ -346,64 +346,50 @@ class VliveCVTestCase(TestCase):
         languages = self.user.get_profile().languages
         self.assertEquals(len(languages.all()), 0)        
         
-                              
     def test_edit_references_details_page(self):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test listing
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'references'))
+        #test references listing
+        resp = self.client.get(reverse('vlive:reference_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test add form
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/add'))
+        #test reference add form
+        resp = self.client.get(reverse('vlive:reference_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test add action
+        #test reference add action
         post_data = {'fullname': 'Test', 'relationship': 'Manager'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/add'), post_data)
+        resp = self.client.post(reverse('vlive:reference_new'),  post_data)
         
         #test listing of new reference
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'references'))
+        resp = self.client.get(reverse('vlive:reference_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Test')
         
-        #test editing of created language
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/1'))
+        #test editing of created reference
+        resp = self.client.get(reverse('vlive:reference_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'fullname': 'Somebody', 'relationship': 'Manager',
-                    'action': 'edit'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/1'), post_data)
+        post_data = {'fullname': 'User', 'relationship': 'Manager'}
+        resp = self.client.post(reverse('vlive:reference_edit', args=[1]),  
+                                post_data)
         
-        resp = self.client.get('%s/%s' % (reverse('vlive:edit'), 
-                                        'references'))
-        self.assertContains(resp, 'Somebody')
+        resp = self.client.get(reverse('vlive:reference_list'))
+        self.assertContains(resp, 'User')
         
-        certs = self.user.get_profile().references
-        self.assertEquals(len(certs.all()), 1)
+        references = self.user.get_profile().references
+        self.assertEquals(len(references.all()), 1)
         
         #test delete action
-        post_data = {'delete': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/1'), post_data)
-        certs = self.user.get_profile().references
-        self.assertEquals(len(certs.all()), 0)
+        resp = self.client.get(reverse('vlive:reference_delete',  args=[1]))
+        self.assertContains(resp, 'Are you sure')
         
-        #test cancel action
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
-                                        'references/add'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/edit/references')
-                                
+        resp = self.client.post(reverse('vlive:reference_delete',  args=[1]))
+        references = self.user.get_profile().references
+        self.assertEquals(len(references.all()), 0)        
+        
+        
     def test_convert_to_pdf(self):
         cv = self.user.get_profile()
         result = render_to_pdf('vlive/pdf_template.html', {'model': cv})

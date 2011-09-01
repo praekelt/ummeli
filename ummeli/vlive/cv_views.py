@@ -9,7 +9,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.api.models import Certificate,  WorkExperience,  Language
+from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
+                                                    Reference)
 
 from django.core import mail
 
@@ -35,53 +36,7 @@ def process_edit_request(request, model_form, page_title):
                             {'form': form, 'page_title': page_title,
                             'method': 'post'},
                             context_instance=RequestContext(request))
-                            
-def process_edit_list_items(request, model_form, list_items, page_title,
-                            redirect_url, pk_id, template_name):
-    if request.method == 'POST':
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(redirect_url)
-        
-        delete = request.POST.get('delete', None)
-        if delete:
-            if pk_id:
-                list_items.get(pk = pk_id).delete()
-            return HttpResponseRedirect(redirect_url)
-        
-        post_action = request.POST.get('action', None)
-        if post_action == 'edit':
-            action = 'edit'
-            form = model_form(request.POST, 
-                                instance = list_items.get(pk = pk_id))
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(redirect_url)
-        else:
-            form = model_form(request.POST)
-            action = 'add'
-            if form.is_valid():
-                new_form = form.save()
-                list_items.add(new_form)
-                return HttpResponseRedirect(redirect_url)        
-    elif pk_id:
-        form = model_form(instance = list_items.get(pk = pk_id))
-        action = 'edit'
-    else:
-        form = model_form()
-        action = 'create'
     
-    return render_to_response(template_name, 
-                            {'form': form, 'page_title': page_title,
-                            'action': action},
-                            context_instance=RequestContext(request))
-
-def render_item_list(request, items, page_title, list_name):
-    return render_to_response('vlive/item_list.html', 
-                            {'items': items, 'page_title': page_title, 
-                            'list_name': list_name},
-                            context_instance=RequestContext(request))
-                            
 @login_required
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 'personal details')
@@ -277,19 +232,65 @@ class LanguageDeleteView(DeleteView):
         return context
         
         
-@login_required
-def references_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.references, 'references', 
-                            'references')
+class ReferenceListView(ListView):
+    template_name = 'vlive/list_objects.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'references'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().references.all()
+        
+        
+class ReferenceEditView(UpdateView):
+    model=Reference
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'reference'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context
+    
+    
+class ReferenceCreateView(CreateView):
+    model=Reference
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'reference'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context
+    
+    def form_valid(self, form):
+        new_reference = form.save()
+        self.request.user.get_profile().references.add(new_reference)
+        return HttpResponseRedirect(self.get_success_url())
 
-@login_required
-def reference_details(request, pk_id = None):
-    page_title = 'references'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'references'))
-    list_items = request.user.get_profile().references
-    return process_edit_list_items(request, ReferenceForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-                                    
-                                    
+
+class ReferenceDeleteView(DeleteView):
+    model=Reference
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context
+        
+        
