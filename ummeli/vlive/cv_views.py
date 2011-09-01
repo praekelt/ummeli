@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.api.models import Certificate,  WorkExperience
+from ummeli.api.models import Certificate,  WorkExperience,  Language
 
 from django.core import mail
 
@@ -214,21 +214,69 @@ class WorkExperienceDeleteView(DeleteView):
         context['cancel_url'] = reverse("vlive:workExperience_list")
         return context
         
-@login_required
-def languages_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.languages, 'languages', 
-                            'languages')
+        
+class LanguageListView(ListView):
+    template_name = 'vlive/list_objects.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(LanguageListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'languages'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().languages.all()
+        
+        
+class LanguageEditView(UpdateView):
+    model=Language
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'language'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+    
+    
+class LanguageCreateView(CreateView):
+    model=Language
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'language'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+    
+    def form_valid(self, form):
+        new_language = form.save()
+        self.request.user.get_profile().languages.add(new_language)
+        return HttpResponseRedirect(self.get_success_url())
 
-@login_required
-def language_details(request, pk_id = None):
-    page_title = 'languages'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'languages'))
-    list_items = request.user.get_profile().languages
-    return process_edit_list_items(request, LanguageForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-                                    
+
+class LanguageDeleteView(DeleteView):
+    model=Language
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+        
+        
 @login_required
 def references_details(request):
     cv = request.user.get_profile()
