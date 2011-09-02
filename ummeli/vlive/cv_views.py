@@ -292,5 +292,3 @@ class ReferenceDeleteView(DeleteView):
         context['list_name'] = 'references'
         context['cancel_url'] = reverse("vlive:reference_list")
         return context
-        
-        

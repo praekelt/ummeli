@@ -41,4 +41,3 @@ class SendEmailForm(Form):
 
 class SendFaxForm(Form):
     fax = RegexField('[0-9+]',  error_message='Please enter a valid fax number.')
-

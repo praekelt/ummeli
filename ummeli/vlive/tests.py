@@ -387,8 +387,7 @@ class VliveCVTestCase(TestCase):
         
         resp = self.client.post(reverse('vlive:reference_delete',  args=[1]))
         references = self.user.get_profile().references
-        self.assertEquals(len(references.all()), 0)        
-        
+        self.assertEquals(len(references.all()), 0)                
         
     def test_convert_to_pdf(self):
         cv = self.user.get_profile()

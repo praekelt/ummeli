@@ -3,8 +3,8 @@ from django.contrib.auth.middleware import RemoteUserMiddleware
 class VodafoneLiveUserMiddleware(RemoteUserMiddleware):
     header = 'HTTP_X_UP_CALLING_LINE_ID'
 
-
-class VodafoneLiveInfo(object): pass
+class VodafoneLiveInfo(object): 
+    pass
 
 class VodafoneLiveInfoMiddleware(object):
     """
