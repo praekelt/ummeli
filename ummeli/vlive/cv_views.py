@@ -62,7 +62,7 @@ class CertificateListView(ListView):
         return self.request.user.get_profile().certificates.all()
         
 class CertificateEditView(UpdateView):
-    model=Certificate
+    model = Certificate
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -76,7 +76,7 @@ class CertificateEditView(UpdateView):
         return context
     
 class CertificateCreateView(CreateView):
-    model=Certificate
+    model = Certificate
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -95,7 +95,7 @@ class CertificateCreateView(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 class CertificateDeleteView(DeleteView):
-    model=Certificate
+    model = Certificate
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
@@ -122,7 +122,7 @@ class WorkExperienceListView(ListView):
         
         
 class WorkExperienceEditView(UpdateView):
-    model=WorkExperience
+    model = WorkExperience
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -137,7 +137,7 @@ class WorkExperienceEditView(UpdateView):
     
     
 class WorkExperienceCreateView(CreateView):
-    model=WorkExperience
+    model = WorkExperience
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -157,7 +157,7 @@ class WorkExperienceCreateView(CreateView):
 
 
 class WorkExperienceDeleteView(DeleteView):
-    model=WorkExperience
+    model = WorkExperience
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
@@ -184,7 +184,7 @@ class LanguageListView(ListView):
         
         
 class LanguageEditView(UpdateView):
-    model=Language
+    model = Language
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -199,7 +199,7 @@ class LanguageEditView(UpdateView):
     
     
 class LanguageCreateView(CreateView):
-    model=Language
+    model = Language
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -219,7 +219,7 @@ class LanguageCreateView(CreateView):
 
 
 class LanguageDeleteView(DeleteView):
-    model=Language
+    model = Language
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
@@ -246,7 +246,7 @@ class ReferenceListView(ListView):
         
         
 class ReferenceEditView(UpdateView):
-    model=Reference
+    model = Reference
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -261,7 +261,7 @@ class ReferenceEditView(UpdateView):
     
     
 class ReferenceCreateView(CreateView):
-    model=Reference
+    model = Reference
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
@@ -281,7 +281,7 @@ class ReferenceCreateView(CreateView):
 
 
 class ReferenceDeleteView(DeleteView):
-    model=Reference
+    model = Reference
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):

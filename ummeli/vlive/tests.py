@@ -25,8 +25,8 @@ class VliveTestCase(TestCase):
                                         password)
         self.client.login(username=username, password=password)
         resp = self.client.get(reverse('vlive:index'))
-        # there shouldn't be a Location header as this would mean a redirect
-        # to a login URL
+         #  there shouldn't be a Location header as this would mean a redirect
+         #  to a login URL
         self.assertEquals(resp.get('Location', None), None)
         self.assertEquals(resp.status_code, 200)
         
@@ -41,7 +41,7 @@ class VliveTestCase(TestCase):
         resp = self.client.post(reverse('vlive:login'), 
                                 {'username': msisdn, 'password': password})
                                 
-        self.assertEquals(resp.status_code, 302) #redirect to index
+        self.assertEquals(resp.status_code, 302)  # redirect to index
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive')
         
         resp = self.client.post(reverse('vlive:login'), {'password': 'wrong_pin'},
@@ -55,7 +55,7 @@ class VliveTestCase(TestCase):
         password = 'password'
         
         resp = self.client.get(reverse('vlive:index'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
-        self.assertEquals(resp.status_code, 302) #redirect to login
+        self.assertEquals(resp.status_code, 302)  # redirect to login
         self.assertEquals(resp.get('Location', None), 
                         'http://testserver/vlive/login?next=/vlive/')
         
@@ -70,12 +70,12 @@ class VliveTestCase(TestCase):
         resp = self.client.post(reverse('vlive:register'), 
                                 {'username': msisdn, 'password1': password, 
                                 'password2': password})
-        self.assertEquals(resp.status_code, 302) #redirect to index
+        self.assertEquals(resp.status_code, 302)  # redirect to index
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/')
         
         resp = self.client.post(reverse('vlive:login'), 
                                 {'username': msisdn, 'password': password})
-        self.assertEquals(resp.status_code, 302) #redirect to index
+        self.assertEquals(resp.status_code, 302)  # redirect to index
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive')
 
     def test_registration_invalid_pin(self):
@@ -121,7 +121,7 @@ class VliveCVTestCase(TestCase):
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
                                         'personal'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
             
     def test_edit_contact_details_page(self):
@@ -143,7 +143,7 @@ class VliveCVTestCase(TestCase):
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
                                         'contact'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
         
     def test_edit_education_details_page(self):
@@ -167,31 +167,31 @@ class VliveCVTestCase(TestCase):
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
                                         'education'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')        
 
     def test_edit_certificates_details_page(self):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates listing
+         # test certificates listing
         resp = self.client.get(reverse('vlive:certificate_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add form
+         # test certificates add form
         resp = self.client.get(reverse('vlive:certificate_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add action
+         # test certificates add action
         post_data = {'name': 'BSc', 'institution': 'UCT', 'year': 2007}
         resp = self.client.post(reverse('vlive:certificate_new'),  post_data)
         
-        #test certificates listing of new certificate
+         # test certificates listing of new certificate
         resp = self.client.get(reverse('vlive:certificate_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'BSc')
         
-        #test editing of created certificate
+         # test editing of created certificate
         resp = self.client.get(reverse('vlive:certificate_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
@@ -205,7 +205,7 @@ class VliveCVTestCase(TestCase):
         certs = self.user.get_profile().certificates
         self.assertEquals(len(certs.all()), 1)
         
-        #test delete action
+         # test delete action
         resp = self.client.get(reverse('vlive:certificate_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
         
@@ -217,25 +217,25 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates listing
+         # test certificates listing
         resp = self.client.get(reverse('vlive:workExperience_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add form
+         # test certificates add form
         resp = self.client.get(reverse('vlive:workExperience_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add action
+         # test certificates add action
         post_data = {'title': 'Engineer', 'company': 'Praekelt', 
                     'startYear': 2007, 'endYear': 2008}
         resp = self.client.post(reverse('vlive:workExperience_new'),  post_data)
         
-        #test certificates listing of new certificate
+         # test certificates listing of new certificate
         resp = self.client.get(reverse('vlive:workExperience_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Praekelt')
         
-        #test editing of created certificate
+         # test editing of created certificate
         resp = self.client.get(reverse('vlive:workExperience_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
@@ -250,7 +250,7 @@ class VliveCVTestCase(TestCase):
         workExperiences = self.user.get_profile().workExperiences
         self.assertEquals(len(workExperiences.all()), 1)
         
-        #test delete action
+         # test delete action
         resp = self.client.get(reverse('vlive:workExperience_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
         
@@ -262,25 +262,25 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates listing
+         # test certificates listing
         resp = self.client.get(reverse('vlive:workExperience_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add form
+         # test certificates add form
         resp = self.client.get(reverse('vlive:workExperience_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test certificates add action
+         # test certificates add action
         post_data = {'title': 'Engineer', 'company': 'Praekelt', 
                     'startYear': 2007, 'endYear': 2008}
         resp = self.client.post(reverse('vlive:workExperience_new'),  post_data)
         
-        #test certificates listing of new certificate
+         # test certificates listing of new certificate
         resp = self.client.get(reverse('vlive:workExperience_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Praekelt')
         
-        #test editing of created certificate
+         # test editing of created certificate
         resp = self.client.get(reverse('vlive:workExperience_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
@@ -295,7 +295,7 @@ class VliveCVTestCase(TestCase):
         workExperiences = self.user.get_profile().workExperiences
         self.assertEquals(len(workExperiences.all()), 1)
         
-        #test delete action
+         # test delete action
         resp = self.client.get(reverse('vlive:workExperience_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
         
@@ -307,24 +307,24 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test languages listing
+         # test languages listing
         resp = self.client.get(reverse('vlive:language_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test language add form
+         # test language add form
         resp = self.client.get(reverse('vlive:language_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test languageadd action
+         # test languageadd action
         post_data = {'language': 'English', 'readWrite': True}
         resp = self.client.post(reverse('vlive:language_new'),  post_data)
         
-        #test listing of new language
+         # test listing of new language
         resp = self.client.get(reverse('vlive:language_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'English')
         
-        #test editing of created certificate
+         # test editing of created certificate
         resp = self.client.get(reverse('vlive:language_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
@@ -338,7 +338,7 @@ class VliveCVTestCase(TestCase):
         languages = self.user.get_profile().languages
         self.assertEquals(len(languages.all()), 1)
         
-        #test delete action
+         # test delete action
         resp = self.client.get(reverse('vlive:language_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
         
@@ -350,24 +350,24 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('vlive:edit'))
         self.assertEquals(resp.status_code, 200)
         
-        #test references listing
+         # test references listing
         resp = self.client.get(reverse('vlive:reference_list'))
         self.assertEquals(resp.status_code, 200)
         
-        #test reference add form
+         # test reference add form
         resp = self.client.get(reverse('vlive:reference_new'))
         self.assertEquals(resp.status_code, 200)
         
-        #test reference add action
+         # test reference add action
         post_data = {'fullname': 'Test', 'relationship': 'Manager'}
         resp = self.client.post(reverse('vlive:reference_new'),  post_data)
         
-        #test listing of new reference
+         # test listing of new reference
         resp = self.client.get(reverse('vlive:reference_list'))        
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Test')
         
-        #test editing of created reference
+         # test editing of created reference
         resp = self.client.get(reverse('vlive:reference_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
@@ -381,7 +381,7 @@ class VliveCVTestCase(TestCase):
         references = self.user.get_profile().references
         self.assertEquals(len(references.all()), 1)
         
-        #test delete action
+         # test delete action
         resp = self.client.get(reverse('vlive:reference_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
         
@@ -395,7 +395,7 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(result == None, False)
 
     def test_email(self):
-        #setup user's firstName and surname
+         # setup user's firstName and surname
         post_data = {'firstName': 'Test', 'surname': 'User'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
                                         'personal'), post_data)
@@ -419,16 +419,16 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(resp.get('Location', None))
         self.assertEquals(resp.status_code, 200)
         
-        #test cancel action
+         # test cancel action
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
                                         'email'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/send')
 
     def test_fax(self):
-        #setup user's firstName and surname
+         # setup user's firstName and surname
         post_data = {'firstName': 'Test', 'surname': 'User'}
         resp = self.client.post('%s/%s' % (reverse('vlive:edit'), 
                                         'personal'), post_data)
@@ -455,10 +455,10 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(resp.get('Location', None))
         self.assertEquals(resp.status_code, 200)
         
-        #test cancel action
+         # test cancel action
         post_data = {'cancel': 'True'}
         resp = self.client.post('%s/%s' % (reverse('vlive:send'), 
                                         'fax'), post_data)
-        self.assertEquals(resp.status_code, 302) #redirect to edit menu
+        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
         self.assertEquals(resp.get('Location', None), 
                                 'http://testserver/vlive/send')

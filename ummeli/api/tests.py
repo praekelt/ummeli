@@ -65,7 +65,7 @@ class ApiTestCase(TestCase):
         )
         
         print resp.content
-        self.assertEquals(resp.status_code, 403) #Forbidden
+        self.assertEquals(resp.status_code, 403)  # Forbidden
     
     def test_registration(self):
         username = 'user'
@@ -162,10 +162,10 @@ class ApiTestCase(TestCase):
                 'password': 'wrong_password'
             }))
         )
-        self.assertEquals(resp.status_code, 403) #Forbidden
+        self.assertEquals(resp.status_code, 403)  # Forbidden
         
         user = UserHelper.get_user_or_403(username, password)
-        user.is_active = False #test for user disabled
+        user.is_active = False  # test for user disabled
         user.save()
         
         resp = self.client.get('%s?%s' % (reverse('api:userdata'),
@@ -175,4 +175,4 @@ class ApiTestCase(TestCase):
             }))
         )
         
-        self.assertEquals(resp.status_code, 403) #forbidden
+        self.assertEquals(resp.status_code, 403)  # forbidden
