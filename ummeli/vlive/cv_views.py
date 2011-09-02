@@ -9,7 +9,14 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from ummeli.vlive.utils import render_to_pdf
+from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
+                                                    Reference)
+
 from django.core import mail
+
+from django.views.generic import list_detail, create_update
+from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -29,53 +36,7 @@ def process_edit_request(request, model_form, page_title):
                             {'form': form, 'page_title': page_title,
                             'method': 'post'},
                             context_instance=RequestContext(request))
-                            
-def process_edit_list_items(request, model_form, list_items, page_title,
-                            redirect_url, pk_id, template_name):
-    if request.method == 'POST':
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(redirect_url)
-        
-        delete = request.POST.get('delete', None)
-        if delete:
-            if pk_id:
-                list_items.get(pk = pk_id).delete()
-            return HttpResponseRedirect(redirect_url)
-        
-        post_action = request.POST.get('action', None)
-        if post_action == 'edit':
-            action = 'edit'
-            form = model_form(request.POST, 
-                                instance = list_items.get(pk = pk_id))
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(redirect_url)
-        else:
-            form = model_form(request.POST)
-            action = 'add'
-            if form.is_valid():
-                new_form = form.save()
-                list_items.add(new_form)
-                return HttpResponseRedirect(redirect_url)        
-    elif pk_id:
-        form = model_form(instance = list_items.get(pk = pk_id))
-        action = 'edit'
-    else:
-        form = model_form()
-        action = 'create'
     
-    return render_to_response(template_name, 
-                            {'form': form, 'page_title': page_title,
-                            'action': action},
-                            context_instance=RequestContext(request))
-
-def render_item_list(request, items, page_title, list_name):
-    return render_to_response('vlive/item_list.html', 
-                            {'items': items, 'page_title': page_title, 
-                            'list_name': list_name},
-                            context_instance=RequestContext(request))
-                            
 @login_required
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 'personal details')
@@ -88,84 +49,246 @@ def contact_details(request):
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 'education details')
 
-@login_required
-def certificates_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.certificates, 'certificates', 
-                            'certificates')
-
-@login_required
-def certificate_details(request, pk_id = None):
-    page_title = 'certificate'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'certificates'))
-    list_items = request.user.get_profile().certificates
-    return process_edit_list_items(request, CertificateForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-                                    
-
-@login_required
-def workExperiences_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.workExperiences, 'work experience', 
-                            'workExperiences')
-
-
-@login_required
-def workExperience_details(request, pk_id = None):
-    page_title = 'work experience'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'workExperiences'))
-    list_items = request.user.get_profile().workExperiences
-    return process_edit_list_items(request, WorkExperienceForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-
-@login_required
-def languages_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.languages, 'languages', 
-                            'languages')
-
-@login_required
-def language_details(request, pk_id = None):
-    page_title = 'languages'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'languages'))
-    list_items = request.user.get_profile().languages
-    return process_edit_list_items(request, LanguageForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-                                    
-@login_required
-def references_details(request):
-    cv = request.user.get_profile()
-    return render_item_list(request, cv.references, 'references', 
-                            'references')
-
-@login_required
-def reference_details(request, pk_id = None):
-    page_title = 'references'
-    redirect_url = ('%s/%s' % (reverse('vlive:edit'),'references'))
-    list_items = request.user.get_profile().references
-    return process_edit_list_items(request, ReferenceForm, list_items,
-                                    page_title, redirect_url, pk_id,
-                                    'vlive/edit_list_item.html')
-
-@login_required
-def pdf(request):
-    cv = request.user.get_profile()
-    result = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+class CertificateListView(ListView):
+    template_name = 'vlive/list_objects.html'
     
-    #return render_to_response('vlive/pdf_template.html', 
-    #                        {'model': cv},
-    #                        context_instance=RequestContext(request))
-                            
-    return HttpResponse(result, mimetype='application/pdf')
+    def get_context_data(self, **kwargs):
+        context = super(CertificateListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['page_title'] = 'certificates'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().certificates.all()
+        
+class CertificateEditView(UpdateView):
+    model = Certificate
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['page_title'] = 'certificate'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
+    
+class CertificateCreateView(CreateView):
+    model = Certificate
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['page_title'] = 'certificate'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
+    
+    def form_valid(self, form):
+        new_cert = form.save()
+        self.request.user.get_profile().certificates.add(new_cert)
+        return HttpResponseRedirect(self.get_success_url())
 
-@login_required
-def email(request):
-    emails = (
-        ('Test 1', "This is a test email..", 'madandat@gmail.com', ['madandat@gmail.com']),
-        ('Test 2', "This is the second email..'.", 'madandat@gmail.com', ['madandat@gmail.com']),
-    )
-    results = mail.send_mass_mail(emails)
-    return HttpResponseRedirect(reverse('vlive:index'))
+class CertificateDeleteView(DeleteView):
+    model = Certificate
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:certificate_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(CertificateDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'certificates'
+        context['cancel_url'] = reverse("vlive:certificate_list")
+        return context
+        
+        
+class WorkExperienceListView(ListView):
+    template_name = 'vlive/list_objects.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(WorkExperienceListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'workExperiences'
+        context['page_title'] = 'work experiences'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().workExperiences.all()
+        
+        
+class WorkExperienceEditView(UpdateView):
+    model = WorkExperience
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:workExperience_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(WorkExperienceEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'workExperiences'
+        context['page_title'] = 'work experience'
+        context['cancel_url'] = reverse("vlive:workExperience_list")
+        return context
+    
+    
+class WorkExperienceCreateView(CreateView):
+    model = WorkExperience
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:workExperience_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(WorkExperienceCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'workExperiences'
+        context['page_title'] = 'work experience'
+        context['cancel_url'] = reverse("vlive:workExperience_list")
+        return context
+    
+    def form_valid(self, form):
+        new_workExperience = form.save()
+        self.request.user.get_profile().workExperiences.add(new_workExperience)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class WorkExperienceDeleteView(DeleteView):
+    model = WorkExperience
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:workExperience_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(WorkExperienceDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'workExperiences'
+        context['cancel_url'] = reverse("vlive:workExperience_list")
+        return context
+        
+        
+class LanguageListView(ListView):
+    template_name = 'vlive/list_objects.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(LanguageListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'languages'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().languages.all()
+        
+        
+class LanguageEditView(UpdateView):
+    model = Language
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'language'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+    
+    
+class LanguageCreateView(CreateView):
+    model = Language
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['page_title'] = 'language'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+    
+    def form_valid(self, form):
+        new_language = form.save()
+        self.request.user.get_profile().languages.add(new_language)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class LanguageDeleteView(DeleteView):
+    model = Language
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:language_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(LanguageDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'languages'
+        context['cancel_url'] = reverse("vlive:language_list")
+        return context
+        
+        
+class ReferenceListView(ListView):
+    template_name = 'vlive/list_objects.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'references'
+        return context
+        
+    def get_queryset(self):
+        return self.request.user.get_profile().references.all()
+        
+        
+class ReferenceEditView(UpdateView):
+    model = Reference
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'reference'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context
+    
+    
+class ReferenceCreateView(CreateView):
+    model = Reference
+    template_name = 'vlive/edit_object.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'reference'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context
+    
+    def form_valid(self, form):
+        new_reference = form.save()
+        self.request.user.get_profile().references.add(new_reference)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ReferenceDeleteView(DeleteView):
+    model = Reference
+    template_name = 'vlive/delete.html'
+    
+    def get_success_url(self):
+        return reverse("vlive:reference_list")
+        
+    def get_context_data(self, **kwargs):
+        context = super(ReferenceDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['cancel_url'] = reverse("vlive:reference_list")
+        return context

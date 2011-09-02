@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Send CV via {{via}}</div>
+    <form class='standard' method="post">
+        <div>{{ form.as_p }}</div>
+        <input type="submit" class="submit" value="Send" name="submit" />
+        <input name="cancel" class="submit" type="submit" value="Cancel" />
+        <input type="hidden" name="action" value="{{action}}"
+        {% csrf_token %}
+    </form>
+{% endblock %}

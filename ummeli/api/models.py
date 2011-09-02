@@ -7,13 +7,15 @@ class Certificate (models.Model):
     name = models.CharField(max_length=45)
     institution = models.CharField(max_length=200, null=True, blank=True)
     year = models.IntegerField(default=0, null=True, blank=True)
-    def __unicode__(self): # pragma: no cover
-        return self.name + " @ "+ self.institution
+    
+    def __unicode__(self):  # pragma: no cover
+        return self.name + " @ " + self.institution
         
 class Language (models.Model):
     language = models.CharField(max_length=45)
     readWrite = models.BooleanField(default=False)
-    def __unicode__(self): # pragma: no cover
+    
+    def __unicode__(self):  # pragma: no cover
         return self.language
         
 class WorkExperience (models.Model):
@@ -21,14 +23,16 @@ class WorkExperience (models.Model):
     company = models.CharField(max_length=45, null=True, blank=True)
     startYear = models.IntegerField(default=0, null=True, blank=True)
     endYear = models.IntegerField(default=0, null=True, blank=True)
-    def __unicode__(self): # pragma: no cover
-        return self.title + " @ "+ self.company
+    
+    def __unicode__(self):  # pragma: no cover
+        return self.title + " @ " + self.company
         
 class Reference (models.Model):
     fullname = models.CharField(max_length=45)
     relationship = models.CharField(max_length=45, null=True, blank=True)
     contactNo = models.CharField(max_length=45, null=True, blank=True)
-    def __unicode__(self): # pragma: no cover
+    
+    def __unicode__(self):  # pragma: no cover
         return self.fullname
 
 class CurriculumVitae(models.Model):
@@ -50,7 +54,7 @@ class CurriculumVitae(models.Model):
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
 
-    def __unicode__(self): # pragma: no cover
+    def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.firstName)
 
 class CurriculumVitaeForm(ModelForm):
@@ -71,4 +75,5 @@ def create_cv(sender, instance, created, **kwargs):
         cv.email = instance.email
         cv.save()
 
-post_save.connect(create_cv, sender=User, dispatch_uid="users-profilecreation-signal")
+post_save.connect(create_cv, sender = User, 
+                  dispatch_uid = "users-profilecreation-signal")

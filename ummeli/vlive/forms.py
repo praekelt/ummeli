@@ -1,6 +1,7 @@
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
-from django.forms import ModelForm, CheckboxInput
+from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
+                                            RegexField)
         
 class PersonalDetailsForm(ModelForm):
     class Meta:
@@ -35,3 +36,8 @@ class ReferenceForm(ModelForm):
     class Meta:
         model = Reference
 
+class SendEmailForm(Form):
+    email = EmailField()
+
+class SendFaxForm(Form):
+    fax = RegexField('[0-9+]',  error_message='Please enter a valid fax number.')
