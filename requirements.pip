@@ -11,5 +11,5 @@ pypdf
 reportlab
 django-celery
 django-celery-email
-supervisord==3.0a10
+supervisor==3.0a10
 gunicorn==0.13.1
