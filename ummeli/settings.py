@@ -15,18 +15,18 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Foundation Dev', 'dev@praekeltfoundation.org'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'ummeli.db',    # Or path to database file if using sqlite3.
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ummeli',    # Or path to database file if using sqlite3.
+        'USER': 'ummeli',
+        'PASSWORD': 'ummeli',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
