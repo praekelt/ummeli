@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'django_nose',
     'djcelery',
     'djcelery_email',
+    'gunicorn',
 )
 
 # A sample logging configuration. The only tangible logging

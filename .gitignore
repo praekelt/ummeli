@@ -10,3 +10,6 @@ nosetests.xml
 *.log
 MANIFEST.in
 /*.egg-info/
+/logs/*.err
+/logs/*.log
+/tmp/pids/*.pid
