@@ -16,3 +16,4 @@ class VodafoneLiveInfoMiddleware(object):
         vlive.msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', 'unknown')
         vlive.area = request.META.get('HTTP_X_VODAFONE_AREA', 'unknown')
         request.vlive = vlive
+        print request.META
