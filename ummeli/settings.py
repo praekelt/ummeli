@@ -87,8 +87,6 @@ STATICFILES_DIRS = (
     abspath('vlive/static'),
 )
 
-print STATICFILES_DIRS
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
