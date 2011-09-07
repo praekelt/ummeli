@@ -256,52 +256,7 @@ class VliveCVTestCase(TestCase):
         
         resp = self.client.post(reverse('vlive:workExperience_delete',  args=[1]))
         workExperiences = self.user.get_profile().workExperiences
-        self.assertEquals(len(workExperiences.all()), 0)        
-        
-    def test_edit_workExperiences_details_page(self):
-        resp = self.client.get(reverse('vlive:edit'))
-        self.assertEquals(resp.status_code, 200)
-        
-         # test certificates listing
-        resp = self.client.get(reverse('vlive:workExperience_list'))
-        self.assertEquals(resp.status_code, 200)
-        
-         # test certificates add form
-        resp = self.client.get(reverse('vlive:workExperience_new'))
-        self.assertEquals(resp.status_code, 200)
-        
-         # test certificates add action
-        post_data = {'title': 'Engineer', 'company': 'Praekelt', 
-                    'startYear': 2007, 'endYear': 2008}
-        resp = self.client.post(reverse('vlive:workExperience_new'),  post_data)
-        
-         # test certificates listing of new certificate
-        resp = self.client.get(reverse('vlive:workExperience_list'))        
-        self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Praekelt')
-        
-         # test editing of created certificate
-        resp = self.client.get(reverse('vlive:workExperience_edit',  args=[1]))
-        self.assertEquals(resp.status_code, 200)
-        
-        post_data = {'title': 'Engineer', 'company': 'Praekelt Consulting', 
-                    'startYear': 2007, 'endYear': 2008}
-        resp = self.client.post(reverse('vlive:workExperience_edit', args=[1]),  
-                                post_data)
-        
-        resp = self.client.get(reverse('vlive:workExperience_list'))
-        self.assertContains(resp, 'Praekelt Consulting')
-        
-        workExperiences = self.user.get_profile().workExperiences
-        self.assertEquals(len(workExperiences.all()), 1)
-        
-         # test delete action
-        resp = self.client.get(reverse('vlive:workExperience_delete',  args=[1]))
-        self.assertContains(resp, 'Are you sure')
-        
-        resp = self.client.post(reverse('vlive:workExperience_delete',  args=[1]))
-        workExperiences = self.user.get_profile().workExperiences
-        self.assertEquals(len(workExperiences.all()), 0)        
+        self.assertEquals(len(workExperiences.all()), 0)
         
     def test_edit_languages_details_page(self):
         resp = self.client.get(reverse('vlive:edit'))
