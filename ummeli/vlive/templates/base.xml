@@ -1,0 +1,50 @@
+{% load inclusion_tags %}<?xml version="1.0" encoding="UTF-8"?>
+
+<VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:vddr="http://namespaces.vodafone.com/applications/CRE#DDR"
+ xmlns:vmpml="http://namespaces.vodafone.com/applications/3PI#MPML"
+ xmlns:vsrch="http://namespaces.vodafone.com/applications/search#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://www.via.vodafone.com/schema/VZV-PARTNER.xsd">
+
+
+<PARTNER-PI>
+ <TRANSFORMER name="VZV-DEFAULT"/>
+</PARTNER-PI>
+
+<PARTNER-BODY>
+ <VZV-DEFAULT>
+<PARTNER-HEADER>
+<LABEL>{% block title %} Title {% endblock %}</LABEL>
+</PARTNER-HEADER>
+
+{% block banner %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block footer_links %}
+
+<MODULE role="MOD17">
+<CONTAINER  type="list">
+<TITLE><LINK href="{% url vlive:index %}">Home</LINK></TITLE>
+</CONTAINER>
+<CONTAINER  type="list">
+<TITLE><LINK href="{% url vlive:logout %}">Logout</LINK></TITLE>
+</CONTAINER>
+</MODULE>
+
+{% endblock %}
+
+
+</VZV-DEFAULT>
+</PARTNER-BODY>
+</VZV-PARTNER>
