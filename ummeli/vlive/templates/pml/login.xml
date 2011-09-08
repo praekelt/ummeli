@@ -1,0 +1,34 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <CONTAINER type="form">
+        <FORM method="POST" submit_text="Sign In &raquo;">
+            {% if user_exists %}        
+                {% if form.errors %}
+                    <TEXT>Sign in failed.<br />Please try again.</TEXT>
+                {% endif %}
+                <TEXT>Welcome to Ummeli. </TEXT>
+                <LABEL>Enter Pin to sign in.</LABEL>
+                
+                <br/>
+                <TEXT position="ABOVE">Pin</TEXT>
+                <FIELD name="password" type="text"/>
+                <FIELD name="next" type="hidden" value="{{next}}"/>
+                <FIELD name="username" type="hidden" value="{{msisdn}}"/>
+
+                {% csrf_token %}
+                
+                <LINK href="{% url vlive:index %}forgot/">Forgotton your Pin?</LINK>
+            {% else %}  
+                <LABEL>Welcome to Ummeli.</LABEL><br/>
+                <LINK href="{% url vlive:register %}">Click here to create profile.</LINK>
+            {% endif %}
+        </FORM>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

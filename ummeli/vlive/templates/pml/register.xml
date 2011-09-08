@@ -1,0 +1,27 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Create pin for {{msisdn}}
+{% endblock %}
+
+{% block content %}
+    <MODULE backgroundColor="false">
+    <CONTAINER type="form">
+        <FORM method="POST" submit_text="Create pin &raquo;">
+        {% if form.errors %}
+            <TEXT class="error">Pin codes don&apos;t match.<br />
+            Please try again.</TEXT>
+        {% endif %}
+        
+        <TEXT position="ABOVE">Pin</TEXT>
+        <FIELD name="password1" type="text"/>        
+        <TEXT position="ABOVE">Confirm Pin</TEXT>
+        <FIELD name="password2" type="text"/>
+        
+        <FIELD name="next" type="hidden" value="{{next}}"/>
+        <FIELD name="username" type="hidden" value="{{msisdn}}"/>
+        {% csrf_token %}
+        </FORM>
+    </CONTAINER>
+</MODULE>
+{% endblock %}
