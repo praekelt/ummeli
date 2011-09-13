@@ -33,13 +33,17 @@
 
 {% block footer_links %}
 
-<MODULE role="MOD17">
-<CONTAINER  type="list">
-<TITLE><LINK href="{% url vlive:index %}">Home</LINK></TITLE>
-</CONTAINER>
-<CONTAINER  type="list">
-<TITLE><LINK href="{% url vlive:logout %}">Logout</LINK></TITLE>
-</CONTAINER>
+<MODULE>
+    <CONTAINER  type="list">
+    <LINK href="{% url vlive:index %}">
+        <TEXT>Home</TEXT>
+    </LINK>
+    </CONTAINER>
+    <CONTAINER  type="list">
+        <LINK href="{% url vlive:logout %}">
+            <TEXT>Logout</TEXT>
+        </LINK>
+    </CONTAINER>
 </MODULE>
 
 {% endblock %}

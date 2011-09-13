@@ -23,14 +23,16 @@
 
                 {% csrf_token %}
                 
-                <LINK href="{% url vlive:index %}forgot/">Forgotton your Pin?</LINK>
+                <LINK href="{% url vlive:index %}forgot/">
+                    <TEXT>Forgotton your Pin?</TEXT>
+                </LINK>
             </FORM>
         </CONTAINER>
     {% else %} 
         <CONTAINER type="list">
-            <TITLE>
-            <LINK href="{% url vlive:register %}">Click here to create profile.</LINK>
-            </TITLE>
+            <LINK href="{% url vlive:register %}">
+                <TEXT>Click here to create profile.</TEXT>
+            </LINK>
         </CONTAINER>
     {% endif %}
 </MODULE>
