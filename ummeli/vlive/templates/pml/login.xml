@@ -6,13 +6,13 @@
 
 {% block content %}
 <MODULE backgroundColor="false">
-    <CONTAINER type="form">
-        <FORM method="POST" href="{% url vlive:login %}" submit_text="Sign In">
-            {% if user_exists %}        
+    <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
+    {% if user_exists %}
+        <CONTAINER type="form">
+            <FORM method="POST" href="{% url vlive:login %}" submit_text="Sign In">
                 {% if form.errors %}
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>
                 {% endif %}
-                <TEXT>Welcome to Ummeli. </TEXT>
                 <LABEL>Enter Pin to sign in.</LABEL>
                 
                 <br/>
@@ -24,11 +24,14 @@
                 {% csrf_token %}
                 
                 <LINK href="{% url vlive:index %}forgot/">Forgotton your Pin?</LINK>
-            {% else %}  
-                <LABEL>Welcome to Ummeli.</LABEL><br/>
-                <LINK href="{% url vlive:register %}">Click here to create profile.</LINK>
-            {% endif %}
-        </FORM>
-    </CONTAINER>
+            </FORM>
+        </CONTAINER>
+    {% else %} 
+        <CONTAINER type="list">
+            <TITLE>
+            <LINK href="{% url vlive:register %}">Click here to create profile.</LINK>
+            </TITLE>
+        </CONTAINER>
+    {% endif %}
 </MODULE>
 {% endblock %}
