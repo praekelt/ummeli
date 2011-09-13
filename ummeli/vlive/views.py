@@ -67,8 +67,9 @@ def login(request, template_name='registration/login.html',
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
     }
     context.update(extra_context or {})
-    return render_to_response(template_name, context,
-                              context_instance=RequestContext(request, current_app=current_app))
+    return render_to_response(template_name, context
+                              , mimetype='text/xml'
+                              , context_instance=RequestContext(request, current_app=current_app))
 
 
 def register(request,  template_name = 'vlive/register.html'):
@@ -87,6 +88,7 @@ def register(request,  template_name = 'vlive/register.html'):
         'msisdn': request.vlive.msisdn,
     }
     return render_to_response(template_name, context,
+                              mimetype='text/xml', 
                               context_instance=RequestContext(request))
     
 @login_required
