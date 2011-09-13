@@ -6,9 +6,10 @@ from django.core.urlresolvers import reverse
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^login$', views.login, {'template_name': 'vlive/login.html'}, 
+    url(r'^login$', views.login, {'template_name': 'pml/login.xml'}, 
         name='login'),
-    url(r'^register$', views.register, name='register'),
+    url(r'^register$', views.register, {'template_name': 'pml/register.xml'}, 
+        name='register'),
     url(r'^logout$', 'django.contrib.auth.views.logout_then_login', 
         {'login_url': 'login'}, 
         name = 'logout'),

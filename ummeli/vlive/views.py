@@ -71,7 +71,7 @@ def login(request, template_name='registration/login.html',
                               context_instance=RequestContext(request, current_app=current_app))
 
 
-def register(request):
+def register(request,  template_name = 'vlive/register.html'):
     if request.method == 'POST':
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
@@ -86,7 +86,7 @@ def register(request):
         'form': form,
         'msisdn': request.vlive.msisdn,
     }
-    return render_to_response('vlive/register.html', context,
+    return render_to_response(template_name, context,
                               context_instance=RequestContext(request))
     
 @login_required
