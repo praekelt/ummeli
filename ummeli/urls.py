@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('ummeli.api.urls', namespace='api')),
-    url(r'^vlive/', include('ummeli.vlive.urls', namespace='vlive')),
+    url(r'^vlive/?', include('ummeli.vlive.urls', namespace='vlive')),
 )
