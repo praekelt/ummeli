@@ -28,7 +28,8 @@ def login(request, template_name='registration/login.html',
     """
     Displays the login form and handles the login action.
     """
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
+    #redirect_to = request.REQUEST.get(redirect_field_name, '')
+    redirect_to = reverse('vlive:home')
 
     if request.method == "POST":
         form = authentication_form(data=request.POST)
@@ -93,6 +94,10 @@ def register(request,  template_name = 'vlive/register.html'):
     
 @login_required
 def index(request):    
+    return render_to_response('vlive/index.html')
+    
+@login_required
+def home(request):    
     return render_to_response('vlive/index.html')
 
 @login_required

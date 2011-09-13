@@ -15,8 +15,8 @@
             {{form.password}}
 
             <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
-            <input type="hidden" name="next" value="{{next}}">
-            <input type="hidden" name="username" value="{{msisdn}}">
+            <input type="hidden" name="next" value="{{next}}" />
+            <input type="hidden" name="username" value="{{msisdn}}" />
             {% csrf_token %}
 
             <p><a href="{% url vlive:index %}forgot/">Forgotton your Pin?</a></p>

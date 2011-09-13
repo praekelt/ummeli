@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
+    url(r'^home$', views.home, name='home'),
     url(r'^login$', views.login, {'template_name': 'pml/login.xml'}, 
         name='login'),
     url(r'^register$', views.register, {'template_name': 'pml/register.xml'}, 
