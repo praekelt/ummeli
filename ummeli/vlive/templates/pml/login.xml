@@ -7,7 +7,7 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <CONTAINER type="form">
-        <FORM method="POST" submit_text="Sign In">
+        <FORM method="POST" href="{% url vlive:login %}" submit_text="Sign In">
             {% if user_exists %}        
                 {% if form.errors %}
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>

@@ -7,7 +7,7 @@
 {% block content %}
     <MODULE backgroundColor="false">
     <CONTAINER type="form">
-        <FORM method="POST" submit_text="Create pin">
+        <FORM method="POST" href="{% url vlive:register %}" submit_text="Create pin">
         {% if form.errors %}
             <TEXT class="error">Pin codes don&apos;t match.<br />
             Please try again.</TEXT>
