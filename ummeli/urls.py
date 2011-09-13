@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
+from ummeli.vlive import views
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -11,5 +13,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('ummeli.api.urls', namespace='api')),
-    url(r'^vlive/?', include('ummeli.vlive.urls', namespace='vlive')),
+    
+    url(r'^vlive$', views.login, {'template_name': 'pml/login.xml'},name='index'),
+    url(r'^vlive/', include('ummeli.vlive.urls')),
 )

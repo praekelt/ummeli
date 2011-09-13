@@ -23,12 +23,12 @@ def process_edit_request(request, model_form, page_title):
     if request.method == 'POST':
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return HttpResponseRedirect(reverse('vlive:edit'))
+            return HttpResponseRedirect(reverse('edit'))
         else:
             form = model_form(request.POST, instance=cv)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect(reverse('vlive:edit'))
+                return HttpResponseRedirect(reverse('edit'))
     else:
         form = model_form(instance=cv)
         
@@ -66,13 +66,13 @@ class CertificateEditView(UpdateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:certificate_list")
+        return reverse("certificate_list")
         
     def get_context_data(self, **kwargs):
         context = super(CertificateEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
         context['page_title'] = 'certificate'
-        context['cancel_url'] = reverse("vlive:certificate_list")
+        context['cancel_url'] = reverse("certificate_list")
         return context
     
 class CertificateCreateView(CreateView):
@@ -80,13 +80,13 @@ class CertificateCreateView(CreateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:certificate_list")
+        return reverse("certificate_list")
         
     def get_context_data(self, **kwargs):
         context = super(CertificateCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
         context['page_title'] = 'certificate'
-        context['cancel_url'] = reverse("vlive:certificate_list")
+        context['cancel_url'] = reverse("certificate_list")
         return context
     
     def form_valid(self, form):
@@ -99,12 +99,12 @@ class CertificateDeleteView(DeleteView):
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
-        return reverse("vlive:certificate_list")
+        return reverse("certificate_list")
         
     def get_context_data(self, **kwargs):
         context = super(CertificateDeleteView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
-        context['cancel_url'] = reverse("vlive:certificate_list")
+        context['cancel_url'] = reverse("certificate_list")
         return context
         
         
@@ -126,13 +126,13 @@ class WorkExperienceEditView(UpdateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:workExperience_list")
+        return reverse("workExperience_list")
         
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'workExperiences'
         context['page_title'] = 'work experience'
-        context['cancel_url'] = reverse("vlive:workExperience_list")
+        context['cancel_url'] = reverse("workExperience_list")
         return context
     
     
@@ -141,13 +141,13 @@ class WorkExperienceCreateView(CreateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:workExperience_list")
+        return reverse("workExperience_list")
         
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'workExperiences'
         context['page_title'] = 'work experience'
-        context['cancel_url'] = reverse("vlive:workExperience_list")
+        context['cancel_url'] = reverse("workExperience_list")
         return context
     
     def form_valid(self, form):
@@ -161,12 +161,12 @@ class WorkExperienceDeleteView(DeleteView):
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
-        return reverse("vlive:workExperience_list")
+        return reverse("workExperience_list")
         
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceDeleteView, self).get_context_data(**kwargs)
         context['list_name'] = 'workExperiences'
-        context['cancel_url'] = reverse("vlive:workExperience_list")
+        context['cancel_url'] = reverse("workExperience_list")
         return context
         
         
@@ -188,13 +188,13 @@ class LanguageEditView(UpdateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:language_list")
+        return reverse("language_list")
         
     def get_context_data(self, **kwargs):
         context = super(LanguageEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'languages'
         context['page_title'] = 'language'
-        context['cancel_url'] = reverse("vlive:language_list")
+        context['cancel_url'] = reverse("language_list")
         return context
     
     
@@ -203,13 +203,13 @@ class LanguageCreateView(CreateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:language_list")
+        return reverse("language_list")
         
     def get_context_data(self, **kwargs):
         context = super(LanguageCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'languages'
         context['page_title'] = 'language'
-        context['cancel_url'] = reverse("vlive:language_list")
+        context['cancel_url'] = reverse("language_list")
         return context
     
     def form_valid(self, form):
@@ -223,12 +223,12 @@ class LanguageDeleteView(DeleteView):
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
-        return reverse("vlive:language_list")
+        return reverse("language_list")
         
     def get_context_data(self, **kwargs):
         context = super(LanguageDeleteView, self).get_context_data(**kwargs)
         context['list_name'] = 'languages'
-        context['cancel_url'] = reverse("vlive:language_list")
+        context['cancel_url'] = reverse("language_list")
         return context
         
         
@@ -250,13 +250,13 @@ class ReferenceEditView(UpdateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:reference_list")
+        return reverse("reference_list")
         
     def get_context_data(self, **kwargs):
         context = super(ReferenceEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'references'
         context['page_title'] = 'reference'
-        context['cancel_url'] = reverse("vlive:reference_list")
+        context['cancel_url'] = reverse("reference_list")
         return context
     
     
@@ -265,13 +265,13 @@ class ReferenceCreateView(CreateView):
     template_name = 'vlive/edit_object.html'
     
     def get_success_url(self):
-        return reverse("vlive:reference_list")
+        return reverse("reference_list")
         
     def get_context_data(self, **kwargs):
         context = super(ReferenceCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'references'
         context['page_title'] = 'reference'
-        context['cancel_url'] = reverse("vlive:reference_list")
+        context['cancel_url'] = reverse("reference_list")
         return context
     
     def form_valid(self, form):
@@ -285,10 +285,10 @@ class ReferenceDeleteView(DeleteView):
     template_name = 'vlive/delete.html'
     
     def get_success_url(self):
-        return reverse("vlive:reference_list")
+        return reverse("reference_list")
         
     def get_context_data(self, **kwargs):
         context = super(ReferenceDeleteView, self).get_context_data(**kwargs)
         context['list_name'] = 'references'
-        context['cancel_url'] = reverse("vlive:reference_list")
+        context['cancel_url'] = reverse("reference_list")
         return context

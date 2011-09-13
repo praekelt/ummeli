@@ -9,7 +9,7 @@
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if user_exists %}
         <CONTAINER type="form">
-            <FORM method="POST" href="{% url vlive:login %}" submit_text="Sign In">
+            <FORM method="POST" href="{% url login %}" submit_text="Sign In">
                 {% if form.errors %}
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>
                 {% endif %}
@@ -21,16 +21,14 @@
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
 
-                {% csrf_token %}
-                
-                <LINK href="{% url vlive:index %}forgot/">
+                <LINK href="{% url index %}/forgot/">
                     <TEXT>Forgotton your Pin?</TEXT>
                 </LINK>
             </FORM>
         </CONTAINER>
     {% else %} 
         <CONTAINER type="list">
-            <LINK href="{% url vlive:register %}">
+            <LINK href="{% url register %}">
                 <TEXT>Click here to create profile.</TEXT>
             </LINK>
         </CONTAINER>

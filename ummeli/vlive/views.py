@@ -20,7 +20,9 @@ from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.sites.models import get_current_site
+from django.views.decorators.csrf import csrf_protect
 
+@csrf_protect
 def login(request, template_name='registration/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
@@ -29,7 +31,7 @@ def login(request, template_name='registration/login.html',
     Displays the login form and handles the login action.
     """
     #redirect_to = request.REQUEST.get(redirect_field_name, '')
-    redirect_to = reverse('vlive:home')
+    redirect_to = reverse('home')
 
     if request.method == "POST":
         form = authentication_form(data=request.POST)
@@ -78,7 +80,7 @@ def register(request,  template_name = 'vlive/register.html'):
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return HttpResponseRedirect(reverse('vlive:index'))
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = UserCreationForm()
     
@@ -131,11 +133,11 @@ www.praekeltfoundation.org/ummeli
     
 @login_required
 def send_via_email(request):    
-    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
+    redirect_url = ('%s/%s' % (reverse('send'),'thanks'))
     if request.method == 'POST': 
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return HttpResponseRedirect(reverse('vlive:send'))
+            return HttpResponseRedirect(reverse('send'))
             
         form = SendEmailForm(request.POST)
         if form.is_valid():
@@ -151,11 +153,11 @@ def send_via_email(request):
 
 @login_required
 def send_via_fax(request):    
-    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
+    redirect_url = ('%s/%s' % (reverse('send'),'thanks'))
     if request.method == 'POST': 
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return HttpResponseRedirect(reverse('vlive:send'))
+            return HttpResponseRedirect(reverse('send'))
             
         form = SendFaxForm(request.POST)
         if form.is_valid():

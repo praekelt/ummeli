@@ -35,12 +35,12 @@
 
 <MODULE>
     <CONTAINER  type="list">
-    <LINK href="{% url vlive:index %}">
+    <LINK href="{% url index %}">
         <TEXT>Home</TEXT>
     </LINK>
     </CONTAINER>
     <CONTAINER  type="list">
-        <LINK href="{% url vlive:logout %}">
+        <LINK href="{% url logout %}">
             <TEXT>Logout</TEXT>
         </LINK>
     </CONTAINER>
