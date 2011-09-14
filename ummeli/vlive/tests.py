@@ -69,24 +69,26 @@ class VliveTestCase(TestCase):
         print resp
         self.assertContains(resp, 'Create pin for %s' % (msisdn))
         
-        resp = self.client.post(reverse('register'), 
+        resp = self.client.get(reverse('register_post'),
                                 {'username': msisdn, 'password1': password, 
-                                'password2': password})
-        self.assertEquals(resp.status_code, 302)  # redirect to index
-        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/')
+                                'password2': password},  
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertEquals(resp.status_code, 200)
+        self.assertContains(resp, 'Enter Pin to sign in.')
         
         resp = self.client.get(reverse('login_post'), 
                                 {'username': msisdn, 'password': password})
-        self.assertEquals(resp.status_code, 200)  # redirect to index
+        self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Edit CV')
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'
         password = 'password'
         
-        resp = self.client.post(reverse('register'), 
-                                {'username': msisdn, 'password1': password, 
-                                'password2': 'wrong'})
+        resp = self.client.get(reverse('register_post'), 
+                               {'username': msisdn, 'password1': password, 
+                               'password2': 'wrong'}, 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         print resp
         self.assertContains(resp, 'Pin codes don&apos;t match.')
         

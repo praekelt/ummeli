@@ -58,7 +58,7 @@ def login(request, template_name='pml/login.xml',
 
     return render_to_login(request,  form,  redirect_to,  template_name)
 
-def login_post(request,  template_name,  
+def login_post(request,  template_name = 'pml/login.xml',  
                         authentication_form=AuthenticationForm):
     #redirect_to = request.REQUEST.get(redirect_field_name, '')
     redirect_to = reverse('home')

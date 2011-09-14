@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^login_post$', views.login_post,  name='login_post'),
     
     url(r'^register$', views.register, name='register'),
-    url(r'^register$', views.register_post, name='register_post'),
+    url(r'^register_post$', views.register_post, name='register_post'),
     
     url(r'^logout$', views.logout_view, name = 'logout'),
     url(r'^edit$', views.edit, name='edit'),
