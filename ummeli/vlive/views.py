@@ -42,7 +42,7 @@ def render_to_login(request,  form,  redirect_to,  template_name,
                               , context_instance=RequestContext(request, current_app=current_app))
 
 @csrf_protect
-def login(request, template_name='registration/login.html',
+def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
@@ -87,7 +87,7 @@ def login_post(request,  template_name,
     
     return render_to_login(request,  form,  redirect_to,  template_name)
 
-def register(request,  template_name = 'vlive/register.html'):
+def register(request,  template_name = 'pml/register.xml'):
     if request.method == 'POST':
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
@@ -105,6 +105,10 @@ def register(request,  template_name = 'vlive/register.html'):
     return render_to_response(template_name, context,
                               mimetype='text/xml', 
                               context_instance=RequestContext(request))
+    
+def logout_view(request):
+    auth_logout(request)
+    return login(request)
     
 @login_required
 def index(request):    
