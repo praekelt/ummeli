@@ -34,6 +34,7 @@
 {% block footer_links %}
 
 <MODULE>
+    <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
     <LINK href="{% url index %}">
         <TEXT>Home</TEXT>

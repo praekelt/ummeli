@@ -20,7 +20,8 @@
                 <FIELD name="password" type="text"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
-
+                
+                <br/>
                 <LINK href="{% url index %}/forgot/">
                     <TEXT>Forgotton your Pin?</TEXT>
                 </LINK>
