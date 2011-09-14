@@ -20,7 +20,6 @@
         
         <FIELD name="next" type="hidden" value="{{next}}"/>
         <FIELD name="username" type="hidden" value="{{msisdn}}"/>
-        {% csrf_token %}
         </FORM>
     </CONTAINER>
 </MODULE>

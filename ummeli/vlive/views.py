@@ -87,6 +87,7 @@ def login_post(request,  template_name,
     
     return render_to_login(request,  form,  redirect_to,  template_name)
 
+@csrf_protect
 def register(request,  template_name = 'pml/register.xml'):
     if request.method == 'POST':
         form = UserCreationForm(data = request.POST)
