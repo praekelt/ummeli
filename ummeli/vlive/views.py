@@ -83,7 +83,7 @@ def login_post(request,  template_name,
         if request.session.test_cookie_worked():
             request.session.delete_test_cookie()
 
-        return HttpResponseRedirect(redirect_to)
+        return render_to_response('pml/index.xml',  mimetype='text/xml')
     
     return render_to_login(request,  form,  redirect_to,  template_name)
 
