@@ -89,13 +89,7 @@ def login_post(request,  template_name,
 
 @csrf_protect
 def register(request,  template_name = 'pml/register.xml'):
-    if request.method == 'POST':
-        form = UserCreationForm(data = request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            return HttpResponseRedirect(reverse('index'))
-    else:
-        form = UserCreationForm()
+    form = UserCreationForm()
     
     current_site = get_current_site(request)
     
@@ -106,7 +100,23 @@ def register(request,  template_name = 'pml/register.xml'):
     return render_to_response(template_name, context,
                               mimetype='text/xml', 
                               context_instance=RequestContext(request))
+
+def register_post(request,  template_name = 'pml/register.xml'):
+    form = UserCreationForm(data = request.GET)
+    if form.is_valid():
+        new_user = form.save()
+        return login(request)
     
+    current_site = get_current_site(request)
+    
+    context = {
+        'form': form,
+        'msisdn': request.vlive.msisdn,
+    }
+    return render_to_response(template_name, context,
+                              mimetype='text/xml', 
+                              context_instance=RequestContext(request))
+                              
 def logout_view(request):
     auth_logout(request)
     return login(request)
