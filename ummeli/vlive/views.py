@@ -108,11 +108,11 @@ def register(request,  template_name = 'vlive/register.html'):
     
 @login_required
 def index(request):    
-    return render_to_response('vlive/index.html')
+    return render_to_response('pml/index.xml',  mimetype='text/xml')
     
 @login_required
 def home(request):    
-    return render_to_response('vlive/index.html')
+    return render_to_response('pml/index.xml',  mimetype='text/xml')
 
 @login_required
 def edit(request):    
