@@ -38,16 +38,18 @@ class VliveTestCase(TestCase):
         resp = self.client.get(reverse('login'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.post(reverse('login'), 
+        resp = self.client.get(reverse('login_post'), 
                                 {'username': msisdn, 'password': password})
                                 
+        print resp
         self.assertEquals(resp.status_code, 302)  # redirect to index
         #self.assertEquals(resp.get('Location', None), 'http://testserver/vlive')
         
-        resp = self.client.post(reverse('login'), {'password': 'wrong_pin'},
+        resp = self.client.get(reverse('login_post'), {'password': 'wrong_pin'},
                                 HTTP_X_UP_CALLING_LINE_ID=msisdn)
-                                
-        self.assertEquals(resp.status_code, 200)        
+        print resp
+        
+        self.assertEquals(resp.status_code, 200)      
         self.assertContains(resp, 'Sign in failed')
 
     def test_basic_registration_flow(self):
@@ -74,7 +76,7 @@ class VliveTestCase(TestCase):
         self.assertEquals(resp.status_code, 302)  # redirect to index
         self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/')
         
-        resp = self.client.post(reverse('login'), 
+        resp = self.client.get(reverse('login_post'), 
                                 {'username': msisdn, 'password': password})
         self.assertEquals(resp.status_code, 302)  # redirect to index
         #self.assertEquals(resp.get('Location', None), 'http://testserver/vlive')
