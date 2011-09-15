@@ -41,6 +41,7 @@ def process_edit_request(request, model_form, page_title,  cancel_url):
                             context_instance = RequestContext(request), 
                             mimetype = 'text/xml')
 
+@csrf_protect
 def process_edit_request_post(request):
     cv = request.user.get_profile()
     
