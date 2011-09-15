@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
 
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
@@ -20,6 +21,7 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 from ummeli.vlive.views import edit as edit_view
 
+@csrf_protect
 def process_edit_request(request, model_form, page_title,  cancel_url):
     cv = request.user.get_profile()
     form = model_form(instance=cv)
@@ -42,8 +44,8 @@ def process_edit_request(request, model_form, page_title,  cancel_url):
 def process_edit_request_post(request):
     cv = request.user.get_profile()
     
-    form_name = request.GET.form_name
-    cancel_url = request.GET.cancel_url
+    form_name = request.GET.get('form_name', None)
+    cancel_url = request.GET.get('cancel_url',  None)
     
     model_form = None
     page_title = None
@@ -59,13 +61,14 @@ def process_edit_request_post(request):
         page_title = 'education details'
         
     form = model_form(request.GET, instance=cv)
+    
     if form.is_valid():
         form.save()
         return edit_view(request)
         
     return render_to_response('pml/edit_details.xml', 
-                            {'form': form, 'page_title': page_title,
-                            'method': 'post',  'cancel_url': cancel_url},
+                            {'form': form, 'page_title': page_title, 
+                            'cancel_url': cancel_url},
                             context_instance = RequestContext(request), 
                             mimetype = 'text/xml')
     

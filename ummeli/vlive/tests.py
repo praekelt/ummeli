@@ -114,19 +114,13 @@ class VliveCVTestCase(TestCase):
                                         'personal'))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'firstName': 'Milton', 'gender': 'Male'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'personal'), post_data)
+        post_data = {'firstName': 'Milton', 'gender': 'Male',  
+        'form_name': 'personal_details'}
+        resp = self.client.get(reverse('edit_post'), post_data)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.firstName, 'Milton')
         self.assertEquals(cv.gender, 'Male')
-        
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'personal'), post_data)
-        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
             
     def test_edit_contact_details_page(self):
         resp = self.client.get(reverse('edit'))
@@ -136,19 +130,13 @@ class VliveCVTestCase(TestCase):
                                         'contact'))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'telephoneNumber': '0123456978', 'streetName': 'Oak Rd'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'contact'), post_data)
+        post_data = {'telephoneNumber': '0123456978', 'streetName': 'Oak Rd', 
+                     'form_name': 'contact_details'}
+        resp = self.client.get(reverse('edit_post'), post_data)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.telephoneNumber, '0123456978')
         self.assertEquals(cv.streetName, 'Oak Rd')
-        
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'contact'), post_data)
-        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')
         
     def test_edit_education_details_page(self):
         resp = self.client.get(reverse('edit'))
@@ -159,20 +147,13 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
         
         post_data = {'highestGrade': '12', 'highestGradeYear': 2005,
-                    'school': 'Some school'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'education'), post_data)
+                    'school': 'Some school',  'form_name': 'education_details'}
+        resp = self.client.get(reverse('edit_post'), post_data)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.highestGrade, '12')
         self.assertEquals(cv.highestGradeYear, 2005)
         self.assertEquals(cv.school, 'Some school')
-        
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'education'), post_data)
-        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 'http://testserver/vlive/edit')        
 
     def test_edit_certificates_details_page(self):
         resp = self.client.get(reverse('edit'))
@@ -355,9 +336,9 @@ class VliveCVTestCase(TestCase):
 
     def test_email(self):
          # setup user's firstName and surname
-        post_data = {'firstName': 'Test', 'surname': 'User'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'personal'), post_data)
+        post_data = {'firstName': 'Test', 'surname': 'User',  
+        'form_name': 'personal_details'}
+        resp = self.client.get(reverse('edit_post'), post_data)
                                         
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
@@ -388,9 +369,9 @@ class VliveCVTestCase(TestCase):
 
     def test_fax(self):
          # setup user's firstName and surname
-        post_data = {'firstName': 'Test', 'surname': 'User'}
-        resp = self.client.post('%s/%s' % (reverse('edit'), 
-                                        'personal'), post_data)
+        post_data = {'firstName': 'Test', 'surname': 'User', 
+                     'form_name': 'personal_details'}
+        resp = self.client.get(reverse('edit_post'), post_data)
                                         
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
