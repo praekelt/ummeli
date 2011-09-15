@@ -131,7 +131,7 @@ def home(request):
 
 @login_required
 def edit(request):    
-    return render_to_response('vlive/cv.html')
+    return render_to_response('pml/cv.xml',  mimetype='text/xml')
 
 @login_required
 def send(request):    

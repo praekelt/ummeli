@@ -1,0 +1,34 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Edit your CV</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url edit %}/personal">
+            <TEXT>Personal details</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/contact">
+            <TEXT>Contact details</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/education">
+            <TEXT>Education details</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/certificates">
+            <TEXT>Certificates</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/workExperiences">
+            <TEXT>Work experience</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/languages">
+            <TEXT>Language details</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}/references">
+            <TEXT>References</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}
