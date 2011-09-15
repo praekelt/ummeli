@@ -36,11 +36,9 @@
 <MODULE>
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
-    <LINK href="{% url index %}">
-        <TEXT>Home</TEXT>
-    </LINK>
-    </CONTAINER>
-    <CONTAINER  type="list">
+        <LINK href="{% url index %}">
+            <TEXT>Home</TEXT>
+        </LINK>
         <LINK href="{% url logout %}">
             <TEXT>Logout</TEXT>
         </LINK>
