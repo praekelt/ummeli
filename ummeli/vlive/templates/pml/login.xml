@@ -13,10 +13,7 @@
                 {% if form.errors %}
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>
                 {% endif %}
-                <LABEL>Enter Pin to sign in.</LABEL>
-                
-                <br/>
-                <TEXT position="ABOVE">Pin</TEXT>
+                <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
                 <FIELD name="password" type="text"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
@@ -25,6 +22,7 @@
                 <LINK href="{% url index %}/forgot/">
                     <TEXT>Forgotton your Pin?</TEXT>
                 </LINK>
+                <br/>
             </FORM>
         </CONTAINER>
     {% else %} 
