@@ -1,0 +1,22 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+    <CONTAINER  type="form">
+        <FORM method="GET" href="{% url login_post %}" submit_text="Submit">
+            {{ form.as_pml }}
+            <FIELD type='hidden' name='form_name' value='{{form_name}}' />
+            <FIELD type='hidden' name='cancel_url' value='{{cancel_url}}' />
+        </FORM>
+        <br/>
+        <LINK href="{{cancel_url}}">
+            <TEXT>Cancel</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

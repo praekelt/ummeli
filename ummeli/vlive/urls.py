@@ -15,9 +15,12 @@ urlpatterns = patterns('',
     
     url(r'^logout$', views.logout_view, name = 'logout'),
     url(r'^edit$', views.edit, name='edit'),
-    url(r'^edit/personal$', cv_views.personal_details),
-    url(r'^edit/contact$', cv_views.contact_details),
-    url(r'^edit/education$', cv_views.education_details),
+    
+    url(r'^edit_post$', cv_views.process_edit_request_post, name='edit_post'),
+    
+    url(r'^edit/personal$', cv_views.personal_details, name='edit_personal'),
+    url(r'^edit/contact$', cv_views.contact_details, name='edit_contact'),
+    url(r'^edit/education$', cv_views.education_details, name='edit_education'),
     
     url(r'^edit/certificates/$', 
         login_required(cv_views.CertificateListView.as_view()),  

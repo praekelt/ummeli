@@ -18,36 +18,74 @@ from django.views.generic import list_detail, create_update
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
-def process_edit_request(request, model_form, page_title):
+from ummeli.vlive.views import edit as edit_view
+
+def process_edit_request(request, model_form, page_title,  cancel_url):
     cv = request.user.get_profile()
-    if request.method == 'POST':
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(reverse('edit'))
-        else:
-            form = model_form(request.POST, instance=cv)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(reverse('edit'))
+    form = model_form(instance=cv)
+    
+    form_name = ''
+    if(model_form == PersonalDetailsForm):
+        form_name = 'personal_details'
+    elif (model_form == ContactDetailsForm):
+        form_name = 'contact_details'
     else:
-        form = model_form(instance=cv)
+        form_name = 'education_details'
         
-    return render_to_response('vlive/edit_details.html', 
+    return render_to_response('pml/edit_details.xml', 
                             {'form': form, 'page_title': page_title,
-                            'method': 'post'},
-                            context_instance=RequestContext(request))
+                            'method': 'post',  'cancel_url': cancel_url, 
+                            'form_name': form_name},
+                            context_instance = RequestContext(request), 
+                            mimetype = 'text/xml')
+
+def process_edit_request_post(request):
+    cv = request.user.get_profile()
+    
+    form_name = request.GET.form_name
+    cancel_url = request.GET.cancel_url
+    
+    model_form = None
+    page_title = None
+    
+    if(form_name == 'personal_details'):
+        model_form = PersonalDetailsForm
+        page_title = 'personal details'
+    elif(form_name == 'contact_details'):
+        model_form = ContactDetailsForm
+        page_title = 'contact details'
+    else:
+        model_form = EducationDetailsForm
+        page_title = 'education details'
+        
+    form = model_form(request.GET, instance=cv)
+    if form.is_valid():
+        form.save()
+        return edit_view(request)
+        
+    return render_to_response('pml/edit_details.xml', 
+                            {'form': form, 'page_title': page_title,
+                            'method': 'post',  'cancel_url': cancel_url},
+                            context_instance = RequestContext(request), 
+                            mimetype = 'text/xml')
     
 @login_required
 def personal_details(request):
-    return process_edit_request(request, PersonalDetailsForm, 'personal details')
+    return process_edit_request(request, PersonalDetailsForm, 
+                                                'personal details', 
+                                                reverse('edit_personal'))
 
 @login_required
 def contact_details(request):
-    return process_edit_request(request, ContactDetailsForm, 'contact details')
+    return process_edit_request(request, ContactDetailsForm, 
+                                                'contact details', 
+                                                reverse('edit_contact'))
 
 @login_required
 def education_details(request):
-    return process_edit_request(request, EducationDetailsForm, 'education details')
+    return process_edit_request(request, EducationDetailsForm, 
+                                                'education details',  
+                                                reverse('edit_education'))
 
 class CertificateListView(ListView):
     template_name = 'vlive/list_objects.html'

@@ -14,7 +14,7 @@
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>
                 {% endif %}
                 <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
-                <FIELD name="password" type="text"/>
+                <FIELD name="password" type="password"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
                 
