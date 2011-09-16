@@ -24,6 +24,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
+@cache_control(no_cache=True)
 def render_to_login(request,  form,  redirect_to,  template_name,  
                                 current_app = None, 
                                 extra_context = None, 
@@ -44,6 +45,7 @@ def render_to_login(request,  form,  redirect_to,  template_name,
                               , context_instance=RequestContext(request, current_app=current_app))
 
 @csrf_protect
+@cache_control(no_cache=True)
 def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
@@ -90,6 +92,7 @@ def login_post(request,  template_name = 'pml/login.xml',
     return render_to_login(request,  form,  redirect_to,  template_name)
 
 @csrf_protect
+@cache_control(no_cache=True)
 def register(request,  template_name = 'pml/register.xml'):
     form = UserCreationForm()
     
@@ -124,6 +127,7 @@ def logout_view(request):
     return login(request)
     
 @login_required
+@cache_control(no_cache=True)
 def index(request):    
     return render_to_response('pml/index.xml',  mimetype='text/xml')
     
