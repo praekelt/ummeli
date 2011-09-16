@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.cache import cache_control
 
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
@@ -22,6 +23,7 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from ummeli.vlive.views import edit as edit_view
 
 @csrf_protect
+@cache_control(no_cache=True)
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
     form = model_form(instance=cv)
@@ -41,6 +43,7 @@ def process_edit_request(request, model_form, page_title):
                             mimetype = 'text/xml')
 
 @csrf_protect
+@cache_control(no_cache=True)
 def process_edit_request_post(request):
     cv = request.user.get_profile()
     
@@ -71,16 +74,19 @@ def process_edit_request_post(request):
                             mimetype = 'text/xml')
     
 @login_required
+@cache_control(no_cache=True)
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 
                                                 'personal details')
 
 @login_required
+@cache_control(no_cache=True)
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm, 
                                                 'contact details')
 
 @login_required
+@cache_control(no_cache=True)
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 
                                                 'education details')
