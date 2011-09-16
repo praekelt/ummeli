@@ -15,7 +15,7 @@
         </FORM>
     </CONTAINER>
     <CONTAINER  type="list">
-        <LINK href="{{cancel_url}}">
+        <LINK href="{% url edit %}">
             <TEXT>Cancel</TEXT>
         </LINK>
     </CONTAINER>

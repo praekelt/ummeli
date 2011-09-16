@@ -22,7 +22,7 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from ummeli.vlive.views import edit as edit_view
 
 @csrf_protect
-def process_edit_request(request, model_form, page_title,  cancel_url):
+def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
     form = model_form(instance=cv)
     
@@ -36,8 +36,7 @@ def process_edit_request(request, model_form, page_title,  cancel_url):
         
     return render_to_response('pml/edit_details.xml', 
                             {'form': form, 'page_title': page_title,
-                            'method': 'post',  'cancel_url': cancel_url, 
-                            'form_name': form_name},
+                            'method': 'post', 'form_name': form_name},
                             context_instance = RequestContext(request), 
                             mimetype = 'text/xml')
 
@@ -46,7 +45,6 @@ def process_edit_request_post(request):
     cv = request.user.get_profile()
     
     form_name = request.GET.get('form_name', None)
-    cancel_url = request.GET.get('cancel_url',  None)
     
     model_form = None
     page_title = None
@@ -68,28 +66,24 @@ def process_edit_request_post(request):
         return edit_view(request)
         
     return render_to_response('pml/edit_details.xml', 
-                            {'form': form, 'page_title': page_title, 
-                            'cancel_url': cancel_url},
+                            {'form': form, 'page_title': page_title},
                             context_instance = RequestContext(request), 
                             mimetype = 'text/xml')
     
 @login_required
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 
-                                                'personal details', 
-                                                reverse('edit_personal'))
+                                                'personal details')
 
 @login_required
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm, 
-                                                'contact details', 
-                                                reverse('edit_contact'))
+                                                'contact details')
 
 @login_required
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 
-                                                'education details',  
-                                                reverse('edit_education'))
+                                                'education details')
 
 class CertificateListView(ListView):
     template_name = 'vlive/list_objects.html'
