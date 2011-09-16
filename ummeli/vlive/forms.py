@@ -15,7 +15,7 @@ class PMLModelForm(ModelForm):
                       % {
                       'label_name' : conditional_escape(force_unicode(bf.label)),
                       'field_name' : bf.html_name, 
-                      'field_value' : bf.value()  if bf.value() == 'None'  else '' })
+                      'field_value' : bf.value()  if bf.value() != None  else '' })
         return mark_safe(u'\n'.join(output))
 
 class PersonalDetailsForm(PMLModelForm):
