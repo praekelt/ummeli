@@ -36,7 +36,7 @@
 <MODULE>
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
-        <LINK href="{% url index %}">
+        <LINK href="{% url home %}">
             <TEXT>Home</TEXT>
         </LINK>
         <LINK href="{% url logout %}">
