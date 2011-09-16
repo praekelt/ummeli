@@ -11,10 +11,11 @@ class PMLModelForm(ModelForm):
         output = []
         for name,  field in self.fields.items():
             bf = BoundField(self, field, name)
-            output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text"/><br/>'
+            output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" value="%(field_value)s"/><br/>'
                       % {
                       'label_name' : conditional_escape(force_unicode(bf.label)),
-                      'field_name' : bf.html_name})
+                      'field_name' : bf.html_name, 
+                      'field_value' : bf.value()})
         return mark_safe(u'\n'.join(output))
 
 class PersonalDetailsForm(PMLModelForm):
