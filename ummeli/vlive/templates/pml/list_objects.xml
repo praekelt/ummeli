@@ -1,0 +1,27 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+    <CONTAINER  type="list">
+        {% for item in object_list %}
+            <LINK href="{% url edit %}/{{list_name}}/{{ item.pk }}">
+                <TEXT>{{ item }}</TEXT>
+            </LINK>
+        {% endfor %}
+    </CONTAINER>
+    <br/>
+    <CONTAINER  type="list">
+        <LINK href="{% url edit %}/{{list_name}}/new">
+            <TEXT> + Add new</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

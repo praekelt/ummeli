@@ -92,7 +92,7 @@ def education_details(request):
                                                 'education details')
 
 class CertificateListView(ListView):
-    template_name = 'vlive/list_objects.html'
+    template_name = 'pml/list_objects.xml'
     
     def get_context_data(self, **kwargs):
         context = super(CertificateListView, self).get_context_data(**kwargs)
@@ -103,9 +103,14 @@ class CertificateListView(ListView):
     def get_queryset(self):
         return self.request.user.get_profile().certificates.all()
         
+    def render_to_response(self, context, **kwargs):
+        return super(CertificateListView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
+        
 class CertificateEditView(UpdateView):
     model = Certificate
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
+    form_class = CertificateForm
     
     def get_success_url(self):
         return reverse("certificate_list")
@@ -116,10 +121,15 @@ class CertificateEditView(UpdateView):
         context['page_title'] = 'certificate'
         context['cancel_url'] = reverse("certificate_list")
         return context
+        
+    def render_to_response(self, context, **kwargs):
+        return super(CertificateEditView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
     
 class CertificateCreateView(CreateView):
     model = Certificate
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
+    form_class = CertificateForm
     
     def get_success_url(self):
         return reverse("certificate_list")
@@ -135,10 +145,14 @@ class CertificateCreateView(CreateView):
         new_cert = form.save()
         self.request.user.get_profile().certificates.add(new_cert)
         return HttpResponseRedirect(self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(CertificateCreateView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
 
 class CertificateDeleteView(DeleteView):
     model = Certificate
-    template_name = 'vlive/delete.html'
+    template_name = 'pml/delete.xml'
     
     def get_success_url(self):
         return reverse("certificate_list")
@@ -148,7 +162,10 @@ class CertificateDeleteView(DeleteView):
         context['list_name'] = 'certificates'
         context['cancel_url'] = reverse("certificate_list")
         return context
-        
+    
+    def render_to_response(self, context, **kwargs):
+        return super(CertificateDeleteView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
         
 class WorkExperienceListView(ListView):
     template_name = 'vlive/list_objects.html'
