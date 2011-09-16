@@ -22,6 +22,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_protect
 
+from django.views.decorators.cache import cache_control
+
 def render_to_login(request,  form,  redirect_to,  template_name,  
                                 current_app = None, 
                                 extra_context = None, 
@@ -130,6 +132,7 @@ def home(request):
     return render_to_response('pml/index.xml',  mimetype='text/xml')
 
 @login_required
+@cache_control(no_cache=True)
 def edit(request):    
     return render_to_response('pml/cv.xml',  mimetype='text/xml')
 
