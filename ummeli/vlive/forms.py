@@ -11,7 +11,7 @@ class PMLModelForm(ModelForm):
         output = []
         for name,  field in self.fields.items():
             bf = BoundField(self, field, name)
-            output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text"/>'
+            output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text"/><br/>'
                       % {
                       'label_name' : conditional_escape(force_unicode(bf.label)),
                       'field_name' : bf.html_name})
