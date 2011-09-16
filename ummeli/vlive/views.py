@@ -128,6 +128,7 @@ def index(request):
     return render_to_response('pml/index.xml',  mimetype='text/xml')
     
 @login_required
+@cache_control(no_cache=True)
 def home(request):    
     return render_to_response('pml/index.xml',  mimetype='text/xml')
 
