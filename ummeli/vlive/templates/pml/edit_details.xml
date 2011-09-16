@@ -13,7 +13,8 @@
             <FIELD type='hidden' name='form_name' value='{{form_name}}' />
             <FIELD type='hidden' name='cancel_url' value='{{cancel_url}}' />
         </FORM>
-        <br/>
+    </CONTAINER>
+    <CONTAINER  type="list">
         <LINK href="{{cancel_url}}">
             <TEXT>Cancel</TEXT>
         </LINK>

@@ -17,13 +17,12 @@
                 <FIELD name="password" type="password"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
-                
-                <br/>
-                <LINK href="{% url index %}/forgot/">
-                    <TEXT>Forgotton your Pin?</TEXT>
-                </LINK>
-                <br/>
             </FORM>
+        </CONTAINER>
+        <CONTAINER type="list">
+            <LINK href="{% url index %}/forgot/">
+                <TEXT>Forgotton your Pin?</TEXT>
+            </LINK>
         </CONTAINER>
     {% else %} 
         <CONTAINER type="list">
