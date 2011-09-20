@@ -45,18 +45,21 @@ def process_edit_request(request, model_form, page_title):
     
 @login_required
 @cache_control(no_cache=True)
+@csrf_protect
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 
                                                 'personal details')
 
 @login_required
 @cache_control(no_cache=True)
+@csrf_protect
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm, 
                                                 'contact details')
 
 @login_required
 @cache_control(no_cache=True)
+@csrf_protect
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 
                                                 'education details')
