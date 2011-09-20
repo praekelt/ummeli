@@ -4,12 +4,15 @@
     Ummeli
 {% endblock %}
 
+{% block timer %}
+<TIMER href="{{redirect_url}}" tenthsOfSecond="10" />
+{% endblock %}
+
 {% block content %}
-<TIMER href="{{redirect_url}}" tenthsOfSecond="10"/>
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Thank you</LABEL></HEADER>
     <CONTAINER  type="data">
-    <TEXT>You information has been updated.</TEXT>
+    <TEXT>Your information has been updated.</TEXT>
     </CONTAINER>
 </MODULE>
 {% endblock %}

@@ -14,6 +14,8 @@
 </PARTNER-PI>
 
 <PARTNER-BODY>
+{% block timer %}
+{% endblock %}
  <VZV-DEFAULT>
 <PARTNER-HEADER>
 <LABEL>{% block title %} Title {% endblock %}</LABEL>
