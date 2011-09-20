@@ -10,6 +10,8 @@
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Save">
             {{ form.as_pml }}
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
     </CONTAINER>
     <CONTAINER  type="list">
