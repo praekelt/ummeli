@@ -8,25 +8,25 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Edit your CV</LABEL></HEADER>
     <CONTAINER  type="list">
-        <LINK href="{% url edit %}/personal">
+        <LINK href="{% url edit_personal %}">
             <TEXT>Personal details</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/contact">
+        <LINK href="{% url edit_contact %}">
             <TEXT>Contact details</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/education">
+        <LINK href="{% url edit_education %}">
             <TEXT>Education details</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/certificates">
+        <LINK href="{% url certificate_list %}">
             <TEXT>Certificates</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/workExperiences">
+        <LINK href="{% url workExperience_list %}">
             <TEXT>Work experience</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/languages">
+        <LINK href="{% url language_list %}">
             <TEXT>Language details</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/references">
+        <LINK href="{% url reference_list %}">
             <TEXT>References</TEXT>
         </LINK>
     </CONTAINER>

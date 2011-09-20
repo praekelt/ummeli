@@ -16,7 +16,7 @@
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">
-        <LINK href="{% url edit %}/{{list_name}}/new">
+        <LINK href="{% url edit %}/{{list_name}}/new/">
             <TEXT> + Add new</TEXT>
         </LINK>
         <LINK href="{% url edit %}">
