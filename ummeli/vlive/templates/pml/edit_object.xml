@@ -8,7 +8,7 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
     <CONTAINER  type="form">
-        <FORM method="POST" href="{% url edit_post %}" submit_text="Save">
+        <FORM method="POST" href="{{request.path}}" submit_text="Save">
             {{ form.as_pml }}
         </FORM>
     </CONTAINER>

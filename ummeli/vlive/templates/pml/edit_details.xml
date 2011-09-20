@@ -8,9 +8,10 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
     <CONTAINER  type="form">
-        <FORM method="POST" href="{% url edit_post %}" submit_text="Submit">
+        <FORM method="POST" href="{{request.path}}" submit_text="Submit">
             {{ form.as_pml }}
             <FIELD type='hidden' name='form_name' value='{{form_name}}' />
+            <FIELD type='hidden' name='_action' value='POST' />
         </FORM>
     </CONTAINER>
     <CONTAINER  type="list">

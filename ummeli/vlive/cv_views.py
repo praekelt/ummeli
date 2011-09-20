@@ -26,51 +26,21 @@ from ummeli.vlive.views import edit as edit_view
 @cache_control(no_cache=True)
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
-    form = model_form(instance=cv)
-    
-    form_name = ''
-    if(model_form == PersonalDetailsForm):
-        form_name = 'personal_details'
-    elif (model_form == ContactDetailsForm):
-        form_name = 'contact_details'
+    if request.method == 'POST':
+        cancel = request.POST.get('cancel', None)
+        if cancel:
+            return edit_view(request)
+        else:
+            form = model_form(request.POST, instance=cv)
+            if form.is_valid():
+                form.save()
+                return edit_view(request)
     else:
-        form_name = 'education_details'
+        form = model_form(instance=cv)
         
-    return render_to_response('pml/edit_details.xml', 
-                            {'form': form, 'page_title': page_title,
-                            'method': 'post', 'form_name': form_name},
-                            context_instance = RequestContext(request), 
-                            mimetype = 'text/xml')
-
-@csrf_protect
-@cache_control(no_cache=True)
-def process_edit_request_post(request):
-    cv = request.user.get_profile()
-    
-    form_name = request.GET.get('form_name', None)
-    
-    model_form = None
-    page_title = None
-    
-    if(form_name == 'personal_details'):
-        model_form = PersonalDetailsForm
-        page_title = 'personal details'
-    elif(form_name == 'contact_details'):
-        model_form = ContactDetailsForm
-        page_title = 'contact details'
-    else:
-        model_form = EducationDetailsForm
-        page_title = 'education details'
-        
-    form = model_form(request.GET, instance=cv)
-    
-    if form.is_valid():
-        form.save()
-        return edit_view(request)
-        
-    return render_to_response('pml/edit_details.xml', 
+    return render_to_response('pml/edit_details.xml',
                             {'form': form, 'page_title': page_title},
-                            context_instance = RequestContext(request), 
+                            context_instance=RequestContext(request), 
                             mimetype = 'text/xml')
     
 @login_required
