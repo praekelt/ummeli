@@ -18,7 +18,7 @@
         <LINK href="{{cancel_url}}">
             <TEXT>Cancel</TEXT>
         </LINK>
-        <LINK href="{% url edit %}/{{list_name}}/delete/{{ object.id }}">
+        <LINK href="{% url edit %}/{{list_name}}/delete/{{ object.id }}/">
             <TEXT>Delete</TEXT>
         </LINK>
     </CONTAINER>

@@ -9,7 +9,7 @@
     <HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
     <CONTAINER  type="list">
         {% for item in object_list %}
-            <LINK href="{% url edit %}/{{list_name}}/{{ item.pk }}">
+            <LINK href="{% url edit %}/{{list_name}}/{{ item.pk }}/">
                 <TEXT>{{ item }}</TEXT>
             </LINK>
         {% endfor %}
