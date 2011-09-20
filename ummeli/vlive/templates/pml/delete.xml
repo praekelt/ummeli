@@ -9,9 +9,11 @@
     <HEADER><LABEL>Confirm delete</LABEL></HEADER>
     <CONTAINER  type="form">
         <TEXT>Are you sure you want to delete {{object}}?</TEXT>
-        <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <FORM method="POST" href="{{request.path}}" submit_text="Delete">
             {{ form.as_pml }}
             <FIELD type='hidden' name='submit' value='Delete' />
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
     </CONTAINER>
     <CONTAINER  type="list">
