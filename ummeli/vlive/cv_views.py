@@ -41,6 +41,12 @@ def process_edit_request(request, model_form, page_title):
                             {'form': form, 'page_title': page_title},
                             context_instance=RequestContext(request), 
                             mimetype = 'text/xml')
+                            
+def redirect_pml(request,  redirect_url):
+    return render_to_response('pml/redirect.xml',
+                              {'redirect_url': redirect_url}, 
+                            context_instance=RequestContext(request), 
+                            mimetype = 'text/xml')
     
 @login_required
 @cache_control(no_cache=True)
@@ -95,8 +101,9 @@ class CertificateEditView(UpdateView):
         return super(CertificateEditView, self).render_to_response(context,
                         content_type='text/xml', **kwargs)
                         
-    def form_valid(self):
-        return CertificateListView.as_view()
+    def form_valid(self, form):
+        form.save()
+        return redirect_pml(self.request,  self.get_success_url())
     
 class CertificateCreateView(CreateView):
     model = Certificate
@@ -116,7 +123,7 @@ class CertificateCreateView(CreateView):
     def form_valid(self, form):
         new_cert = form.save()
         self.request.user.get_profile().certificates.add(new_cert)
-        return CertificateListView.as_view()
+        return redirect_pml(self.request,  self.get_success_url())
         
     def render_to_response(self, context, **kwargs):
         return super(CertificateCreateView, self).render_to_response(context,
@@ -139,8 +146,8 @@ class CertificateDeleteView(DeleteView):
         return super(CertificateDeleteView, self).render_to_response(context,
                         content_type='text/xml', **kwargs)
                         
-    def form_valid(self):
-        return CertificateListView.as_view()
+    def form_valid(self, form):
+        return redirect_pml(self.request,  self.get_success_url())
         
 class WorkExperienceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -169,8 +176,9 @@ class WorkExperienceEditView(UpdateView):
         context['cancel_url'] = reverse("workExperience_list")
         return context
     
-    def form_valid(self):
-        return WorkExperienceListView.as_view()
+    def form_valid(self, form):
+        form.save()
+        return redirect_pml(self.request,  self.get_success_url())
     
 class WorkExperienceCreateView(CreateView):
     model = WorkExperience
@@ -189,7 +197,7 @@ class WorkExperienceCreateView(CreateView):
     def form_valid(self, form):
         new_workExperience = form.save()
         self.request.user.get_profile().workExperiences.add(new_workExperience)
-        return WorkExperienceListView.as_view()
+        return redirect_pml(self.request,  self.get_success_url())
 
 class WorkExperienceDeleteView(DeleteView):
     model = WorkExperience
@@ -204,8 +212,8 @@ class WorkExperienceDeleteView(DeleteView):
         context['cancel_url'] = reverse("workExperience_list")
         return context
         
-    def form_valid(self):
-        return WorkExperienceListView.as_view()
+    def form_valid(self, form):
+        return redirect_pml(self.request,  self.get_success_url())
         
 class LanguageListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -234,8 +242,9 @@ class LanguageEditView(UpdateView):
         context['cancel_url'] = reverse("language_list")
         return context
         
-    def form_valid(self):
-        return LanguageListView.as_view()
+    def form_valid(self, form):
+        form.save()
+        return redirect_pml(self.request,  self.get_success_url())
     
     
 class LanguageCreateView(CreateView):
@@ -255,7 +264,7 @@ class LanguageCreateView(CreateView):
     def form_valid(self, form):
         new_language = form.save()
         self.request.user.get_profile().languages.add(new_language)
-        return LanguageListView.as_view()
+        return redirect_pml(self.request,  self.get_success_url())
 
 
 class LanguageDeleteView(DeleteView):
@@ -271,8 +280,8 @@ class LanguageDeleteView(DeleteView):
         context['cancel_url'] = reverse("language_list")
         return context
         
-    def form_valid(self):
-        return LanguageListView.as_view()
+    def form_valid(self, form):
+        return redirect_pml(self.request,  self.get_success_url())
         
 class ReferenceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -301,8 +310,9 @@ class ReferenceEditView(UpdateView):
         context['cancel_url'] = reverse("reference_list")
         return context
         
-    def form_valid(self):
-        return ReferenceListView.as_view()
+    def form_valid(self, form):
+        form.save()
+        return redirect_pml(self.request,  self.get_success_url())
     
     
 class ReferenceCreateView(CreateView):
@@ -322,7 +332,7 @@ class ReferenceCreateView(CreateView):
     def form_valid(self, form):
         new_reference = form.save()
         self.request.user.get_profile().references.add(new_reference)
-        return ReferenceListView.as_view()
+        return redirect_pml(self.request,  self.get_success_url())
 
 
 class ReferenceDeleteView(DeleteView):
@@ -338,5 +348,5 @@ class ReferenceDeleteView(DeleteView):
         context['cancel_url'] = reverse("reference_list")
         return context
         
-    def form_valid(self):
-        return ReferenceListView.as_view()
+    def form_valid(self, form):
+        return redirect_pml(self.request,  self.get_success_url())

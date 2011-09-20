@@ -1,0 +1,11 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<TIMER 
+    href="{{redirect_url}}" 
+    tenthsOfSecond=""/>
+{% endblock %}
