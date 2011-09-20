@@ -7,5 +7,5 @@
 {% block content %}
 <TIMER 
     href="{{redirect_url}}" 
-    tenthsOfSecond=""/>
+    tenthsOfSecond="0"/>
 {% endblock %}
