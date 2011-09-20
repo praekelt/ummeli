@@ -94,6 +94,9 @@ class CertificateEditView(UpdateView):
     def render_to_response(self, context, **kwargs):
         return super(CertificateEditView, self).render_to_response(context,
                         content_type='text/xml', **kwargs)
+                        
+    def form_valid(self):
+        return CertificateListView.as_view()
     
 class CertificateCreateView(CreateView):
     model = Certificate
@@ -113,7 +116,7 @@ class CertificateCreateView(CreateView):
     def form_valid(self, form):
         new_cert = form.save()
         self.request.user.get_profile().certificates.add(new_cert)
-        return HttpResponseRedirect(self.get_success_url())
+        return CertificateListView.as_view()
         
     def render_to_response(self, context, **kwargs):
         return super(CertificateCreateView, self).render_to_response(context,
@@ -135,6 +138,9 @@ class CertificateDeleteView(DeleteView):
     def render_to_response(self, context, **kwargs):
         return super(CertificateDeleteView, self).render_to_response(context,
                         content_type='text/xml', **kwargs)
+                        
+    def form_valid(self):
+        return CertificateListView.as_view()
         
 class WorkExperienceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -163,6 +169,8 @@ class WorkExperienceEditView(UpdateView):
         context['cancel_url'] = reverse("workExperience_list")
         return context
     
+    def form_valid(self):
+        return WorkExperienceListView.as_view()
     
 class WorkExperienceCreateView(CreateView):
     model = WorkExperience
@@ -181,8 +189,7 @@ class WorkExperienceCreateView(CreateView):
     def form_valid(self, form):
         new_workExperience = form.save()
         self.request.user.get_profile().workExperiences.add(new_workExperience)
-        return HttpResponseRedirect(self.get_success_url())
-
+        return WorkExperienceListView.as_view()
 
 class WorkExperienceDeleteView(DeleteView):
     model = WorkExperience
@@ -197,6 +204,8 @@ class WorkExperienceDeleteView(DeleteView):
         context['cancel_url'] = reverse("workExperience_list")
         return context
         
+    def form_valid(self):
+        return WorkExperienceListView.as_view()
         
 class LanguageListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -224,6 +233,9 @@ class LanguageEditView(UpdateView):
         context['page_title'] = 'language'
         context['cancel_url'] = reverse("language_list")
         return context
+        
+    def form_valid(self):
+        return LanguageListView.as_view()
     
     
 class LanguageCreateView(CreateView):
@@ -243,7 +255,7 @@ class LanguageCreateView(CreateView):
     def form_valid(self, form):
         new_language = form.save()
         self.request.user.get_profile().languages.add(new_language)
-        return HttpResponseRedirect(self.get_success_url())
+        return LanguageListView.as_view()
 
 
 class LanguageDeleteView(DeleteView):
@@ -259,6 +271,8 @@ class LanguageDeleteView(DeleteView):
         context['cancel_url'] = reverse("language_list")
         return context
         
+    def form_valid(self):
+        return LanguageListView.as_view()
         
 class ReferenceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -272,7 +286,7 @@ class ReferenceListView(ListView):
     def get_queryset(self):
         return self.request.user.get_profile().references.all()
         
-        
+    
 class ReferenceEditView(UpdateView):
     model = Reference
     template_name = 'vlive/edit_object.html'
@@ -286,6 +300,9 @@ class ReferenceEditView(UpdateView):
         context['page_title'] = 'reference'
         context['cancel_url'] = reverse("reference_list")
         return context
+        
+    def form_valid(self):
+        return ReferenceListView.as_view()
     
     
 class ReferenceCreateView(CreateView):
@@ -305,7 +322,7 @@ class ReferenceCreateView(CreateView):
     def form_valid(self, form):
         new_reference = form.save()
         self.request.user.get_profile().references.add(new_reference)
-        return HttpResponseRedirect(self.get_success_url())
+        return ReferenceListView.as_view()
 
 
 class ReferenceDeleteView(DeleteView):
@@ -320,3 +337,6 @@ class ReferenceDeleteView(DeleteView):
         context['list_name'] = 'references'
         context['cancel_url'] = reverse("reference_list")
         return context
+        
+    def form_valid(self):
+        return ReferenceListView.as_view()
