@@ -22,7 +22,6 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 from ummeli.vlive.views import edit as edit_view
 
-@csrf_protect
 @cache_control(no_cache=True)
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
@@ -45,21 +44,18 @@ def process_edit_request(request, model_form, page_title):
     
 @login_required
 @cache_control(no_cache=True)
-@csrf_protect
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm, 
                                                 'personal details')
 
 @login_required
 @cache_control(no_cache=True)
-@csrf_protect
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm, 
                                                 'contact details')
 
 @login_required
 @cache_control(no_cache=True)
-@csrf_protect
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm, 
                                                 'education details')
