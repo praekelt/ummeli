@@ -240,7 +240,7 @@ class WorkExperienceDeleteView(DeleteView):
                         content_type='text/xml', **kwargs)
         
 class LanguageListView(ListView):
-    template_name = 'vlive/list_objects.html'
+    template_name = 'pml/list_objects.xml'
     
     def get_context_data(self, **kwargs):
         context = super(LanguageListView, self).get_context_data(**kwargs)
@@ -258,7 +258,7 @@ class LanguageListView(ListView):
         
 class LanguageEditView(UpdateView):
     model = Language
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     form_class = LanguageForm
     
     def get_success_url(self):
@@ -282,7 +282,7 @@ class LanguageEditView(UpdateView):
     
 class LanguageCreateView(CreateView):
     model = Language
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     form_class = LanguageForm
     
     def get_success_url(self):
@@ -307,7 +307,7 @@ class LanguageCreateView(CreateView):
 
 class LanguageDeleteView(DeleteView):
     model = Language
-    template_name = 'vlive/delete.html'
+    template_name = 'pml/delete.xml'
     
     def get_success_url(self):
         return reverse("language_list")
@@ -326,7 +326,7 @@ class LanguageDeleteView(DeleteView):
                         content_type='text/xml', **kwargs)
         
 class ReferenceListView(ListView):
-    template_name = 'vlive/list_objects.html'
+    template_name = 'pml/list_objects.xml'
     
     def get_context_data(self, **kwargs):
         context = super(ReferenceListView, self).get_context_data(**kwargs)
@@ -344,7 +344,7 @@ class ReferenceListView(ListView):
     
 class ReferenceEditView(UpdateView):
     model = Reference
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     form_class = ReferenceForm
     
     def get_success_url(self):
@@ -368,7 +368,7 @@ class ReferenceEditView(UpdateView):
     
 class ReferenceCreateView(CreateView):
     model = Reference
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     form_class = ReferenceForm
     
     def get_success_url(self):
@@ -393,7 +393,7 @@ class ReferenceCreateView(CreateView):
 
 class ReferenceDeleteView(DeleteView):
     model = Reference
-    template_name = 'vlive/delete.html'
+    template_name = 'pml/delete.xml'
     
     def get_success_url(self):
         return reverse("reference_list")
