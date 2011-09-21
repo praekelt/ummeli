@@ -157,7 +157,7 @@ class CertificateDeleteView(DeleteView):
         return delete_and_redirect_pml(self, request, args, kwargs)
         
 class WorkExperienceListView(ListView):
-    template_name = 'vlive/list_objects.html'
+    template_name = 'pml/list_objects.xml'
     
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceListView, self).get_context_data(**kwargs)
@@ -168,10 +168,13 @@ class WorkExperienceListView(ListView):
     def get_queryset(self):
         return self.request.user.get_profile().workExperiences.all()
         
+    def render_to_response(self, context, **kwargs):
+        return super(WorkExperienceListView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
         
 class WorkExperienceEditView(UpdateView):
     model = WorkExperience
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     
     def get_success_url(self):
         return reverse("workExperience_list")
@@ -186,10 +189,14 @@ class WorkExperienceEditView(UpdateView):
     def form_valid(self, form):
         form.save()
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(WorkExperienceEditView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
     
 class WorkExperienceCreateView(CreateView):
     model = WorkExperience
-    template_name = 'vlive/edit_object.html'
+    template_name = 'pml/edit_object.xml'
     
     def get_success_url(self):
         return reverse("workExperience_list")
@@ -205,10 +212,14 @@ class WorkExperienceCreateView(CreateView):
         new_workExperience = form.save()
         self.request.user.get_profile().workExperiences.add(new_workExperience)
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(WorkExperienceCreateView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
 
 class WorkExperienceDeleteView(DeleteView):
     model = WorkExperience
-    template_name = 'vlive/delete.html'
+    template_name = 'pml/delete.xml'
     
     def get_success_url(self):
         return reverse("workExperience_list")
@@ -222,6 +233,10 @@ class WorkExperienceDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         return delete_and_redirect_pml(self, request, args, kwargs)
         
+    def render_to_response(self, context, **kwargs):
+        return super(WorkExperienceDeleteView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
+        
 class LanguageListView(ListView):
     template_name = 'vlive/list_objects.html'
     
@@ -233,6 +248,10 @@ class LanguageListView(ListView):
         
     def get_queryset(self):
         return self.request.user.get_profile().languages.all()
+        
+    def render_to_response(self, context, **kwargs):
+        return super(LanguageListView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
         
         
 class LanguageEditView(UpdateView):
@@ -252,6 +271,10 @@ class LanguageEditView(UpdateView):
     def form_valid(self, form):
         form.save()
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(LanguageEditView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
     
     
 class LanguageCreateView(CreateView):
@@ -272,6 +295,10 @@ class LanguageCreateView(CreateView):
         new_language = form.save()
         self.request.user.get_profile().languages.add(new_language)
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(LanguageCreateView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
 
 
 class LanguageDeleteView(DeleteView):
@@ -290,6 +317,10 @@ class LanguageDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         return delete_and_redirect_pml(self, request, args, kwargs)
         
+    def render_to_response(self, context, **kwargs):
+        return super(LanguageDeleteView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
+        
 class ReferenceListView(ListView):
     template_name = 'vlive/list_objects.html'
     
@@ -301,6 +332,10 @@ class ReferenceListView(ListView):
         
     def get_queryset(self):
         return self.request.user.get_profile().references.all()
+        
+    def render_to_response(self, context, **kwargs):
+        return super(ReferenceListView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
         
     
 class ReferenceEditView(UpdateView):
@@ -320,6 +355,10 @@ class ReferenceEditView(UpdateView):
     def form_valid(self, form):
         form.save()
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(ReferenceEditView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
     
     
 class ReferenceCreateView(CreateView):
@@ -340,6 +379,10 @@ class ReferenceCreateView(CreateView):
         new_reference = form.save()
         self.request.user.get_profile().references.add(new_reference)
         return redirect_pml(self.request,  self.get_success_url())
+        
+    def render_to_response(self, context, **kwargs):
+        return super(ReferenceCreateView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
 
 
 class ReferenceDeleteView(DeleteView):
@@ -357,3 +400,7 @@ class ReferenceDeleteView(DeleteView):
         
     def delete(self, request, *args, **kwargs):
         return delete_and_redirect_pml(self, request, args, kwargs)
+        
+    def render_to_response(self, context, **kwargs):
+        return super(ReferenceDeleteView, self).render_to_response(context,
+                        content_type='text/xml', **kwargs)
