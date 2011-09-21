@@ -47,7 +47,12 @@ def redirect_pml(request,  redirect_url):
                               {'redirect_url': redirect_url}, 
                             context_instance=RequestContext(request), 
                             mimetype = 'text/xml')
-    
+                            
+def delete_and_redirect_pml(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect_pml(self.request,  self.get_success_url())
+        
 @login_required
 @cache_control(no_cache=True)
 def personal_details(request):
@@ -146,8 +151,8 @@ class CertificateDeleteView(DeleteView):
         return super(CertificateDeleteView, self).render_to_response(context,
                         content_type='text/xml', **kwargs)
                         
-    def form_valid(self, form):
-        return redirect_pml(self.request,  self.get_success_url())
+    def delete(self, request, *args, **kwargs):
+        return delete_and_redirect_pml(self, request, args, kwargs)
         
 class WorkExperienceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -212,8 +217,8 @@ class WorkExperienceDeleteView(DeleteView):
         context['cancel_url'] = reverse("workExperience_list")
         return context
         
-    def form_valid(self, form):
-        return redirect_pml(self.request,  self.get_success_url())
+    def delete(self, request, *args, **kwargs):
+        return delete_and_redirect_pml(self, request, args, kwargs)
         
 class LanguageListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -280,8 +285,8 @@ class LanguageDeleteView(DeleteView):
         context['cancel_url'] = reverse("language_list")
         return context
         
-    def form_valid(self, form):
-        return redirect_pml(self.request,  self.get_success_url())
+    def delete(self, request, *args, **kwargs):
+        return delete_and_redirect_pml(self, request, args, kwargs)
         
 class ReferenceListView(ListView):
     template_name = 'vlive/list_objects.html'
@@ -348,5 +353,5 @@ class ReferenceDeleteView(DeleteView):
         context['cancel_url'] = reverse("reference_list")
         return context
         
-    def form_valid(self, form):
-        return redirect_pml(self.request,  self.get_success_url())
+    def delete(self, request, *args, **kwargs):
+        return delete_and_redirect_pml(self, request, args, kwargs)

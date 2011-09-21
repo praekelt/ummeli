@@ -7,4 +7,3 @@ class FormActionMiddleware(object):
         if (request.GET.get('_action',  None) == 'POST'):
             request.method = "POST"
             request.POST = request.GET
-            print request.POST
