@@ -73,8 +73,8 @@ urlpatterns = patterns('',
         name='reference_delete'),
         
     url(r'^send$', views.send, name='send'),
-    url(r'^send/email$', views.send_via_email),
-    url(r'^send/fax$', views.send_via_fax),
-    url(r'^send/thanks$', views.send_thanks),
+    url(r'^send/email$', views.send_via_email, name='send_via_email'),
+    url(r'^send/fax$', views.send_via_fax, name='send_via_fax'),
+    url(r'^send/thanks$', views.send_thanks, name='send_thanks'),
     url(r'^jobs$', views.jobs, name='jobs'),
 )

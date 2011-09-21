@@ -6,17 +6,25 @@ from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
+
+def format_as_pml(self):
+    output = []
+    for name,  field in self.fields.items():
+        bf = BoundField(self, field, name)
+        output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
+                  % {
+                  'label_name' : conditional_escape(force_unicode(bf.label)),
+                  'field_name' : bf.html_name, 
+                  'field_value' : bf.value()  if bf.value() != None  else '' })
+    return mark_safe(u'\n'.join(output))
+        
 class PMLModelForm(ModelForm):
     def as_pml(self):
-        output = []
-        for name,  field in self.fields.items():
-            bf = BoundField(self, field, name)
-            output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
-                      % {
-                      'label_name' : conditional_escape(force_unicode(bf.label)),
-                      'field_name' : bf.html_name, 
-                      'field_value' : bf.value()  if bf.value() != None  else '' })
-        return mark_safe(u'\n'.join(output))
+        return format_as_pml(self)
+
+class PMLForm(Form):
+    def as_pml(self):
+        return format_as_pml(self)
 
 class PersonalDetailsForm(PMLModelForm):
     firstName = CharField(label = 'Firstname')
@@ -66,8 +74,8 @@ class ReferenceForm(PMLModelForm):
     class Meta:
         model = Reference
 
-class SendEmailForm(Form):
+class SendEmailForm(PMLForm):
     email = EmailField()
 
-class SendFaxForm(Form):
+class SendFaxForm(PMLForm):
     fax = RegexField('[0-9+]',  error_message='Please enter a valid fax number.')

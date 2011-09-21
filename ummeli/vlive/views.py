@@ -143,7 +143,7 @@ def edit(request):
 
 @login_required
 def send(request):    
-    return render_to_response('vlive/send_cv.html')
+    return render_to_response('pml/send_cv.xml',  mimetype='text/xml')
     
 def send_email(request, email_address):
     cv = request.user.get_profile()
@@ -168,49 +168,45 @@ www.praekeltfoundation.org/ummeli
     
 @login_required
 def send_via_email(request):    
-    redirect_url = ('%s/%s' % (reverse('send'),'thanks'))
     if request.method == 'POST': 
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(reverse('send'))
-            
         form = SendEmailForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             send_email(request,  email)
-            return HttpResponseRedirect(redirect_url) 
+            return send_thanks(request)
     else:
         form = SendEmailForm() 
 
-    return render_to_response('vlive/send_via.html', 
+    return render_to_response('pml/send_via.xml', 
                                             {'form': form,'via': 'Email'}, 
-                                            context_instance=RequestContext(request))
+                                            context_instance=RequestContext(request), 
+                                            mimetype='text/xml')
 
 @login_required
 def send_via_fax(request):    
-    redirect_url = ('%s/%s' % (reverse('send'),'thanks'))
     if request.method == 'POST': 
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(reverse('send'))
-            
         form = SendFaxForm(request.POST)
         if form.is_valid():
             fax = form.cleaned_data['fax']
             send_email(request,  '%s@faxfx.net' % fax.replace(' ', ''))
-            return HttpResponseRedirect(redirect_url) 
+            return send_thanks(request)
     else:
         form = SendFaxForm() 
 
-    return render_to_response('vlive/send_via.html', 
+    return render_to_response('pml/send_via.xml', 
                                             {'form': form, 'via':  'Fax'}, 
-                                            context_instance=RequestContext(request))
+                                            context_instance=RequestContext(request), 
+                                            mimetype='text/xml')
                                             
 
 @login_required
 def send_thanks(request):    
-    return render_to_response('vlive/send_thanks.html')
+    return render_to_response('pml/redirect.xml',  
+                                {'redirect_url': reverse('send'), 
+                                'redirect_time': 20, 
+                                'redirect_message': 'Thank you. Your CV will be sent shortly.'}, 
+                                mimetype='text/xml')
     
 @login_required
 def jobs(request):    
-    return render_to_response('vlive/blank.html')
+    return render_to_response('pml/blank.xml',  mimetype='text/xml')
