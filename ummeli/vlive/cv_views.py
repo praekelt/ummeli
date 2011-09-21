@@ -175,6 +175,7 @@ class WorkExperienceListView(ListView):
 class WorkExperienceEditView(UpdateView):
     model = WorkExperience
     template_name = 'pml/edit_object.xml'
+    form_class = WorkExperienceForm
     
     def get_success_url(self):
         return reverse("workExperience_list")
@@ -197,6 +198,7 @@ class WorkExperienceEditView(UpdateView):
 class WorkExperienceCreateView(CreateView):
     model = WorkExperience
     template_name = 'pml/edit_object.xml'
+    form_class = WorkExperienceForm
     
     def get_success_url(self):
         return reverse("workExperience_list")
@@ -257,6 +259,7 @@ class LanguageListView(ListView):
 class LanguageEditView(UpdateView):
     model = Language
     template_name = 'vlive/edit_object.html'
+    form_class = LanguageForm
     
     def get_success_url(self):
         return reverse("language_list")
@@ -280,6 +283,7 @@ class LanguageEditView(UpdateView):
 class LanguageCreateView(CreateView):
     model = Language
     template_name = 'vlive/edit_object.html'
+    form_class = LanguageForm
     
     def get_success_url(self):
         return reverse("language_list")
@@ -341,6 +345,7 @@ class ReferenceListView(ListView):
 class ReferenceEditView(UpdateView):
     model = Reference
     template_name = 'vlive/edit_object.html'
+    form_class = ReferenceForm
     
     def get_success_url(self):
         return reverse("reference_list")
@@ -364,6 +369,7 @@ class ReferenceEditView(UpdateView):
 class ReferenceCreateView(CreateView):
     model = Reference
     template_name = 'vlive/edit_object.html'
+    form_class = ReferenceForm
     
     def get_success_url(self):
         return reverse("reference_list")
