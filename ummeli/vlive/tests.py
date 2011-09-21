@@ -107,6 +107,8 @@ class VliveCVTestCase(TestCase):
         pass
         
     def test_edit_personal_page(self):
+        msisdn = '0123456789'
+        
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
@@ -116,13 +118,16 @@ class VliveCVTestCase(TestCase):
         
         post_data = {'firstName': 'Milton', 'gender': 'Male',  
                         '_action': 'POST'}
-        resp = self.client.get(reverse('edit_personal'), post_data)
+        resp = self.client.get(reverse('edit_personal'), post_data, 
+                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.firstName, 'Milton')
         self.assertEquals(cv.gender, 'Male')
             
     def test_edit_contact_details_page(self):
+        msisdn = '0123456789'
+        
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
@@ -132,13 +137,16 @@ class VliveCVTestCase(TestCase):
         
         post_data = {'telephoneNumber': '0123456978', 'streetName': 'Oak Rd', 
                      '_action': 'POST'}
-        resp = self.client.get(reverse('edit_contact'), post_data)
+        resp = self.client.get(reverse('edit_contact'), post_data, 
+                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.telephoneNumber, '0123456978')
         self.assertEquals(cv.streetName, 'Oak Rd')
         
     def test_edit_education_details_page(self):
+        msisdn = '0123456789'
+        
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
@@ -148,7 +156,8 @@ class VliveCVTestCase(TestCase):
         
         post_data = {'highestGrade': '12', 'highestGradeYear': 2005,
                     'school': 'Some school',  '_action': 'POST'}
-        resp = self.client.get(reverse('edit_education'), post_data)
+        resp = self.client.get(reverse('edit_education'), post_data, 
+                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.highestGrade, '12')
@@ -335,10 +344,13 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(result == None, False)
 
     def test_email(self):
+        msisdn = '0123456789'
+        
          # setup user's firstName and surname
         post_data = {'firstName': 'Test', 'surname': 'User',  
         '_action': 'POST'}
-        resp = self.client.get(reverse('edit_personal'), post_data)
+        resp = self.client.get(reverse('edit_personal'), post_data, 
+                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
                                         
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
@@ -353,25 +365,15 @@ class VliveCVTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
-        
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/send/thanks')        
-        resp = self.client.get(resp.get('Location', None))
-        self.assertEquals(resp.status_code, 200)
-        
-         # test cancel action
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('send'), 
-                                        'email'), post_data)
-        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/send')
 
     def test_fax(self):
+        msisdn = '0123456789'
+        
          # setup user's firstName and surname
         post_data = {'firstName': 'Test', 'surname': 'User', 
                      '_action': 'POST'}
-        resp = self.client.get(reverse('edit_personal'), post_data)
+        resp = self.client.get(reverse('edit_personal'), post_data, 
+                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
                                         
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
@@ -390,15 +392,3 @@ class VliveCVTestCase(TestCase):
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
         
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/send/thanks')        
-        resp = self.client.get(resp.get('Location', None))
-        self.assertEquals(resp.status_code, 200)
-        
-         # test cancel action
-        post_data = {'cancel': 'True'}
-        resp = self.client.post('%s/%s' % (reverse('send'), 
-                                        'fax'), post_data)
-        self.assertEquals(resp.status_code, 302)  # redirect to edit menu
-        self.assertEquals(resp.get('Location', None), 
-                                'http://testserver/vlive/send')
