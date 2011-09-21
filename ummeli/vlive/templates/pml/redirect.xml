@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block timer %}
-<TIMER href="{{redirect_url}}" tenthsOfSecond="10" />
+<TIMER href="{{redirect_url}}" tenthsOfSecond="{{redirect_time}}" />
 {% endblock %}
 
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Thank you</LABEL></HEADER>
     <CONTAINER  type="data">
-    <TEXT>Your information has been updated.</TEXT>
+    <TEXT>{{redirect_message}}</TEXT>
     </CONTAINER>
 </MODULE>
 {% endblock %}
