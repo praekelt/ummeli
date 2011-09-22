@@ -1,7 +1,7 @@
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
-                                            RegexField,  CharField)
+                                            RegexField,  CharField,  BooleanField)
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -11,11 +11,22 @@ def format_as_pml(self):
     output = []
     for name,  field in self.fields.items():
         bf = BoundField(self, field, name)
-        output.append('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
+        
+        field_str = '<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
+        
+        if(isinstance(field, BooleanField)):
+            field_str = '''<CHOICE-GROUP type="radio" name="%(field_name)s">
+            <TEXT>%(label_name)s</TEXT>
+            <CHOICE value="True" checked="true">Yes</CHOICE>
+            <CHOICE value="False">No</CHOICE>
+            </CHOICE-GROUP>'''
+        
+        output.append(field_str 
                   % {
                   'label_name' : conditional_escape(force_unicode(bf.label)),
                   'field_name' : bf.html_name, 
-                  'field_value' : bf.value()  if bf.value() != None  else '' })
+                  'field_value' : bf.value()  if bf.value() != None  else '' 
+                  })
     return mark_safe(u'\n'.join(output))
         
 class PMLModelForm(ModelForm):
@@ -65,7 +76,7 @@ class WorkExperienceForm(PMLModelForm):
 
 class LanguageForm(PMLModelForm):
     language = CharField(label = 'Name of language')
-    readWrite = CharField(label = 'Can you Read and Write in this language')
+    readWrite = BooleanField(label = 'Can you Read and Write in this language')
     class Meta:
         model = Language
         widgets = {'readWrite': CheckboxInput(),}
