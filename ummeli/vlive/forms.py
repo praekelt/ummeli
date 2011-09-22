@@ -1,7 +1,7 @@
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
-                                            RegexField,  CharField,  BooleanField)
+                                            RegexField,  CharField,  BooleanField,  IntegerField)
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -12,11 +12,17 @@ def format_as_pml(self):
     for name,  field in self.fields.items():
         bf = BoundField(self, field, name)
         
-        field_str = ('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
+        text_field_type = 'Text'
+        
+        if(isinstance(field, IntegerField)):
+            text_field_type = 'num'
+        
+        field_str = ('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="%(text_field_type)s" default="%(field_value)s"/><br/>'
                 % {
                   'label_name' : conditional_escape(force_unicode(bf.label)),
                   'field_name' : bf.html_name, 
-                  'field_value' : bf.value()  if bf.value() != None  else '' 
+                  'field_value' : bf.value()  if bf.value() != None  else '', 
+                  'text_field_type' : text_field_type
                   })
         if(isinstance(field, BooleanField)):
             default = bf.value()  if bf.value() != None  else ''
@@ -65,7 +71,7 @@ class ContactDetailsForm(PMLModelForm):
 
 class EducationDetailsForm(PMLModelForm):
     highestGrade = CharField(label = 'Highest grade passed',  required=False)
-    highestGradeYear = CharField(label = 'Year passed',  required=False)
+    highestGradeYear = IntegerField(label = 'Year passed',  required=False)
     school = CharField(label = 'Name of school', required=False)
     class Meta:
         model = CurriculumVitae
@@ -74,7 +80,7 @@ class EducationDetailsForm(PMLModelForm):
 class CertificateForm(PMLModelForm):
     name = CharField(label = 'Name of Certificate')
     institution = CharField(label = 'Name of institution', required=False)
-    year = CharField(label = 'Year completed', required=False)
+    year = IntegerField(label = 'Year completed', required=False)
     class Meta:
         model = Certificate
         
