@@ -12,21 +12,29 @@ def format_as_pml(self):
     for name,  field in self.fields.items():
         bf = BoundField(self, field, name)
         
-        field_str = '<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
-        
-        if(isinstance(field, BooleanField)):
-            field_str = '''<CHOICE-GROUP type="radio" name="%(field_name)s">
-            <TEXT>%(label_name)s</TEXT>
-            <CHOICE value="True" checked="true">Yes</CHOICE>
-            <CHOICE value="False">No</CHOICE>
-            </CHOICE-GROUP>'''
-        
-        output.append(field_str 
-                  % {
+        field_str = ('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="text" default="%(field_value)s"/><br/>'
+                % {
                   'label_name' : conditional_escape(force_unicode(bf.label)),
                   'field_name' : bf.html_name, 
                   'field_value' : bf.value()  if bf.value() != None  else '' 
                   })
+        if(isinstance(field, BooleanField)):
+            default = bf.value()  if bf.value() != None  else ''
+            
+            field_str = ('''<CHOICE-GROUP type="radio" name="%(field_name)s">
+            <TEXT>%(label_name)s</TEXT>
+            <CHOICE value="True" checked="%(default_true)s">Yes</CHOICE>
+            <CHOICE value="False" checked="%(default_false)s">No</CHOICE>
+            </CHOICE-GROUP>''' %
+            {
+                'default_true':  'true' if default else 'false', 
+                'default_false':  'true' if not default else 'false', 
+                'label_name' : conditional_escape(force_unicode(bf.label)),
+                'field_name' : bf.html_name, 
+                'field_value' : bf.value()  if bf.value() != None  else '' 
+            })
+        
+        output.append(field_str )
     return mark_safe(u'\n'.join(output))
         
 class PMLModelForm(ModelForm):
