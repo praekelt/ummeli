@@ -44,12 +44,12 @@ def format_as_pml(self):
             
             field_str = ('''<CHOICE-GROUP type="radio" name="%(field_name)s">
             <TEXT>%(label_name)s</TEXT>
-            <CHOICE value="True" checked="%(default_true)s">Yes</CHOICE>
-            <CHOICE value="False" checked="%(default_false)s">No</CHOICE>
+            <CHOICE value="True" %(default_true)s>Yes</CHOICE>
+            <CHOICE value="False" %(default_false)s>No</CHOICE>
             </CHOICE-GROUP>''' %
             {
-                'default_true':  'true' if default else 'false', 
-                'default_false':  'true' if not default else 'false', 
+                'default_true':  'checked="true"' if default else '', 
+                'default_false':  'checked="true"' if not default else '', 
                 'label_name' : conditional_escape(force_unicode(bf.label)),
                 'field_name' : bf.html_name, 
                 'field_value' : bf.value()  if bf.value() != None  else '' 
