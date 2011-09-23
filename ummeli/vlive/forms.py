@@ -40,6 +40,11 @@ def format_as_pml(self):
                 'field_value' : bf.value()  if bf.value() != None  else '' 
             })
         
+        if(bf.errors):
+            bf_errors = u'\n'.join([u'<TEXT position="ABOVE"><color value="red">%s</color></TEXT>' 
+                                    % conditional_escape(force_unicode(error)) for error in bf.errors])
+            output.append(mark_safe(bf_errors))
+        
         output.append(field_str )
     return mark_safe(u'\n'.join(output))
         
