@@ -7,6 +7,21 @@ from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 
+def format_errors_as_pml(self):
+    bf_errors = []
+    for name,  field in self.fields.items():
+        bf = BoundField(self, field, name)
+        
+        if(bf.errors):
+            for error in bf.errors:
+                bf_error = u'\n'.join([u'<TEXT position="ABOVE"><color value="red">%(label_name)s - %(error_message)s</color></TEXT><br/>' 
+                            % {
+                            'label_name': conditional_escape(force_unicode(bf.label)), 
+                            'error_message': conditional_escape(force_unicode(error))
+                            }])
+                bf_errors.append(mark_safe(bf_error))
+    return mark_safe(u'\n'.join(bf_errors))
+            
 def format_as_pml(self):
     output = []
     for name,  field in self.fields.items():
@@ -40,21 +55,22 @@ def format_as_pml(self):
                 'field_value' : bf.value()  if bf.value() != None  else '' 
             })
         
-        if(bf.errors):
-            bf_errors = u'\n'.join([u'<TEXT position="ABOVE">%s</TEXT>' 
-                                    % conditional_escape(force_unicode(error)) for error in bf.errors])
-            output.append(mark_safe(bf_errors))
-        
         output.append(field_str )
     return mark_safe(u'\n'.join(output))
         
 class PMLModelForm(ModelForm):
     def as_pml(self):
         return format_as_pml(self)
+        
+    def errors_as_pml(self):
+        return format_errors_as_pml(self)
 
 class PMLForm(Form):
     def as_pml(self):
         return format_as_pml(self)
+        
+    def errors_as_pml(self):
+        return format_errors_as_pml(self)
 
 class PersonalDetailsForm(PMLModelForm):
     firstName = CharField(label = 'Firstname')
