@@ -41,7 +41,7 @@ def format_as_pml(self):
             })
         
         if(bf.errors):
-            bf_errors = u'\n'.join([u'<TEXT position="ABOVE"><color value="red">%s</color></TEXT>' 
+            bf_errors = u'\n'.join([u'<TEXT position="ABOVE">%s</TEXT>' 
                                     % conditional_escape(force_unicode(error)) for error in bf.errors])
             output.append(mark_safe(bf_errors))
         
