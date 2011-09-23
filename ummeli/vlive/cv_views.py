@@ -4,7 +4,6 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
@@ -14,6 +13,7 @@ from ummeli.vlive.utils import render_to_pdf
 from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
                                                     Reference)
 
+import uuid
 from django.core import mail
 
 from django.views.generic import list_detail, create_update
@@ -44,7 +44,7 @@ def process_edit_request(request, model_form, page_title):
                             
 def redirect_pml(request,  redirect_url):
     return render_to_response('pml/redirect.xml',
-                              {'redirect_url': redirect_url, 
+                              {'redirect_url': redirect_url + '?'+ str(uuid.uuid4()), 
                               'redirect_time': 10, 
                               'redirect_message': 'Your information has been updated.'}, 
                             context_instance=RequestContext(request), 
