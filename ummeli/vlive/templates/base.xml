@@ -35,7 +35,7 @@
 
 {% block footer_links %}
 
-<MODULE>
+<MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
         <LINK href="{% url home %}">
