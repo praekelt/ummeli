@@ -1,4 +1,4 @@
-import urlparse
+import urlparse,  uuid
 from django.conf import settings
 
 from ummeli.api.models import (Certificate, Language, WorkExperience,
@@ -139,7 +139,8 @@ def home(request):
 @login_required
 @cache_control(no_cache=True)
 def edit(request):    
-    return render_to_response('pml/cv.xml',  mimetype='text/xml')
+    return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())},  
+                                                mimetype='text/xml')
 
 @login_required
 def send(request):    
