@@ -8,7 +8,7 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     <CONTAINER  type="list">
-        <LINK href="{% url edit %}">
+        <LINK href="{% url edit %}?{{uuid}}">
             <TEXT>Edit CV</TEXT>
         </LINK>
         <LINK href="{% url send %}">

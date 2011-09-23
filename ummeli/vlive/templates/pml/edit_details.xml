@@ -19,7 +19,7 @@
         </FORM>
     </CONTAINER>
     <CONTAINER  type="list">
-        <LINK href="{% url edit %}">
+        <LINK href="{% url edit %}?{{uuid}}">
             <TEXT>Cancel</TEXT>
         </LINK>
     </CONTAINER>

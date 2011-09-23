@@ -87,7 +87,8 @@ def login_post(request,  template_name = 'pml/login.xml',
         if request.session.test_cookie_worked():
             request.session.delete_test_cookie()
 
-        return render_to_response('pml/index.xml',  mimetype='text/xml')
+        return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
+                                                mimetype='text/xml')
     
     return render_to_login(request,  form,  redirect_to,  template_name)
 
@@ -129,12 +130,14 @@ def logout_view(request):
 @login_required
 @cache_control(no_cache=True)
 def index(request):    
-    return render_to_response('pml/index.xml',  mimetype='text/xml')
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
+                                                                        mimetype='text/xml')
     
 @login_required
 @cache_control(no_cache=True)
 def home(request):    
-    return render_to_response('pml/index.xml',  mimetype='text/xml')
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())},
+                                                                       mimetype='text/xml')
 
 @login_required
 @cache_control(no_cache=True)
