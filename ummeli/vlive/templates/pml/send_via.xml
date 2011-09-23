@@ -7,6 +7,9 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Send CV via {{via}}</LABEL></HEADER>
+    <CONTAINER type="data">
+    {{ form.errors_as_pml }}
+    </CONTAINER>
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Submit">
             {{ form.as_pml }}
