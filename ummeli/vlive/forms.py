@@ -111,7 +111,8 @@ class WorkExperienceForm(PMLModelForm):
 
 class LanguageForm(PMLModelForm):
     language = CharField(label = 'Name of language')
-    readWrite = BooleanField(label = 'Can you Read and Write in this language')
+    readWrite = BooleanField(label = 'Can you Read and Write in this language', 
+                                            required=False)
     class Meta:
         model = Language
         widgets = {'readWrite': CheckboxInput(),}
