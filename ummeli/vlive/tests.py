@@ -38,14 +38,16 @@ class VliveTestCase(TestCase):
         resp = self.client.get(reverse('login'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get(reverse('login_post'), 
-                                {'username': msisdn, 'password': password})
+        resp = self.client.get(reverse('login'), 
+                                {'username': msisdn, 'password': password, 
+                                '_action': 'POST'}, 
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
                                 
-        
         self.assertEquals(resp.status_code, 200)  # redirect to index
         self.assertContains(resp, 'Edit CV')
         
-        resp = self.client.get(reverse('login_post'), {'password': 'wrong_pin'},
+        resp = self.client.get(reverse('login'), 
+                               {'password': 'wrong_pin', '_action': 'POST'},
                                 HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         self.assertEquals(resp.status_code, 200)      
@@ -66,18 +68,20 @@ class VliveTestCase(TestCase):
         
         resp = self.client.get(reverse('register'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
         self.assertEquals(resp.status_code, 200)
-        print resp
+        
         self.assertContains(resp, 'Create pin for %s' % (msisdn))
         
-        resp = self.client.get(reverse('register_post'),
+        resp = self.client.get(reverse('register'),
                                 {'username': msisdn, 'password1': password, 
-                                'password2': password},  
+                                'password2': password,  '_action': 'POST'},  
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Enter Pin to sign in.')
         
-        resp = self.client.get(reverse('login_post'), 
-                                {'username': msisdn, 'password': password})
+        resp = self.client.get(reverse('login'), 
+                                {'username': msisdn, 'password': password, 
+                                '_action': 'POST'}, 
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Edit CV')
 
@@ -85,9 +89,9 @@ class VliveTestCase(TestCase):
         msisdn = '0123456789'
         password = 'password'
         
-        resp = self.client.get(reverse('register_post'), 
+        resp = self.client.get(reverse('register'), 
                                {'username': msisdn, 'password1': password, 
-                               'password2': 'wrong'}, 
+                               'password2': 'wrong',  '_action': 'POST'}, 
                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         print resp
         self.assertContains(resp, 'Pin codes don&apos;t match.')

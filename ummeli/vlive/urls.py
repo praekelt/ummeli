@@ -7,13 +7,11 @@ from django.core.urlresolvers import reverse
 urlpatterns = patterns('',
     url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
     url(r'^home$', views.home, name='home'),
-    url(r'^login$', views.login, name='login'),
-    url(r'^login_post$', views.login_post,  name='login_post'),
     
+    url(r'^login$', views.login, name='login'),    
     url(r'^register$', views.register, name='register'),
-    url(r'^register_post$', views.register_post, name='register_post'),
-    
     url(r'^logout$', views.logout_view, name = 'logout'),
+    
     url(r'^edit$', views.edit, name='edit'),
     
     url(r'^edit/personal$', cv_views.personal_details, name='edit_personal'),

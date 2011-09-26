@@ -7,7 +7,7 @@
 {% block content %}
     <MODULE backgroundColor="false">
     <CONTAINER type="form">
-        <FORM method="POST" href="{% url register_post %}" submit_text="Create pin">
+        <FORM method="POST" href="{% url register %}" submit_text="Create pin">
         {% if form.errors %}
             <TEXT class="error">Pin codes don&apos;t match.<br />
             Please try again.</TEXT>
@@ -20,6 +20,8 @@
         
         <FIELD name="next" type="hidden" value="{{next}}"/>
         <FIELD name="username" type="hidden" value="{{msisdn}}"/>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
     </CONTAINER>
 </MODULE>

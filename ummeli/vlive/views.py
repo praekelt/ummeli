@@ -44,85 +44,65 @@ def render_to_login(request,  form,  redirect_to,  template_name,
                               , mimetype='text/xml'
                               , context_instance=RequestContext(request, current_app=current_app))
 
-@csrf_protect
-@cache_control(no_cache=True)
+
 def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
     """
-    Displays the login form and handles the login action.
-    """
-    #redirect_to = request.REQUEST.get(redirect_field_name, '')
-    redirect_to = reverse('home')
-    
-    form = authentication_form(request)
+Displays the login form and handles the login action.
+"""
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+            netloc = urlparse.urlparse(redirect_to)[1]
+
+            # Use default setting if redirect_to is empty
+            if not redirect_to:
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Security check -- don't allow redirection to a different
+            # host.
+            elif netloc and netloc != request.get_host():
+                redirect_to = settings.LOGIN_REDIRECT_URL
+
+            # Okay, security checks complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
+                                                mimetype='text/xml')
+    else:
+        form = authentication_form(request)
 
     request.session.set_test_cookie()
-
-    return render_to_login(request,  form,  redirect_to,  template_name)
-
-def login_post(request,  template_name = 'pml/login.xml',  
-                        authentication_form=AuthenticationForm):
-    #redirect_to = request.REQUEST.get(redirect_field_name, '')
-    redirect_to = reverse('home')
-    
-    form = authentication_form(data=request.GET)
-    print form
-    if form.is_valid():
-        netloc = urlparse.urlparse(redirect_to)[1]
-
-        # Use default setting if redirect_to is empty
-        if not redirect_to:
-            redirect_to = settings.LOGIN_REDIRECT_URL
-
-        # Security check -- don't allow redirection to a different
-        # host.
-        elif netloc and netloc != request.get_host():
-            redirect_to = settings.LOGIN_REDIRECT_URL
-
-        # Okay, security checks complete. Log the user in.
-        auth_login(request, form.get_user())
-
-        if request.session.test_cookie_worked():
-            request.session.delete_test_cookie()
-
-        return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
-                                                mimetype='text/xml')
     
     return render_to_login(request,  form,  redirect_to,  template_name)
 
-@csrf_protect
-@cache_control(no_cache=True)
-def register(request,  template_name = 'pml/register.xml'):
-    form = UserCreationForm()
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(data = request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return login(request)
+    else:
+        form = UserCreationForm()
     
     current_site = get_current_site(request)
     
     context = {
         'form': form,
         'msisdn': request.vlive.msisdn,
+        'uuid': str(uuid.uuid4()), 
     }
-    return render_to_response(template_name, context,
+    return render_to_response('pml/register.xml', context,
                               mimetype='text/xml', 
                               context_instance=RequestContext(request))
-
-def register_post(request,  template_name = 'pml/register.xml'):
-    form = UserCreationForm(data = request.GET)
-    if form.is_valid():
-        new_user = form.save()
-        return login(request)
-    
-    current_site = get_current_site(request)
-    
-    context = {
-        'form': form,
-        'msisdn': request.vlive.msisdn,
-    }
-    return render_to_response(template_name, context,
-                              mimetype='text/xml', 
-                              context_instance=RequestContext(request))
-                              
+                             
 def logout_view(request):
     auth_logout(request)
     return login(request)
@@ -214,3 +194,4 @@ def send_thanks(request):
 @login_required
 def jobs(request):    
     return render_to_response('pml/blank.xml',  mimetype='text/xml')
+

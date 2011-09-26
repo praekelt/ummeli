@@ -9,7 +9,7 @@
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if user_exists %}
         <CONTAINER type="form">
-            <FORM method="GET" href="{% url login_post %}" submit_text="Sign In">
+            <FORM method="GET" href="{% url login %}" submit_text="Sign In">
                 {% if form.errors %}
                     <TEXT>Sign in failed.<br />Please try again.</TEXT>
                 {% endif %}
@@ -17,6 +17,8 @@
                 <FIELD name="password" type="password"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
                 <FIELD name="username" type="hidden" value="{{msisdn}}"/>
+                <FIELD type='hidden' name='_action' value='POST' />
+                <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
             </FORM>
         </CONTAINER>
         <CONTAINER type="list">
