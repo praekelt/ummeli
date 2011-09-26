@@ -7,10 +7,10 @@
     </head>
 <body>
     <div class="header">
-        <a href="{% url vlive:index %}"><img src="/static/images/ummeli-logo.gif" alt="Ummeli" /></a>
+        <a href="{% url index %}"><img src="/static/images/ummeli-logo.gif" alt="Ummeli" /></a>
     </div>
     {% block content %}
     {% endblock %}
-    <div class="footer">&copy; {% now "Y" %} {{title|default:"Ummeli"}} <a href="{% url vlive:index %}terms/">Terms</a> | <a href="{% url vlive:index %}privacy/">Privacy</a> | <a href="{% url vlive:logout %}">Logout</a></div>
+    <div class="footer">&copy; {% now "Y" %} {{title|default:"Ummeli"}} <a href="{% url index %}terms/">Terms</a> | <a href="{% url index %}privacy/">Privacy</a> | <a href="{% url logout %}">Logout</a></div>
 </body>
 </html>

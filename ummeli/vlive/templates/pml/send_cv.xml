@@ -1,0 +1,19 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Send CV</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url send_via_email %}">
+            <TEXT>via email</TEXT>
+        </LINK>
+        <LINK href="{% url send_via_fax %}">
+            <TEXT>via fax</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

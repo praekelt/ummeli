@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:vddr="http://namespaces.vodafone.com/applications/CRE#DDR"
+ xmlns:vmpml="http://namespaces.vodafone.com/applications/3PI#MPML"
+ xmlns:vsrch="http://namespaces.vodafone.com/applications/search#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://www.via.vodafone.com/schema/VZV-PARTNER.xsd">
+
+
+<PARTNER-PI>
+ <TRANSFORMER name="VZV-DEFAULT"/>
+</PARTNER-PI>
+
+<PARTNER-BODY>
+{% block timer %}
+{% endblock %}
+ <VZV-DEFAULT>
+<PARTNER-HEADER>
+<LABEL>{% block title %} Title {% endblock %}</LABEL>
+</PARTNER-HEADER>
+
+{% block banner %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block footer_links %}
+
+<MODULE backgroundColor="false" palette="MiMarine">
+    <HEADER><LABEL>Ummeli</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url home %}">
+            <TEXT>Home</TEXT>
+        </LINK>
+        <LINK href="{% url logout %}">
+            <TEXT>Logout</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+
+{% endblock %}
+
+
+</VZV-DEFAULT>
+</PARTNER-BODY>
+</VZV-PARTNER>

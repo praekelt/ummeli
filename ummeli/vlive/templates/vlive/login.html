@@ -15,14 +15,14 @@
             {{form.password}}
 
             <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
-            <input type="hidden" name="next" value="{{next}}">
-            <input type="hidden" name="username" value="{{msisdn}}">
+            <input type="hidden" name="next" value="{{next}}" />
+            <input type="hidden" name="username" value="{{msisdn}}" />
             {% csrf_token %}
 
-            <p><a href="{% url vlive:index %}forgot/">Forgotton your Pin?</a></p>
+            <p><a href="{% url index %}forgot/">Forgotton your Pin?</a></p>
         {% else %}  
             <label>Welcome to Ummeli.</label><br/>
-            <label><a href="{% url vlive:register %}">Click here to create profile.</a></label>
+            <label><a href="{% url register %}">Click here to create profile.</a></label>
         {% endif %}
     </form>
 {% endblock %}

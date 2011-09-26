@@ -1,4 +1,4 @@
-import urlparse
+import urlparse,  uuid
 from django.conf import settings
 
 from ummeli.api.models import (Certificate, Language, WorkExperience,
@@ -20,14 +20,38 @@ from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.sites.models import get_current_site
+from django.views.decorators.csrf import csrf_protect
 
-def login(request, template_name='registration/login.html',
+from django.views.decorators.cache import cache_control
+
+@cache_control(no_cache=True)
+def render_to_login(request,  form,  redirect_to,  template_name,  
+                                current_app = None, 
+                                extra_context = None, 
+                                redirect_field_name=REDIRECT_FIELD_NAME):
+    current_site = get_current_site(request)
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+        'msisdn': request.vlive.msisdn,
+        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
+    }
+    context.update(extra_context or {})
+    return render_to_response(template_name, context
+                              , mimetype='text/xml'
+                              , context_instance=RequestContext(request, current_app=current_app))
+
+
+def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
     """
-    Displays the login form and handles the login action.
-    """
+Displays the login form and handles the login action.
+"""
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
@@ -50,33 +74,21 @@ def login(request, template_name='registration/login.html',
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
-            return HttpResponseRedirect(redirect_to)
+            return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
+                                                mimetype='text/xml')
     else:
         form = authentication_form(request)
 
     request.session.set_test_cookie()
-
-    current_site = get_current_site(request)
-
-    context = {
-        'form': form,
-        redirect_field_name: redirect_to,
-        'site': current_site,
-        'site_name': current_site.name,
-        'msisdn': request.vlive.msisdn,
-        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
-    }
-    context.update(extra_context or {})
-    return render_to_response(template_name, context,
-                              context_instance=RequestContext(request, current_app=current_app))
-
+    
+    return render_to_login(request,  form,  redirect_to,  template_name)
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return HttpResponseRedirect(reverse('vlive:index'))
+            return login(request)
     else:
         form = UserCreationForm()
     
@@ -85,21 +97,37 @@ def register(request):
     context = {
         'form': form,
         'msisdn': request.vlive.msisdn,
+        'uuid': str(uuid.uuid4()), 
     }
-    return render_to_response('vlive/register.html', context,
+    return render_to_response('pml/register.xml', context,
+                              mimetype='text/xml', 
                               context_instance=RequestContext(request))
+                             
+def logout_view(request):
+    auth_logout(request)
+    return login(request)
     
 @login_required
+@cache_control(no_cache=True)
 def index(request):    
-    return render_to_response('vlive/index.html')
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
+                                                                        mimetype='text/xml')
+    
+@login_required
+@cache_control(no_cache=True)
+def home(request):    
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())},
+                                                                       mimetype='text/xml')
 
 @login_required
+@cache_control(no_cache=True)
 def edit(request):    
-    return render_to_response('vlive/cv.html')
+    return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())},  
+                                                mimetype='text/xml')
 
 @login_required
 def send(request):    
-    return render_to_response('vlive/send_cv.html')
+    return render_to_response('pml/send_cv.xml',  mimetype='text/xml')
     
 def send_email(request, email_address):
     cv = request.user.get_profile()
@@ -124,49 +152,46 @@ www.praekeltfoundation.org/ummeli
     
 @login_required
 def send_via_email(request):    
-    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
     if request.method == 'POST': 
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(reverse('vlive:send'))
-            
         form = SendEmailForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             send_email(request,  email)
-            return HttpResponseRedirect(redirect_url) 
+            return send_thanks(request)
     else:
         form = SendEmailForm() 
 
-    return render_to_response('vlive/send_via.html', 
+    return render_to_response('pml/send_via.xml', 
                                             {'form': form,'via': 'Email'}, 
-                                            context_instance=RequestContext(request))
+                                            context_instance=RequestContext(request), 
+                                            mimetype='text/xml')
 
 @login_required
 def send_via_fax(request):    
-    redirect_url = ('%s/%s' % (reverse('vlive:send'),'thanks'))
     if request.method == 'POST': 
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return HttpResponseRedirect(reverse('vlive:send'))
-            
         form = SendFaxForm(request.POST)
         if form.is_valid():
             fax = form.cleaned_data['fax']
             send_email(request,  '%s@faxfx.net' % fax.replace(' ', ''))
-            return HttpResponseRedirect(redirect_url) 
+            return send_thanks(request)
     else:
         form = SendFaxForm() 
 
-    return render_to_response('vlive/send_via.html', 
+    return render_to_response('pml/send_via.xml', 
                                             {'form': form, 'via':  'Fax'}, 
-                                            context_instance=RequestContext(request))
+                                            context_instance=RequestContext(request), 
+                                            mimetype='text/xml')
                                             
 
 @login_required
 def send_thanks(request):    
-    return render_to_response('vlive/send_thanks.html')
+    return render_to_response('pml/redirect.xml',  
+                                {'redirect_url': reverse('send'), 
+                                'redirect_time': 20, 
+                                'redirect_message': 'Thank you. Your CV will be sent shortly.'}, 
+                                mimetype='text/xml')
     
 @login_required
 def jobs(request):    
-    return render_to_response('vlive/blank.html')
+    return render_to_response('pml/blank.xml',  mimetype='text/xml')
+

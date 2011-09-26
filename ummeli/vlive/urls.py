@@ -5,17 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
-    url(r'^login$', views.login, {'template_name': 'vlive/login.html'}, 
-        name='login'),
+    url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
+    url(r'^home$', views.home, name='home'),
+    
+    url(r'^login$', views.login, name='login'),    
     url(r'^register$', views.register, name='register'),
-    url(r'^logout$', 'django.contrib.auth.views.logout_then_login', 
-        {'login_url': 'login'}, 
-        name = 'logout'),
+    url(r'^logout$', views.logout_view, name = 'logout'),
+    
     url(r'^edit$', views.edit, name='edit'),
-    url(r'^edit/personal$', cv_views.personal_details),
-    url(r'^edit/contact$', cv_views.contact_details),
-    url(r'^edit/education$', cv_views.education_details),
+    
+    url(r'^edit/personal$', cv_views.personal_details, name='edit_personal'),
+    url(r'^edit/contact$', cv_views.contact_details, name='edit_contact'),
+    url(r'^edit/education$', cv_views.education_details, name='edit_education'),
     
     url(r'^edit/certificates/$', 
         login_required(cv_views.CertificateListView.as_view()),  
@@ -70,8 +71,8 @@ urlpatterns = patterns('',
         name='reference_delete'),
         
     url(r'^send$', views.send, name='send'),
-    url(r'^send/email$', views.send_via_email),
-    url(r'^send/fax$', views.send_via_fax),
-    url(r'^send/thanks$', views.send_thanks),
+    url(r'^send/email$', views.send_via_email, name='send_via_email'),
+    url(r'^send/fax$', views.send_via_fax, name='send_via_fax'),
+    url(r'^send/thanks$', views.send_thanks, name='send_thanks'),
     url(r'^jobs$', views.jobs, name='jobs'),
 )

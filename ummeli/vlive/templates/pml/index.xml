@@ -1,0 +1,22 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Welcome
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url edit %}?{{uuid}}">
+            <TEXT>Edit CV</TEXT>
+        </LINK>
+        <LINK href="{% url send %}">
+            <TEXT>Send CV</TEXT>
+        </LINK>
+        <LINK href="{% url jobs %}">
+            <TEXT>View jobs</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

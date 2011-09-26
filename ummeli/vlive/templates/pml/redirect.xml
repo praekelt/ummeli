@@ -1,0 +1,18 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block timer %}
+<TIMER href="{{redirect_url}}" tenthsOfSecond="{{redirect_time}}" />
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>Thank you</LABEL></HEADER>
+    <CONTAINER  type="data">
+    <TEXT>{{redirect_message}}</TEXT>
+    </CONTAINER>
+</MODULE>
+{% endblock %}
