@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">View jobs :: {{title}}</div>
+    <form class='standard'>
+    <div>
+        <ol>
+        {% for article in articles %}
+            <li><a href="{% url job search_id cat_id article.pk %}">{{article.date}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}</a></li>
+        {% endfor %}
+        </ol>
+        <br/>
+        <p><a href="{% url jobs_province %}/{{search_id}}/">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}

@@ -14,7 +14,7 @@
         <LINK href="{% url send %}">
             <TEXT>Send CV</TEXT>
         </LINK>
-        <LINK href="{% url jobs %}">
+        <LINK href="{% url jobs_province %}">
             <TEXT>View jobs</TEXT>
         </LINK>
     </CONTAINER>

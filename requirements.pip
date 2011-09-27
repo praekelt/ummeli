@@ -14,5 +14,7 @@ django-celery-email
 supervisor==3.0a10
 gunicorn==0.13.1
 psycopg2==2.4.1
-
+libxml2dom
+pyxml
+pytidylib
 Fabric==1.2.2

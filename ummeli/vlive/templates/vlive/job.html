@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">View jobs :: {{title}}</div>
+    <form class='standard'>
+    <div>
+            <p>{{job.date}} ::  {{job.source}}</p>
+             {{job.text}}
+        <br/>
+        <p><a href="{% url jobs search_id cat_id %}">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}

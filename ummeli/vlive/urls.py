@@ -74,5 +74,11 @@ urlpatterns = patterns('',
     url(r'^send/email$', views.send_via_email, name='send_via_email'),
     url(r'^send/fax$', views.send_via_fax, name='send_via_fax'),
     url(r'^send/thanks$', views.send_thanks, name='send_thanks'),
-    url(r'^jobs$', views.jobs, name='jobs'),
+    
+    url(r'^jobs$', views.jobs_province, name='jobs_province'),
+    url(r'^jobs/(?P<id>\d+)/$', views.jobs_list, name='jobs_list'),
+    url(r'^jobs/(?P<search_id>\d+)/(?P<id>\d+)/$', views.jobs, name='jobs'),
+    url(r'^jobs/(?P<search_id>\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/$', views.job, name='job'),
+    
+    url(r'^jobs/cron$', views.jobs_cron, name='jobs_cron'),
 )

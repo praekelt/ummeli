@@ -5,7 +5,9 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
+from ummeli.vlive import jobs_util
 
+from ummeli.vlive.models import Article,  Province,  Category
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -191,7 +193,62 @@ def send_thanks(request):
                                 'redirect_message': 'Thank you. Your CV will be sent shortly.'}, 
                                 mimetype='text/xml')
     
-@login_required
-def jobs(request):    
-    return render_to_response('pml/blank.xml',  mimetype='text/xml')
+def jobs_province(request):
+    return render_to_response('vlive/jobs_province.html', 
+                                                {'provinces': Province.objects.all()})
 
+def jobs_list(request,  id):
+    print Province.objects.get(search_id=id).job_categories.all()
+    return render_to_response('vlive/jobs_list.html',  
+                              {'categories': Province.objects.get(search_id=id).job_categories.order_by('title'), 
+                              'search_id': id})
+                              
+def jobs(request,  id,  search_id):
+    articles = Province.objects.get(search_id=search_id).job_categories.get(pk=id).articles.all()
+    return render_to_response('vlive/jobs.html',  
+                              {'articles': articles, 
+                              'search_id': search_id, 
+                              'cat_id': id})
+    
+def job(request,  id,  cat_id,  search_id):
+    return render_to_response('vlive/job.html',  
+                              {'job': Article.objects.get(pk = id), 
+                              'search_id': search_id, 
+                              'cat_id': cat_id})
+    
+def jobs_cron(request):   
+    Province.objects.all().delete()
+    Category.objects.all().delete()
+    Article.objects.all().delete()
+    
+    update_province(1,  'All')
+    update_province(2,  'Gauteng')
+    update_province(5,  'WC')
+    update_province(6,  'KZN')
+    return render_to_response('vlive/cron.html',  
+                              {'provinces': Province.objects.count(), 
+                              'categories': Category.objects.count(), 
+                              'articles': Article.objects.count()})
+                              
+    
+def update_province(id,  name):
+    cat_url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s'
+    
+    province = Province.objects.filter(search_id = id)
+    if not object:
+        province = Province.objects.create(search_id = id,  name = name)
+    else:
+        province = province.get()
+        
+    categories = jobs_util.get_links(cat_url,  id)
+    province.job_categories.clear()
+    for title,  link in categories:
+        cat = Category.objects.create(title = title)        
+        jobs_list = jobs_util.get_jobs(link)
+        for date,  source,  text in jobs_list:
+            article = Article.objects.create(date=date,  source=source,  text = text)
+            cat.articles.add(article)
+        cat.save()
+        province.job_categories.add(cat)        
+    province.save()
+    

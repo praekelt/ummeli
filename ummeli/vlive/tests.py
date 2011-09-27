@@ -6,6 +6,7 @@ from django.core import mail
 
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.api.models import Certificate
+from ummeli.vlive.models import Province,  Article,  Category
 
 import json
 import urllib
@@ -96,7 +97,22 @@ class VliveTestCase(TestCase):
         print resp
         self.assertContains(resp, 'Pin codes don&apos;t match.')
         
-
+class JobsTestCase(TestCase):
+    
+    def test_job_models(self):
+        province = Province.objects.create(search_id = 1,  name='Gauteng')        
+        cat = Category.objects.create(title='Domestic')
+        province.job_categories.add(cat)
+        
+        cat = Category.objects.create(title='Domestic')
+        
+        self.assertEquals(Province.objects.count(),  1)
+        self.assertEquals(len(province.job_categories.all()),  1)
+        
+        province.job_categories.clear()
+        self.assertEquals(len(province.job_categories.all()),  0)
+        self.assertEquals(Province.objects.count(),  1)
+        
 class VliveCVTestCase(TestCase):
     
     def setUp(self):

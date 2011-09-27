@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">View jobs</div>
+    <form class='standard'>
+    <div>
+        <ol>
+        {% for category in categories %}
+            <li><a href="{% url jobs search_id category.pk %}">{{category.title}}</a></li>
+        {% endfor %}
+        </ol>
+        <br/>
+        <p><a href="{% url jobs_province %}">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">View jobs :: {{title}}</div>
+    <form class='standard'>
+    <div>
+        <ol>
+            <li>Provinces : {{provinces}}</li>
+            <li>Categories: {{categories}}</li>
+            <li>Articles : {{articles}}</li>
+        </ol>
+        <br/>
+        <p><a href="{% url jobs_province %}">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}
