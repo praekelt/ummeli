@@ -235,7 +235,7 @@ def update_province(id,  name):
     cat_url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s'
     
     province = Province.objects.filter(search_id = id)
-    if not object:
+    if not province:
         province = Province.objects.create(search_id = id,  name = name)
     else:
         province = province.get()
