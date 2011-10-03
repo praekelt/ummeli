@@ -6,6 +6,7 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
 from ummeli.vlive import jobs_util
+from ummeli.vlive.jobs import tasks
 
 from ummeli.vlive.models import Article,  Province,  Category
     
@@ -216,6 +217,8 @@ def job(request,  id,  cat_id,  search_id):
                               'cat_id': cat_id})
     
 def jobs_cron(request):   
+    tasks.run_jobs_update.delay()
+    return render_to_response('vlive/cron.html')
     #jobs = jobs_util.get_jobs('http://www.wegotads.co.za/Employment/listings/22001/Accounts%2FFinancial/listings/601?umb=1&search_source=1')
     
     #jobs = jobs_util.get_links('http://www.wegotads.co.za/Employment/listings/22001%s?umb=1&search_source=1')
