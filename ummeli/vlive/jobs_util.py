@@ -1,45 +1,44 @@
-import urllib
-from xml.dom.ext.reader import HtmlLib
-from xml.dom import Document
-from tidylib import tidy_document as tidy
-from django.core.cache import cache
+from ummeli.vlive.jobs.parser import PageParser
 
-def get_document(url):
-    usock = urllib.urlopen(url)
-    html_str = usock.read()
-    usock.close()
+class CategoryParser(PageParser):
+    def __init__(self,  url = None,  html_str = None):
+        if url:
+            self.url = url
+            super(CategoryParser,  self).__init__(url = url % {'path': ''})
+        else:
+            super(CategoryParser,  self).__init__(html_str = html_str)
+        
+    def parse(self):
+        links = self.doc.xpath('.//n:tr/*/n:a', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+        
+        return [
+                (self.url % ('/' + ''.join(link.xpath('./@href'))), 
+                ''.join(link.xpath('./*/text()', 
+                           namespaces={'n':'http://www.w3.org/1999/xhtml'})))
+                for link in links]
+                
+class JobsParser(PageParser):
+    def parse(self):
+        rows = self.doc.xpath('.//n:tr', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+        list = []
+        for row in rows:
+            fonts = row.xpath('.//n:font', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+            if len(fonts) == 3:
+                data = [''.join(d.xpath('./text()')) for d in fonts]
+                list.append(data)    
+        return list
     
-    reader = HtmlLib.Reader()
-    s, err = tidy(html_str,  options={'output-xhtml': False,
-                                                        'doctype': 'omit', 
-                                                        'numeric-entities':1})
-                                                        
-    return reader.fromString(str(s))
-    
-def get_links(url,  id):
-    jobs_url = url % {'id': id,  'path':''}    
-    print jobs_url
-    
-    doc = get_document(jobs_url)
-    
-    table_elements = doc.getElementsByTagName("table")
-    a_elements = [v.getElementsByTagName('a')[0] for v in table_elements if v.getElementsByTagName('a')[0] .attributes.length == 1]
-    list = [(a.firstChild.firstChild.nodeValue, url % {'id': id,  'path': '/' + a.attributes.item(0).value}) for a in a_elements]
-    return list
+def get_links(url):
+    processor = CategoryParser(url = url)
+    return processor.parse()
     
 def get_jobs(url):
-    print url
-    
-    doc = get_document(url)
-    row_elements = doc.getElementsByTagName("tr")
-    font_elements = [(v.getElementsByTagName('font')[0],  
-                                v.getElementsByTagName('font')[1],  
-                                ''.join([get_text(a) for a in v.getElementsByTagName('font')[2].childNodes ])) for v in row_elements if v.getElementsByTagName('font').length == 3]
-                                
-    list = [(font[0].firstChild.nodeValue, font[1].lastChild.nodeValue,  font[2]) for font in font_elements]
-    return list
+    processor = JobsParser(url = url)
+    return processor.parse()
 
-def get_text(node):
-    if('Text Node' in str(node)):
-        return node.nodeValue
-    return ''
+def update_jobs_db():
+    # for(1,2,5,6)
+        #get cat (5 seconds delay) - CategoryParser
+            #get jobs(10 seconds delay) - JobsParser
+    #ETA: (5*4 =20s) + (40*4*10 = 1600s) = +-30mins
+    return []

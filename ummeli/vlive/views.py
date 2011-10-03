@@ -198,7 +198,6 @@ def jobs_province(request):
                                                 {'provinces': Province.objects.all()})
 
 def jobs_list(request,  id):
-    print Province.objects.get(search_id=id).job_categories.all()
     return render_to_response('vlive/jobs_list.html',  
                               {'categories': Province.objects.get(search_id=id).job_categories.order_by('title'), 
                               'search_id': id})
@@ -217,6 +216,12 @@ def job(request,  id,  cat_id,  search_id):
                               'cat_id': cat_id})
     
 def jobs_cron(request):   
+    #jobs = jobs_util.get_jobs('http://www.wegotads.co.za/Employment/listings/22001/Accounts%2FFinancial/listings/601?umb=1&search_source=1')
+    
+    #jobs = jobs_util.get_links('http://www.wegotads.co.za/Employment/listings/22001%s?umb=1&search_source=1')
+    jobs = jobs_util.get_jobs('http://www.wegotads.co.za/Employment/listings/22001/Accounts%2FFinancial/listings/601?umb=1&search_source=1')
+    return render_to_response('vlive/cron.html',  {'jobs': jobs})
+    
     Province.objects.all().delete()
     Category.objects.all().delete()
     Article.objects.all().delete()

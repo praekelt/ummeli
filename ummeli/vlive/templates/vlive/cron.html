@@ -10,6 +10,9 @@
             <li>Articles : {{articles}}</li>
         </ol>
         <br/>
+        {% for a,b,c in jobs %}
+        <p>{{a}} :: {{b}} :: {{c}}</p>
+        {% endfor %}
         <p><a href="{% url jobs_province %}">&lt;&lt; Back</a></p>
     </div>
     </form>

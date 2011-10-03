@@ -18,3 +18,4 @@ libxml2dom
 pyxml
 pytidylib
 Fabric==1.2.2
+lxml
