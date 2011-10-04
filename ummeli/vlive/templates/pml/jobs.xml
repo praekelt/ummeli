@@ -6,7 +6,7 @@
 
 {% block content %}
 <MODULE backgroundColor="false">
-    <HEADER><LABEL>View jobs :: {{title}}</LABEL></HEADER>
+    <HEADER><LABEL>{{title}}</LABEL></HEADER>
     <CONTAINER  type="list">
         {% for article in articles %}
             <LINK href="{% url job search_id cat_id article.pk %}">

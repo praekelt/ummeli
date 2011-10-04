@@ -1,0 +1,21 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>{{title}}</LABEL></HEADER>
+    <CONTAINER  type="data">
+        <TITLE>{{job.date}} ::  {{job.source}}</TITLE>
+        <p>{{job.text}}</p>
+    </CONTAINER>
+    <br/>
+    <CONTAINER  type="list">
+        <LINK href="{% url jobs search_id cat_id %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}

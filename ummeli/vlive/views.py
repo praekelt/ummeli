@@ -210,20 +210,25 @@ def jobs_list(request,  id):
 @login_required
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
-    articles = province.job_categories.get(pk=id).articles.all()
+    category = province.job_categories.get(pk=id)
+    articles = category.articles.all()
     return render_to_response('pml/jobs.xml',  
                               {'articles': articles, 
                               'search_id': search_id, 
                               'cat_id': id, 
-                              'title': province.name}, 
+                              'title':  '%s :: %s' % (province.name,  category.title)}, 
                               mimetype='text/xml')
 
 @login_required    
 def job(request,  id,  cat_id,  search_id):
-    return render_to_response('vlive/job.html',  
+    province = Province.objects.get(search_id=search_id)
+    category = Category.objects.get(id = cat_id)
+    return render_to_response('pml/job.xml',  
                               {'job': Article.objects.get(pk = id), 
                               'search_id': search_id, 
-                              'cat_id': cat_id})
+                              'cat_id': cat_id, 
+                              'title':  '%s :: %s' % (province.name,  category.title)}, 
+                              mimetype='text/xml')
     
 def jobs_cron(request):   
     tasks.run_jobs_update.delay()
