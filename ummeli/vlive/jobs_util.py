@@ -27,7 +27,7 @@ class JobsParser(PageParser):
         for row in rows:
             fonts = row.xpath('.//n:font', namespaces={'n':'http://www.w3.org/1999/xhtml'})
             if len(fonts) == 3:
-                data = [''.join(d.xpath('./text()')) for d in fonts]
+                data = [' '.join(d.xpath('./text()')) for d in fonts]
                 list.append(data)    
         print'----------------- # -------------------'
         return list
