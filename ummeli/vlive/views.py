@@ -196,8 +196,9 @@ def send_thanks(request):
 
 @login_required
 def jobs_province(request):
-    return render_to_response('vlive/jobs_province.html', 
-                                                {'provinces': Province.objects.all()})
+    return render_to_response('pml/jobs_province.xml', 
+                                                {'provinces': Province.objects.all()}, 
+                                                mimetype='text/xml')
 
 @login_required
 def jobs_list(request,  id):

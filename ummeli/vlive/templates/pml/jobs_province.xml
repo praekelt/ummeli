@@ -1,0 +1,24 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<MODULE backgroundColor="false">
+    <HEADER><LABEL>View jobs</LABEL></HEADER>
+    <CONTAINER  type="list">
+        {% for province in provinces %}
+            <LINK href="{% url jobs_list province.search_id %}">
+                <TEXT>{{province.name}}</TEXT>
+            </LINK>
+        {% endfor %}
+    </CONTAINER>
+    <br/>
+    <CONTAINER  type="list">
+        <LINK href="{% url index %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}
