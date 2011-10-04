@@ -193,23 +193,27 @@ def send_thanks(request):
                                 'redirect_time': 20, 
                                 'redirect_message': 'Thank you. Your CV will be sent shortly.'}, 
                                 mimetype='text/xml')
-    
+
+@login_required
 def jobs_province(request):
     return render_to_response('vlive/jobs_province.html', 
                                                 {'provinces': Province.objects.all()})
 
+@login_required
 def jobs_list(request,  id):
     return render_to_response('vlive/jobs_list.html',  
                               {'categories': Province.objects.get(search_id=id).job_categories.order_by('title'), 
                               'search_id': id})
-                              
+                             
+@login_required
 def jobs(request,  id,  search_id):
     articles = Province.objects.get(search_id=search_id).job_categories.get(pk=id).articles.all()
     return render_to_response('vlive/jobs.html',  
                               {'articles': articles, 
                               'search_id': search_id, 
                               'cat_id': id})
-    
+
+@login_required    
 def job(request,  id,  cat_id,  search_id):
     return render_to_response('vlive/job.html',  
                               {'job': Article.objects.get(pk = id), 
