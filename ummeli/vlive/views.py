@@ -202,9 +202,10 @@ def jobs_province(request):
 
 @login_required
 def jobs_list(request,  id):
-    return render_to_response('vlive/jobs_list.html',  
+    return render_to_response('pml/jobs_list.xml',  
                               {'categories': Province.objects.get(search_id=id).job_categories.order_by('title'), 
-                              'search_id': id})
+                              'search_id': id}, 
+                              mimetype='text/xml')
                              
 @login_required
 def jobs(request,  id,  search_id):
