@@ -209,11 +209,14 @@ def jobs_list(request,  id):
                              
 @login_required
 def jobs(request,  id,  search_id):
-    articles = Province.objects.get(search_id=search_id).job_categories.get(pk=id).articles.all()
-    return render_to_response('vlive/jobs.html',  
+    province = Province.objects.get(search_id=search_id)
+    articles = province.job_categories.get(pk=id).articles.all()
+    return render_to_response('pml/jobs.xml',  
                               {'articles': articles, 
                               'search_id': search_id, 
-                              'cat_id': id})
+                              'cat_id': id, 
+                              'title': province.name}, 
+                              mimetype='text/xml')
 
 @login_required    
 def job(request,  id,  cat_id,  search_id):
