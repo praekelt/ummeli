@@ -10,7 +10,7 @@
     <CONTAINER  type="data">
         <TITLE>{{job.date}} ::  {{job.source}}</TITLE>
         <TEXT>
-            {{ job.text|safe }}
+            {{ job.text }}
         </TEXT>
     </CONTAINER>
     <br/>
