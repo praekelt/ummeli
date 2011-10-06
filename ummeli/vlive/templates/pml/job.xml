@@ -10,6 +10,7 @@
     <CONTAINER  type="data">
         <TITLE>{{job.date}} ::  {{job.source}}</TITLE>
         <p>{{job.text}}</p>
+        <p>{{hash}}</p>
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">

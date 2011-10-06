@@ -3,18 +3,18 @@ from celery.task.sets import TaskSet
 from ummeli.vlive.jobs.parser import PageParser
 
 class CategoryParser(PageParser):
-    def __init__(self,  id,  url = None,  html_str = None):
-        self.id = id
+    def __init__(self,  search_id,  url = None,  html_str = None):
+        self.search_id = search_id
         if url:
             self.url = url
-            super(CategoryParser,  self).__init__(url = url % {'path': '',  'id': id})
+            super(CategoryParser,  self).__init__(url = url % {'path': '',  'id': search_id})
         else:
             super(CategoryParser,  self).__init__(html_str = html_str)
         
     def parse(self):
         links = self.doc.xpath('.//n:tr/*/n:a', namespaces={'n':'http://www.w3.org/1999/xhtml'})
         list = [
-                (self.url % {'path': '/' + ''.join(link.xpath('./@href')),  'id': self.id}, 
+                (self.url % {'path': '/' + ''.join(link.xpath('./@href')),  'id': self.search_id}, 
                 ''.join(link.xpath('./*/text()', 
                            namespaces={'n':'http://www.w3.org/1999/xhtml'})))
                 for link in links]
@@ -27,7 +27,6 @@ class JobsParser(PageParser):
         for row in rows:
             fonts = row.xpath('.//n:font', namespaces={'n':'http://www.w3.org/1999/xhtml'})
             if len(fonts) == 3:
-                data = [' '.join(d.xpath('./text()')) for d in fonts]
-                list.append(data)    
-        print'----------------- # -------------------'
+                data = [(' '.join(d.xpath('./text()'))).encode('ascii', 'ignore') for d in fonts]
+                list.append(data)
         return list

@@ -1,19 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">View jobs :: {{title}}</div>
+    <div class="h2">Jobs cron</div>
     <form class='standard'>
     <div>
-        <ol>
-            <li>Provinces : {{provinces}}</li>
-            <li>Categories: {{categories}}</li>
-            <li>Articles : {{articles}}</li>
-        </ol>
-        <br/>
-        {% for a,b,c in jobs %}
-        <p>{{a}} :: {{b}} :: {{c}}</p>
-        {% endfor %}
-        <p><a href="{% url jobs_province %}">&lt;&lt; Back</a></p>
+        Thanks you.<br/>
+        The update process has been initiated.
     </div>
     </form>
 {% endblock %}

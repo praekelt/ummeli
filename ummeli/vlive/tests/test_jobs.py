@@ -1,24 +1,10 @@
 from django.test import TestCase
-from ummeli.vlive.jobs_util import CategoryParser,  JobsParser
+from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
 from ummeli.vlive.models import Province,  Article,  Category
 from ummeli.vlive import jobs_util
 
 class JobsTestCase(TestCase):
     
-    def test_job_models(self):
-        province = Province.objects.create(search_id = 1,  name='Gauteng')        
-        cat = Category.objects.create(title='Domestic')
-        province.job_categories.add(cat)
-        
-        cat = Category.objects.create(title='Domestic')
-        
-        self.assertEquals(Province.objects.count(),  1)
-        self.assertEquals(len(province.job_categories.all()),  1)
-        
-        province.job_categories.clear()
-        self.assertEquals(len(province.job_categories.all()),  0)
-        self.assertEquals(Province.objects.count(),  1)
-        
     def test_category_parser(self):
         html = """
         <a name="top"></a>

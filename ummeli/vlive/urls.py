@@ -77,8 +77,8 @@ urlpatterns = patterns('',
     
     url(r'^jobs$', views.jobs_province, name='jobs_province'),
     url(r'^jobs/(?P<id>\d+)/$', views.jobs_list, name='jobs_list'),
-    url(r'^jobs/(?P<search_id>\d+)/(?P<id>\d+)/$', views.jobs, name='jobs'),
-    url(r'^jobs/(?P<search_id>\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/$', views.job, name='job'),
+    url(r'^jobs/(?P<search_id>\d+)/(?P<id>\w+)/$', views.jobs, name='jobs'),
+    url(r'^jobs/(?P<search_id>\d+)/(?P<cat_id>\w+)/(?P<id>\w+)/$', views.job, name='job'),
     
     url(r'^jobs/cron$', views.jobs_cron, name='jobs_cron'),
 )

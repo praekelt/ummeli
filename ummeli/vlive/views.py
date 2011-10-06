@@ -197,7 +197,7 @@ def send_thanks(request):
 @login_required
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
-                                                {'provinces': Province.objects.all()}, 
+                                                {'provinces': Province.objects.all().order_by('name')}, 
                                                 mimetype='text/xml')
 
 @login_required
@@ -222,9 +222,10 @@ def jobs(request,  id,  search_id):
 @login_required    
 def job(request,  id,  cat_id,  search_id):
     province = Province.objects.get(search_id=search_id)
-    category = Category.objects.get(id = cat_id)
+    category = Category.objects.get(pk = cat_id)
+    article = Article.objects.get(pk = id)
     return render_to_response('pml/job.xml',  
-                              {'job': Article.objects.get(pk = id), 
+                              {'job': article, 
                               'search_id': search_id, 
                               'cat_id': cat_id, 
                               'title':  '%s :: %s' % (province.name,  category.title)}, 
@@ -233,44 +234,3 @@ def job(request,  id,  cat_id,  search_id):
 def jobs_cron(request):   
     tasks.run_jobs_update.delay()
     return render_to_response('vlive/cron.html')
-    #jobs = jobs_util.get_jobs('http://www.wegotads.co.za/Employment/listings/22001/Accounts%2FFinancial/listings/601?umb=1&search_source=1')
-    
-    #jobs = jobs_util.get_links('http://www.wegotads.co.za/Employment/listings/22001%s?umb=1&search_source=1')
-    jobs = jobs_util.get_jobs('http://www.wegotads.co.za/Employment/listings/22001/Accounts%2FFinancial/listings/601?umb=1&search_source=1')
-    return render_to_response('vlive/cron.html',  {'jobs': jobs})
-    
-    Province.objects.all().delete()
-    Category.objects.all().delete()
-    Article.objects.all().delete()
-    
-    update_province(1,  'All')
-    update_province(2,  'Gauteng')
-    update_province(5,  'WC')
-    update_province(6,  'KZN')
-    return render_to_response('vlive/cron.html',  
-                              {'provinces': Province.objects.count(), 
-                              'categories': Category.objects.count(), 
-                              'articles': Article.objects.count()})
-                              
-    
-def update_province(id,  name):
-    cat_url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s'
-    
-    province = Province.objects.filter(search_id = id)
-    if not province:
-        province = Province.objects.create(search_id = id,  name = name)
-    else:
-        province = province.get()
-        
-    categories = jobs_util.get_links(cat_url,  id)
-    province.job_categories.clear()
-    for title,  link in categories:
-        cat = Category.objects.create(title = title)        
-        jobs_list = jobs_util.get_jobs(link)
-        for date,  source,  text in jobs_list:
-            article = Article.objects.create(date=date,  source=source,  text = text)
-            cat.articles.add(article)
-        cat.save()
-        province.job_categories.add(cat)        
-    province.save()
-    
