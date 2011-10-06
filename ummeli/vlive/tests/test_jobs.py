@@ -1,7 +1,6 @@
 from django.test import TestCase
 from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
 from ummeli.vlive.models import Province,  Article,  Category
-from ummeli.vlive import jobs_util
 
 class JobsTestCase(TestCase):
     
