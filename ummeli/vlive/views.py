@@ -5,7 +5,6 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
-from ummeli.vlive import jobs_util
 from ummeli.vlive.jobs import tasks
 
 from ummeli.vlive.models import Article,  Province,  Category
@@ -203,14 +202,14 @@ def jobs_province(request):
 @login_required
 def jobs_list(request,  id):
     return render_to_response('pml/jobs_list.xml',  
-                              {'categories': Province.objects.get(search_id=id).job_categories.order_by('title'), 
+                              {'categories': Province.objects.get(search_id=id).category_set.all().order_by('title'), 
                               'search_id': id}, 
                               mimetype='text/xml')
                              
 @login_required
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
-    category = province.job_categories.get(pk=id)
+    category = province.category_set.get(pk=id)
     articles = category.articles.all()
     return render_to_response('pml/jobs.xml',  
                               {'articles': articles, 

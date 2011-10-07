@@ -13,12 +13,8 @@ class PageParser(object):
         if(url and html_str):
             raise Exception('Parameters invalid', 'Only 1 parameter required.')
             
-        if url:
-            self.doc = self.get_document(self.get_html(url))
-        elif html_str:
-            self.doc = self.get_document(self.tidy_html(html_str))
-        else:
-            raise Exception('Parameters invalid', 'Url or html_str required.')
+        self.url = url
+        self.html_str = html_str
         
     def get_html(self,  url):
         usock = urllib.urlopen(url)
@@ -36,5 +32,10 @@ class PageParser(object):
         s = str(s).replace('<br />', '').replace('\n', '')
         return s
         
-    def get_document(self, html):        
-        return etree.parse(StringIO.StringIO(html))
+    def get_document(self):
+        if self.url:
+            return etree.parse(StringIO.StringIO(self.get_html(self.url)))
+        elif self.html_str:
+            return etree.parse(StringIO.StringIO(self.tidy_html(self.html_str)))
+        
+        raise Exception('Parameters invalid', 'Url or html_str required.')

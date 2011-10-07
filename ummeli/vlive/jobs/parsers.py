@@ -12,7 +12,9 @@ class CategoryParser(PageParser):
             super(CategoryParser,  self).__init__(html_str = html_str)
         
     def parse(self):
-        links = self.doc.xpath('.//n:tr/*/n:a', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+        doc  = self.get_document()
+        links = doc.xpath('.//n:tr/*/n:a', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+        
         list = [
                 (self.url % {'path': '/' + ''.join(link.xpath('./@href')),  'id': self.search_id}, 
                 ''.join(link.xpath('./*/text()', 
@@ -22,7 +24,8 @@ class CategoryParser(PageParser):
                 
 class JobsParser(PageParser):
     def parse(self):
-        rows = self.doc.xpath('.//n:tr', namespaces={'n':'http://www.w3.org/1999/xhtml'})
+        doc = self.get_document()
+        rows = doc.xpath('.//n:tr', namespaces={'n':'http://www.w3.org/1999/xhtml'})
         list = []
         for row in rows:
             fonts = row.xpath('.//n:font', namespaces={'n':'http://www.w3.org/1999/xhtml'})

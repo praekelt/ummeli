@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 from ummeli.vlive.models import Article,  Province,  Category
 from django.utils.hashcompat import md5_constructor
 
-@task(ignore_result=True)
-def process_jobs(search_id,  link):    
-    province = Province.objects.get(search_id = search_id)
-    category = province.job_categories.get(title = link[1])
+@task
+def process_jobs(cat_id,  link,  jobs_parser):    
+    category = Category.objects.get(pk = cat_id)
     
-    articles = JobsParser(url = link[0]).parse()
+    articles = jobs_parser(url = link[0]).parse()
+    
     for date,  source,  text in articles:
         hash = md5_constructor(':'.join([date,  source,  text])).hexdigest()
         article = Article(hash_key = hash,  
@@ -19,37 +19,44 @@ def process_jobs(search_id,  link):
                                 text = text)
         article.save()
         category.articles.add(article)
+    return category
 
-@task(ignore_result=True)
-def queue_categories(search_id):
-    urls = CategoryParser(search_id,  url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s').parse()
+def create_category_id_hash(search_id,  title):
+    return md5_constructor('%s:%s' % (title,  search_id)).hexdigest()
+
+@task
+def queue_categories(search_id,  category_parser,  jobs_parser):
+    parser = category_parser(search_id,  url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s')
+    urls = parser.parse()
     
     province = Province.objects.get(search_id = search_id)
-    province.job_categories.clear()
     
     for link, title in urls:
-        hash = md5_constructor(title).hexdigest()
-        cat = Category(hash_key = hash,  title = title)
+        hash = create_category_id_hash(search_id,  title)
+        cat = Category(province = province,  hash_key = hash,  title = title)
         cat.save()
-        province.job_categories.add(cat) 
-    province.save()
-    
+        
     now = datetime.now()
     
-    taskset = TaskSet(process_jobs.subtask((search_id,  url, ),  
+    taskset = TaskSet(process_jobs.subtask((create_category_id_hash(search_id,  url[1]),  url, jobs_parser, ),  
                                 options = {'eta':now + timedelta(seconds=5 * i)})
                                 for i,  url in enumerate(urls))
-    taskset.apply_async()
+                                
+    result = taskset.apply_async()
+    
+    return province
 
-@task(ignore_result=True)
-def run_jobs_update():
+@task
+def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser):    #allow mocking of parsers
     Province(search_id = 1,  name = 'All').save()
     Province(search_id = 2,  name = 'Gauteng').save()
     Province(search_id = 5,  name = 'WC').save()
     Province(search_id = 6,  name = 'KZN').save()
     
     now = datetime.now()
-    taskset = TaskSet(queue_categories.subtask((province.search_id, ), 
+    taskset = TaskSet(queue_categories.subtask((province.search_id, category_parser,  jobs_parser, ), 
                                 options = {'eta':now + timedelta(seconds=10 * i)}) 
                                 for i,  province in enumerate(Province.objects.all()))
-    taskset.apply_async()
+    
+    return taskset.apply_async()
+
