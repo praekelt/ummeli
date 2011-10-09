@@ -11,7 +11,7 @@ def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
     return os.path.join(PROJECT_ROOT, *args)
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
