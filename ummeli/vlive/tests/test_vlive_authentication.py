@@ -88,5 +88,31 @@ class VliveAuthenticationTestCase(TestCase):
                                {'username': msisdn, 'password1': password, 
                                'password2': 'wrong',  '_action': 'POST'}, 
                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        print resp
         self.assertContains(resp, 'Pin codes don&apos;t match.')
+        
+    def test_forgot_pin(self):
+        msisdn = '0123456789'
+        password = 'password'
+        
+        #register user
+        resp = self.client.get(reverse('register'),
+                                {'username': msisdn, 'password1': password, 
+                                'password2': password,  '_action': 'POST'},  
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+                                
+        resp = self.client.get(reverse('forgot'), HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertContains(resp, 'Pin will be sent to %s.' % msisdn)
+        
+        resp = self.client.get(reverse('forgot'), {'_action': 'POST'}, 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertContains(resp, 'Your new pin has been sent')
+        
+        #test password reset backdoor
+        resp = self.client.get(reverse('forgot_back'), 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        resp = self.client.get(reverse('login'), 
+                                {'username': msisdn, 'password': '1234', 
+                                '_action': 'POST'}, 
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+                                
+        self.assertContains(resp, 'Edit CV')
