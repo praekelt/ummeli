@@ -1,4 +1,7 @@
-import urlparse,  uuid,  string,  random
+import urlparse
+import uuid
+import string
+import random
 
 from django.conf import settings
 
@@ -44,9 +47,9 @@ def render_to_login(request,  form,  redirect_to,  template_name,
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
     }
     context.update(extra_context or {})
-    return render_to_response(template_name, context
-                              , mimetype='text/xml'
-                              , context_instance=RequestContext(request, current_app=current_app))
+    return render_to_response(template_name, context, 
+                              mimetype='text/xml', 
+                              context_instance=RequestContext(request, current_app=current_app))
 
 
 def login(request, template_name='pml/login.xml',

@@ -12,7 +12,7 @@ class CategoryParser(PageParser):
             super(CategoryParser,  self).__init__(html_str = html_str)
             
     def parse(self):
-        doc  = self.get_document()
+        doc = self.get_document()
         links = doc.xpath('.//n:tr/*/n:a', namespaces={'n':'http://www.w3.org/1999/xhtml'})
         
         list = [

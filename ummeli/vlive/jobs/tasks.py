@@ -47,7 +47,7 @@ def queue_categories(search_id,  category_parser,  jobs_parser):
     return province
 
 @task
-def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser):    #allow mocking of parsers
+def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser):    # allow mocking of parsers
     Province(search_id = 1,  name = 'All').save()
     Province(search_id = 2,  name = 'Gauteng').save()
     Province(search_id = 5,  name = 'Western Cape').save()
@@ -59,4 +59,3 @@ def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser)
                                 for i,  province in enumerate(Province.objects.all()))
     
     return taskset.apply_async()
-
