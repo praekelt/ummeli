@@ -7,6 +7,7 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
 from ummeli.vlive.jobs import tasks
+from ummeli.vlive.tasks import send_password_reset
 
 from ummeli.vlive.models import Article,  Province,  Category
     
@@ -114,10 +115,7 @@ def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
 
 def send_password(request,  new_password):
-    #TODO: Send new password via vumi:
-    #   (request.vlive.msisdn, new_password)
-    #   return True if successful
-    return True
+    send_password_reset.delay(request.vlive.msisdn,  new_password)
     
 #Used to reset to 1234 for testing purposes only
 def forgot_password_backdoor(request):
@@ -131,13 +129,14 @@ def forgot_password_view(request):
     if request.method == 'POST':
         new_password = generate_password(chars = string.digits)
         
-        if(send_password(request,  new_password)): #password sent successfully
-            user = User.objects.get(username = request.vlive.msisdn)
-            user.set_password(new_password)
-            user.save()
+        send_password(request,  new_password)
+        user = User.objects.get(username = request.vlive.msisdn)
+        user.set_password(new_password)
+        user.save()
             
-            return pml_redirect_timer_view(reverse('login'),
-                redirect_message = 'Thank you. Your new pin has been sent to you cellphone.')
+        return pml_redirect_timer_view(reverse('login'),
+            redirect_time = 50, 
+            redirect_message = 'Thank you. Your new pin has been sent to you cellphone.')
         
     return render_to_response('pml/forgot_password.xml', 
                                             context_instance=RequestContext(request),  

@@ -195,6 +195,6 @@ BROKER_VHOST = "/"
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
 CELERY_ALWAYS_EAGER = DEBUG
-CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", )
+CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks")
 CELERY_RESULT_BACKEND = "amqp"
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
