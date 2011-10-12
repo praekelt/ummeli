@@ -9,4 +9,3 @@ class FormActionMiddleware(object):
         if (request.GET.get('_action',  None) == 'POST' and msisdn != None):
             request.method = "POST"
             request.POST = request.GET
-            print 'here'

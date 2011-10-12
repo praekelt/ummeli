@@ -6,31 +6,37 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from ummeli.api.utils import UserHelper
 
+
 class CertificateHandler(BaseHandler):
     model = Certificate
     exclude = ('_state')
+
 
 class LanguageHandler(BaseHandler):
     model = Language
     exclude = ('_state')
 
+
 class WorkExperienceHandler(BaseHandler):
     model = WorkExperience
     exclude = ('_state')
 
+
 class ReferenceHandler(BaseHandler):
     model = Reference
     exclude = ('_state')
+
 
 class CurriculumVitaeHandler(BaseHandler):
     model = CurriculumVitae
     fields = (('firstName', 'surname', 'gender', 'email',
         'telephoneNumber','location', 'streetName', 
         'school', 'highestGrade', 'highestGradeYear', 
-        'dateOfBirth', 'houseNumber', ('certificates',()) ,
-        ('languages',()) , ('workExperiences',()) , ('references',()) ))
+        'dateOfBirth', 'houseNumber', ('certificates', ()),
+        ('languages',()), ('workExperiences',()), ('references',())))
     exclude = ('_state')
-    
+
+
 class UserHandler(BaseHandler):
     allowed_methods = ('GET','POST','PUT',)
     

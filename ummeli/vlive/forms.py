@@ -34,10 +34,10 @@ def format_as_pml(self):
         
         field_str = ('<TEXT position="ABOVE">%(label_name)s</TEXT><FIELD name="%(field_name)s" type="%(text_field_type)s" default="%(field_value)s"/><br/>'
                 % {
-                  'label_name' : conditional_escape(force_unicode(bf.label)),
-                  'field_name' : bf.html_name, 
-                  'field_value' : bf.value()  if bf.value() != None  else '', 
-                  'text_field_type' : text_field_type
+                  'label_name': conditional_escape(force_unicode(bf.label)),
+                  'field_name': bf.html_name, 
+                  'field_value': bf.value()  if bf.value() != None  else '', 
+                  'text_field_type': text_field_type
                   })
         if(isinstance(field, BooleanField)):
             default = bf.value()  if bf.value() != None  else ''
@@ -50,12 +50,12 @@ def format_as_pml(self):
             {
                 'default_true':  'checked="true"' if default else '', 
                 'default_false':  'checked="true"' if not default else '', 
-                'label_name' : conditional_escape(force_unicode(bf.label)),
-                'field_name' : bf.html_name, 
-                'field_value' : bf.value()  if bf.value() != None  else '' 
+                'label_name': conditional_escape(force_unicode(bf.label)),
+                'field_name': bf.html_name, 
+                'field_value': bf.value()  if bf.value() != None  else '' 
             })
         
-        output.append(field_str )
+        output.append(field_str)
     return mark_safe(u'\n'.join(output))
         
 class PMLModelForm(ModelForm):
@@ -74,50 +74,57 @@ class PMLForm(Form):
 
 class PersonalDetailsForm(PMLModelForm):
     firstName = CharField(label = 'Firstname')
-    dateOfBirth = CharField(label = 'Date of birth',  required=False)
+    dateOfBirth = CharField(label = 'Date of birth',  required = False)
+    
     class Meta:
         model = CurriculumVitae
         fields = ('firstName', 'surname', 'dateOfBirth', 'gender')
 
 class ContactDetailsForm(PMLModelForm):
-    telephoneNumber= CharField(label = 'Phone number',  required=False)
-    email = CharField(label = 'Email address',  required=False)
-    houseNumber = CharField(label = 'House number',  required=False)
-    streetName = CharField(label = 'Street name',  required=False)
-    location = CharField(label = 'Location name',  required=False)
+    telephoneNumber = CharField(label = 'Phone number',  required = False)
+    email = CharField(label = 'Email address',  required = False)
+    houseNumber = CharField(label = 'House number',  required = False)
+    streetName = CharField(label = 'Street name',  required = False)
+    location = CharField(label = 'Location name',  required = False)
+    
     class Meta:
         model = CurriculumVitae
         fields = ('telephoneNumber', 'email', 'houseNumber', 'streetName',
                 'location')
 
 class EducationDetailsForm(PMLModelForm):
-    highestGrade = CharField(label = 'Highest grade passed',  required=False)
-    highestGradeYear = IntegerField(label = 'Year passed',  required=False)
-    school = CharField(label = 'Name of school', required=False)
+    highestGrade = CharField(label = 'Highest grade passed',  required = False)
+    highestGradeYear = IntegerField(label = 'Year passed',  required = False)
+    school = CharField(label = 'Name of school', required = False)
+    
     class Meta:
         model = CurriculumVitae
         fields = ('highestGrade', 'highestGradeYear', 'school')
 
 class CertificateForm(PMLModelForm):
     name = CharField(label = 'Name of Certificate')
-    institution = CharField(label = 'Name of institution', required=False)
-    year = IntegerField(label = 'Year completed', required=False)
+    institution = CharField(label = 'Name of institution', required = False)
+    year = IntegerField(label = 'Year completed', required = False)
+    
     class Meta:
         model = Certificate
         
 class WorkExperienceForm(PMLModelForm):
+    
     class Meta:
         model = WorkExperience
 
 class LanguageForm(PMLModelForm):
     language = CharField(label = 'Name of language')
     readWrite = BooleanField(label = 'Can you Read and Write in this language', 
-                                            required=False)
+                                            required = False)
+    
     class Meta:
         model = Language
         widgets = {'readWrite': CheckboxInput(),}
 
 class ReferenceForm(PMLModelForm):
+    
     class Meta:
         model = Reference
 
@@ -125,4 +132,4 @@ class SendEmailForm(PMLForm):
     email = EmailField()
 
 class SendFaxForm(PMLForm):
-    fax = RegexField('[0-9+]',  error_message='Please enter a valid fax number.')
+    fax = RegexField('[0-9+]',  error_message = 'Please enter a valid fax number.')

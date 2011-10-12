@@ -1,4 +1,5 @@
-import urllib,  StringIO
+import urllib
+import StringIO
 from tidylib import tidy_document as tidy
 from lxml import etree
 
@@ -6,6 +7,7 @@ class PageParser(object):
     """Uses self.doc to parse the document tree, preferable using xpath
     e.g self.doc.xpath('.//tr')
     """
+    
     def parse(self):
         raise NotImplementedError( "Should have implemented this" )
     

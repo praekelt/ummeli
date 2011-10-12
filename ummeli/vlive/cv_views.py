@@ -44,7 +44,7 @@ def process_edit_request(request, model_form, page_title):
                             
 def redirect_pml(request,  redirect_url):
     return render_to_response('pml/redirect.xml',
-                              {'redirect_url': redirect_url + '?'+ str(uuid.uuid4()), 
+                              {'redirect_url': redirect_url + '?' + str(uuid.uuid4()), 
                               'redirect_time': 10, 
                               'redirect_message': 'Your information has been updated.'}, 
                             context_instance=RequestContext(request), 

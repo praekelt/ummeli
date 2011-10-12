@@ -1,4 +1,8 @@
-import urlparse,  uuid
+import urlparse
+import uuid
+import string
+import random
+
 from django.conf import settings
 
 from ummeli.api.models import (Certificate, Language, WorkExperience,
@@ -6,6 +10,7 @@ from ummeli.api.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
 from ummeli.vlive.jobs import tasks
+from ummeli.vlive.tasks import send_password_reset
 
 from ummeli.vlive.models import Article,  Province,  Category
     
@@ -42,9 +47,9 @@ def render_to_login(request,  form,  redirect_to,  template_name,
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
     }
     context.update(extra_context or {})
-    return render_to_response(template_name, context
-                              , mimetype='text/xml'
-                              , context_instance=RequestContext(request, current_app=current_app))
+    return render_to_response(template_name, context, 
+                              mimetype='text/xml', 
+                              context_instance=RequestContext(request, current_app=current_app))
 
 
 def login(request, template_name='pml/login.xml',
@@ -108,6 +113,37 @@ def register(request):
 def logout_view(request):
     auth_logout(request)
     return login(request)
+    
+def generate_password(length=6, chars=string.letters + string.digits):
+    return ''.join([random.choice(chars) for i in range(length)])
+
+def send_password(request,  new_password):
+    send_password_reset.delay(request.vlive.msisdn,  new_password)
+    
+#Used to reset to 1234 for testing purposes only
+def forgot_password_backdoor(request):
+    user = User.objects.get(username = request.vlive.msisdn)
+    user.set_password('1234')
+    user.save()
+    
+    return index(request)
+    
+def forgot_password_view(request):
+    if request.method == 'POST':
+        new_password = generate_password(chars = string.digits)
+        
+        send_password(request,  new_password)
+        user = User.objects.get(username = request.vlive.msisdn)
+        user.set_password(new_password)
+        user.save()
+            
+        return pml_redirect_timer_view(reverse('login'),
+            redirect_time = 50, 
+            redirect_message = 'Thank you. Your new pin has been sent to you cellphone.')
+        
+    return render_to_response('pml/forgot_password.xml', 
+                                            context_instance=RequestContext(request),  
+                                            mimetype='text/xml')
     
 @login_required
 @cache_control(no_cache=True)
@@ -185,13 +221,17 @@ def send_via_fax(request):
                                             mimetype='text/xml')
                                             
 
+def pml_redirect_timer_view(redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
+    return render_to_response('pml/redirect.xml',  
+                                {'redirect_url': redirect_url, 
+                                'redirect_time': redirect_time, 
+                                'redirect_message': redirect_message}, 
+                                mimetype='text/xml')
+
 @login_required
 def send_thanks(request):    
-    return render_to_response('pml/redirect.xml',  
-                                {'redirect_url': reverse('send'), 
-                                'redirect_time': 20, 
-                                'redirect_message': 'Thank you. Your CV will be sent shortly.'}, 
-                                mimetype='text/xml')
+    return pml_redirect_timer_view(reverse('send'),
+                redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 @login_required
 def jobs_province(request):

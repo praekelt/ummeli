@@ -22,7 +22,7 @@
             </FORM>
         </CONTAINER>
         <CONTAINER type="list">
-            <LINK href="{% url index %}/forgot/">
+            <LINK href="{% url forgot %}">
                 <TEXT>Forgotton your Pin?</TEXT>
             </LINK>
         </CONTAINER>
