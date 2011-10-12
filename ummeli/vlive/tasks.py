@@ -7,5 +7,5 @@ def send_password_reset(msisdn, new_password):
     message = 'Ummeli on YAL :) Your new password is: %s' % new_password
     client = Client('ummeli', '4mm3l1')
     client.send_sms(to_msisdn = msisdn,  
-        from_msisdn = '', 
+        from_msisdn = '1', 
         message = message)
