@@ -8,11 +8,13 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if user_exists %}
+        {% if form.errors %}
+            <CONTAINER type="form">
+                <TEXT class="error">Sign in failed.<br />Please try again.</TEXT>
+            </CONTAINER>
+        {% endif %}
         <CONTAINER type="form">
             <FORM method="GET" href="{% url login %}" submit_text="Sign In">
-                {% if form.errors %}
-                    <TEXT>Sign in failed.<br />Please try again.</TEXT>
-                {% endif %}
                 <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
                 <FIELD name="password" type="password"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
