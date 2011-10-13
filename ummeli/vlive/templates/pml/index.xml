@@ -19,4 +19,12 @@
         </LINK>
     </CONTAINER>
 </MODULE>
+<MODULE backgroundColor="false" palette="MiMarine">
+    <HEADER><LABEL>Mange Profile</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url password_change %}">
+            <TEXT>Change pin</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
 {% endblock %}

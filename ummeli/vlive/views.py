@@ -21,11 +21,12 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail,  EmailMessage
 
 #imports for login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,  HttpRequest
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,  
+    PasswordChangeForm)
 from django.contrib.sites.models import get_current_site
 from django.views.decorators.csrf import csrf_protect
 
@@ -95,11 +96,10 @@ def register(request):
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return login(request)
+            return pml_redirect_timer_view(reverse('login'),
+                redirect_message = 'Thank you. You are now registerd.')
     else:
         form = UserCreationForm()
-    
-    current_site = get_current_site(request)
     
     context = {
         'form': form,
@@ -145,6 +145,26 @@ def forgot_password_view(request):
                                             context_instance=RequestContext(request),  
                                             mimetype='text/xml')
     
+@login_required
+def password_change_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user,  data = request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return pml_redirect_timer_view(reverse('login'),
+                redirect_message = 'Thank you. Your pin has been changed.')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    context = {
+        'form': form,
+        'msisdn': request.vlive.msisdn,
+        'uuid': str(uuid.uuid4()), 
+    }
+    return render_to_response('pml/password_change.xml', context,
+                              mimetype='text/xml', 
+                              context_instance=RequestContext(request))
+                              
 @login_required
 @cache_control(no_cache=True)
 def index(request):    

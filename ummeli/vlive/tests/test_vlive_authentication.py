@@ -71,7 +71,7 @@ class VliveAuthenticationTestCase(TestCase):
                                 'password2': password,  '_action': 'POST'},  
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Enter Pin to sign in.')
+        self.assertContains(resp, 'You are now registerd.')
         
         resp = self.client.get(reverse('login'), 
                                 {'username': msisdn, 'password': password, 
@@ -110,6 +110,38 @@ class VliveAuthenticationTestCase(TestCase):
         #test password reset backdoor
         resp = self.client.get(reverse('forgot_back'), 
                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        resp = self.client.get(reverse('login'), 
+                                {'username': msisdn, 'password': '1234', 
+                                '_action': 'POST'}, 
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+                                
+        self.assertContains(resp, 'Edit CV')
+        
+    def test_change_pin(self):
+        msisdn = '0123456789'
+        password = 'password'
+        
+        #register user
+        resp = self.client.get(reverse('register'),
+                                {'username': msisdn, 'password1': password, 
+                                'password2': password,  '_action': 'POST'},  
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+                                
+        resp = self.client.get(reverse('login'), 
+                    {'username': msisdn, 'password': password, '_action': 'POST'}, 
+                    HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+                                
+        resp = self.client.get(reverse('password_change'), 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        
+        self.assertContains(resp, 'Change pin for %s' % msisdn)
+        
+        resp = self.client.get(reverse('password_change'), 
+                               {'_action': 'POST',  'old_password': password, 
+                               'new_password1': '1234',  'new_password2': '1234'}, 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertContains(resp, 'Your pin has been changed')
+        
         resp = self.client.get(reverse('login'), 
                                 {'username': msisdn, 'password': '1234', 
                                 '_action': 'POST'}, 
