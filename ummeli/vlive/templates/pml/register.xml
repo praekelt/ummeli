@@ -6,13 +6,14 @@
 
 {% block content %}
     <MODULE backgroundColor="false">
-    <CONTAINER type="form">
-        <FORM method="POST" href="{% url register %}" submit_text="Create pin">
-        {% if form.errors %}
+    {% if form.errors %}
+        <CONTAINER type="form">
             <TEXT class="error">Pin codes don&apos;t match.<br />
             Please try again.</TEXT>
-        {% endif %}
-        
+        </CONTAINER>
+    {% endif %}
+    <CONTAINER type="form">
+        <FORM method="POST" href="{% url register %}" submit_text="Create pin">        
         <TEXT position="ABOVE">Pin</TEXT>
         <FIELD name="password1" type="text"/>        
         <TEXT position="ABOVE">Confirm Pin</TEXT>
