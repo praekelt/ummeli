@@ -133,3 +133,8 @@ class SendEmailForm(PMLForm):
 
 class SendFaxForm(PMLForm):
     fax = RegexField('[0-9+]',  error_message = 'Please enter a valid fax number.')
+
+class JobApplyForm(Form):
+    send_via = CharField()
+    send_to = CharField(required = True)
+    

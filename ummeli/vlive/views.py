@@ -8,7 +8,7 @@ from django.conf import settings
 from ummeli.api.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.vlive.forms import SendEmailForm,  SendFaxForm
+from ummeli.vlive.forms import SendEmailForm,  SendFaxForm,  JobApplyForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
@@ -208,6 +208,37 @@ www.praekeltfoundation.org/ummeli
                         pdf,  'application/pdf')
     return email.send(fail_silently=False)
     
+def send_apply_email(request, email_address,  article_id):
+    cv = request.user.get_profile()
+    fullname = '%s %s' % (cv.firstName,  cv.surname)
+    article = Article.objects.get(pk=article_id)
+    email = EmailMessage('CV for %s' % fullname, 
+                                        '''
+Hi,
+
+I'm responding to the position as advertised below.
+Attached please find a copy of my CV.
+
+Regards,
+%(sender)s
+
+----
+Brought to you by,
+Ummeli
+www.praekeltfoundation.org/ummeli
+
+--------------------------------------------------
+--------------------------------------------------
+%(job_ad)s
+ ''' % {'sender': fullname,  'job_ad':article.text}, 
+                                        'no-reply@ummeli.org',
+                                        [email_address])
+    pdf = render_to_pdf('vlive/pdf_template.html', {'model': cv})
+    email.attach('curriculum_vitae_for_%s_%s' % (cv.firstName,  
+                                                                                cv.surname), 
+                        pdf,  'application/pdf')
+    return email.send(fail_silently=False)
+    
 @login_required
 def send_via_email(request):    
     if request.method == 'POST': 
@@ -280,6 +311,22 @@ def jobs(request,  id,  search_id):
 
 @login_required    
 def job(request,  id,  cat_id,  search_id):
+    form = JobApplyForm()
+    
+    if request.method == 'POST': 
+        form = JobApplyForm(data = request.POST)
+        
+        if form.is_valid():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+            
+            if send_via == 'email':
+                send_apply_email(request,  send_to,  id)
+                return send_thanks(request)
+            else:
+                send_apply_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''),  id)
+                return send_thanks(request)
+                
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
     article = Article.objects.get(pk = id)
@@ -287,7 +334,9 @@ def job(request,  id,  cat_id,  search_id):
                               {'job': article, 
                               'search_id': search_id, 
                               'cat_id': cat_id, 
-                              'title':  '%s :: %s' % (province.name,  category.title)}, 
+                              'title':  '%s :: %s' % (province.name,  category.title), 
+                              'form':  form,},
+                              context_instance=RequestContext(request), 
                               mimetype='text/xml')
     
 def jobs_cron(request):   

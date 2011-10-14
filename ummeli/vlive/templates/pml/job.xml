@@ -20,4 +20,24 @@
         </LINK>
     </CONTAINER>
 </MODULE>
+<MODULE backgroundColor="MiGreen">
+    <HEADER><LABEL>Apply</LABEL></HEADER>
+    {% if form.errors %}
+        <CONTAINER type="form">
+            <TEXT class="error">Please fill in the email address or fax number to send you CV to.</TEXT>
+        </CONTAINER>
+    {% endif %}
+    <CONTAINER  type="form">
+        <FORM method="POST" href="{{request.path}}" submit_text="Apply">
+            <CHOICE-GROUP type="radio" name="send_via">
+                <TEXT>Send via</TEXT>
+                <CHOICE value="email" checked="True">Email</CHOICE>
+                <CHOICE value="fax">Fax</CHOICE>
+            </CHOICE-GROUP><br/>
+            <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        </FORM>
+    </CONTAINER>
+</MODULE>
 {% endblock %}
