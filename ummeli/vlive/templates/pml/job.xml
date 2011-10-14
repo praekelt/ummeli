@@ -33,7 +33,7 @@
                 <TEXT>Send via</TEXT>
                 <CHOICE value="email" checked="True">Email</CHOICE>
                 <CHOICE value="fax">Fax</CHOICE>
-            </CHOICE-GROUP><br/>
+            </CHOICE-GROUP>
             <FIELD name="send_to" type="text"/><br/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />

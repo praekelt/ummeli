@@ -322,10 +322,10 @@ def job(request,  id,  cat_id,  search_id):
             
             if send_via == 'email':
                 send_apply_email(request,  send_to,  id)
-                return send_thanks(request)
+                return send_thanks_job_apply(cat_id,  search_id)
             else:
                 send_apply_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''),  id)
-                return send_thanks(request)
+                return send_thanks_job_apply(cat_id,  search_id)
                 
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
@@ -338,7 +338,11 @@ def job(request,  id,  cat_id,  search_id):
                               'form':  form,},
                               context_instance=RequestContext(request), 
                               mimetype='text/xml')
-    
+
+def send_thanks_job_apply(cat_id,  search_id):
+    return pml_redirect_timer_view(reverse('jobs',  args=[search_id,  cat_id]),
+                redirect_message = 'Thank you. Your CV will be sent shortly.')
+
 def jobs_cron(request):   
     tasks.run_jobs_update.delay()
     return render_to_response('vlive/cron.html')
