@@ -22,9 +22,12 @@
 </MODULE>
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TEXT><color value="blue">Please note that sending a fax will cost you R2.00.</color></TEXT>
+    </CONTAINER>
     {% if form.errors %}
         <CONTAINER type="form">
-            <TEXT class="error">Please fill in the email address or fax number to send you CV to.</TEXT>
+            <TEXT class="error">Please fill in the email address or fax number to send your CV to.</TEXT>
         </CONTAINER>
     {% endif %}
     <CONTAINER  type="form">

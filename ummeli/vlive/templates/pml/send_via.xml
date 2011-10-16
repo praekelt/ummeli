@@ -7,6 +7,11 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Send CV via {{via}}</LABEL></HEADER>
+    {% if via == 'Fax' %}
+    <CONTAINER type="data">
+        <TEXT><color value="blue">Please note that sending a fax will cost you R2.00.</color></TEXT>
+    </CONTAINER>
+    {% endif %}
     <CONTAINER type="data">
     {{ form.errors_as_pml }}
     </CONTAINER>
