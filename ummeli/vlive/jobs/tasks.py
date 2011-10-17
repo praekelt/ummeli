@@ -18,7 +18,8 @@ def process_jobs(cat_id,  link,  jobs_parser):
                                 source = source,  
                                 text = text)
         article.save()
-        category.articles.add(article)
+        if not (category.articles.filter(pk = hash)):
+            category.articles.add(article)
     return category
 
 def create_category_id_hash(search_id,  title):
