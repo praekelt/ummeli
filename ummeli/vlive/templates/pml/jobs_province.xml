@@ -16,7 +16,7 @@
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">
-        <LINK href="{% url index %}">
+        <LINK href="{% url home %}">
             <TEXT>&lt;&lt; Back</TEXT>
         </LINK>
     </CONTAINER>
