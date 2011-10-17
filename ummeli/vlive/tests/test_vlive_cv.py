@@ -14,7 +14,7 @@ class VliveCVTestCase(TestCase):
     
     def setUp(self):
         self.client = Client()
-        username = 'user'
+        username = '0123456789'
         password = 'password'
         self.user = User.objects.create_user(username, '%s@domain.com' % username, 
                                         password)
@@ -25,22 +25,41 @@ class VliveCVTestCase(TestCase):
         
     def test_edit_personal_page(self):
         msisdn = '0123456789'
+        password = 'password'
         
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get('%s/%s' % (reverse('edit'), 
-                                        'personal'))
+        resp = self.client.get(reverse('edit_personal'))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'firstName': 'Milton', 'gender': 'Male',  
-                        '_action': 'POST'}
+        post_data = {'firstName': 'Milton', 'surname': 'Madanda',  
+                            'gender': 'Male',  '_action': 'POST'}
         resp = self.client.get(reverse('edit_personal'), post_data, 
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         cv = self.user.get_profile()
         self.assertEquals(cv.firstName, 'Milton')
+        self.assertEquals(cv.surname, 'Madanda')
         self.assertEquals(cv.gender, 'Male')
+        
+        resp = self.client.get(reverse('edit_personal'))
+        self.assertContains(resp, 'Milton')
+        self.assertContains(resp, 'Madanda')
+        self.assertContains(resp, 'Male')
+        
+        self.client.get(reverse('logout'))
+        self.client.get(reverse('login'), 
+                                {'username': msisdn, 'password': password, 
+                                '_action': 'POST'}, 
+                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        resp = self.client.get(reverse('edit_personal'))
+        
+        print resp
+        
+        self.assertContains(resp, 'Male')
+        self.assertContains(resp, 'Milton')
+        self.assertContains(resp, 'Madanda')
             
     def test_edit_contact_details_page(self):
         msisdn = '0123456789'
