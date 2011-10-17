@@ -34,24 +34,6 @@ class ApiTestCase(TestCase):
         data = json.loads(resp.content)
         self.assertEquals(len(data), 16)
         
-    def test_user_profile_creation(self):
-        username = 'user'
-        password = 'password'
-        
-        user = User.objects.create(username=username, password=password, 
-            first_name='name', last_name='surname', email='test@test.com')
-        
-        profile = user.get_profile()
-        self.assertEquals(profile.firstName, 'name')
-        self.assertEquals(profile.surname, 'surname')
-        self.assertEquals(profile.email, 'test@test.com')
-        
-        user.first_name = 'something'
-        user.last_name = 'else'
-        user.save()
-        profile = user.get_profile()
-        self.assertEquals(profile.firstName, 'something')
-        self.assertEquals(profile.surname, 'else')
 
     def test_get_data_for_invalid_user(self):
         username = 'user'
