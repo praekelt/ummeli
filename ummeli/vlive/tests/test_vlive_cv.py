@@ -55,8 +55,6 @@ class VliveCVTestCase(TestCase):
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         resp = self.client.get(reverse('edit_personal'))
         
-        print resp
-        
         self.assertContains(resp, 'Male')
         self.assertContains(resp, 'Milton')
         self.assertContains(resp, 'Madanda')
