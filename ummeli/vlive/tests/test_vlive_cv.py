@@ -225,7 +225,8 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
         
          # test reference add action
-        post_data = {'fullname': 'Test', 'relationship': 'Manager'}
+        post_data = {'fullname': 'Test', 'relationship': 'Manager', 
+                            'contactNo': '0123456789'}
         resp = self.client.post(reverse('reference_new'),  post_data)
         
          # test listing of new reference
@@ -237,7 +238,8 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('reference_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
         
-        post_data = {'fullname': 'User', 'relationship': 'Manager'}
+        post_data = {'fullname': 'User', 'relationship': 'Manager', 
+                            'contactNo': '0123456789'}
         resp = self.client.post(reverse('reference_edit', args=[1]),  
                                 post_data)
         
