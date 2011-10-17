@@ -102,7 +102,7 @@ class EducationDetailsForm(PMLModelForm):
         fields = ('highestGrade', 'highestGradeYear', 'school')
 
 class CertificateForm(PMLModelForm):
-    name = CharField(label = 'Name of Certificate')
+    name = CharField(label = 'Name of certificate')
     institution = CharField(label = 'Name of institution', required = False)
     year = IntegerField(label = 'Year completed', required = False)
     
@@ -110,6 +110,10 @@ class CertificateForm(PMLModelForm):
         model = Certificate
         
 class WorkExperienceForm(PMLModelForm):
+    title = CharField(label = 'Job title')
+    company = CharField(label = 'Name of company')
+    startYear = IntegerField(label = 'Year started')
+    endYear = IntegerField(label = 'Year ended')
     
     class Meta:
         model = WorkExperience
@@ -124,6 +128,9 @@ class LanguageForm(PMLModelForm):
         widgets = {'readWrite': CheckboxInput(),}
 
 class ReferenceForm(PMLModelForm):
+    fullname = CharField(label = 'Fullname')
+    relationship = CharField(label = 'Relationship (title)')
+    contactNo = CharField(label = 'Contact number')
     
     class Meta:
         model = Reference
