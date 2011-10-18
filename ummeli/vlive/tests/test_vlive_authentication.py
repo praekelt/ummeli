@@ -107,16 +107,6 @@ class VliveAuthenticationTestCase(TestCase):
                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertContains(resp, 'Your new pin has been sent')
         
-        #test password reset backdoor
-        resp = self.client.get(reverse('forgot_back'), 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        resp = self.client.get(reverse('login'), 
-                                {'username': msisdn, 'password': '1234', 
-                                '_action': 'POST'}, 
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
-        self.assertContains(resp, 'Edit CV')
-        
     def test_change_pin(self):
         msisdn = '0123456789'
         password = 'password'
