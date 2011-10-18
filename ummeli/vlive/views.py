@@ -341,3 +341,6 @@ def jobs_cron(request):
 
 def about(request):
     return render_to_response('pml/about.xml',  mimetype='text/xml')
+
+def terms(request):
+    return render_to_response('pml/terms.xml',  mimetype='text/xml')
