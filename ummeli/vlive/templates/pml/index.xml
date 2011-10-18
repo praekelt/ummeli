@@ -21,51 +21,41 @@
                     <TEXT>Edit CV</TEXT>
                 </LINK><br/>
                 Update or change any of the info in your mobile CV.
-            </TEXT>
-            <br/><br/>
-            <TEXT>
+                <br/><br/>
                 <LINK href="{% url send %}">
                     <TEXT>Send CV</TEXT>
-                </LINK>
+                </LINK><br/>
                 One liner here...
-            </TEXT>
-            <br/><br/>
-            <TEXT>
+                <br/><br/>
                 <LINK href="{% url jobs_province %}">
                     <TEXT>View jobs</TEXT>
-                </LINK>
+                </LINK><br/>
                 One liner here...
             </TEXT>
         {% else %}
+            <TEXT>
             {% if not user_exists %}
-                <TEXT>
                 <LINK href="{% url register %}?{{uuid}}">
                     <TEXT>Create CV</TEXT>
                 </LINK><br/>
                 Set up your account and get going with creating your unique mobile CV via Ummeli
-                </TEXT>
             {% else %}
-                <TEXT>
-                    <LINK href="{% url login %}">
-                        <TEXT>Edit CV</TEXT>
-                    </LINK><br/>
-                    Update or change any of the info in your mobile CV.
-                </TEXT>
+                <LINK href="{% url login %}">
+                    <TEXT>Edit CV</TEXT>
+                </LINK><br/>
+                Update or change any of the info in your mobile CV.
             {% endif %}
                 <br/><br/>
-                <TEXT>
-                    <LINK href="{% url login %}">
-                        <TEXT>Send CV</TEXT>
-                    </LINK>
-                    One liner here...
-                </TEXT>
+                <LINK href="{% url login %}">
+                    <TEXT>Send CV</TEXT>
+                </LINK><br/>
+                One liner here...
                 <br/><br/>
-                <TEXT>
-                    <LINK href="{% url login %}">
-                        <TEXT>View jobs</TEXT>
-                    </LINK><br/>
-                    One liner here...
-                </TEXT>
+                <LINK href="{% url login %}">
+                    <TEXT>View jobs</TEXT>
+                </LINK><br/>
+                One liner here...
+            </TEXT>
         {% endif %}
     </CONTAINER>
 </MODULE>
