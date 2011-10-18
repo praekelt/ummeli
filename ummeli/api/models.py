@@ -53,7 +53,8 @@ class CurriculumVitae(models.Model):
     workExperiences = models.ManyToManyField(WorkExperience, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
-
+    faxes_remaining = models.IntegerField(default=2,  editable=False)
+    
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.firstName)
 

@@ -9,7 +9,7 @@
     <HEADER><LABEL>Send CV via {{via}}</LABEL></HEADER>
     {% if via == 'Fax' %}
     <CONTAINER type="data">
-        <TEXT><color value="blue">Please note that sending a fax will cost you R2.00.</color></TEXT>
+        <TEXT><color value="blue">You have <b>{{request.user.get_profile.faxes_remaining}} faxe(s)</b> remaining.</color></TEXT>
     </CONTAINER>
     {% endif %}
     <CONTAINER type="data">

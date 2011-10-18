@@ -181,7 +181,8 @@ def edit(request):
 
 @login_required
 def send(request):    
-    return render_to_response('pml/send_cv.xml',  mimetype='text/xml')
+    return render_to_response('pml/send_cv.xml',  mimetype='text/xml', 
+                              context_instance= RequestContext(request), )
     
 def send_email(request, email_address):
     cv = request.user.get_profile()
@@ -258,6 +259,9 @@ def send_via_fax(request):
         if form.is_valid():
             fax = form.cleaned_data['fax']
             send_email(request,  '%s@faxfx.net' % fax.replace(' ', ''))
+            user_profile = request.user.get_profile()
+            user_profile.faxes_remaining = user_profile.faxes_remaining - 1
+            user_profile.save()
             return send_thanks(request)
     else:
         form = SendFaxForm() 
@@ -317,6 +321,11 @@ def job(request,  id,  cat_id,  search_id):
                 return send_thanks_job_apply(cat_id,  search_id)
             else:
                 send_apply_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''),  id)
+                user_profile = request.user.get_profile()
+                
+                user_profile.faxes_remaining -= 1
+                user_profile.save()
+                
                 return send_thanks_job_apply(cat_id,  search_id)
                 
     province = Province.objects.get(search_id=search_id)

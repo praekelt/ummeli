@@ -7,13 +7,18 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Send CV</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TEXT><color value="blue">You have <b>{{request.user.get_profile.faxes_remaining}} faxe(s)</b> remaining.</color></TEXT>
+    </CONTAINER>
     <CONTAINER  type="list">
         <LINK href="{% url send_via_email %}">
             <TEXT>via email</TEXT>
         </LINK>
+        {% if request.user.get_profile.faxes_remaining%}
         <LINK href="{% url send_via_fax %}">
             <TEXT>via fax</TEXT>
         </LINK>
+        {% endif %}
     </CONTAINER>
 </MODULE>
 {% endblock %}
