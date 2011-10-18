@@ -44,6 +44,7 @@
         <br/>
     </CONTAINER>
 </MODULE>
+{% if request.user.is_authenticated %}
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Mange Profile</LABEL></HEADER>
     <CONTAINER  type="list">
@@ -52,4 +53,5 @@
         </LINK>
     </CONTAINER>
 </MODULE>
+{% endif %}
 {% endblock %}

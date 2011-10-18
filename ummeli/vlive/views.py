@@ -84,6 +84,7 @@ Displays the login form and handles the login action.
 
             return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
                 'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+                context_instance= RequestContext(request), 
                 mimetype='text/xml')
     else:
         form = authentication_form(request)
@@ -170,12 +171,14 @@ def password_change_view(request):
 def index(request):    
     return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+        context_instance= RequestContext(request), 
         mimetype='text/xml')
     
 @cache_control(no_cache=True)
 def home(request):    
     return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+        context_instance= RequestContext(request), 
         mimetype='text/xml')
 
 @login_required
