@@ -22,8 +22,9 @@
 </MODULE>
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
+    {% if request.user.is_authenticated %}
     <CONTAINER type="data">
-        <TEXT><color value="blue">Please note that sending a fax will cost you R2.00.</color></TEXT>
+        <TEXT><color value="blue">You have <b>2 faxes</b> remaining.</color></TEXT>
     </CONTAINER>
     {% if form.errors %}
         <CONTAINER type="form">
@@ -42,5 +43,17 @@
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
     </CONTAINER>
+    {% else %}
+    <br/>
+    <CONTAINER type="data">
+    <TEXT><color value="red">You are not logged in. Please log in to be able to 
+    respond to a job advert.</color>
+    <br/>
+        <LINK href="{% url login %}">
+            <TEXT>Login</TEXT>
+        </LINK>
+    </TEXT>
+    </CONTAINER>
+    {% endif %}
 </MODULE>
 {% endblock %}
