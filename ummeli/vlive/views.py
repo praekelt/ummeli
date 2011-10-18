@@ -285,20 +285,17 @@ def send_thanks(request):
     return pml_redirect_timer_view(reverse('send'),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
-@login_required
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
                                                 {'provinces': Province.objects.all().order_by('name')}, 
                                                 mimetype='text/xml')
 
-@login_required
 def jobs_list(request,  id):
     return render_to_response('pml/jobs_list.xml',  
                               {'categories': Province.objects.get(search_id=id).category_set.all().order_by('title'), 
                               'search_id': id}, 
                               mimetype='text/xml')
                              
-@login_required
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = province.category_set.get(pk=id)
@@ -310,7 +307,6 @@ def jobs(request,  id,  search_id):
                               'title':  '%s :: %s' % (province.name,  category.title)}, 
                               mimetype='text/xml')
 
-@login_required    
 def job(request,  id,  cat_id,  search_id):
     form = JobApplyForm()
     
