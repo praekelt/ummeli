@@ -9,14 +9,14 @@
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     <CONTAINER  type="data">
         <TITLE>Welcome</TITLE>
-        <TEXT>YoungAfricaLive welcomes you to Ummeli: your mobile social work finder!  
-        Ummeli allows you to view existing jobs, add jobs that you might know of and 
-        want to tell fellow-YALLERS about.  It also allows you to create and edit a CV 
-        on your phone, as well as send your CV in reply to a job add that you are 
-        interested in.</TEXT>
-        <br/><br/>
-        {% if request.user.is_authenticated %}
-            <TEXT>
+        <TEXT>
+            YoungAfricaLive welcomes you to Ummeli: your mobile social work finder!  
+            Ummeli allows you to view existing jobs, add jobs that you might know of and 
+            want to tell fellow-YALLERS about.  It also allows you to create and edit a CV 
+            on your phone, as well as send your CV in reply to a job add that you are 
+            interested in.
+            <br/><br/>
+            {% if request.user.is_authenticated %}
                 <LINK href="{% url edit %}?{{uuid}}">
                     <TEXT>Edit CV</TEXT>
                 </LINK><br/>
@@ -31,32 +31,30 @@
                     <TEXT>View jobs</TEXT>
                 </LINK><br/>
                 One liner here...
-            </TEXT>
-        {% else %}
-            <TEXT>
-            {% if not user_exists %}
-                <LINK href="{% url register %}?{{uuid}}">
-                    <TEXT>Create CV</TEXT>
-                </LINK><br/>
-                Set up your account and get going with creating your unique mobile CV via Ummeli
             {% else %}
-                <LINK href="{% url login %}">
-                    <TEXT>Edit CV</TEXT>
-                </LINK><br/>
-                Update or change any of the info in your mobile CV.
+                {% if not user_exists %}
+                    <LINK href="{% url register %}?{{uuid}}">
+                        <TEXT>Create CV</TEXT>
+                    </LINK><br/>
+                    Set up your account and get going with creating your unique mobile CV via Ummeli
+                {% else %}
+                    <LINK href="{% url login %}">
+                        <TEXT>Edit CV</TEXT>
+                    </LINK><br/>
+                    Update or change any of the info in your mobile CV.
+                {% endif %}
+                    <br/><br/>
+                    <LINK href="{% url login %}">
+                        <TEXT>Send CV</TEXT>
+                    </LINK><br/>
+                    One liner here...
+                    <br/><br/>
+                    <LINK href="{% url login %}">
+                        <TEXT>View jobs</TEXT>
+                    </LINK><br/>
+                    One liner here...
             {% endif %}
-                <br/><br/>
-                <LINK href="{% url login %}">
-                    <TEXT>Send CV</TEXT>
-                </LINK><br/>
-                One liner here...
-                <br/><br/>
-                <LINK href="{% url login %}">
-                    <TEXT>View jobs</TEXT>
-                </LINK><br/>
-                One liner here...
-            </TEXT>
-        {% endif %}
+        </TEXT>
     </CONTAINER>
 </MODULE>
 {% if request.user.is_authenticated %}
