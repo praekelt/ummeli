@@ -14,47 +14,59 @@
         want to tell fellow-YALLERS about.  It also allows you to create and edit a CV 
         on your phone, as well as send your CV in reply to a job add that you are 
         interested in.</TEXT>
-        <br/>
-        {% if user_exists %}
-        <TEXT>
-        <LINK href="{% url edit %}?{{uuid}}">
-            <TEXT>Edit CV</TEXT>
-        </LINK><br/>
-        Update or change any of the info in your mobile CV.</TEXT>
-        <br/>
-        {% else %}
-        <TEXT>
-        <LINK href="{% url register %}?{{uuid}}">
-            <TEXT>Create CV</TEXT>
-        </LINK><br/>
-        Set up your account and get going with creating your unique mobile CV via Ummeli</TEXT>
-        <br/>
-        {% endif %}
-        <TEXT>
+        <br/><br/>
         {% if request.user.is_authenticated %}
-            <LINK href="{% url send %}">
-                <TEXT>Send CV</TEXT>
-            </LINK>
-            One liner here...</TEXT>
-            <br/>
             <TEXT>
-            <LINK href="{% url jobs_province %}">
-                <TEXT>View jobs</TEXT>
-            </LINK>
-            One liner here...
+                <LINK href="{% url edit %}?{{uuid}}">
+                    <TEXT>Edit CV</TEXT>
+                </LINK><br/>
+                Update or change any of the info in your mobile CV.
+            </TEXT>
+            <br/><br/>
+            <TEXT>
+                <LINK href="{% url send %}">
+                    <TEXT>Send CV</TEXT>
+                </LINK>
+                One liner here...
+            </TEXT>
+            <br/><br/>
+            <TEXT>
+                <LINK href="{% url jobs_province %}">
+                    <TEXT>View jobs</TEXT>
+                </LINK>
+                One liner here...
+            </TEXT>
         {% else %}
-            <LINK href="{% url login %}">
-                <TEXT>Send CV</TEXT>
-            </LINK>
-            One liner here...</TEXT>
-            <br/>
-            <TEXT>
-            <LINK href="{% url login %}">
-                <TEXT>View jobs</TEXT>
-            </LINK>
+            {% if not user_exists %}
+                <TEXT>
+                <LINK href="{% url register %}?{{uuid}}">
+                    <TEXT>Create CV</TEXT>
+                </LINK><br/>
+                Set up your account and get going with creating your unique mobile CV via Ummeli
+                </TEXT>
+            {% else %}
+                <TEXT>
+                    <LINK href="{% url login %}">
+                        <TEXT>Edit CV</TEXT>
+                    </LINK><br/>
+                    Update or change any of the info in your mobile CV.
+                </TEXT>
+            {% endif %}
+                <br/><br/>
+                <TEXT>
+                    <LINK href="{% url login %}">
+                        <TEXT>Send CV</TEXT>
+                    </LINK>
+                    One liner here...
+                </TEXT>
+                <br/><br/>
+                <TEXT>
+                    <LINK href="{% url login %}">
+                        <TEXT>View jobs</TEXT>
+                    </LINK><br/>
+                    One liner here...
+                </TEXT>
         {% endif %}
-        </TEXT>
-        <br/>
     </CONTAINER>
 </MODULE>
 {% if request.user.is_authenticated %}
