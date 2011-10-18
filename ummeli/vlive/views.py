@@ -122,14 +122,6 @@ def generate_password(length=6, chars=string.letters + string.digits):
 def send_password(request,  new_password):
     send_password_reset.delay(request.vlive.msisdn,  new_password)
     
-#Used to reset to 1234 for testing purposes only
-def forgot_password_backdoor(request):
-    user = User.objects.get(username = request.vlive.msisdn)
-    user.set_password('1234')
-    user.save()
-    
-    return index(request)
-    
 def forgot_password_view(request):
     if request.method == 'POST':
         new_password = generate_password(chars = string.digits)
