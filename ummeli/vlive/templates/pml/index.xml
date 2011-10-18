@@ -31,16 +31,29 @@
         <br/>
         {% endif %}
         <TEXT>
-        <LINK href="{% url send %}">
-            <TEXT>Send CV</TEXT>
-        </LINK>
-        One liner here...</TEXT>
-        <br/>
-        <TEXT>
-        <LINK href="{% url jobs_province %}">
-            <TEXT>View jobs</TEXT>
-        </LINK>
-        One liner here...</TEXT>
+        {% if request.user.is_authenticated %}
+            <LINK href="{% url send %}">
+                <TEXT>Send CV</TEXT>
+            </LINK>
+            One liner here...</TEXT>
+            <br/>
+            <TEXT>
+            <LINK href="{% url jobs_province %}">
+                <TEXT>View jobs</TEXT>
+            </LINK>
+            One liner here...
+        {% else %}
+            <LINK href="{% url login %}">
+                <TEXT>Send CV</TEXT>
+            </LINK>
+            One liner here...</TEXT>
+            <br/>
+            <TEXT>
+            <LINK href="{% url login %}">
+                <TEXT>View jobs</TEXT>
+            </LINK>
+        {% endif %}
+        </TEXT>
         <br/>
     </CONTAINER>
 </MODULE>
