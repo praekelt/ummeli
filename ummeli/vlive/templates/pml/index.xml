@@ -16,35 +16,31 @@
         interested in.</TEXT>
         <br/>
         {% if user_exists %}
-        <CONTAINER  type="data">
+        <TEXT>
         <LINK href="{% url edit %}?{{uuid}}">
             <TEXT>Edit CV</TEXT>
-        </LINK>
-        </CONTAINER>
-        <TEXT>Update or change any of the info in your mobile CV.</TEXT>
+        </LINK><br/>
+        Update or change any of the info in your mobile CV.</TEXT>
         <br/>
         {% else %}
-        <CONTAINER  type="data">
+        <TEXT>
         <LINK href="{% url register %}?{{uuid}}">
             <TEXT>Create CV</TEXT>
-        </LINK>
-        </CONTAINER>
-        <TEXT>Set up your account and get going with creating your unique mobile CV via Ummeli</TEXT>
+        </LINK><br/>
+        Set up your account and get going with creating your unique mobile CV via Ummeli</TEXT>
         <br/>
         {% endif %}
-        <CONTAINER  type="data">
+        <TEXT>
         <LINK href="{% url send %}">
             <TEXT>Send CV</TEXT>
         </LINK>
-        </CONTAINER>
-        <TEXT>One liner here...</TEXT>
+        One liner here...</TEXT>
         <br/>
-        <CONTAINER  type="data">
+        <TEXT>
         <LINK href="{% url jobs_province %}">
             <TEXT>View jobs</TEXT>
         </LINK>
-        </CONTAINER>
-        <TEXT>One liner here...</TEXT>
+        One liner here...</TEXT>
         <br/>
     </CONTAINER>
 </MODULE>
