@@ -7,16 +7,37 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
-    <CONTAINER  type="list">
+    <CONTAINER  type="data">
+        <TITLE>Welcome</TITLE>
+        <TEXT>YoungAfricaLive welcomes you to Ummeli: your mobile social work finder!  
+        Ummeli allows you to view existing jobs, add jobs that you might know of and 
+        want to tell fellow-YALLERS about.  It also allows you to create and edit a CV 
+        on your phone, as well as send your CV in reply to a job add that you are 
+        interested in.</TEXT>
+        <br/>
+        {% if user_exists %}
         <LINK href="{% url edit %}?{{uuid}}">
             <TEXT>Edit CV</TEXT>
         </LINK>
+        <TEXT>Update or change any of the info in your mobile CV.</TEXT>
+        <br/>
+        {% else %}
+        <LINK href="{% url register %}?{{uuid}}">
+            <TEXT>Create CV</TEXT>
+        </LINK>
+        <TEXT>Set up your account and get going with creating your unique mobile CV via Ummeli</TEXT>
+        <br/>
+        {% endif %}
         <LINK href="{% url send %}">
             <TEXT>Send CV</TEXT>
         </LINK>
+        <TEXT>One liner here...</TEXT>
+        <br/>
         <LINK href="{% url jobs_province %}">
             <TEXT>View jobs</TEXT>
         </LINK>
+        <TEXT>One liner here...</TEXT>
+        <br/>
     </CONTAINER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiMarine">

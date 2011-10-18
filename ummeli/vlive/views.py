@@ -82,8 +82,9 @@ Displays the login form and handles the login action.
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
-            return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
-                                                mimetype='text/xml')
+            return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
+                'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+                mimetype='text/xml')
     else:
         form = authentication_form(request)
 
@@ -165,17 +166,17 @@ def password_change_view(request):
                               mimetype='text/xml', 
                               context_instance=RequestContext(request))
                               
-@login_required
 @cache_control(no_cache=True)
 def index(request):    
-    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())}, 
-                                                                        mimetype='text/xml')
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
+        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+        mimetype='text/xml')
     
-@login_required
 @cache_control(no_cache=True)
 def home(request):    
-    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4())},
-                                                                       mimetype='text/xml')
+    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
+        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
+        mimetype='text/xml')
 
 @login_required
 @cache_control(no_cache=True)

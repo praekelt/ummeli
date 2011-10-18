@@ -14,7 +14,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('ummeli.api.urls', namespace='api')),
 
-    url(r'^vlive$', views.login, {'template_name': 'pml/login.xml'},
-        name = 'index'),
+    url(r'^vlive$', views.index, name = 'index'),
     url(r'^vlive/', include('ummeli.vlive.urls')),
 )
