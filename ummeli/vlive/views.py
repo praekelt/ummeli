@@ -338,3 +338,6 @@ def send_thanks_job_apply(cat_id,  search_id):
 def jobs_cron(request):   
     tasks.run_jobs_update.delay()
     return render_to_response('vlive/cron.html')
+
+def about(request):
+    return render_to_response('pml/about.xml',  mimetype='text/xml')

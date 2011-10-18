@@ -41,6 +41,9 @@
         <LINK href="{% url home %}">
             <TEXT>Home</TEXT>
         </LINK>
+        <LINK href="{% url about %}">
+            <TEXT>About</TEXT>
+        </LINK>
         <LINK href="{% url logout %}">
             <TEXT>Logout</TEXT>
         </LINK>
