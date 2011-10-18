@@ -38,7 +38,7 @@
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
-        <LINK href="{% url home %}">
+        <LINK href="{% url home %}?{{uuid}}">
             <TEXT>Home</TEXT>
         </LINK>
         <LINK href="{% url about %}">

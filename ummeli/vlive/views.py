@@ -176,7 +176,8 @@ def home(request):
 @login_required
 @cache_control(no_cache=True)
 def edit(request):    
-    return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())},  
+    return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())}, 
+                                                context_instance= RequestContext(request), 
                                                 mimetype='text/xml')
 
 @login_required
@@ -277,6 +278,7 @@ def pml_redirect_timer_view(redirect_url,  redirect_time = 20,  redirect_message
                                 {'redirect_url': redirect_url, 
                                 'redirect_time': redirect_time, 
                                 'redirect_message': redirect_message}, 
+                                context_instance= RequestContext(request), 
                                 mimetype='text/xml')
 
 @login_required
@@ -287,12 +289,14 @@ def send_thanks(request):
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
                                                 {'provinces': Province.objects.all().order_by('name')}, 
+                                                context_instance= RequestContext(request), 
                                                 mimetype='text/xml')
 
 def jobs_list(request,  id):
     return render_to_response('pml/jobs_list.xml',  
                               {'categories': Province.objects.get(search_id=id).category_set.all().order_by('title'), 
                               'search_id': id}, 
+                              context_instance= RequestContext(request), 
                               mimetype='text/xml')
                              
 def jobs(request,  id,  search_id):
@@ -304,6 +308,7 @@ def jobs(request,  id,  search_id):
                               'search_id': search_id, 
                               'cat_id': id, 
                               'title':  '%s :: %s' % (province.name,  category.title)}, 
+                              context_instance= RequestContext(request), 
                               mimetype='text/xml')
 
 def job(request,  id,  cat_id,  search_id):
@@ -349,7 +354,9 @@ def jobs_cron(request):
     return render_to_response('vlive/cron.html')
 
 def about(request):
-    return render_to_response('pml/about.xml',  mimetype='text/xml')
+    return render_to_response('pml/about.xml',  mimetype='text/xml', 
+                              context_instance= RequestContext(request))
 
 def terms(request):
-    return render_to_response('pml/terms.xml',  mimetype='text/xml')
+    return render_to_response('pml/terms.xml',  mimetype='text/xml', 
+                              context_instance= RequestContext(request))
