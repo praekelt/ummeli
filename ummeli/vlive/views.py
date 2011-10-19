@@ -99,7 +99,7 @@ def register(request):
             new_user = form.save()
             return pml_redirect_timer_view(request, reverse('login'),
                 redirect_time = 0, 
-                redirect_message = 'Thank you. You are now registerd.')
+                redirect_message = 'Thank you. You are now registered.')
     else:
         form = UserCreationForm()
     
