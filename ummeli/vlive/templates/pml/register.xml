@@ -15,9 +15,9 @@
     <CONTAINER type="form">
         <FORM method="POST" href="{% url register %}" submit_text="Create pin">        
         <TEXT position="ABOVE">Pin</TEXT>
-        <FIELD name="password1" type="text"/><br/> 
+        <FIELD name="password1" type="password"/><br/> 
         <TEXT position="ABOVE">Confirm Pin</TEXT>
-        <FIELD name="password2" type="text"/>
+        <FIELD name="password2" type="password"/>
         
         <FIELD name="next" type="hidden" value="{{next}}"/>
         <FIELD name="username" type="hidden" value="{{msisdn}}"/>
