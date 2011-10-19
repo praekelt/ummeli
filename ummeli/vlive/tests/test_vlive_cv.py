@@ -65,8 +65,7 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get('%s/%s' % (reverse('edit'), 
-                                        'contact'))
+        resp = self.client.get(reverse('edit_contact'))
         self.assertEquals(resp.status_code, 200)
         
         post_data = {'telephoneNumber': '0123456978', 'streetName': 'Oak Rd', 
@@ -84,8 +83,7 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get('%s/%s' % (reverse('edit'), 
-                                        'education'))
+        resp = self.client.get(reverse('edit_education'))
         self.assertEquals(resp.status_code, 200)
         
         post_data = {'highestGrade': '12', 'highestGradeYear': 2005,
@@ -291,12 +289,11 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get('%s/%s' % (reverse('send'), 'email'))
+        resp = self.client.get(reverse('send_via_email'))
         self.assertEquals(resp.status_code, 200)
         
         post_data = {'email': 'madandat@gmail.com'}
-        resp = self.client.post('%s/%s' % (reverse('send'), 
-                                        'email'), post_data)
+        resp = self.client.post(reverse('send_via_email'), post_data)
         
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
@@ -314,12 +311,11 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get('%s/%s' % (reverse('send'), 'fax'))
+        resp = self.client.get(reverse('send_via_fax'))
         self.assertEquals(resp.status_code, 200)
         
         post_data = {'fax': '+27123456789'}
-        resp = self.client.post('%s/%s' % (reverse('send'), 
-                                        'fax'), post_data)
+        resp = self.client.post(reverse('send_via_fax'), post_data)
         
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].to), 1)
