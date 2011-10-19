@@ -25,12 +25,7 @@
                 <LINK href="{% url send %}">
                     <TEXT>Send CV</TEXT>
                 </LINK><br/>
-                One liner here...
-                <br/><br/>
-                <LINK href="{% url jobs_province %}">
-                    <TEXT>View jobs</TEXT>
-                </LINK><br/>
-                One liner here...
+                One liner here...                
             {% else %}
                 {% if not user_exists %}
                     <LINK href="{% url register %}?{{uuid}}">
@@ -48,12 +43,12 @@
                         <TEXT>Send CV</TEXT>
                     </LINK><br/>
                     One liner here...
-                    <br/><br/>
-                    <LINK href="{% url login %}?next={% url jobs_province %}">
-                        <TEXT>View jobs</TEXT>
-                    </LINK><br/>
-                    One liner here...
             {% endif %}
+            <br/><br/>
+            <LINK href="{% url jobs_province %}">
+                <TEXT>View jobs</TEXT>
+            </LINK><br/>
+            One liner here...
         </TEXT>
     </CONTAINER>
 </MODULE>
