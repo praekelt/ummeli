@@ -24,7 +24,10 @@
     <HEADER><LABEL>Apply</LABEL></HEADER>
     {% if request.user.is_authenticated %}
     <CONTAINER type="data">
-        <TEXT><color value="blue">You have <b>{{request.user.get_profile.faxes_remaining}} faxe(s)</b> remaining.</color></TEXT>
+        <TEXT><color value="blue">You have <b>
+        {{request.user.get_profile.faxes_remaining}} 
+        fax{{request.user.get_profile.faxes_remaining|pluralize:"es"}}</b> 
+        remaining.</color></TEXT>
     </CONTAINER>
     {% if form.errors %}
         <CONTAINER type="form">
