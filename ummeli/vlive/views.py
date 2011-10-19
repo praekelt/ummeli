@@ -188,7 +188,26 @@ def edit(request):
                                                 mimetype='text/xml')
 
 @login_required
-def send(request):    
+def send(request):
+    if request.method == 'POST': 
+        form = JobApplyForm(data = request.POST)
+        
+        if form.is_valid():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+            
+            if send_via == 'email':
+                send_email(request,  send_to)
+                return send_thanks(request)
+            else:
+                send_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''))
+                user_profile = request.user.get_profile()
+                
+                user_profile.faxes_remaining -= 1
+                user_profile.save()
+                
+                return send_thanks(request)
+             
     return render_to_response('pml/send_cv.xml',  mimetype='text/xml', 
                               context_instance= RequestContext(request), )
     
@@ -244,42 +263,6 @@ www.praekeltfoundation.org/ummeli
                         pdf,  'application/pdf')
     return email.send(fail_silently=False)
     
-@login_required
-def send_via_email(request):    
-    if request.method == 'POST': 
-        form = SendEmailForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            send_email(request,  email)
-            return send_thanks(request)
-    else:
-        form = SendEmailForm() 
-
-    return render_to_response('pml/send_via.xml', 
-                                            {'form': form,'via': 'Email'}, 
-                                            context_instance=RequestContext(request), 
-                                            mimetype='text/xml')
-
-@login_required
-def send_via_fax(request):    
-    if request.method == 'POST': 
-        form = SendFaxForm(request.POST)
-        if form.is_valid():
-            fax = form.cleaned_data['fax']
-            send_email(request,  '%s@faxfx.net' % fax.replace(' ', ''))
-            user_profile = request.user.get_profile()
-            user_profile.faxes_remaining = user_profile.faxes_remaining - 1
-            user_profile.save()
-            return send_thanks(request)
-    else:
-        form = SendFaxForm() 
-
-    return render_to_response('pml/send_via.xml', 
-                                            {'form': form, 'via':  'Fax'}, 
-                                            context_instance=RequestContext(request), 
-                                            mimetype='text/xml')
-                                            
-
 def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
     return render(request, 'pml/redirect.xml',  
                                 {'redirect_url': redirect_url, 

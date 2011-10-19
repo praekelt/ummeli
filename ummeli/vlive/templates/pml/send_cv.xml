@@ -5,23 +5,32 @@
 {% endblock %}
 
 {% block content %}
-<MODULE backgroundColor="false">
+<MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Send CV</LABEL></HEADER>
     <CONTAINER type="data">
-        <TEXT><color value="blue">You have 
-        <b>{{user_profile.faxes_remaining}} 
+        <TEXT><color value="blue">You have <b>
+        {{user_profile.faxes_remaining}} 
         fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
         remaining.</color></TEXT>
     </CONTAINER>
-    <CONTAINER  type="list">
-        <LINK href="{% url send_via_email %}">
-            <TEXT>via email</TEXT>
-        </LINK>
-        {% if user_profile.faxes_remaining%}
-        <LINK href="{% url send_via_fax %}">
-            <TEXT>via fax</TEXT>
-        </LINK>
-        {% endif %}
+    {% if form.errors %}
+        <CONTAINER type="form">
+            <TEXT class="error">Please fill in the email address or fax number to send your CV to.</TEXT>
+        </CONTAINER>
+    {% endif %}
+    <CONTAINER  type="form">
+        <FORM method="POST" href="{{request.path}}" submit_text="Apply">
+            <CHOICE-GROUP type="radio" name="send_via">
+                <TEXT>Send via</TEXT>
+                <CHOICE value="email" checked="True">Email</CHOICE>
+                {% if user_profile.faxes_remaining%}
+                <CHOICE value="fax">Fax</CHOICE>
+                {% endif %}
+            </CHOICE-GROUP>
+            <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        </FORM>
     </CONTAINER>
 </MODULE>
 {% endblock %}

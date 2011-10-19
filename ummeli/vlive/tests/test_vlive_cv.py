@@ -288,12 +288,9 @@ class VliveCVTestCase(TestCase):
                                         
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
-        
-        resp = self.client.get(reverse('send_via_email'))
-        self.assertEquals(resp.status_code, 200)
-        
-        post_data = {'email': 'madandat@gmail.com'}
-        resp = self.client.post(reverse('send_via_email'), post_data)
+
+        post_data = {'send_to': 'madandat@gmail.com', 'send_via': 'email'}
+        resp = self.client.post(reverse('send'), post_data)
         
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
@@ -311,11 +308,8 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
         
-        resp = self.client.get(reverse('send_via_fax'))
-        self.assertEquals(resp.status_code, 200)
-        
-        post_data = {'fax': '+27123456789'}
-        resp = self.client.post(reverse('send_via_fax'), post_data)
+        post_data = {'send_to': '+27123456789',  'send_via': 'fax'}
+        resp = self.client.post(reverse('send'), post_data)
         
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].to), 1)
