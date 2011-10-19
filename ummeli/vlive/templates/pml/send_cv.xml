@@ -9,15 +9,15 @@
     <HEADER><LABEL>Send CV</LABEL></HEADER>
     <CONTAINER type="data">
         <TEXT><color value="blue">You have 
-        <b>{{request.user.get_profile.faxes_remaining}} 
-        fax{{request.user.get_profile.faxes_remaining|pluralize:"es"}}</b> 
+        <b>{{user_profile.faxes_remaining}} 
+        fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
         remaining.</color></TEXT>
     </CONTAINER>
     <CONTAINER  type="list">
         <LINK href="{% url send_via_email %}">
             <TEXT>via email</TEXT>
         </LINK>
-        {% if request.user.get_profile.faxes_remaining%}
+        {% if user_profile.faxes_remaining%}
         <LINK href="{% url send_via_fax %}">
             <TEXT>via fax</TEXT>
         </LINK>

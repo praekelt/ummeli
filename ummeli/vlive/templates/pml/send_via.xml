@@ -10,8 +10,8 @@
     {% if via == 'Fax' %}
     <CONTAINER type="data">
         <TEXT><color value="blue">You have <b>
-        {{request.user.get_profile.faxes_remaining}} 
-        fax{{request.user.get_profile.faxes_remaining|pluralize:"es"}}</b> 
+        {{user_profile.faxes_remaining}} 
+        fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
         remaining.</color></TEXT>
     </CONTAINER>
     {% endif %}

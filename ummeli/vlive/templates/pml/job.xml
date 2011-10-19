@@ -25,8 +25,8 @@
     {% if request.user.is_authenticated %}
     <CONTAINER type="data">
         <TEXT><color value="blue">You have <b>
-        {{request.user.get_profile.faxes_remaining}} 
-        fax{{request.user.get_profile.faxes_remaining|pluralize:"es"}}</b> 
+        {{user_profile.faxes_remaining}} 
+        fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
         remaining.</color></TEXT>
     </CONTAINER>
     {% if form.errors %}
@@ -39,7 +39,7 @@
             <CHOICE-GROUP type="radio" name="send_via">
                 <TEXT>Send via</TEXT>
                 <CHOICE value="email" checked="True">Email</CHOICE>
-                {% if request.user.get_profile.faxes_remaining%}
+                {% if user_profile.faxes_remaining%}
                 <CHOICE value="fax">Fax</CHOICE>
                 {% endif %}
             </CHOICE-GROUP>
