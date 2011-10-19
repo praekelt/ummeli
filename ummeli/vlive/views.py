@@ -98,6 +98,7 @@ def register(request):
         if form.is_valid():
             new_user = form.save()
             return pml_redirect_timer_view(request, reverse('login'),
+                redirect_time = 0, 
                 redirect_message = 'Thank you. You are now registerd.')
     else:
         form = UserCreationForm()
@@ -115,6 +116,7 @@ def logout_view(request):
     auth_logout(request)
     print request
     return pml_redirect_timer_view(request, reverse('home'),
+                redirect_time = 0, 
                 redirect_message = 'You have been logged out.')
     
 def generate_password(length=6, chars=string.letters + string.digits):
