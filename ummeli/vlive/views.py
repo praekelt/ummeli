@@ -272,7 +272,7 @@ def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redire
 
 @login_required
 def send_thanks(request):    
-    return pml_redirect_timer_view(request,  reverse('send'),
+    return pml_redirect_timer_view(request,  reverse('home'),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 def jobs_province(request):
