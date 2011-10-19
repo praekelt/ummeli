@@ -114,7 +114,6 @@ def register(request):
                              
 def logout_view(request):
     auth_logout(request)
-    print request
     return pml_redirect_timer_view(request, reverse('home'),
                 redirect_time = 0, 
                 redirect_message = 'You have been logged out.')
