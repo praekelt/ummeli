@@ -5,6 +5,9 @@ class FormActionMiddleware(object):
     """
     def process_request(self, request):
         msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', None)
+        print '--- begin log ---'
+        print request.COOKIES
+        print '--- end log ---'
 
         if (request.GET.get('_action',  None) == 'POST' and msisdn != None):
             request.method = "POST"
