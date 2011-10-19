@@ -47,9 +47,15 @@
         <LINK href="{% url terms %}">
             <TEXT>Terms</TEXT>
         </LINK>
+        {% if user.is_authenticated %}
         <LINK href="{% url logout %}">
             <TEXT>Logout</TEXT>
         </LINK>
+        {% else %}
+        <LINK href="{% url login %}?next={{request.path}}">
+            <TEXT>Login</TEXT>
+        </LINK>
+        {% endif %}
     </CONTAINER>
 </MODULE>
 
