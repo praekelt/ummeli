@@ -124,7 +124,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages", 
     "django.core.context_processors.request", 
-    "vlive.custom_context_processors.unique_id_processor"
+    "vlive.custom_context_processors.unique_id_processor", 
+    "vlive.custom_context_processors.user_profile_processor", 
 )
 
 ROOT_URLCONF = 'urls'
