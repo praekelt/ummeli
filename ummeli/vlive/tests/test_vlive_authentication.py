@@ -39,7 +39,7 @@ class VliveAuthenticationTestCase(TestCase):
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
                                 
         self.assertEquals(resp.status_code, 200)  # redirect to index
-        self.assertContains(resp, 'Edit CV')
+        self.assertContains(resp, 'You have been logged in')
         
         resp = self.client.get(reverse('login'), 
                                {'password': 'wrong_pin', '_action': 'POST'},
@@ -78,7 +78,7 @@ class VliveAuthenticationTestCase(TestCase):
                                 '_action': 'POST'}, 
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Edit CV')
+        self.assertContains(resp, 'You have been logged in')
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'
@@ -137,4 +137,4 @@ class VliveAuthenticationTestCase(TestCase):
                                 '_action': 'POST'}, 
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
                                 
-        self.assertContains(resp, 'Edit CV')
+        self.assertContains(resp, 'You have been logged in')

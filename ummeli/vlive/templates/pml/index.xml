@@ -38,18 +38,18 @@
                     </LINK><br/>
                     Set up your account and get going with creating your unique mobile CV via Ummeli
                 {% else %}
-                    <LINK href="{% url login %}">
+                    <LINK href="{% url login %}?next={% url edit %}">
                         <TEXT>Edit CV</TEXT>
                     </LINK><br/>
                     Update or change any of the info in your mobile CV.
                 {% endif %}
                     <br/><br/>
-                    <LINK href="{% url login %}">
+                    <LINK href="{% url login %}?next={% url send %}">
                         <TEXT>Send CV</TEXT>
                     </LINK><br/>
                     One liner here...
                     <br/><br/>
-                    <LINK href="{% url login %}">
+                    <LINK href="{% url login %}?next={% url jobs_province %}">
                         <TEXT>View jobs</TEXT>
                     </LINK><br/>
                     One liner here...

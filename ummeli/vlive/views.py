@@ -82,10 +82,9 @@ Displays the login form and handles the login action.
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
-            return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()), 
-                'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()}, 
-                context_instance= RequestContext(request), 
-                mimetype='text/xml')
+            return pml_redirect_timer_view(request, redirect_to,
+                redirect_time = 0, 
+                redirect_message = 'You have been logged in.')
     else:
         form = authentication_form(request)
 

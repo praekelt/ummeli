@@ -185,8 +185,8 @@ SKIP_SOUTH_TESTS = True
 SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
 AUTH_PROFILE_MODULE = "api.Curriculumvitae"
-LOGIN_URL = '/vlive/login'
-LOGIN_REDIRECT_URL = '/vlive'
+LOGIN_URL = '/vlive/login/'
+LOGIN_REDIRECT_URL = '/vlive/'
 
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
