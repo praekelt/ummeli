@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block timer %}
-<TIMER href="{{redirect_url}}" tenthsOfSecond="{{redirect_time}}" />
+<TIMER href="{{redirect_url}}?{{uuid}}" tenthsOfSecond="{{redirect_time}}" />
 {% endblock %}
 
 {% block content %}

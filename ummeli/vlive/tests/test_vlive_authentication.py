@@ -79,6 +79,10 @@ class VliveAuthenticationTestCase(TestCase):
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'You have been logged in')
+        
+        resp = self.client.get(reverse('logout'), 
+                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertContains(resp,  'You have been logged out')
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'
