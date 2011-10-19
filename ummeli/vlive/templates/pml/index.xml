@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<MODULE backgroundColor="false">
+<MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     <CONTAINER  type="data">
         <TITLE>Welcome</TITLE>
