@@ -71,15 +71,12 @@ class VliveAuthenticationTestCase(TestCase):
                                 'password2': password,  '_action': 'POST'},  
                                 HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'You are now registerd.')
+        self.assertContains(resp, 'You are now registered.')
         
-        resp = self.client.get(reverse('login'), 
-                                {'username': msisdn, 'password': password, 
-                                '_action': 'POST'}, 
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'You have been logged in')
-        
+        #test automatic login
+        resp = self.client.get(reverse('edit'))
+        self.assertContains(resp, 'Personal')
+
         resp = self.client.get(reverse('logout'), 
                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
         self.assertContains(resp,  'You have been logged out')

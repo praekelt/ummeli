@@ -22,7 +22,8 @@ from django.core.mail import send_mail,  EmailMessage
 
 #imports for login
 from django.http import HttpResponseRedirect,  HttpRequest
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login, 
+                                 logout as auth_logout,  authenticate)
 from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,  
@@ -96,8 +97,12 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
-            new_user = form.save()
-            return pml_redirect_timer_view(request, reverse('login'),
+            form.save()
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password1'])
+            auth_login(request, new_user)
+
+            return pml_redirect_timer_view(request, reverse('home'),
                 redirect_time = 0, 
                 redirect_message = 'Thank you. You are now registered.')
     else:
