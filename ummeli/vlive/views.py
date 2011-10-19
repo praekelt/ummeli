@@ -16,7 +16,7 @@ from ummeli.vlive.models import Article,  Province,  Category
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,  render
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail,  EmailMessage
 
@@ -98,7 +98,7 @@ def register(request):
         form = UserCreationForm(data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return pml_redirect_timer_view(reverse('login'),
+            return pml_redirect_timer_view(request, reverse('login'),
                 redirect_message = 'Thank you. You are now registerd.')
     else:
         form = UserCreationForm()
@@ -114,7 +114,9 @@ def register(request):
                              
 def logout_view(request):
     auth_logout(request)
-    return login(request)
+    print request
+    return pml_redirect_timer_view(request, reverse('home'),
+                redirect_message = 'You have been logged out.')
     
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
@@ -131,7 +133,7 @@ def forgot_password_view(request):
         user.set_password(new_password)
         user.save()
             
-        return pml_redirect_timer_view(reverse('login'),
+        return pml_redirect_timer_view(request,  reverse('login'),
             redirect_time = 50, 
             redirect_message = 'Thank you. Your new pin has been sent to you cellphone.')
         
@@ -145,7 +147,7 @@ def password_change_view(request):
         form = PasswordChangeForm(request.user,  data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return pml_redirect_timer_view(reverse('login'),
+            return pml_redirect_timer_view(request,  reverse('login'),
                 redirect_message = 'Thank you. Your pin has been changed.')
     else:
         form = PasswordChangeForm(request.user)
@@ -273,17 +275,16 @@ def send_via_fax(request):
                                             mimetype='text/xml')
                                             
 
-def pml_redirect_timer_view(redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
-    return render_to_response('pml/redirect.xml',  
+def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
+    return render(request, 'pml/redirect.xml',  
                                 {'redirect_url': redirect_url, 
                                 'redirect_time': redirect_time, 
                                 'redirect_message': redirect_message}, 
-                                context_instance= RequestContext(request), 
-                                mimetype='text/xml')
+                                content_type='text/xml')
 
 @login_required
 def send_thanks(request):    
-    return pml_redirect_timer_view(reverse('send'),
+    return pml_redirect_timer_view(request,  reverse('send'),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 def jobs_province(request):
@@ -323,7 +324,7 @@ def job(request,  id,  cat_id,  search_id):
             
             if send_via == 'email':
                 send_apply_email(request,  send_to,  id)
-                return send_thanks_job_apply(cat_id,  search_id)
+                return send_thanks_job_apply(request,  cat_id,  search_id)
             else:
                 send_apply_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''),  id)
                 user_profile = request.user.get_profile()
@@ -331,7 +332,7 @@ def job(request,  id,  cat_id,  search_id):
                 user_profile.faxes_remaining -= 1
                 user_profile.save()
                 
-                return send_thanks_job_apply(cat_id,  search_id)
+                return send_thanks_job_apply(request,  cat_id,  search_id)
                 
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
@@ -345,8 +346,8 @@ def job(request,  id,  cat_id,  search_id):
                               context_instance=RequestContext(request), 
                               mimetype='text/xml')
 
-def send_thanks_job_apply(cat_id,  search_id):
-    return pml_redirect_timer_view(reverse('jobs',  args=[search_id,  cat_id]),
+def send_thanks_job_apply(request,  cat_id,  search_id):
+    return pml_redirect_timer_view(request, reverse('jobs',  args=[search_id,  cat_id]),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 def jobs_cron(request):   
