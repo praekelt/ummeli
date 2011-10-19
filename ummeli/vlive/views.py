@@ -152,7 +152,7 @@ def password_change_view(request):
         form = PasswordChangeForm(request.user,  data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return pml_redirect_timer_view(request,  reverse('login'),
+            return pml_redirect_timer_view(request,  reverse('home'),
                 redirect_message = 'Thank you. Your pin has been changed.')
     else:
         form = PasswordChangeForm(request.user)
