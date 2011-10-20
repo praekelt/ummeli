@@ -66,6 +66,9 @@ class CurriculumVitae(models.Model):
     def can_send_fax(self):
         return self.nr_of_faxes_sent < settings.MAX_LAUNCH_FAXES_COUNT
         
+    def faxes_remaining(self):
+        return settings.MAX_LAUNCH_FAXES_COUNT - self.nr_of_faxes_sent
+        
     def fax_cv(self,  fax_nr, article_text = None):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
