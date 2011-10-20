@@ -6,6 +6,7 @@
 
 {% block content %}
     <MODULE backgroundColor="false">
+    <HEADER><LABEL>Register</LABEL></HEADER>
     {% if form.errors %}
         <CONTAINER type="form">
             <TEXT class="error">Pin codes don&apos;t match.<br />
@@ -15,7 +16,7 @@
     <CONTAINER type="form">
         <FORM method="POST" href="{% url register %}" submit_text="Create pin">        
         <TEXT position="ABOVE">Pin</TEXT>
-        <FIELD name="password1" type="password"/><br/> 
+        <FIELD name="password1" type="password"/>
         <TEXT position="ABOVE">Confirm Pin</TEXT>
         <FIELD name="password2" type="password"/>
         
