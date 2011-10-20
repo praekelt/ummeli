@@ -144,7 +144,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ummeli.api',
+    'ummeli.base',
     'ummeli.vlive',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -184,7 +184,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SKIP_SOUTH_TESTS = True
 SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
-AUTH_PROFILE_MODULE = "api.Curriculumvitae"
+AUTH_PROFILE_MODULE = "base.Curriculumvitae"
 LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 

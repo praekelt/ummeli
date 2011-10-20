@@ -1,4 +1,4 @@
-from ummeli.api.models import (Certificate, Language, WorkExperience,
+from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
                                             RegexField,  CharField,  BooleanField,  IntegerField)

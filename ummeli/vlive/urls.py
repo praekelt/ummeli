@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import patterns, url
-from ummeli.api.handlers import UserHandler
 from ummeli.vlive import views, cv_views
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse

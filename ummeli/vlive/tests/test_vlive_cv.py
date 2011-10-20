@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.api.models import Certificate
+from ummeli.base.models import Certificate
 
 import json
 import urllib

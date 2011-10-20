@@ -1,4 +1,4 @@
-from ummeli.api.models import (CurriculumVitae, Certificate,
+from ummeli.base.models import (CurriculumVitae, Certificate,
                                 Language, WorkExperience, Reference)
 from django.contrib import admin
 

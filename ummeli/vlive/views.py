@@ -5,7 +5,7 @@ import random
 
 from django.conf import settings
 
-from ummeli.api.models import (Certificate, Language, WorkExperience,
+from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import SendEmailForm,  SendFaxForm,  JobApplyForm

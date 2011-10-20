@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_control
 
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.api.models import (Certificate,  WorkExperience,  Language,  
+from ummeli.base.models import (Certificate,  WorkExperience,  Language,  
                                                     Reference)
 
 import uuid
