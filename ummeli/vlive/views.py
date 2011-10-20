@@ -187,12 +187,13 @@ def edit(request):
 
 @login_required
 def send(request):
+    form = None
+    
     if request.method == 'POST': 
         if(request.POST.get('send_via') == 'email'):
             form = EmailCVForm(data = request.POST)
         else:
             form = FaxCVForm(data = request.POST)
-        
         if form.is_valid():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
@@ -206,7 +207,8 @@ def send(request):
                 user_profile.fax_cv(send_to)
                 return send_thanks(request)
              
-    return render_to_response('pml/send_cv.xml',  mimetype='text/xml', 
+    return render_to_response('pml/send_cv.xml',  {'form': form},
+                              mimetype='text/xml', 
                               context_instance= RequestContext(request), )
 
 @login_required
