@@ -43,7 +43,7 @@
             <CHOICE-GROUP type="radio" name="send_via">
                 <TEXT>Send via</TEXT>
                 <CHOICE value="email" checked="True">Email</CHOICE>
-                {% if user_profile.faxes_remaining%}
+                {% if user_profile.can_send_fax %}
                 <CHOICE value="fax">Fax</CHOICE>
                 {% endif %}
             </CHOICE-GROUP>
