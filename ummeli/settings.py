@@ -202,3 +202,4 @@ CELERY_RESULT_BACKEND = "amqp"
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 MAX_LAUNCH_FAXES_COUNT = 2
+SEND_FROM_EMAIL_ADDRESS = 'madandat@gmail.com'

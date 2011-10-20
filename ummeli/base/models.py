@@ -86,7 +86,7 @@ class CurriculumVitae(models.Model):
                                                                            'job_ad':article_text}
             
         email = EmailMessage('CV for %s' % self.fullname(), email_text, 
-                                            'no-reply@ummeli.org',
+                                            settings.SEND_FROM_EMAIL_ADDRESS,
                                             [email_address])
         pdf = render_to_pdf('pdf_template.html', {'model': self})
         email.attach('curriculum_vitae_for_%s_%s' % (self.firstName, self.surname), 
