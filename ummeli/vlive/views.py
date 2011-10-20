@@ -7,7 +7,6 @@ from django.conf import settings
 
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
-from ummeli.vlive.utils import render_to_pdf
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset

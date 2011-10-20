@@ -271,11 +271,6 @@ class VliveCVTestCase(TestCase):
         resp = self.client.post(reverse('reference_delete',  args=[1]))
         references = self.user.get_profile().references
         self.assertEquals(len(references.all()), 0)                
-        
-    def test_convert_to_pdf(self):
-        cv = self.user.get_profile()
-        result = render_to_pdf('vlive/pdf_template.html', {'model': cv})
-        self.assertEquals(result == None, False)
 
     def test_email(self):
         msisdn = '0123456789'
@@ -318,4 +313,4 @@ class VliveCVTestCase(TestCase):
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
         
-        self.assertEqual(self.user.get_profile().faxes_remaining,  1)
+        self.assertEqual(self.user.get_profile().nr_of_faxes_sent,  1)

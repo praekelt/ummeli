@@ -111,7 +111,7 @@ class JobsTestCase(TestCase):
         self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
         
         # test special launch special (max 2 faxes per user)
-        self.assertEqual(self.user.get_profile().faxes_remaining,  1)
+        self.assertEqual(self.user.get_profile().nr_of_faxes_sent,  1)
         
         # negative test case for require send_to
         resp = self.client.get(reverse('job', 

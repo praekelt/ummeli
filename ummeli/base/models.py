@@ -5,6 +5,7 @@ from django.forms import ModelForm
 from django.conf import settings
 
 from ummeli.base import email_copy
+from ummeli.base.utils import render_to_pdf
 from django.core.mail import send_mail,  EmailMessage
 
 class Certificate (models.Model):
@@ -68,6 +69,7 @@ class CurriculumVitae(models.Model):
     def fax_cv(self,  fax_nr, article_text = None):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
+            self.save()
             return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),  article_text)
         return None
         
@@ -83,7 +85,7 @@ class CurriculumVitae(models.Model):
         email = EmailMessage('CV for %s' % self.fullname(), email_text, 
                                             'no-reply@ummeli.org',
                                             [email_address])
-        pdf = render_to_pdf('vlive/pdf_template.html', {'model': self})
+        pdf = render_to_pdf('pdf_template.html', {'model': self})
         email.attach('curriculum_vitae_for_%s_%s' % (self.firstName, self.surname), 
                             pdf,  'application/pdf')
         return email.send(fail_silently=False)
