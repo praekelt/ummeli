@@ -2,6 +2,10 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.conf import settings
+
+from ummeli.base import email_copy
+from django.core.mail import send_mail,  EmailMessage
 
 class Certificate (models.Model):
     name = models.CharField(max_length=45)
@@ -53,8 +57,37 @@ class CurriculumVitae(models.Model):
     workExperiences = models.ManyToManyField(WorkExperience, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
-    faxes_remaining = models.IntegerField(default=2,  editable=False)
+    nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     
+    def fullname(self):
+        return '%s %s' % (self.firstName,  self.surname)
+    
+    def can_send_fax(self):
+        return self.nr_of_faxes_sent < settings.MAX_LAUNCH_FAXES_COUNT
+        
+    def fax_cv(self,  fax_nr, article_text = None):
+        if(self.can_send_fax()):
+            self.nr_of_faxes_sent += 1
+            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),  article_text)
+        return None
+        
+    def email_cv(self, email_address, article_text = None):
+        email_text = ''
+        if article_text:
+            email_text = email_copy.APPLY_COPY % {'sender': self.fullname(), 
+                                                                            'job_ad':article_text}
+        else:
+            email_text = email_copy.SEND_COPY % {'sender': self.fullname(), 
+                                                                           'job_ad':article_text}
+            
+        email = EmailMessage('CV for %s' % self.fullname(), email_text, 
+                                            'no-reply@ummeli.org',
+                                            [email_address])
+        pdf = render_to_pdf('vlive/pdf_template.html', {'model': self})
+        email.attach('curriculum_vitae_for_%s_%s' % (self.firstName, self.surname), 
+                            pdf,  'application/pdf')
+        return email.send(fail_silently=False)
+        
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.firstName)
 

@@ -200,3 +200,5 @@ CELERY_ALWAYS_EAGER = DEBUG
 CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks")
 CELERY_RESULT_BACKEND = "amqp"
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+
+MAX_LAUNCH_FAXES_COUNT = 2

@@ -135,13 +135,11 @@ class ReferenceForm(PMLModelForm):
     class Meta:
         model = Reference
 
-class SendEmailForm(PMLForm):
-    email = EmailField()
+class EmailCVForm(PMLForm):
+    send_via = CharField(required = True)
+    send_to = EmailField(required = True)
 
-class SendFaxForm(PMLForm):
-    fax = RegexField('[0-9+]',  error_message = 'Please enter a valid fax number.')
-
-class JobApplyForm(Form):
-    send_via = CharField()
-    send_to = CharField(required = True)
-    
+class FaxCVForm(PMLForm):
+    send_via = CharField(required = True)
+    send_to = RegexField('[0-9+]', required = True, 
+                                    error_message = 'Please enter a valid fax number.')

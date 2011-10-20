@@ -8,7 +8,7 @@ from django.conf import settings
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm)
 from ummeli.vlive.utils import render_to_pdf
-from ummeli.vlive.forms import SendEmailForm,  SendFaxForm,  JobApplyForm
+from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
@@ -18,7 +18,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response,  render
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail,  EmailMessage
 
 #imports for login
 from django.http import HttpResponseRedirect,  HttpRequest
@@ -190,90 +189,38 @@ def edit(request):
 @login_required
 def send(request):
     if request.method == 'POST': 
-        form = JobApplyForm(data = request.POST)
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data = request.POST)
+        else:
+            form = FaxCVForm(data = request.POST)
         
         if form.is_valid():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
             
+            user_profile = request.user.get_profile()
+            
             if send_via == 'email':
-                send_email(request,  send_to)
+                user_profile.email_cv(send_to)
                 return send_thanks(request)
             else:
-                send_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''))
-                user_profile = request.user.get_profile()
-                
-                user_profile.faxes_remaining -= 1
-                user_profile.save()
-                
+                user_profile.fax_cv(send_to)
                 return send_thanks(request)
              
     return render_to_response('pml/send_cv.xml',  mimetype='text/xml', 
                               context_instance= RequestContext(request), )
-    
-def send_email(request, email_address):
-    cv = request.user.get_profile()
-    fullname = '%s %s' % (cv.firstName,  cv.surname)
-    email = EmailMessage('CV for %s' % fullname, 
-                                        '''
-Hi,
-%s has chosen to send you their CV.
-See attachment for details.
 
-Brought to you by,
-Ummeli
-www.praekeltfoundation.org/ummeli
- ''' % fullname, 
-                                        'no-reply@ummeli.org',
-                                        [email_address])
-    pdf = render_to_pdf('vlive/pdf_template.html', {'model': cv})
-    email.attach('curriculum_vitae_for_%s_%s' % (cv.firstName,  
-                                                                                cv.surname), 
-                        pdf,  'application/pdf')
-    return email.send(fail_silently=False)
-    
-def send_apply_email(request, email_address,  article_id):
-    cv = request.user.get_profile()
-    fullname = '%s %s' % (cv.firstName,  cv.surname)
-    article = Article.objects.get(pk=article_id)
-    email = EmailMessage('CV for %s' % fullname, 
-                                        '''
-Hi,
+@login_required
+def send_thanks(request):    
+    return pml_redirect_timer_view(request,  reverse('home'),
+                redirect_message = 'Thank you. Your CV will be sent shortly.')
 
-I'm responding to the position as advertised below.
-Attached please find a copy of my CV.
-
-Regards,
-%(sender)s
-
-----
-Brought to you by,
-Ummeli
-www.praekeltfoundation.org/ummeli
-
---------------------------------------------------
---------------------------------------------------
-%(job_ad)s
- ''' % {'sender': fullname,  'job_ad':article.text}, 
-                                        'no-reply@ummeli.org',
-                                        [email_address])
-    pdf = render_to_pdf('vlive/pdf_template.html', {'model': cv})
-    email.attach('curriculum_vitae_for_%s_%s' % (cv.firstName,  
-                                                                                cv.surname), 
-                        pdf,  'application/pdf')
-    return email.send(fail_silently=False)
-    
 def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
     return render(request, 'pml/redirect.xml',  
                                 {'redirect_url': redirect_url, 
                                 'redirect_time': redirect_time, 
                                 'redirect_message': redirect_message}, 
                                 content_type='text/xml')
-
-@login_required
-def send_thanks(request):    
-    return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
@@ -301,25 +248,26 @@ def jobs(request,  id,  search_id):
                               mimetype='text/xml')
 
 def job(request,  id,  cat_id,  search_id):
-    form = JobApplyForm()
+    form = None
     
     if request.method == 'POST': 
-        form = JobApplyForm(data = request.POST)
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data = request.POST)
+        else:
+            form = FaxCVForm(data = request.POST)
         
         if form.is_valid():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
             
+            article = Article.objects.get(pk = id)
+            user_profile = request.user.get_profile()
+            
             if send_via == 'email':
-                send_apply_email(request,  send_to,  id)
+                user_profile.email_cv(send_to,  article.text)
                 return send_thanks_job_apply(request,  cat_id,  search_id)
             else:
-                send_apply_email(request,  '%s@faxfx.net' % send_to.replace(' ', ''),  id)
-                user_profile = request.user.get_profile()
-                
-                user_profile.faxes_remaining -= 1
-                user_profile.save()
-                
+                user_profile.fax_cv(send_to, article.text)
                 return send_thanks_job_apply(request,  cat_id,  search_id)
                 
     province = Province.objects.get(search_id=search_id)
