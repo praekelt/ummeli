@@ -16,7 +16,7 @@
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">
-        <LINK href="{% url jobs_province %}/{{search_id}}/">
+        <LINK href="{% url jobs_list search_id %}">
             <TEXT>&lt;&lt; Back</TEXT>
         </LINK>
     </CONTAINER>
