@@ -308,7 +308,6 @@ class VliveCVTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].to), 1)
         self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
-        self.assertEqual(mail.outbox[0].from_email, 'no-reply@ummeli.org')
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
         
