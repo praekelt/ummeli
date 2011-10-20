@@ -121,4 +121,4 @@ class JobsTestCase(TestCase):
                                         '_action':'POST'}, 
                                         HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
-        self.assertContains(resp,  'Please fill in the email address or fax number')
+        self.assertContains(resp,  'This field is required')
