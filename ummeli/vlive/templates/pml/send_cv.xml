@@ -14,8 +14,12 @@
         remaining.</color></TEXT>
     </CONTAINER>
     {% if form.errors %}
-        <CONTAINER type="form">
-            <TEXT class="error">Please fill in the email address or fax number to send your CV to.</TEXT>
+        <CONTAINER type="data">
+        {% for field in form %}
+        {% for error in field.errors %}
+            <TEXT class="error">{{error}}</TEXT><br/>
+        {% endfor %}
+        {% endfor %}
         </CONTAINER>
     {% endif %}
     <CONTAINER  type="form">
