@@ -12,10 +12,11 @@ def abspath(*args):
     return os.path.join(PROJECT_ROOT, *args)
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = True
 
 ADMINS = (
-    ('Foundation Dev', 'dev@praekeltfoundation.org'),
+    ('Foundation Developers', 'dev@praekeltfoundation.org'),
+    ('Milton', 'milton@praekeltfoundation.org'),
 )
 
 MANAGERS = ADMINS
@@ -138,6 +139,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -146,8 +148,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ummeli.base',
     'ummeli.vlive',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'south',
@@ -155,6 +155,8 @@ INSTALLED_APPS = (
     'djcelery',
     'djcelery_email',
     'gunicorn',
+    'sentry',
+    'raven.contrib.django',
 )
 
 # A sample logging configuration. The only tangible logging

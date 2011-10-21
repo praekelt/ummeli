@@ -20,3 +20,4 @@ pytidylib
 Fabric==1.2.2
 lxml
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
+django-sentry
