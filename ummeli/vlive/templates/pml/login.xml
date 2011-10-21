@@ -9,7 +9,7 @@
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if user_exists %}
         {% if form.errors %}
-            <CONTAINER type="form">
+            <CONTAINER type="data">
                 <TEXT class="error">Sign in failed.<br />Please try again.</TEXT>
             </CONTAINER>
         {% endif %}

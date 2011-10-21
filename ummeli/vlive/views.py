@@ -31,18 +31,13 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
-@cache_control(no_cache=True)
 def render_to_login(request,  form,  redirect_to,  template_name,  
                                 current_app = None, 
                                 extra_context = None, 
                                 redirect_field_name=REDIRECT_FIELD_NAME):
-    current_site = get_current_site(request)
-
     context = {
         'form': form,
         redirect_field_name: redirect_to,
-        'site': current_site,
-        'site_name': current_site.name,
         'msisdn': request.vlive.msisdn,
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
     }
@@ -50,7 +45,6 @@ def render_to_login(request,  form,  redirect_to,  template_name,
     return render_to_response(template_name, context, 
                               mimetype='text/xml', 
                               context_instance=RequestContext(request, current_app=current_app))
-
 
 def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -63,7 +57,7 @@ Displays the login form and handles the login action.
 
     if request.method == "POST":
         form = authentication_form(data=request.POST)
-        if form.is_valid():
+        if form.is_valid(): 
             netloc = urlparse.urlparse(redirect_to)[1]
 
             # Use default setting if redirect_to is empty
