@@ -192,9 +192,9 @@ LOGIN_REDIRECT_URL = '/vlive/'
 
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
-BROKER_VHOST = "/"
+BROKER_USER = "ummeli"
+BROKER_PASSWORD = "ummeli"
+BROKER_VHOST = "/ummeli/production"
 
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
