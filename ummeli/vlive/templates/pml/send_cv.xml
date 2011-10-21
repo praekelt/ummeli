@@ -8,7 +8,7 @@
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Send CV</LABEL></HEADER>
     <CONTAINER type="data">
-        <TEXT>You can send you CV to anyone either via email or fax.</TEXT><br/>
+        <TEXT>You can send your CV to anyone either via email or fax.</TEXT><br/>
         <TEXT><color value="blue">You have <b>
         {{user_profile.faxes_remaining}} 
         fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
