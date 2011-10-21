@@ -25,7 +25,10 @@
                 <LINK href="{% url send %}">
                     <TEXT>Send CV</TEXT>
                 </LINK><br/>
-                One liner here...                
+                Be one of the first 5000 YALLERS to create your CV on Ummeli, and as 
+                part of our launch offer, you get to send <b>2 free faxes</b> to apply 
+                for jobs you are interested in. Sending your CV via <b>email is 
+                completely free</b>.
             {% else %}
                 {% if not user_exists %}
                     <LINK href="{% url register %}?{{uuid}}">
@@ -42,7 +45,10 @@
                     <LINK href="{% url login %}?next={% url send %}">
                         <TEXT>Send CV</TEXT>
                     </LINK><br/>
-                    One liner here...
+                    Be one of the first 5000 YALLERS to create your CV on Ummeli, and as 
+                    part of our launch offer, you get to send <b>2 free faxes</b> to apply 
+                    for jobs you are interested in. Sending your CV via <b>email is 
+                    completely free</b>.
             {% endif %}
             <br/><br/>
             <LINK href="{% url jobs_province %}">
