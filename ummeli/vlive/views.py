@@ -19,7 +19,7 @@ from django.shortcuts import render_to_response,  render
 from django.core.urlresolvers import reverse
 
 #imports for login
-from django.http import HttpResponseRedirect,  HttpRequest
+from django.http import HttpResponseRedirect,  HttpRequest, HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login, 
                                  logout as auth_logout,  authenticate)
 from django.template import RequestContext
@@ -292,3 +292,6 @@ def about(request):
 def terms(request):
     return render_to_response('pml/terms.xml',  mimetype='text/xml', 
                               context_instance= RequestContext(request))
+
+def health(request):
+    return HttpResponse("")
