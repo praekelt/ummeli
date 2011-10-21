@@ -10,7 +10,7 @@
     {% if user_exists %}
         {% if form.errors %}
             <CONTAINER type="data">
-                <TEXT class="error">Sign in failed.<br />Please try again.</TEXT>
+                <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
             </CONTAINER>
         {% endif %}
         <CONTAINER type="form">
