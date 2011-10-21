@@ -8,10 +8,12 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>View jobs</LABEL></HEADER>
     <CONTAINER type="data">
-    <TEXT>For now, all jobs displayed here are sourced from "We Got Ads".  The 
-    aim is for the service to be expanded and work with more online job 
-    portals from which we can source more job opportunities.  Please 
-    view the list of categories and click on those you are interested in. </TEXT>
+    <TEXT>Ummeli jobs come from established online sources or have been posted 
+    by the Ummeli community. We've clearly marked which is which so that you 
+    know where each job listing has come from. Start viewing jobs by choosing from 
+    the category list. Click on the job categories you are interested in. Remember, 
+    your best chances of getting a job are to choose categories that you have real 
+    interest or experience in!</TEXT>
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">

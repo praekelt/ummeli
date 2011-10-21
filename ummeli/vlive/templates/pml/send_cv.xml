@@ -8,7 +8,10 @@
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Send CV</LABEL></HEADER>
     <CONTAINER type="data">
-        <TEXT>You can send your CV to anyone either via email or fax.</TEXT><br/>
+        <TEXT>We’re offering the first 5000 smart jobseekers who create their mobile 
+        CV on Ummeli, 2 free fax applications for jobs!<br/><br/>
+        Sending your CV by email is always free - simply enter your email address in 
+        the field below. </TEXT><br/>
         <TEXT><color value="blue">You have <b>
         {{user_profile.faxes_remaining}} 
         fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
