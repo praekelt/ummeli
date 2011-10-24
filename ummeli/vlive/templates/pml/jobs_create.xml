@@ -25,7 +25,10 @@
                 {% endfor %}
             </SELECT>
 
-            {{ form.as_pml }}
+            <TEXT position="ABOVE">Title</TEXT>
+            <FIELD name="title" type="text"/>
+            <TEXT position="ABOVE">Description (max 200 characters)</TEXT>
+            <FIELD name="description" type="text" maxentry="200"/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>

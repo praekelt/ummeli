@@ -148,8 +148,10 @@ class FaxCVForm(PMLForm):
                                     error_message = 'Please enter a valid fax number.')
 
 class UserSubmittedJobArticleForm(PMLModelForm):
+    province = IntegerField(required = True)
+    category = CharField(required = True)
     title = CharField(required = True)
-    text = CharField(required = True,  widget = Textarea)
+    description = CharField(required = True,  widget = Textarea)
     class Meta:
         model = UserSubmittedJobArticle
-        fields = ('title',  'text')
+        fields = ('title',  'description')

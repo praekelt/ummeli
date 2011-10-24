@@ -322,8 +322,15 @@ class VliveCVTestCase(TestCase):
         Province(search_id = 6,  name = 'KZN').save()
     
         post_data = {'province': '2', 'category': 'Engineering',  
-                            'title': 'Plumber needed',  'text': 'This is some sample text.'}
+                            'title': 'Plumber needed',  'description': 'This is some sample text.'}
         resp = self.client.post(reverse('jobs_create'), post_data, 
                                 HTTP_X_UP_CALLING_LINE_ID=msisdn)
         
         self.assertEqual(Category.objects.count(), 1)
+        
+        post_data = {'province': '', 'category': 'Engineering',  
+                            'title': 'Plumber needed',  'description': 'This is some sample text.'}
+        resp = self.client.post(reverse('jobs_create'), post_data, 
+                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        print resp
+        self.assertContains(resp,  'Province - This field is required')
