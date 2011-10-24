@@ -320,7 +320,7 @@ def jobs_create(request):
     else:
         form = UserSubmittedJobArticleForm() 
         
-    provinces = Province.objects.all().exclude(pk=1)
+    provinces = Province.objects.all().order_by('name').exclude(pk=1)
     categories = Category.objects.all().values('title').distinct().order_by('title')
     
     return render(request, 'pml/jobs_create.xml',  
