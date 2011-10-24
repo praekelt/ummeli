@@ -12,6 +12,19 @@
     </CONTAINER>
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Save">
+            <SELECT name="province">
+                <ITEM value="">Please select province</ITEM>
+                {% for p in provinces %}
+                <ITEM value="{{p.pk}}">{{p.name}}</ITEM>
+                {% endfor %}
+            </SELECT>
+            <SELECT name="category">
+                <ITEM value="">Please select category</ITEM>
+                {% for category in categories %}
+                <ITEM value="{{category.title}}">{{category.title}}</ITEM>
+                {% endfor %}
+            </SELECT>
+
             {{ form.as_pml }}
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />

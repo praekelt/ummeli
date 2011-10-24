@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 
 from ummeli.base.models import Certificate
+from ummeli.vlive.models import Category,  Province
 
 import json
 import urllib
@@ -312,3 +313,17 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
         
         self.assertEqual(self.user.get_profile().nr_of_faxes_sent,  1)
+
+    def test_job_creation(self):
+        msisdn = '0123456789'
+        
+        Province(search_id = 2,  name = 'Gauteng').save()
+        Province(search_id = 5,  name = 'Western Cape').save()
+        Province(search_id = 6,  name = 'KZN').save()
+    
+        post_data = {'province': '2', 'category': 'Engineering',  
+                            'title': 'Plumber needed',  'text': 'This is some sample text.'}
+        resp = self.client.post(reverse('jobs_create'), post_data, 
+                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        
+        self.assertEqual(Category.objects.count(), 1)

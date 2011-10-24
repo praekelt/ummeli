@@ -12,12 +12,13 @@ from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
 from ummeli.vlive.models import Article,  Province,  Category
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserArticleForm
+from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response,  render
 from django.core.urlresolvers import reverse
+from django.utils.hashcompat import md5_constructor
 
 #imports for login
 from django.http import HttpResponseRedirect,  HttpRequest, HttpResponse
@@ -299,17 +300,30 @@ def health(request):
 
 def jobs_create(request):    
     if request.method == 'POST': 
-        form = UserArticleForm(request.POST)
+        form = UserSubmittedJobArticleForm(request.POST)
         if form.is_valid():
-            user_article = form.save()
-            province = Province.objects.get(pk = form.cleaned_data['province'])
-            category = Category.objects.get(pk = form.cleaned_data['category'])
-            cate
-            return pml_redirect_timer_view(reverse('home',
-                redirect_message = 'Thank you. Your job advert will be visible to all users once it has been moderated.'))
+            user_article = form.save(commit=False)
+            user_article.user = request.user
+            user_article.save()
+            
+            province = Province.objects.get(pk = int(form.cleaned_data['province']))
+            
+            category_title = form.cleaned_data['category']
+            category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
+            cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+            cat.save()
+            
+            cat.user_submitted_job_articles.add(user_article)
+            
+            return pml_redirect_timer_view(request,  reverse('home'),
+                redirect_message = 'Thank you. Your job advert has been submitted.')
     else:
-        form = UserArticleForm() 
+        form = UserSubmittedJobArticleForm() 
         
+    provinces = Province.objects.all().exclude(pk=1)
+    categories = Category.objects.all().values('title').distinct().order_by('title')
+    
     return render(request, 'pml/jobs_create.xml',  
-                                {'form': form}, 
+                                {'form': form,  'provinces': provinces,  
+                                'categories': categories}, 
                                 content_type='text/xml')
