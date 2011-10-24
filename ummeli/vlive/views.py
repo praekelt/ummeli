@@ -306,9 +306,9 @@ def jobs_create(request):
             user_article.user = request.user
             user_article.save()
             
-            province = Province.objects.get(pk = int(form.cleaned_data['province']))
+            province = Province.objects.get(pk = int(request.POST.get('province')))
             
-            category_title = form.cleaned_data['category']
+            category_title = request.POST.get('category')
             category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
             cat  = Category(province = province, hash_key = category_hash,  title = category_title)
             cat.save()
