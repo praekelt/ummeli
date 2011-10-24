@@ -15,12 +15,12 @@ class UserSubmittedJobArticle(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     moderated = models.BooleanField(default = False)
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
+    date = models.DateTimeField(auto_now_add = True)
+    date_updated = models.DateTimeField(auto_now = True)
     user = models.ForeignKey(User)
     
     def __unicode__(self):  # pragma: no cover
-        return '%s - %s - %s' % (self.created_at,  self.title,  self.description)
+        return '%s - %s - %s' % (self.date,  self.title,  self.description)
 
 
 class Province(models.Model):
