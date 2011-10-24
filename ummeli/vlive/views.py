@@ -12,6 +12,7 @@ from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
 from ummeli.vlive.models import Article,  Province,  Category
+from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserArticleForm
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -295,3 +296,20 @@ def terms(request):
 
 def health(request):
     return HttpResponse("")
+
+def jobs_create(request):    
+    if request.method == 'POST': 
+        form = UserArticleForm(request.POST)
+        if form.is_valid():
+            user_article = form.save()
+            province = Province.objects.get(pk = form.cleaned_data['province'])
+            category = Category.objects.get(pk = form.cleaned_data['category'])
+            cate
+            return pml_redirect_timer_view(reverse('home',
+                redirect_message = 'Thank you. Your job advert will be visible to all users once it has been moderated.'))
+    else:
+        form = UserArticleForm() 
+        
+    return render(request, 'pml/jobs_create.xml',  
+                                {'form': form}, 
+                                content_type='text/xml')

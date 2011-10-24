@@ -1,7 +1,10 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,  
-                                            RegexField,  CharField,  BooleanField,  IntegerField)
+                                            RegexField,  CharField,  BooleanField,  IntegerField, 
+                                            Textarea)
+from ummeli.vlive.models import UserArticle
+
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -143,3 +146,10 @@ class FaxCVForm(PMLForm):
     send_via = CharField(required = True)
     send_to = RegexField('[0-9+]', required = True, 
                                     error_message = 'Please enter a valid fax number.')
+
+class UserArticleForm(PMLModelForm):
+    title = CharField(required = True)
+    text = CharField(required = True,  widget = Textarea)
+    class Meta:
+        model = UserArticle
+        fields = ('title',  'text')

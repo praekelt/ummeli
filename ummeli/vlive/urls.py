@@ -83,4 +83,5 @@ urlpatterns = patterns('',
     url(r'^jobs/(?P<search_id>\d+)/(?P<cat_id>\w+)/(?P<id>\w+)/$', views.job, name='job'),
     
     url(r'^jobs/cron/$', views.jobs_cron, name='jobs_cron'),
+    url(r'^jobs/create/$', views.jobs_create, name='jobs_create'),
 )
