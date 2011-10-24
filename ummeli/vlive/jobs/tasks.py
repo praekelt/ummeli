@@ -53,10 +53,16 @@ def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser)
     Province(search_id = 2,  name = 'Gauteng').save()
     Province(search_id = 5,  name = 'Western Cape').save()
     Province(search_id = 6,  name = 'KZN').save()
+    Province(search_id = -1,  name = 'Limpopo').save()
+    Province(search_id = -2,  name = 'Mpumalanga').save()
+    Province(search_id = -3,  name = 'Free State').save()
+    Province(search_id = -4,  name = 'Northern Cape').save()
+    Province(search_id = -5,  name = 'Eastern Cape').save()
+    Province(search_id = -6,  name = 'North West').save()
     
     now = datetime.now()
     taskset = TaskSet(queue_categories.subtask((province.search_id, category_parser,  jobs_parser, ), 
                                 options = {'eta':now + timedelta(seconds=10 * i)}) 
-                                for i,  province in enumerate(Province.objects.all()))
+                                for i,  province in enumerate(Province.objects.all()) if province.search_id > 0)
     
     return taskset.apply_async()

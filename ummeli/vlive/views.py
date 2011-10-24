@@ -221,7 +221,7 @@ def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redire
 
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
-                                                {'provinces': Province.objects.all().order_by('name')}, 
+                                                {'provinces': Province.objects.filter(search_id__gt=0).order_by('name')}, 
                                                 context_instance= RequestContext(request), 
                                                 mimetype='text/xml')
 
