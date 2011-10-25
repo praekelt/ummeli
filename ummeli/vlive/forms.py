@@ -115,8 +115,8 @@ class CertificateForm(PMLModelForm):
 class WorkExperienceForm(PMLModelForm):
     title = CharField(label = 'Job title')
     company = CharField(label = 'Name of company')
-    startYear = IntegerField(label = 'Year started')
-    endYear = IntegerField(label = 'Year ended')
+    start_year = IntegerField(label = 'Year started')
+    end_year = IntegerField(label = 'Year ended')
 
     class Meta:
         model = WorkExperience

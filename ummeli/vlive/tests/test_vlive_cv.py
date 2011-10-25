@@ -153,7 +153,7 @@ class VliveCVTestCase(TestCase):
 
          # test certificates add action
         post_data = {'title': 'Engineer', 'company': 'Praekelt',
-                    'startYear': 2007, 'endYear': 2008}
+                    'start_year': 2007, 'end_year': 2008}
         resp = self.client.post(reverse('workExperience_new'),  post_data)
 
          # test certificates listing of new certificate
@@ -166,7 +166,7 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
 
         post_data = {'title': 'Engineer', 'company': 'Praekelt Consulting',
-                    'startYear': 2007, 'endYear': 2008}
+                    'start_year': 2007, 'end_year': 2008}
         resp = self.client.post(reverse('workExperience_edit', args=[1]),
                                 post_data)
         print resp

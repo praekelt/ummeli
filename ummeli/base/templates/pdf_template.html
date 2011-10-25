@@ -129,7 +129,7 @@
 		<h2>Work Experience</h2>
 		<div class='content'>
 			{% for work in model.workExperiences.all%}
-            <div><span class='date'>{{work.startYear}} » {{work.endYear}} </span>
+            <div><span class='date'>{{work.start_year}} » {{work.end_year}} </span>
                 <h3>{{work.title}}</h3>
                 <address>{{work.company}}</address>
             </div><br/>
