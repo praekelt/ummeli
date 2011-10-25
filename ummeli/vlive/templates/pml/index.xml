@@ -29,6 +29,19 @@
                 of our launch offer, you get to send <b>2 free faxes</b> to apply for 
                 jobs you are interested in. Sending your CV via <b>email is completely 
                 free</b>.
+                <br/><br/>
+                <LINK href="{% url jobs_province %}">
+                    <TEXT>View jobs</TEXT>
+                </LINK><br/>
+                    Ummeli jobs come from established online sources or have been posted 
+                    by the Ummeli community. Click on <LINK href="{% url jobs_province %}">
+                    <TEXT>View jobs</TEXT>
+                </LINK> to view jobs that might be near you.
+                <br/><br/>
+                <LINK href="{% url jobs_create %}">
+                    <TEXT>Add jobs</TEXT>
+                </LINK><br/>
+                You can help others by adding jobs you have seen advertised in your community.
             {% else %}
                 {% if not user_exists %}
                     <LINK href="{% url register %}?{{uuid}}">
@@ -49,15 +62,20 @@
                     of our launch offer, you get to send <b>2 free faxes</b> to apply for 
                     jobs you are interested in. Sending your CV via <b>email is completely 
                     free</b>.
+                    <br/><br/>
+                    <LINK href="{% url login %}?next={% url jobs_province %}">
+                        <TEXT>View jobs</TEXT>
+                    </LINK><br/>
+                        Ummeli jobs come from established online sources or have been posted 
+                        by the Ummeli community. Click on <LINK href="{% url login %}?next={% url jobs_province %}">
+                        <TEXT>View jobs</TEXT>
+                    </LINK> to view jobs that might be near you.
+                    <br/><br/>
+                    <LINK href="{% url login %}?next={% url jobs_create %}">
+                        <TEXT>Add jobs</TEXT>
+                    </LINK><br/>
+                    You can help others by adding jobs you have seen advertised in your community.
             {% endif %}
-            <br/><br/>
-            <LINK href="{% url jobs_province %}">
-                <TEXT>View jobs</TEXT>
-            </LINK><br/>
-                Ummeli jobs come from established online sources or have been posted 
-                by the Ummeli community. Click on <LINK href="{% url jobs_province %}">
-                <TEXT>View jobs</TEXT>
-            </LINK> to view jobs that might be near you.
         </TEXT>
     </CONTAINER>
 </MODULE>

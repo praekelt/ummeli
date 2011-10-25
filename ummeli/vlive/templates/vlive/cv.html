@@ -5,13 +5,13 @@
     <form class='standard'>
     <div>
         <ol>
-            <li><a href="{% url edit %}/personal">Personal details</a></li>
-            <li><a href="{% url edit %}/contact">Contact details</a></li>
-            <li><a href="{% url edit %}/education">Education details</a></li>
-            <li><a href="{% url edit %}/certificates">Certificates details</a></li>
-            <li><a href="{% url edit %}/workExperiences">Work experience details</a></li>
-            <li><a href="{% url edit %}/languages">Language details</a></li>
-            <li><a href="{% url edit %}/references">References details</a></li>
+            <li><a href="{% url edit_personal %}">Personal details</a></li>
+            <li><a href="{% url edit_contact %}">Contact details</a></li>
+            <li><a href="{% url edit_education %}">Education details</a></li>
+            <li><a href="{% url certificate_list %}">Certificates details</a></li>
+            <li><a href="{% url work_experience_list %}">Work experience details</a></li>
+            <li><a href="{% url language_list %}">Language details</a></li>
+            <li><a href="{% url reference_list %}">References details</a></li>
         </ol>
         <br/>
         <p><a href="{% url index %}">&lt;&lt; Back</a></p>

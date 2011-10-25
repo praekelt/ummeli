@@ -11,12 +11,14 @@ from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
-from ummeli.vlive.models import Article,  Province,  Category
+from ummeli.vlive.models import Article,  Province,  Category,  UserSubmittedJobArticle
+from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response,  render
 from django.core.urlresolvers import reverse
+from django.utils.hashcompat import md5_constructor
 
 #imports for login
 from django.http import HttpResponseRedirect,  HttpRequest, HttpResponse
@@ -219,7 +221,7 @@ def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redire
 
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml', 
-                                                {'provinces': Province.objects.all().order_by('name')}, 
+                                                {'provinces': Province.objects.filter(search_id__gt=0).order_by('name')}, 
                                                 context_instance= RequestContext(request), 
                                                 mimetype='text/xml')
 
@@ -229,13 +231,20 @@ def jobs_list(request,  id):
                               'search_id': id}, 
                               context_instance= RequestContext(request), 
                               mimetype='text/xml')
-                             
+        
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = province.category_set.get(pk=id)
+    
+    all_jobs = []
+    [all_jobs.append(a) for a in category.articles.all()]
+    [all_jobs.append(a.toViewModel()) for a in category.user_submitted_job_articles.all()]
+    
+    all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
+    
     return render_to_response('pml/jobs.xml',  
-                              {'articles': articles, 
+                              {'articles': all_jobs, 
                               'search_id': search_id, 
                               'cat_id': id, 
                               'title':  '%s :: %s' % (province.name,  category.title)}, 
@@ -244,7 +253,11 @@ def jobs(request,  id,  search_id):
 
 def job(request,  id,  cat_id,  search_id):
     form = None
-    
+    if request.GET.get('user_submitted'):
+        article = UserSubmittedJobArticle.objects.get(pk = id).toViewModel()
+    else:
+        article = Article.objects.get(pk = id)
+        
     if request.method == 'POST': 
         if(request.POST.get('send_via') == 'email'):
             form = EmailCVForm(data = request.POST)
@@ -254,8 +267,7 @@ def job(request,  id,  cat_id,  search_id):
         if form.is_valid():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
-            
-            article = Article.objects.get(pk = id)
+                
             user_profile = request.user.get_profile()
             
             if send_via == 'email':
@@ -267,7 +279,7 @@ def job(request,  id,  cat_id,  search_id):
                 
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
-    article = Article.objects.get(pk = id)
+    
     return render_to_response('pml/job.xml',  
                               {'job': article, 
                               'search_id': search_id, 
@@ -295,3 +307,33 @@ def terms(request):
 
 def health(request):
     return HttpResponse("")
+
+def jobs_create(request):    
+    if request.method == 'POST': 
+        form = UserSubmittedJobArticleForm(request.POST)
+        if form.is_valid():
+            user_article = form.save(commit=False)
+            user_article.user = request.user
+            user_article.save()
+            
+            province = Province.objects.get(pk = int(request.POST.get('province')))
+            
+            category_title = request.POST.get('category')
+            category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
+            cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+            cat.save()
+            
+            cat.user_submitted_job_articles.add(user_article)
+            
+            return pml_redirect_timer_view(request,  reverse('home'),
+                redirect_message = 'Thank you. Your job advert has been submitted.')
+    else:
+        form = UserSubmittedJobArticleForm() 
+        
+    provinces = Province.objects.all().order_by('name').exclude(pk=1)
+    categories = Category.objects.all().values('title').distinct().order_by('title')
+    
+    return render(request, 'pml/jobs_create.xml',  
+                                {'form': form,  'provinces': provinces,  
+                                'categories': categories}, 
+                                content_type='text/xml')
