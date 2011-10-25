@@ -142,7 +142,7 @@
 		<div class='content'>
             <ul>
 			{% for lang in model.languages.all %}
-                {% if lang.readWrite %}
+                {% if lang.read_write %}
                     <li>{{lang.language}} (Read/Write)</li>
                 {% else %}
                     <li>{{lang.language}} (Speak only)</li>
@@ -166,7 +166,7 @@
 		<div class='content'>
 			<ul>
             {% for ref in model.references.all %}
-                <li>{{ref.fullname}}, {{ref.relationship}}, {{ref.contactNo}}</li>
+                <li>{{ref.fullname}}, {{ref.relationship}}, {{ref.contact_no}}</li>
             {% endfor %}
             </ul>
 		</div>
