@@ -31,7 +31,7 @@ class UserSubmittedJobArticle(models.Model):
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s' % (self.date,  self.title,  self.description)
         
-    def toViewModel(self):
+    def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
             def __init__(self,  user_article):
                 self.pk = user_article.pk
