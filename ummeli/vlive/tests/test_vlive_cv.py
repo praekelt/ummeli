@@ -4,8 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core import mail
 
-from ummeli.base.models import Certificate
-from ummeli.vlive.models import Category,  Province
+from ummeli.base.models import Certificate, Category, Province
 
 import json
 import urllib

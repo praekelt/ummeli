@@ -1,9 +1,8 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae)
+    Reference, CurriculumVitae,  UserSubmittedJobArticle)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
                                             RegexField,  CharField,  BooleanField,  IntegerField,
                                             Textarea)
-from ummeli.vlive.models import UserSubmittedJobArticle
 
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe

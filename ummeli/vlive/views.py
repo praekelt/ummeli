@@ -6,12 +6,12 @@ import random
 from django.conf import settings
 
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae, CurriculumVitaeForm)
+    Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,  
+    UserSubmittedJobArticle)
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
-from ummeli.vlive.models import Article,  Province,  Category,  UserSubmittedJobArticle
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
     
 from django.contrib.auth.models import User
@@ -238,7 +238,7 @@ def jobs(request,  id,  search_id):
     
     all_jobs = []
     [all_jobs.append(a) for a in category.articles.all()]
-    [all_jobs.append(a.toViewModel()) for a in category.user_submitted_job_articles.all()]
+    [all_jobs.append(a.to_view_model()) for a in category.user_submitted_job_articles.all()]
     
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
@@ -254,7 +254,7 @@ def jobs(request,  id,  search_id):
 def job(request,  id,  cat_id,  search_id):
     form = None
     if request.GET.get('user_submitted'):
-        article = UserSubmittedJobArticle.objects.get(pk = id).toViewModel()
+        article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
     else:
         article = Article.objects.get(pk = id)
         

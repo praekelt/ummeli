@@ -13,7 +13,7 @@
         advertised in your community, or that you are not interested in yourself, but 
         want to share so that others can apply. If you are a formal jobs provider, you 
         are a VIP here on Ummeli and we welcome you to our community!
-        </TEXT>
+        <br/><br/></TEXT>
     </CONTAINER>
     <br/>
     <CONTAINER type="data">
@@ -21,12 +21,14 @@
     </CONTAINER>
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Save">
+            <TEXT position="ABOVE">Province</TEXT>
             <SELECT name="province">
                 <ITEM value="">Please select province</ITEM>
                 {% for p in provinces %}
                 <ITEM value="{{p.pk}}">{{p.name}}</ITEM>
                 {% endfor %}
             </SELECT>
+            <TEXT position="ABOVE">Category</TEXT>
             <SELECT name="category">
                 <ITEM value="">Please select category</ITEM>
                 {% for category in categories %}
@@ -35,9 +37,9 @@
             </SELECT>
 
             <TEXT position="ABOVE">Title</TEXT>
-            <FIELD name="title" type="text"/>
+            <FIELD name="title" type="text"/><br/>
             <TEXT position="ABOVE">Description (max 200 characters)</TEXT>
-            <FIELD name="description" type="text" maxentry="200"/>
+            <FIELD name="text" type="text"/><br/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
