@@ -13,5 +13,3 @@ MANIFEST.in
 /logs/*.err
 /logs/*.log
 /tmp/pids/*.pid
-/ummeli/base/migrations/
-/ummeli/vlive/migrations/
