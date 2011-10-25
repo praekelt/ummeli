@@ -39,7 +39,7 @@
             <TEXT position="ABOVE">Title</TEXT>
             <FIELD name="title" type="text"/><br/>
             <TEXT position="ABOVE">Description (max 200 characters)</TEXT>
-            <FIELD name="description" type="text" maxentry="200"/>
+            <FIELD name="description" type="text" maxentry="200"/><br/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
