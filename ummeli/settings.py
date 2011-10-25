@@ -32,6 +32,11 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -123,10 +128,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages", 
-    "django.core.context_processors.request", 
-    "vlive.custom_context_processors.unique_id_processor", 
-    "vlive.custom_context_processors.user_profile_processor", 
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
+    "vlive.custom_context_processors.unique_id_processor",
+    "vlive.custom_context_processors.user_profile_processor",
 )
 
 ROOT_URLCONF = 'urls'
