@@ -10,7 +10,7 @@
     <CONTAINER  type="data">
         <TITLE>{{job.date|date:'d M y'}} ::  {{job.source}}</TITLE>
         {% if job.user_submitted %}
-        <TEXT><color value="blue">submitted by YAL user</color></TEXT><br/>
+        <TEXT><color value="blue">submitted by Ummeli user</color></TEXT><br/>
         {% endif %}
         <TEXT>
             {{ job.text }}
