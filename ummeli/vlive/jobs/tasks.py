@@ -2,7 +2,7 @@ from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
 from celery.task import task
 from celery.task.sets import TaskSet
 from datetime import datetime, timedelta
-from ummeli.vlive.models import Article,  Province,  Category
+from ummeli.base.models import Article,  Province,  Category
 from django.utils.hashcompat import md5_constructor
 
 @task

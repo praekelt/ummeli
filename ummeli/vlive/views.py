@@ -6,12 +6,12 @@ import random
 from django.conf import settings
 
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae, CurriculumVitaeForm)
+    Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,  
+    UserSubmittedJobArticle)
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
-from ummeli.vlive.models import Article,  Province,  Category,  UserSubmittedJobArticle
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
     
 from django.contrib.auth.models import User

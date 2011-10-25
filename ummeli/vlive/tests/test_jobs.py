@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 
 from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
-from ummeli.vlive.models import Province,  Article,  Category
+from ummeli.base.models import Province,  Article,  Category
 from ummeli.vlive.jobs.tasks import run_jobs_update
 from ummeli.vlive.tests import jobs_test_data
 
