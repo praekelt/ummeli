@@ -151,7 +151,7 @@ class UserSubmittedJobArticleForm(PMLModelForm):
     province = IntegerField(required = True)
     category = CharField(required = True)
     title = CharField(required = True)
-    description = CharField(required = True,  widget = Textarea)
+    text = CharField(required = True,  widget = Textarea,  label = 'Description')
     class Meta:
         model = UserSubmittedJobArticle
-        fields = ('title',  'description')
+        fields = ('title',  'text')

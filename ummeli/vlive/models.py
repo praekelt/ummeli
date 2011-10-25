@@ -10,10 +10,9 @@ class Article(models.Model):
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s' % (self.date,  self.source,  self.text)
 
-
 class UserSubmittedJobArticle(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    text = models.TextField(default='')
     moderated = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now_add = True)
     date_updated = models.DateTimeField(auto_now = True)
@@ -21,6 +20,16 @@ class UserSubmittedJobArticle(models.Model):
     
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s' % (self.date,  self.title,  self.description)
+        
+    def toViewModel(self):
+        class UserSubmittedJobArticleViewModel(object):
+            def __init__(self,  user_article):
+                self.pk = user_article.pk
+                self.source = user_article.title
+                self.text = user_article.text
+                self.date = user_article.date.strftime('%d-%m')
+                self.user_submitted = True
+        return UserSubmittedJobArticleViewModel(self)
 
 
 class Province(models.Model):

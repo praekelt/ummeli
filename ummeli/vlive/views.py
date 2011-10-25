@@ -11,7 +11,7 @@ from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 
-from ummeli.vlive.models import Article,  Province,  Category
+from ummeli.vlive.models import Article,  Province,  Category,  UserSubmittedJobArticle
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
     
 from django.contrib.auth.models import User
@@ -231,13 +231,20 @@ def jobs_list(request,  id):
                               'search_id': id}, 
                               context_instance= RequestContext(request), 
                               mimetype='text/xml')
-                             
+        
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = province.category_set.get(pk=id)
+    all_jobs = []
+    for a in category.articles.all():
+        all_jobs.append(a)
+    for a in category.user_submitted_job_articles.all():
+        all_jobs.append(a.toViewModel())
+    all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
+    
     return render_to_response('pml/jobs.xml',  
-                              {'articles': articles, 
+                              {'articles': all_jobs, 
                               'search_id': search_id, 
                               'cat_id': id, 
                               'title':  '%s :: %s' % (province.name,  category.title)}, 
@@ -246,7 +253,11 @@ def jobs(request,  id,  search_id):
 
 def job(request,  id,  cat_id,  search_id):
     form = None
-    
+    if request.GET.get('user_submitted'):
+        article = UserSubmittedJobArticle.objects.get(pk = id).toViewModel()
+    else:
+        article = Article.objects.get(pk = id)
+        
     if request.method == 'POST': 
         if(request.POST.get('send_via') == 'email'):
             form = EmailCVForm(data = request.POST)
@@ -256,8 +267,7 @@ def job(request,  id,  cat_id,  search_id):
         if form.is_valid():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
-            
-            article = Article.objects.get(pk = id)
+                
             user_profile = request.user.get_profile()
             
             if send_via == 'email':
@@ -269,7 +279,7 @@ def job(request,  id,  cat_id,  search_id):
                 
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
-    article = Article.objects.get(pk = id)
+    
     return render_to_response('pml/job.xml',  
                               {'job': article, 
                               'search_id': search_id, 

@@ -9,8 +9,13 @@
     <HEADER><LABEL>{{title}}</LABEL></HEADER>
     <CONTAINER  type="list">
         {% for article in articles %}
-            <LINK href="{% url job search_id cat_id article.pk %}">
-                <TEXT>{{article.date}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}</TEXT>
+            <LINK href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
+                <TEXT>
+                {% if article.user_submitted %}
+                <color value="blue">***</color>
+                {% endif %}
+                {{article.date}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+                </TEXT>
             </LINK>
         {% endfor %}
     </CONTAINER>
