@@ -89,12 +89,12 @@ class CurriculumVitae(models.Model):
                                             settings.SEND_FROM_EMAIL_ADDRESS,
                                             [email_address])
         pdf = render_to_pdf('pdf_template.html', {'model': self})
-        email.attach('curriculum_vitae_for_%s_%s' % (self.firstName, self.surname),
+        email.attach('curriculum_vitae_for_%s_%s' % (self.first_name, self.surname),
                             pdf,  'application/pdf')
         return email.send(fail_silently=False)
 
     def __unicode__(self):  # pragma: no cover
-        return u"CurriculumVitae %s - %s" % (self.pk, self.firstName)
+        return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
 
 class CurriculumVitaeForm(ModelForm):
     class Meta:
@@ -103,7 +103,7 @@ class CurriculumVitaeForm(ModelForm):
 
 def create_cv(sender, instance, created, **kwargs):
     if created:
-        cv = CurriculumVitae.objects.create(firstName=instance.first_name,
+        cv = CurriculumVitae.objects.create(first_name=instance.first_name,
                 surname=instance.last_name, email=instance.email,
                 user=instance)
 

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
-	<title>Curriculum Vitae | {{model.firstName}} {{model.surname}}</title>
+	<title>Curriculum Vitae | {{model.first_name}} {{model.surname}}</title>
 	<style type='text/css'>
 		@page {
                 size: A4;
@@ -82,29 +82,29 @@
         td{vertical-align: top}
 	</style>
 </head><body>
-	<h1>{{model.firstName}} {{model.surname}}</h1>
+	<h1>{{model.first_name}} {{model.surname}}</h1>
 	<table width='100%'>
 	<tbody>
 	<tr>
 		<td>
 		<div>
 			<h3>Local Address</h3>
-			{{model.houseNumber}}<br>
-			{{model.streetName}}<br>
+			{{model.house_number}}<br>
+			{{model.street_name}}<br>
 			{{model.location}}
 		</div>
 		</td>
 		<td>
 		<div id='first'>
 			<h3>Contact Details</h3>
-			{{model.telephoneNumber}}<br/>
+			{{model.telephone_number}}<br/>
 			<a href='mailto:$Email'>{{model.email}}</a>
 		</div>
 		</td>
 		<td>
 		<div>
 			<h3>Other Information</h3>
-			Date of birth: <strong>{{model.dateOfBirth}}</strong><br>
+			Date of birth: <strong>{{model.date_of_birth}}</strong><br>
 			Gender: <strong>{{model.gender}}</strong>
 		</div>
 		</td>
@@ -128,7 +128,7 @@
 	<div class='section'>
 		<h2>Work Experience</h2>
 		<div class='content'>
-			{% for work in model.workExperiences.all%}
+			{% for work in model.work_experiences.all%}
             <div><span class='date'>{{work.start_year}} » {{work.end_year}} </span>
                 <h3>{{work.title}}</h3>
                 <address>{{work.company}}</address>
@@ -156,7 +156,7 @@
 		<h2>Education</h2>
 		<div class='content'>
 			<ul>
-				<li>{{model.school}}, Grade {{model.grade}} {{model.highestGrade}}, {{model.highestGradeYear}}</li>
+				<li>{{model.school}}, Grade {{model.grade}} {{model.highest_grade}}, {{model.highest_grade_year}}</li>
 			</ul>
 		</div>
 	</div>

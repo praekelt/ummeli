@@ -33,13 +33,13 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('edit_personal'))
         self.assertEquals(resp.status_code, 200)
 
-        post_data = {'firstName': 'Milton', 'surname': 'Madanda',
+        post_data = {'first_name': 'Milton', 'surname': 'Madanda',
                             'gender': 'Male',  '_action': 'POST'}
         resp = self.client.get(reverse('edit_personal'), post_data,
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
 
         cv = self.user.get_profile()
-        self.assertEquals(cv.firstName, 'Milton')
+        self.assertEquals(cv.first_name, 'Milton')
         self.assertEquals(cv.surname, 'Madanda')
         self.assertEquals(cv.gender, 'Male')
 
@@ -68,14 +68,14 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('edit_contact'))
         self.assertEquals(resp.status_code, 200)
 
-        post_data = {'telephoneNumber': '0123456978', 'streetName': 'Oak Rd',
+        post_data = {'telephone_number': '0123456978', 'street_name': 'Oak Rd',
                      '_action': 'POST'}
         resp = self.client.get(reverse('edit_contact'), post_data,
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
 
         cv = self.user.get_profile()
-        self.assertEquals(cv.telephoneNumber, '0123456978')
-        self.assertEquals(cv.streetName, 'Oak Rd')
+        self.assertEquals(cv.telephone_number, '0123456978')
+        self.assertEquals(cv.street_name, 'Oak Rd')
 
     def test_edit_education_details_page(self):
         msisdn = '0123456789'
@@ -86,14 +86,14 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('edit_education'))
         self.assertEquals(resp.status_code, 200)
 
-        post_data = {'highestGrade': '12', 'highestGradeYear': 2005,
+        post_data = {'highest_grade': '12', 'highest_grade_year': 2005,
                     'school': 'Some school',  '_action': 'POST'}
         resp = self.client.get(reverse('edit_education'), post_data,
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
 
         cv = self.user.get_profile()
-        self.assertEquals(cv.highestGrade, '12')
-        self.assertEquals(cv.highestGradeYear, 2005)
+        self.assertEquals(cv.highest_grade, '12')
+        self.assertEquals(cv.highest_grade_year, 2005)
         self.assertEquals(cv.school, 'Some school')
 
     def test_edit_certificates_details_page(self):
@@ -139,7 +139,7 @@ class VliveCVTestCase(TestCase):
         certs = self.user.get_profile().certificates
         self.assertEquals(len(certs.all()), 0)
 
-    def test_edit_workExperiences_details_page(self):
+    def test_edit_work_experiences_details_page(self):
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
 
@@ -173,16 +173,16 @@ class VliveCVTestCase(TestCase):
         resp = self.client.get(reverse('workExperience_list'))
         self.assertContains(resp, 'Praekelt Consulting')
 
-        workExperiences = self.user.get_profile().workExperiences
-        self.assertEquals(len(workExperiences.all()), 1)
+        work_experiences = self.user.get_profile().work_experiences
+        self.assertEquals(len(work_experiences.all()), 1)
 
          # test delete action
         resp = self.client.get(reverse('workExperience_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
 
         resp = self.client.post(reverse('workExperience_delete',  args=[1]))
-        workExperiences = self.user.get_profile().workExperiences
-        self.assertEquals(len(workExperiences.all()), 0)
+        work_experiences = self.user.get_profile().work_experiences
+        self.assertEquals(len(work_experiences.all()), 0)
 
     def test_edit_languages_details_page(self):
         resp = self.client.get(reverse('edit'))
@@ -275,8 +275,8 @@ class VliveCVTestCase(TestCase):
     def test_email(self):
         msisdn = '0123456789'
 
-         # setup user's firstName and surname
-        post_data = {'firstName': 'Test', 'surname': 'User',
+         # setup user's first_name and surname
+        post_data = {'first_name': 'Test', 'surname': 'User',
         '_action': 'POST'}
         resp = self.client.get(reverse('edit_personal'), post_data,
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
@@ -294,8 +294,8 @@ class VliveCVTestCase(TestCase):
     def test_fax(self):
         msisdn = '0123456789'
 
-         # setup user's firstName and surname
-        post_data = {'firstName': 'Test', 'surname': 'User',
+         # setup user's first_name and surname
+        post_data = {'first_name': 'Test', 'surname': 'User',
                      '_action': 'POST'}
         resp = self.client.get(reverse('edit_personal'), post_data,
                                HTTP_X_UP_CALLING_LINE_ID=msisdn)

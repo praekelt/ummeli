@@ -76,33 +76,33 @@ class PMLForm(Form):
         return format_errors_as_pml(self)
 
 class PersonalDetailsForm(PMLModelForm):
-    firstName = CharField(label = 'Firstname')
-    dateOfBirth = CharField(label = 'Date of birth',  required = False)
+    first_name = CharField(label = 'Firstname')
+    date_of_birth = CharField(label = 'Date of birth',  required = False)
 
     class Meta:
         model = CurriculumVitae
-        fields = ('firstName', 'surname', 'dateOfBirth', 'gender')
+        fields = ('first_name', 'surname', 'date_of_birth', 'gender')
 
 class ContactDetailsForm(PMLModelForm):
-    telephoneNumber = CharField(label = 'Phone number',  required = False)
+    telephone_number = CharField(label = 'Phone number',  required = False)
     email = CharField(label = 'Email address',  required = False)
-    houseNumber = CharField(label = 'House number',  required = False)
-    streetName = CharField(label = 'Street name',  required = False)
+    house_number = CharField(label = 'House number',  required = False)
+    street_name = CharField(label = 'Street name',  required = False)
     location = CharField(label = 'Location name',  required = False)
 
     class Meta:
         model = CurriculumVitae
-        fields = ('telephoneNumber', 'email', 'houseNumber', 'streetName',
+        fields = ('telephone_number', 'email', 'house_number', 'street_name',
                 'location')
 
 class EducationDetailsForm(PMLModelForm):
-    highestGrade = CharField(label = 'Highest grade passed',  required = False)
-    highestGradeYear = IntegerField(label = 'Year passed',  required = False)
+    highest_grade = CharField(label = 'Highest grade passed',  required = False)
+    highest_grade_year = IntegerField(label = 'Year passed',  required = False)
     school = CharField(label = 'Name of school', required = False)
 
     class Meta:
         model = CurriculumVitae
-        fields = ('highestGrade', 'highestGradeYear', 'school')
+        fields = ('highest_grade', 'highest_grade_year', 'school')
 
 class CertificateForm(PMLModelForm):
     name = CharField(label = 'Name of certificate')
