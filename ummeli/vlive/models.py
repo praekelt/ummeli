@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Article(models.Model):
     hash_key = models.CharField(max_length=32,  primary_key = True)
-    date = models.CharField(max_length=45)
+    date = models.DateTimeField(blank=True,  default = datetime.now())
     source = models.CharField(max_length=100)
     text = models.TextField()
     
@@ -27,7 +28,7 @@ class UserSubmittedJobArticle(models.Model):
                 self.pk = user_article.pk
                 self.source = user_article.title
                 self.text = user_article.text
-                self.date = user_article.date.strftime('%d-%m')
+                self.date = user_article.date
                 self.user_submitted = True
         return UserSubmittedJobArticleViewModel(self)
 

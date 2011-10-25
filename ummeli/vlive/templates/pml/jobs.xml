@@ -14,7 +14,7 @@
                 {% if article.user_submitted %}
                 <color value="blue">***</color>
                 {% endif %}
-                {{article.date}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+                {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
                 </TEXT>
             </LINK>
         {% endfor %}

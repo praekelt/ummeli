@@ -235,11 +235,11 @@ def jobs_list(request,  id):
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = province.category_set.get(pk=id)
+    
     all_jobs = []
-    for a in category.articles.all():
-        all_jobs.append(a)
-    for a in category.user_submitted_job_articles.all():
-        all_jobs.append(a.toViewModel())
+    [all_jobs.append(a) for a in category.articles.all()]
+    [all_jobs.append(a.toViewModel()) for a in category.user_submitted_job_articles.all()]
+    
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
     
