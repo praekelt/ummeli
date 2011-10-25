@@ -144,7 +144,7 @@ class VliveCVTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
 
          # test certificates listing
-        resp = self.client.get(reverse('workExperience_list'))
+        resp = self.client.get(reverse('work_experience_list'))
         self.assertEquals(resp.status_code, 200)
 
          # test certificates add form
@@ -157,7 +157,7 @@ class VliveCVTestCase(TestCase):
         resp = self.client.post(reverse('workExperience_new'),  post_data)
 
          # test certificates listing of new certificate
-        resp = self.client.get(reverse('workExperience_list'))
+        resp = self.client.get(reverse('work_experience_list'))
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Praekelt')
 
@@ -170,7 +170,7 @@ class VliveCVTestCase(TestCase):
         resp = self.client.post(reverse('workExperience_edit', args=[1]),
                                 post_data)
         print resp
-        resp = self.client.get(reverse('workExperience_list'))
+        resp = self.client.get(reverse('work_experience_list'))
         self.assertContains(resp, 'Praekelt Consulting')
 
         work_experiences = self.user.get_profile().work_experiences

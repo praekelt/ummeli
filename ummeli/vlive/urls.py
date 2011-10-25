@@ -37,7 +37,7 @@ urlpatterns = patterns('',
 
     url(r'^edit/work_experiences/$',
         login_required(cv_views.WorkExperienceListView.as_view()),
-        name='workExperience_list'),
+        name='work_experience_list'),
     url(r'^edit/work_experiences/(?P<pk>\d+)/$',
         login_required(cv_views.WorkExperienceEditView.as_view()),
         name='workExperience_edit'),

@@ -177,13 +177,13 @@ class WorkExperienceEditView(UpdateView):
     form_class = WorkExperienceForm
 
     def get_success_url(self):
-        return reverse("workExperience_list")
+        return reverse("work_experience_list")
 
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'work_experiences'
         context['page_title'] = 'work experience'
-        context['cancel_url'] = reverse("workExperience_list")
+        context['cancel_url'] = reverse("work_experience_list")
         return context
 
     def form_valid(self, form):
@@ -200,13 +200,13 @@ class WorkExperienceCreateView(CreateView):
     form_class = WorkExperienceForm
 
     def get_success_url(self):
-        return reverse("workExperience_list")
+        return reverse("work_experience_list")
 
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'work_experiences'
         context['page_title'] = 'work experience'
-        context['cancel_url'] = reverse("workExperience_list")
+        context['cancel_url'] = reverse("work_experience_list")
         return context
 
     def form_valid(self, form):
@@ -223,12 +223,12 @@ class WorkExperienceDeleteView(DeleteView):
     template_name = 'pml/delete.xml'
 
     def get_success_url(self):
-        return reverse("workExperience_list")
+        return reverse("work_experience_list")
 
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceDeleteView, self).get_context_data(**kwargs)
         context['list_name'] = 'work_experiences'
-        context['cancel_url'] = reverse("workExperience_list")
+        context['cancel_url'] = reverse("work_experience_list")
         return context
 
     def delete(self, request, *args, **kwargs):
