@@ -8,7 +8,10 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>{{title}}</LABEL></HEADER>
     <CONTAINER  type="data">
-        <TITLE>{{job.date}} ::  {{job.source}}</TITLE>
+        <TITLE>{{job.date|date:'d M y'}} ::  {{job.source}}</TITLE>
+        {% if job.user_submitted %}
+        <TEXT><color value="blue">submitted by Ummeli user</color></TEXT><br/>
+        {% endif %}
         <TEXT>
             {{ job.text }}
         </TEXT>

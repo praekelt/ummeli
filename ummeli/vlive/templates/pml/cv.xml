@@ -20,7 +20,7 @@
         <LINK href="{% url certificate_list %}?{{uuid}}">
             <TEXT>Certificates</TEXT>
         </LINK>
-        <LINK href="{% url workExperience_list %}?{{uuid}}">
+        <LINK href="{% url work_experience_list %}?{{uuid}}">
             <TEXT>Work experience</TEXT>
         </LINK>
         <LINK href="{% url language_list %}?{{uuid}}">
