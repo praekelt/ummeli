@@ -13,12 +13,13 @@ def process_jobs(cat_id,  link,  jobs_parser):
     
     for date,  source,  text in articles:
         hash = md5_constructor(':'.join([date,  source,  text])).hexdigest()
+        date_with_year = ('%s-%s' % (date,  datetime.now().strftime('%Y')))
         article = Article(hash_key = hash,  
-                                date = date, 
+                                date = datetime.strptime(date_with_year, '%d-%m-%Y'), 
                                 source = source,  
                                 text = text)
         article.save()
-        if not (category.articles.filter(pk = hash)):
+        if not (category.articles.filter(pk = hash).exists()):
             category.articles.add(article)
     return category
 
