@@ -13,7 +13,7 @@
         advertised in your community, or that you are not interested in yourself, but 
         want to share so that others can apply. If you are a formal jobs provider, you 
         are a VIP here on Ummeli and we welcome you to our community!
-        </TEXT>
+        <br/><br/></TEXT>
     </CONTAINER>
     <br/>
     <CONTAINER type="data">
@@ -37,7 +37,7 @@
             </SELECT>
 
             <TEXT position="ABOVE">Title</TEXT>
-            <FIELD name="title" type="text"/>
+            <FIELD name="title" type="text"/><br/>
             <TEXT position="ABOVE">Description (max 200 characters)</TEXT>
             <FIELD name="description" type="text" maxentry="200"/>
             <FIELD type='hidden' name='_action' value='POST' />
