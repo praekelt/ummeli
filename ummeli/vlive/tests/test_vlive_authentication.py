@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from ummeli.vlive.views import UMMELI_PIN_SESSION_KEY
-
 import urllib
 
 class VLiveClient(Client):

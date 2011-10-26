@@ -168,7 +168,7 @@ class VliveCVTestCase(TestCase):
                     'start_year': 2007, 'end_year': 2008}
         resp = self.client.post(reverse('workExperience_edit', args=[1]),
                                 post_data)
-        print resp
+
         resp = self.client.get(reverse('work_experience_list'))
         self.assertContains(resp, 'Praekelt Consulting')
 
