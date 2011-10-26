@@ -35,6 +35,8 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
+UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'
+
 def render_to_login(request,  form,  redirect_to,  template_name,
                                 current_app = None,
                                 extra_context = None,
@@ -57,9 +59,7 @@ def pin_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
         auth_backend = ModelBackend()
-        pin = request.session.get('pin')
-        if pin and auth_backend.authenticate(
-            username=request.user.username, password=pin):
+        if request.session.get(UMMELI_PIN_SESSION_KEY):
             return function(request, *args, **kwargs)
         return pml_redirect_timer_view(request, settings.LOGIN_REDIRECT_URL,
                 redirect_time = 0,
@@ -91,7 +91,7 @@ Displays the login form and handles the login action.
                 redirect_to = settings.LOGIN_REDIRECT_URL
 
             # setting the PIN for this session
-            request.session['pin'] = form.cleaned_data['password']
+            request.session[UMMELI_PIN_SESSION_KEY] = True
 
             # Okay, security checks complete. Log the user in.
             auth_login(request, form.get_user())
@@ -111,11 +111,16 @@ Displays the login form and handles the login action.
 
 def register(request):
     if request.method == 'POST':
-        form = SetPasswordForm(request.user, data = request.POST)
+        # we need to call this so user.backend is set properly,
+        # Django's session / login mechanics require it.
+        user = authenticate(remote_user=request.user.username)
+        form = SetPasswordForm(user, data=request.POST)
         if form.is_valid():
             form.save()
-            print request.user.backend
-            auth_login(request, request.user)
+            # setting the PIN for this session
+            request.session[UMMELI_PIN_SESSION_KEY] = True
+            # redirect through Django's auth mechanisms
+            auth_login(request, user)
             return pml_redirect_timer_view(request, reverse('home'),
                 redirect_time = 0,
                 redirect_message = 'Thank you. You are now registered.')
@@ -133,7 +138,7 @@ def register(request):
 
 def logout_view(request):
     # remove the pin from the session
-    request.session.pop('pin', None)
+    request.session.pop(UMMELI_PIN_SESSION_KEY, None)
     auth_logout(request)
     return pml_redirect_timer_view(request, reverse('home'),
                 redirect_time = 0,
@@ -163,6 +168,7 @@ def forgot_password_view(request):
                                             mimetype='text/xml')
 
 @login_required
+@pin_required
 def password_change_view(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user,  data = request.POST)
@@ -197,6 +203,7 @@ def home(request):
         mimetype='text/xml')
 
 @login_required
+@pin_required
 @cache_control(no_cache=True)
 def edit(request):
     return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())},
@@ -204,6 +211,7 @@ def edit(request):
                                                 mimetype='text/xml')
 
 @login_required
+@pin_required
 def send(request):
     form = None
 
@@ -230,6 +238,7 @@ def send(request):
                               context_instance= RequestContext(request), )
 
 @login_required
+@pin_required
 def send_thanks(request):
     return pml_redirect_timer_view(request,  reverse('home'),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')

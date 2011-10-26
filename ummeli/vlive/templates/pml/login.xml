@@ -25,10 +25,10 @@
         </CONTAINER>
         <CONTAINER type="list">
             <LINK href="{% url forgot %}">
-                <TEXT>Forgotton your Pin?</TEXT>
+                <TEXT>Forgotten your Pin?</TEXT>
             </LINK>
         </CONTAINER>
-    {% else %} 
+    {% else %}
         <CONTAINER type="list">
             <LINK href="{% url register %}">
                 <TEXT>Click here to create profile.</TEXT>
