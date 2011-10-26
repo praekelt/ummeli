@@ -321,8 +321,11 @@ def jobs_create(request):
             
             category_title = request.POST.get('category')
             category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
-            cat  = Category(province = province, hash_key = category_hash,  title = category_title)
-            cat.save()
+            if not Category.objects.filter(hash_key = category_hash).exists():
+                cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+                cat.save()
+            else:
+                cat  = Category.objects.get(hash_key = category_hash)
             
             cat.user_submitted_job_articles.add(user_article)
             

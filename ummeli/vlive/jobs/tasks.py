@@ -7,20 +7,26 @@ from django.utils.hashcompat import md5_constructor
 
 @task
 def process_jobs(cat_id,  link,  jobs_parser):    
-    category = Category.objects.get(pk = cat_id)
+    category = Category.objects.get(hash_key = cat_id)
     
     articles = jobs_parser(url = link[0]).parse()
     
     for date,  source,  text in articles:
         hash = md5_constructor(':'.join([date,  source,  text])).hexdigest()
         date_with_year = ('%s-%s' % (date,  datetime.now().strftime('%Y')))
-        article = Article(hash_key = hash,  
-                                date = datetime.strptime(date_with_year, '%d-%m-%Y'), 
-                                source = source,  
-                                text = text)
-        article.save()
-        if not (category.articles.filter(pk = hash).exists()):
+        
+        if not Article.objects.filter(hash_key = hash).exists():
+            article = Article(hash_key = hash,  
+                                    date = datetime.strptime(date_with_year, '%d-%m-%Y'), 
+                                    source = source,  
+                                    text = text)
+            article.save()
+        else:
+            article = Article.objects.get(hash_key = hash)
+            
+        if not category.articles.filter(hash_key = hash).exists():
             category.articles.add(article)
+    
     return category
 
 def create_category_id_hash(search_id,  title):
@@ -35,8 +41,9 @@ def queue_categories(search_id,  category_parser,  jobs_parser):
     
     for link, title in urls:
         hash = create_category_id_hash(search_id,  title)
-        cat = Category(province = province,  hash_key = hash,  title = title)
-        cat.save()
+        if not Category.objects.filter(hash_key = hash).exists():
+            cat = Category(province = province,  hash_key = hash,  title = title)
+            cat.save()
         
     now = datetime.now()
     
