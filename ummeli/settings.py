@@ -210,3 +210,7 @@ EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 MAX_LAUNCH_FAXES_COUNT = 2
 SEND_FROM_EMAIL_ADDRESS = 'no-reply-ummeli@praekeltfoundation.org'
+
+# specify in production
+VUMI_USERNAME = ''
+VUMI_PASSWORD = ''

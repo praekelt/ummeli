@@ -30,12 +30,22 @@ class VliveAuthenticationTestCase(TestCase):
         resp = self.client.get(reverse('index'))
          #  there shouldn't be a Location header as this would mean a redirect
          #  to a login URL
-        self.assertEquals(resp.get('Location', None), None)
+        self.assertFalse(resp.get('Location', None))
         self.assertEquals(resp.status_code, 200)
 
     def test_login_view(self):
+        resp = self.client.post(reverse('register'), {
+            'new_password1': self.pin,
+            'new_password2': self.pin,
+        })
+        self.assertContains(resp, 'Thank you. You are now registered.')
+
+        resp = self.client.get(reverse('logout'))
+        self.assertContains(resp, 'You have been logged out.')
+
         resp = self.client.get(reverse('login'), )
         self.assertEquals(resp.status_code, 200)
+        self.assertContains(resp, 'Enter Pin to sign in.')
 
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
@@ -98,18 +108,15 @@ class VliveAuthenticationTestCase(TestCase):
         self.assertContains(resp, 'Pin codes don&apos;t match.')
 
     def test_forgot_pin(self):
-        msisdn = '0123456789'
-        password = 'password'
 
         #register user
         resp = self.client.post(reverse('register'),{
-            'username': msisdn,
-            'password1': password,
-            'password2': password,
+            'password1': self.pin,
+            'password2': self.pin,
         })
 
         resp = self.client.get(reverse('forgot'))
-        self.assertContains(resp, 'Pin will be sent to %s.' % msisdn)
+        self.assertContains(resp, 'Pin will be sent to %s.' % self.msisdn)
 
         resp = self.client.post(reverse('forgot'))
         self.assertContains(resp, 'Your new pin has been sent')
