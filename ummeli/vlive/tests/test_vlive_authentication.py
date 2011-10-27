@@ -3,18 +3,11 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
-from ummeli.vlive.views import UMMELI_PIN_SESSION_KEY
+from django.conf import settings
+from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 import urllib
 
-class VLiveClient(Client):
-    def post(self, url, data={}, **kwargs):
-        defaults = {
-            '_action': 'POST',
-        }
-        defaults.update(data)
-        return super(VLiveClient, self).get(url, defaults, **kwargs)
-
-class VliveAuthenticationTestCase(TestCase):
+class VliveAuthenticationTestCase(VLiveTestCase):
 
     def setUp(self):
         self.msisdn = '0123456789'
@@ -84,7 +77,7 @@ class VliveAuthenticationTestCase(TestCase):
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'You are now registered.')
         # ensure the session's pin has been set
-        self.assertTrue(self.client.session[UMMELI_PIN_SESSION_KEY])
+        self.assertTrue(self.client.session[settings.UMMELI_PIN_SESSION_KEY])
 
         #test automatic login
         resp = self.client.get(reverse('edit'))
@@ -93,7 +86,7 @@ class VliveAuthenticationTestCase(TestCase):
         resp = self.client.get(reverse('logout'))
         self.assertContains(resp,  'You have been logged out')
         # ensure the session's pin has been cleared
-        self.assertNotIn(UMMELI_PIN_SESSION_KEY, self.client.session)
+        self.assertNotIn(settings.UMMELI_PIN_SESSION_KEY, self.client.session)
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'

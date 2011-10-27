@@ -214,3 +214,6 @@ SEND_FROM_EMAIL_ADDRESS = 'no-reply-ummeli@praekeltfoundation.org'
 # specify in production
 VUMI_USERNAME = ''
 VUMI_PASSWORD = ''
+
+# Session Key for PIN auth
+UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'

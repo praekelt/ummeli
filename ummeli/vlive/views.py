@@ -4,8 +4,6 @@ import string
 import random
 
 from django.conf import settings
-from django.contrib.auth.backends import ModelBackend
-from functools import wraps
 
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
@@ -13,7 +11,7 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
-
+from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
 
 from django.contrib.auth.models import User
@@ -35,8 +33,6 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
-UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'
-
 def render_to_login(request,  form,  redirect_to,  template_name,
                                 current_app = None,
                                 extra_context = None,
@@ -51,21 +47,6 @@ def render_to_login(request,  form,  redirect_to,  template_name,
     return render_to_response(template_name, context,
                               mimetype='text/xml',
                               context_instance=RequestContext(request, current_app=current_app))
-
-def pin_required(function):
-    """
-    Decorator to ask people to verify their pin before being able to access a view.
-    """
-    @wraps(function)
-    def wrapper(request, *args, **kwargs):
-        auth_backend = ModelBackend()
-        if request.session.get(UMMELI_PIN_SESSION_KEY):
-            return function(request, *args, **kwargs)
-        return pml_redirect_timer_view(request, settings.LOGIN_REDIRECT_URL,
-                redirect_time = 0,
-                redirect_message = 'Redirecting to the login page')
-    return wrapper
-
 
 def login(request, template_name='pml/login.xml',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -91,7 +72,7 @@ Displays the login form and handles the login action.
                 redirect_to = settings.LOGIN_REDIRECT_URL
 
             # setting the PIN for this session
-            request.session[UMMELI_PIN_SESSION_KEY] = True
+            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
 
             # Okay, security checks complete. Log the user in.
             auth_login(request, form.get_user())
@@ -118,7 +99,7 @@ def register(request):
         if form.is_valid():
             form.save()
             # setting the PIN for this session
-            request.session[UMMELI_PIN_SESSION_KEY] = True
+            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
             # redirect through Django's auth mechanisms
             auth_login(request, user)
             return pml_redirect_timer_view(request, reverse('home'),
@@ -138,7 +119,7 @@ def register(request):
 
 def logout_view(request):
     # remove the pin from the session
-    request.session.pop(UMMELI_PIN_SESSION_KEY, None)
+    request.session.pop(settings.UMMELI_PIN_SESSION_KEY, None)
     auth_logout(request)
     return pml_redirect_timer_view(request, reverse('home'),
                 redirect_time = 0,
@@ -243,13 +224,6 @@ def send_thanks(request):
     return pml_redirect_timer_view(request,  reverse('home'),
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
-def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
-    return render(request, 'pml/redirect.xml',
-                                {'redirect_url': redirect_url,
-                                'redirect_time': redirect_time,
-                                'redirect_message': redirect_message},
-                                content_type='text/xml')
-
 def jobs_province(request):
     return render_to_response('pml/jobs_province.xml',
                                                 {'provinces': Province.objects.filter(search_id__gt=0).order_by('name')},
@@ -339,6 +313,8 @@ def terms(request):
 def health(request):
     return HttpResponse("")
 
+@login_required
+@pin_required
 def jobs_create(request):
     if request.method == 'POST':
         form = UserSubmittedJobArticleForm(request.POST)
