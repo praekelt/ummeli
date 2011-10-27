@@ -202,11 +202,12 @@ def send(request):
             form = EmailCVForm(data = request.POST)
         else:
             form = FaxCVForm(data = request.POST)
-        if form.is_valid():
+            
+        user_profile = request.user.get_profile()
+        
+        if form.is_valid() and not user_profile.missing_fields():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
-
-            user_profile = request.user.get_profile()
 
             if send_via == 'email':
                 user_profile.email_cv(send_to)
@@ -271,7 +272,7 @@ def job(request,  id,  cat_id,  search_id):
         else:
             form = FaxCVForm(data = request.POST)
 
-        if form.is_valid():
+        if form.is_valid() and not user_profile.missing_fields():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
 

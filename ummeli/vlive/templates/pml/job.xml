@@ -36,8 +36,19 @@
         <CONTAINER type="data">
         {% for field in form %}
         {% for error in field.errors %}
-            <TEXT class="error">{{error}}</TEXT><br/>
+            <TEXT class="error">{{field.label}} - {{error}}</TEXT><br/>
         {% endfor %}
+        {% endfor %}
+        </CONTAINER>
+    {% endif %}
+    {% if user_profile.missing_fields %}
+        <CONTAINER type="data">
+            <TITLE>Missing fields</TITLE>
+            <TEXT class="error">
+                Your CV is incomplete. Please make sure that the following fields are 
+                completed before you can send your CV.</TEXT><br/>
+        {% for field in user_profile.missing_fields %}
+            <TEXT class="error">- {{field}}</TEXT><br/>
         {% endfor %}
         </CONTAINER>
     {% endif %}
