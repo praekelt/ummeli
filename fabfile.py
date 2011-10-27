@@ -12,3 +12,4 @@ def deploy():
     with cd(env.path):
         run('git pull')
         run('kill -HUP `cat tmp/pids/gunicorn*.pid`')
+        run('supervisorctl -c config/supervisord.conf restart celery')
