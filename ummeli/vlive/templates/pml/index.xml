@@ -6,76 +6,43 @@
 
 {% block content %}
 <MODULE backgroundColor="false" palette="MiMarine">
-    <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
+    <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
     <CONTAINER  type="data">
-        <TITLE>Welcome</TITLE>
+        <TITLE>Your pocket CV</TITLE>
         <TEXT>
-            YoungAfricaLive welcomes you to Ummeli, your mobile jobseeker 
-            community. Ummeli connects you and your friends to jobs specially sourced 
-            for young people, and lets you share job posts or bursary info you want to 
-            tell others about. You can also create and edit your own CV on your 
-            phone - and submit it for any jobs you’re interested in.
+            Ummeli is a jobseeker network on your phone that connects you and your 
+            friends to jobs in your community. No more waiting around. With a mobile 
+            CV in your back pocket, you’re ready to apply for a job you spot on Ummeli 
+            at any time. You can also post jobs or bursary info you want your friends to 
+            know about. Get started!
             <br/><br/>
             {% if request.user.is_authenticated %}
                 <LINK href="{% url edit %}?{{uuid}}">
-                    <TEXT>Edit CV</TEXT>
+                    <TEXT>Change your CV</TEXT>
                 </LINK><br/>
-                Update or change details in your mobile CV.
+                Need to add new info to your CV? Do it here.
+            {% else %}
+                <LINK href="{% url register %}?{{uuid}}">
+                    <TEXT>Build your CV</TEXT>
+                </LINK><br/>
+                Set up your work profile - build a professional CV without a computer.
+            {% endif %}
                 <br/><br/>
-                <LINK href="{% url send %}">
-                    <TEXT>Send CV</TEXT>
+                <LINK href="{% url send %}?{{uuid}}">
+                    <TEXT>Send your CV</TEXT>
                 </LINK><br/>
-                Be one of the first 5000 people to create your CV on Ummeli, and as part 
-                of our launch offer, you get to send <b>2 free faxes</b> to apply for 
-                jobs you are interested in. Sending your CV via <b>email is completely 
-                free</b>.
+                UMMELI LAUNCH OFFER: the first 5000 people to build a CV on Ummeli 
+                get 2 free fax applications for jobs!
                 <br/><br/>
                 <LINK href="{% url jobs_province %}">
-                    <TEXT>View jobs</TEXT>
+                    <TEXT>Find jobs</TEXT>
                 </LINK><br/>
-                    Ummeli jobs come from established online sources or have been posted 
-                    by the Ummeli community. Click on <LINK href="{% url jobs_province %}">
-                    <TEXT>View jobs</TEXT>
-                </LINK> to view jobs that might be near you.
+                    Start your job search right here. Find work in your area.
                 <br/><br/>
-                <LINK href="{% url jobs_create %}">
-                    <TEXT>Add jobs</TEXT>
+                <LINK href="{% url jobs_create %}?{{uuid}}">
+                    <TEXT>Share jobs</TEXT>
                 </LINK><br/>
-                You can help others by adding jobs you have seen advertised in your community.
-            {% else %}
-                {% if not user_exists %}
-                    <LINK href="{% url register %}?{{uuid}}">
-                        <TEXT>Create CV</TEXT>
-                    </LINK><br/>
-                    Set up your account and get started by creating your unique mobile CV on Ummeli.
-                {% else %}
-                    <LINK href="{% url login %}?next={% url edit %}">
-                        <TEXT>Edit CV</TEXT>
-                    </LINK><br/>
-                    Please Login using your PIN to update or change details in your mobile CV.
-                {% endif %}
-                    <br/><br/>
-                    <LINK href="{% url login %}?next={% url send %}">
-                        <TEXT>Send CV</TEXT>
-                    </LINK><br/>
-                    Be one of the first 5000 people to create your CV on Ummeli, and as part 
-                    of our launch offer, you get to send <b>2 free faxes</b> to apply for 
-                    jobs you are interested in. Sending your CV via <b>email is completely 
-                    free</b>.
-                    <br/><br/>
-                    <LINK href="{% url login %}?next={% url jobs_province %}">
-                        <TEXT>View jobs</TEXT>
-                    </LINK><br/>
-                        Ummeli jobs come from established online sources or have been posted 
-                        by the Ummeli community. Click on <LINK href="{% url login %}?next={% url jobs_province %}">
-                        <TEXT>View jobs</TEXT>
-                    </LINK> to view jobs that might be near you.
-                    <br/><br/>
-                    <LINK href="{% url login %}?next={% url jobs_create %}">
-                        <TEXT>Add jobs</TEXT>
-                    </LINK><br/>
-                    You can help others by adding jobs you have seen advertised in your community.
-            {% endif %}
+                Help others by adding jobs you’ve seen advertised in your community.
         </TEXT>
     </CONTAINER>
 </MODULE>
