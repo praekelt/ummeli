@@ -3,6 +3,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core import mail
+from django.conf import settings
 
 from ummeli.base.models import Certificate, Category, Province
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
@@ -331,6 +332,8 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
+        self.assertEqual(mail.outbox[0].bcc[0], 'ummeli@praekeltfoundation.org')
+        self.assertEqual(mail.outbox[0].from_email, settings.SEND_FROM_EMAIL_ADDRESS)
 
     def test_fax(self):
         # setup user's first_name and surname
@@ -353,6 +356,8 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].to), 1)
         self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
+        self.assertEqual(mail.outbox[0].bcc[0], 'ummeli@praekeltfoundation.org')
+        self.assertEqual(mail.outbox[0].from_email, settings.SEND_FROM_FAX_EMAIL_ADDRESS)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
 

@@ -127,10 +127,12 @@ class CurriculumVitae(models.Model):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
             self.save()
-            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),  article_text)
+            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''), 
+                                 article_text, settings.SEND_FROM_FAX_EMAIL_ADDRESS)
         return None
 
-    def email_cv(self, email_address, article_text = None):
+    def email_cv(self, email_address, article_text = None, 
+                        from_address = settings.SEND_FROM_EMAIL_ADDRESS):
         email_text = ''
         if article_text:
             email_text = email_copy.APPLY_COPY % {'sender': self.fullname(),
@@ -139,7 +141,7 @@ class CurriculumVitae(models.Model):
             email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
                                                                            'job_ad':article_text}
         
-        schedule_cv_email.delay(self,  email_address,  article_text)
+        schedule_cv_email.delay(self,  email_address,  article_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
@@ -159,10 +161,10 @@ post_save.connect(create_cv, sender = User,
                   dispatch_uid = "users-profilecreation-signal")
 
 @task
-def schedule_cv_email(cv,  email_address,  email_text):
+def schedule_cv_email(cv,  email_address,  email_text, from_address):
     email = EmailMessage('CV for %s' % cv.fullname(), email_text,
-                                            settings.SEND_FROM_EMAIL_ADDRESS,
-                                            [email_address])
+                                            from_address,
+                                            [email_address], ['ummeli@praekeltfoundation.org'])
     pdf = render_to_pdf('pdf_template.html', {'model': cv})
     email.attach('curriculum_vitae_for_%s_%s' % (cv.first_name, cv.surname),
                         pdf,  'application/pdf')
