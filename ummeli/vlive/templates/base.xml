@@ -64,6 +64,15 @@
     </CONTAINER>
 </MODULE>
 
+<MODULE role="MOD17">
+    <CONTAINER type="image">
+        <IMAGE href="/media/static/back.gif" float="true" align="left" mime-type="image/gif"/>
+        <TITLE>
+            <LINK href="/live">return to Young Africa Live</LINK>
+        </TITLE>
+    </CONTAINER>
+</MODULE>
+
 {% endblock %}
 
 
