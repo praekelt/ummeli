@@ -127,12 +127,8 @@ class CurriculumVitae(models.Model):
             fields.append('gender')
         if not self.telephone_number:
             fields.append('telephone number')
-        if not self.languages.count() > 0:
-            fields.append('language')
         if not self.date_of_birth:
             fields.append('date of birth')
-        if not self.highest_grade:
-            fields.append('highest grade passed')
         return fields
 
     def can_send_fax(self):

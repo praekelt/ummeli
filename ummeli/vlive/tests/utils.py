@@ -46,4 +46,13 @@ class VLiveTestCase(TestCase):
     def assertNotVLiveRedirects(self, resp, url):
         timer_html = '<TIMER href="%s' % url
         self.assertNotContains(resp, timer_html)
+        
+    def fill_in_basic_info(self):
+        cv = self.get_user().get_profile()
+        cv.first_name = 'Test'
+        cv.surname = 'User'
+        cv.gender = 'Male'
+        cv.telephone_number = '0123456789'
+        cv.date_of_birth = '01 Jan 1900'
+        cv.save()
 

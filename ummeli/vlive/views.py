@@ -271,12 +271,12 @@ def job(request,  id,  cat_id,  search_id):
             form = EmailCVForm(data = request.POST)
         else:
             form = FaxCVForm(data = request.POST)
+            
+        user_profile = request.user.get_profile()
 
         if form.is_valid() and not user_profile.missing_fields():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
-
-            user_profile = request.user.get_profile()
 
             if send_via == 'email':
                 user_profile.email_cv(send_to,  article.text)

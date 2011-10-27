@@ -317,12 +317,8 @@ class VLiveCVTestCase(VLiveTestCase):
         # setup user's first_name and surname
         self.register()
         self.login()
-        post_data = {
-            'first_name': 'Test',
-            'surname': 'User',
-        }
-        resp = self.client.post(reverse('edit_personal'), post_data)
-
+        self.fill_in_basic_info()
+        
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
 
@@ -339,13 +335,7 @@ class VLiveCVTestCase(VLiveTestCase):
         # setup user's first_name and surname
         self.register()
         self.login()
-        post_data = {
-            'first_name': 'Test',
-            'surname': 'User',
-        }
-        resp = self.client.post(reverse('edit_personal'), post_data)
-        resp = self.client.get(reverse('send'))
-        self.assertEquals(resp.status_code, 200)
+        self.fill_in_basic_info()
 
         post_data = {
             'send_to': '+27123456789',
