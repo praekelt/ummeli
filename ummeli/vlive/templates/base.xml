@@ -22,6 +22,11 @@
 </PARTNER-HEADER>
 
 {% block banner %}
+<MODULE backgroundColor="true" palette="MiBlack">
+    <CONTAINER type="image">
+        <IMAGE href="/static/images/ummeli-logo.png" align="full" mime-type="image/png"/>
+    </CONTAINER>
+</MODULE>
 {% endblock %}
 
 {% block header %}
