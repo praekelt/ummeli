@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 class Article(models.Model):
-    hash_key = models.CharField(max_length=32,  primary_key = True)
+    hash_key = models.CharField(max_length=32)
     date = models.DateTimeField(blank=True,  default = datetime.now())
     source = models.CharField(max_length=100)
     text = models.TextField()
@@ -51,7 +51,7 @@ class Province(models.Model):
 
 
 class Category(models.Model):
-    hash_key = models.CharField(max_length=32,  primary_key = True)
+    hash_key = models.CharField(max_length=32)
     title = models.CharField(max_length=45)
     province = models.ForeignKey(Province)
     articles = models.ManyToManyField(Article, blank=True,  null=True)

@@ -24,9 +24,6 @@ class MockJobsParser(JobsParser):
             return self.tidy_html(jobs_test_data.articles_html1)
         return self.tidy_html(jobs_test_data.articles_html2)
 
-def reload_record(record):
-    return record.__class__.objects.get(pk=record.pk)
-
 class JobsTestCase(VLiveTestCase):
     def setUp(self):
         self.msisdn = '0123456789'
@@ -40,11 +37,11 @@ class JobsTestCase(VLiveTestCase):
         result.successful()
         data = result.join()
 
-        self.assertEquals(data[0].category_set.count(),  42)
-        self.assertEquals(data[1].category_set.count(),  47)
+        self.assertEquals(data[0].category_set.count(),  5)
+        self.assertEquals(data[1].category_set.count(),  2)
 
-        self.assertEquals(data[0].category_set.all()[0].articles.count(),  10)
-        self.assertEquals(data[1].category_set.all()[0].articles.count(),  10)
+        self.assertEquals(data[0].category_set.all()[0].articles.count(),  5)
+        self.assertEquals(data[1].category_set.all()[0].articles.count(),  4)
 
         resp = self.client.get(reverse('jobs_province'))
         self.assertContains(resp, 'Gauteng')
@@ -52,18 +49,15 @@ class JobsTestCase(VLiveTestCase):
         resp = self.client.get(reverse('jobs_list', args=[1]))
         self.assertContains(resp, 'Accounts/Financial')
 
-        resp = self.client.get(reverse('jobs',
-                                        args=[1,  'df7288a55ea3f0826f1f2e61c74f3850']))
-        self.assertContains(resp, 'b51556fd31b7a84d4a5cce22bf68dfe9')
+        resp = self.client.get(reverse('jobs', args=[1, 35]))
+        self.assertContains(resp, '35')
 
-        resp = self.client.get(reverse('job',
-                                        args=[1,  'df7288a55ea3f0826f1f2e61c74f3850',
-                                                'b51556fd31b7a84d4a5cce22bf68dfe9']))
+        resp = self.client.get(reverse('job', args=[1, 35, 21]))
         self.assertContains(resp, 'Accounts Administrator West')
 
     def test_category_parser(self):
         items = JobsParser(html_str = jobs_test_data.articles_html1).parse()
-        self.assertEquals(len(items),  10)
+        self.assertEquals(len(items),  4)
 
         self.assertRaises(Exception,  CategoryParser(2,  html_str = 'blah',  url = 'blah'))
 
@@ -77,13 +71,13 @@ class JobsTestCase(VLiveTestCase):
         }
         resp = self.client.post(reverse('edit_personal'), post_data)
         # setup test data
-        result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser)
+        result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
+        result.ready()
+        result.successful()
 
         # apply via email
-        resp = self.client.post(reverse('job',
-                                        args=[1,  'df7288a55ea3f0826f1f2e61c74f3850',
-                                                'b51556fd31b7a84d4a5cce22bf68dfe9']),
-                                        {'send_via':'email',  'send_to':'me@home.com',})
+        resp = self.client.post(reverse('job', args=[1, 1, 1]),
+                                        {'send_via':'email',  'send_to':'me@home.com'})
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
@@ -100,38 +94,24 @@ class JobsTestCase(VLiveTestCase):
         }
         resp = self.client.post(reverse('edit_personal'), post_data)
         # setup test data
-        result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser)
+        result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
+        result.ready()
+        result.successful()
 
         # apply via fax
-        profile = self.get_user().get_profile()
-        self.assertEqual(profile.nr_of_faxes_sent, 0)
-        resp = self.client.get(reverse('job',
-                                        args=[
-                                            1,
-                                            'df7288a55ea3f0826f1f2e61c74f3850',
-                                            'b51556fd31b7a84d4a5cce22bf68dfe9'
-                                        ]), {
-                                            'send_via': 'fax',
-                                            'send_to': '+27123456789',
-                                            '_action':'POST'
-                                        })
+        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+                                        {'send_via':'fax',  'send_to':'+27123456789'})
+
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
         self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
 
         # test special launch special (max 2 faxes per user)
-        self.assertEqual(reload_record(profile).nr_of_faxes_sent,  1)
+        self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.post(reverse('job',
-                                        args=[
-                                            1,
-                                            'df7288a55ea3f0826f1f2e61c74f3850',
-                                            'b51556fd31b7a84d4a5cce22bf68dfe9'
-                                        ]), {
-                                            'send_via': 'fax',
-                                            'send_to': '',
-                                        })
+        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+                                        {'send_via':'fax',  'send_to':''})
 
         self.assertContains(resp,  'This field is required')

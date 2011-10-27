@@ -14,6 +14,8 @@ from ummeli.vlive.tasks import send_password_reset
 from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
 
+from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
+
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response,  render
@@ -225,8 +227,9 @@ def send_thanks(request):
                 redirect_message = 'Thank you. Your CV will be sent shortly.')
 
 def jobs_province(request):
+    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.count() > 0]
     return render_to_response('pml/jobs_province.xml',
-                                                {'provinces': Province.objects.filter(search_id__gt=0).order_by('name')},
+                                                {'provinces': provinces},
                                                 context_instance= RequestContext(request),
                                                 mimetype='text/xml')
 
@@ -314,7 +317,6 @@ def health(request):
     return HttpResponse("")
 
 @login_required
-@pin_required
 def jobs_create(request):
     if request.method == 'POST':
         form = UserSubmittedJobArticleForm(request.POST)
@@ -327,8 +329,11 @@ def jobs_create(request):
 
             category_title = request.POST.get('category')
             category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
-            cat  = Category(province = province, hash_key = category_hash,  title = category_title)
-            cat.save()
+            if not Category.objects.filter(hash_key = category_hash).exists():
+                cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+                cat.save()
+            else:
+                cat  = Category.objects.get(hash_key = category_hash)
 
             cat.user_submitted_job_articles.add(user_article)
 
