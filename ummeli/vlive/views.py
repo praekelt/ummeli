@@ -223,7 +223,7 @@ def send(request):
 @pin_required
 def send_thanks(request):
     return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your CV will be sent shortly.')
+                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.count() > 0]
@@ -298,7 +298,7 @@ def job(request,  id,  cat_id,  search_id):
 
 def send_thanks_job_apply(request,  cat_id,  search_id):
     return pml_redirect_timer_view(request, reverse('jobs',  args=[search_id,  cat_id]),
-                redirect_message = 'Thank you. Your CV will be sent shortly.')
+                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()

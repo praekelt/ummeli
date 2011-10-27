@@ -6,12 +6,15 @@
 
 {% block content %}
 <MODULE backgroundColor="MiGreen">
-    <HEADER><LABEL>Send CV</LABEL></HEADER>
+    <HEADER><LABEL>Send your CV</LABEL></HEADER>
     <CONTAINER type="data">
-        <TEXT>We’re offering the first 5000 smart jobseekers who create their mobile 
-        CV on Ummeli, 2 free fax applications for jobs!<br/><br/>
-        Sending your CV by email is always free - simply enter your email address in 
-        the field below. </TEXT><br/>
+        <TEXT>Sending your CV by email is always free on Ummeli - simply enter the 
+        email address of the recipient in the field below and Ummeli will automatically 
+        send it for you!
+        <br/><br/>
+        As part of our launch promotion, we’re offering 2 
+        free job application FaxSends to the first 5000 smart jobseekers who create their 
+        mobile CV on Ummeli.</TEXT><br/>
         <TEXT><color value="blue">You have <b>
         {{user_profile.faxes_remaining}} 
         fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
