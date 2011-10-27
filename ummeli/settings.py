@@ -209,7 +209,7 @@ CELERY_RESULT_BACKEND = "amqp"
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 MAX_LAUNCH_FAXES_COUNT = 2
-SEND_FROM_FAX_EMAIL_ADDRESS = 'simon@praekeltfoundation.org'
+SEND_FROM_FAX_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
 SEND_FROM_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
 
 # specify in production
