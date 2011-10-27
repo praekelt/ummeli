@@ -2,7 +2,7 @@ from functools import wraps
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render
 from django.conf import settings
-
+from django.core.urlresolvers import reverse
 
 def pin_required(function):
     """
@@ -13,9 +13,16 @@ def pin_required(function):
         auth_backend = ModelBackend()
         if request.session.get(settings.UMMELI_PIN_SESSION_KEY):
             return function(request, *args, **kwargs)
-        return pml_redirect_timer_view(request, settings.LOGIN_URL,
-                redirect_time = 0,
-                redirect_message = 'Redirecting to the login page')
+            
+        if request.user.password:
+            return pml_redirect_timer_view(request, settings.LOGIN_URL,
+                    redirect_time = 0,
+                    redirect_message = 'You need to login first.')
+        else:
+            return pml_redirect_timer_view(request, reverse('register'),
+                    redirect_time = 0,
+                    redirect_message = 'You need to create a pin first.')
+                    
     return wrapper
 
 def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):

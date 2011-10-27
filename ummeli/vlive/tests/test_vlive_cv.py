@@ -35,7 +35,7 @@ class VLiveCVTestCase(VLiveTestCase):
         }
         # not provided pin yet so it should redirect
         resp = self.client.post(reverse('edit_personal'), post_data)
-        self.assertVLiveRedirects(resp, reverse('login'))
+        self.assertVLiveRedirects(resp, reverse('register'))
         # register pin
         resp = self.register()
         self.assertContains(resp, 'Thank you. You are now registered.')
@@ -52,6 +52,11 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertContains(resp, 'Male')
         # logout & login
         resp = self.logout()
+        
+        # not provided pin yet so it should redirect to login page
+        resp = self.client.post(reverse('edit_personal'), post_data)
+        self.assertVLiveRedirects(resp, reverse('login'))
+        
         # FIXME: we shouldn't need to provide the MSISDN here.
         resp = self.login()
         # load the personal details again, ensure they're present
@@ -84,7 +89,7 @@ class VLiveCVTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('edit'))
         self.assertEquals(resp.status_code, 200)
-        self.assertVLiveRedirects(resp, reverse('login'))
+        self.assertVLiveRedirects(resp, reverse('register'))
         self.register()
         self.login()
 
@@ -105,14 +110,14 @@ class VLiveCVTestCase(VLiveTestCase):
 
     def test_edit_certificates_details_page(self):
         resp = self.client.get(reverse('edit'))
-        self.assertVLiveRedirects(resp, reverse('login'))
+        self.assertVLiveRedirects(resp, reverse('register'))
 
          # test certificates listing
         resp = self.client.get(reverse('certificate_list'))
 
          # test certificates add form
         resp = self.client.get(reverse('certificate_new'))
-        self.assertVLiveRedirects(resp, reverse('login'))
+        self.assertVLiveRedirects(resp, reverse('register'))
 
         self.register()
         self.login()
