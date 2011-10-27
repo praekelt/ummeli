@@ -159,7 +159,7 @@ class CurriculumVitae(models.Model):
             email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
                                                                            'job_ad':article_text}
         
-        schedule_cv_email.delay(self,  email_address,  article_text,  from_address)
+        schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
