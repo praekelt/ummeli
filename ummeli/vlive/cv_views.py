@@ -20,6 +20,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 from ummeli.vlive.views import edit as edit_view
+from ummeli.vlive.utils import pin_required
 
 @cache_control(no_cache=True)
 def process_edit_request(request, model_form, page_title):
@@ -55,18 +56,21 @@ def delete_and_redirect_pml(self, request, *args, **kwargs):
         return redirect_pml(self.request,  self.get_success_url())
 
 @login_required
+@pin_required
 @cache_control(no_cache=True)
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm,
                                                 'personal details')
 
 @login_required
+@pin_required
 @cache_control(no_cache=True)
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm,
                                                 'contact details')
 
 @login_required
+@pin_required
 @cache_control(no_cache=True)
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm,

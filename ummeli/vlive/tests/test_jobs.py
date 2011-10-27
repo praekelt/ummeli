@@ -1,3 +1,4 @@
+from functools import wraps
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
@@ -8,6 +9,8 @@ from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
 from ummeli.base.models import Province,  Article,  Category
 from ummeli.vlive.jobs.tasks import run_jobs_update
 from ummeli.vlive.tests import jobs_test_data
+from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
+
 
 class MockCategoryParser(CategoryParser):
     def get_html(self,  url):
@@ -21,14 +24,12 @@ class MockJobsParser(JobsParser):
             return self.tidy_html(jobs_test_data.articles_html1)
         return self.tidy_html(jobs_test_data.articles_html2)
 
-class JobsTestCase(TestCase):
+class JobsTestCase(VLiveTestCase):
     def setUp(self):
-        self.client = Client()
-        username = 'user'
-        password = 'password'
-        self.user = User.objects.create_user(username, '%s@domain.com' % username,
-                                        password)
-        self.client.login(username=username, password=password)
+        self.msisdn = '0123456789'
+        self.pin = '1234'
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
+        self.client.login(remote_user=self.msisdn)
 
     def test_job_data_creation(self):
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
@@ -50,7 +51,7 @@ class JobsTestCase(TestCase):
 
         resp = self.client.get(reverse('jobs', args=[1, 35]))
         self.assertContains(resp, '35')
-        
+
         resp = self.client.get(reverse('job', args=[1, 35, 21]))
         self.assertContains(resp, 'Accounts Administrator West')
 
@@ -61,46 +62,45 @@ class JobsTestCase(TestCase):
         self.assertRaises(Exception,  CategoryParser(2,  html_str = 'blah',  url = 'blah'))
 
     def test_job_apply_via_email(self):
-        msisdn = '0123456789'
-
+        self.register()
+        self.login()
          # setup user's first_name and surname
-        post_data = {'first_name': 'Test', 'surname': 'User',
-        '_action': 'POST'}
-        resp = self.client.get(reverse('edit_personal'), post_data,
-                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        post_data = {
+            'first_name': 'Test',
+            'surname': 'User',
+        }
+        resp = self.client.post(reverse('edit_personal'), post_data)
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
         result.successful()
 
         # apply via email
-        resp = self.client.get(reverse('job', args=[1, 1, 1]),
-                                        {'send_via':'email',  'send_to':'me@home.com',
-                                        '_action':'POST'},
-                                        HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        resp = self.client.post(reverse('job', args=[1, 1, 1]),
+                                        {'send_via':'email',  'send_to':'me@home.com'})
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
 
     def test_job_apply_via_fax(self):
-        msisdn = '0123456789'
+        self.register()
+        self.login()
 
          # setup user's first_name and surname
-        post_data = {'first_name': 'Test', 'surname': 'User',
-        '_action': 'POST'}
-        resp = self.client.get(reverse('edit_personal'), post_data,
-                               HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        post_data = {
+            'first_name': 'Test',
+            'surname': 'User',
+        }
+        resp = self.client.post(reverse('edit_personal'), post_data)
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
         result.successful()
-        
+
         # apply via fax
-        resp = self.client.get(reverse('job', args=[1, 18, 10]),
-                                        {'send_via':'fax',  'send_to':'+27123456789',
-                                        '_action':'POST'},
-                                        HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+                                        {'send_via':'fax',  'send_to':'+27123456789'})
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].attachments), 1)
@@ -108,12 +108,10 @@ class JobsTestCase(TestCase):
         self.assertEqual(mail.outbox[0].to[0], '+27123456789@faxfx.net')
 
         # test special launch special (max 2 faxes per user)
-        self.assertEqual(self.user.get_profile().nr_of_faxes_sent,  1)
+        self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.get(reverse('job', args=[1, 18, 10]),
-                                        {'send_via':'fax',  'send_to':'',
-                                        '_action':'POST'},
-                                        HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+                                        {'send_via':'fax',  'send_to':''})
 
         self.assertContains(resp,  'This field is required')
