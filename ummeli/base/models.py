@@ -132,7 +132,7 @@ class CurriculumVitae(models.Model):
         if not self.highest_grade:
             fields.append('highest grade passed')
         if not self.languages.exists():
-            fields.append('atlease 1 language')
+            fields.append('atleast 1 language')
         return fields
 
     def can_send_fax(self):
