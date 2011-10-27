@@ -6,7 +6,10 @@
 
 {% block content %}
 <MODULE backgroundColor="false">
-    <HEADER><LABEL>Edit your CV</LABEL></HEADER>
+    <HEADER><LABEL>Build your CV</LABEL></HEADER>
+    <CONTAINER  type="data">
+        <TITLE>Get started.</TITLE>
+    </CONTAINER>
     <CONTAINER  type="list">
         <LINK href="{% url edit_personal %}?{{uuid}}">
             <TEXT>Personal details</TEXT>
@@ -18,7 +21,7 @@
             <TEXT>Education details</TEXT>
         </LINK>
         <LINK href="{% url certificate_list %}?{{uuid}}">
-            <TEXT>Certificates</TEXT>
+            <TEXT>Qualifications &amp; Certificates</TEXT>
         </LINK>
         <LINK href="{% url work_experience_list %}?{{uuid}}">
             <TEXT>Work experience</TEXT>
