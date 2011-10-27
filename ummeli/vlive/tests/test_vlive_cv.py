@@ -242,13 +242,13 @@ class VLiveCVTestCase(VLiveTestCase):
         resp = self.client.get(reverse('language_list'))
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'English')
-
+        
          # test editing of created certificate
-        resp = self.client.get(reverse('language_edit',  args=[1]))
+        resp = self.client.get(reverse('language_edit',  args=[3]))
         self.assertEquals(resp.status_code, 200)
 
         post_data = {'language': 'Afrikaans', 'read_write': True}
-        resp = self.client.post(reverse('language_edit', args=[1]),
+        resp = self.client.post(reverse('language_edit', args=[3]),
                                 post_data)
 
         resp = self.client.get(reverse('language_list'))
@@ -258,10 +258,10 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(languages.count(), 1)
 
          # test delete action
-        resp = self.client.get(reverse('language_delete',  args=[1]))
+        resp = self.client.get(reverse('language_delete',  args=[3]))
         self.assertContains(resp, 'Are you sure')
 
-        resp = self.client.post(reverse('language_delete',  args=[1]))
+        resp = self.client.post(reverse('language_delete',  args=[3]))
         languages = self.get_user().get_profile().languages.all()
         self.assertEquals(languages.count(), 0)
 
