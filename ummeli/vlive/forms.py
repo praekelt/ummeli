@@ -75,7 +75,7 @@ class PMLForm(Form):
         return format_errors_as_pml(self)
 
 class PersonalDetailsForm(PMLModelForm):
-    first_name = CharField(label = 'Firstname')
+    first_name = CharField(label = 'First name')
     date_of_birth = CharField(label = 'Date of birth',  required = False)
 
     class Meta:
@@ -85,9 +85,9 @@ class PersonalDetailsForm(PMLModelForm):
 class ContactDetailsForm(PMLModelForm):
     telephone_number = CharField(label = 'Phone number',  required = False)
     email = CharField(label = 'Email address',  required = False)
-    house_number = CharField(label = 'House number',  required = False)
+    house_number = CharField(label = 'Home number',  required = False)
     street_name = CharField(label = 'Street name',  required = False)
-    location = CharField(label = 'Location name',  required = False)
+    location = CharField(label = 'Area name',  required = False)
 
     class Meta:
         model = CurriculumVitae
