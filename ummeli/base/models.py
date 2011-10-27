@@ -132,7 +132,7 @@ class CurriculumVitae(models.Model):
         if not self.highest_grade:
             fields.append('highest grade passed')
         if not self.languages.exists():
-            fields.append('atlease 1 language')
+            fields.append('atleast 1 language')
         return fields
 
     def can_send_fax(self):
@@ -159,7 +159,7 @@ class CurriculumVitae(models.Model):
             email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
                                                                            'job_ad':article_text}
         
-        schedule_cv_email.delay(self,  email_address,  article_text,  from_address)
+        schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
