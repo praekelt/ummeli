@@ -9,6 +9,7 @@ from ummeli.base.utils import render_to_pdf
 from django.core.mail import send_mail,  EmailMessage
 from datetime import datetime
 
+from celery.task import task
 
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
@@ -137,14 +138,8 @@ class CurriculumVitae(models.Model):
         else:
             email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
                                                                            'job_ad':article_text}
-
-        email = EmailMessage('CV for %s' % self.fullname(), email_text,
-                                            settings.SEND_FROM_EMAIL_ADDRESS,
-                                            [email_address])
-        pdf = render_to_pdf('pdf_template.html', {'model': self})
-        email.attach('curriculum_vitae_for_%s_%s' % (self.first_name, self.surname),
-                            pdf,  'application/pdf')
-        return email.send(fail_silently=False)
+        
+        schedule_cv_email.delay(self,  email_address,  article_text)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
@@ -162,3 +157,13 @@ def create_cv(sender, instance, created, **kwargs):
 
 post_save.connect(create_cv, sender = User,
                   dispatch_uid = "users-profilecreation-signal")
+
+@task
+def schedule_cv_email(cv,  email_address,  email_text):
+    email = EmailMessage('CV for %s' % cv.fullname(), email_text,
+                                            settings.SEND_FROM_EMAIL_ADDRESS,
+                                            [email_address])
+    pdf = render_to_pdf('pdf_template.html', {'model': cv})
+    email.attach('curriculum_vitae_for_%s_%s' % (cv.first_name, cv.surname),
+                        pdf,  'application/pdf')
+    email.send(fail_silently=False)
