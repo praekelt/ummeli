@@ -19,6 +19,7 @@
                 <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
                 <FIELD name="password" type="password"/>
                 <FIELD name="next" type="hidden" value="{{next}}"/>
+                <FIELD name="username" type="hidden" value="{{user.username}}"/>
                 <FIELD type='hidden' name='_action' value='POST' />
                 <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
             </FORM>
