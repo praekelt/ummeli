@@ -352,6 +352,18 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
 
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
+        
+    def test_missing_fields_when_sending(self):
+        # setup user's first_name and surname
+        self.register()
+        self.login()
+        
+        post_data = {'send_to': 'madandat@gmail.com', 'send_via': 'email'}
+        resp = self.client.post(reverse('send'), post_data)
+        
+        self.assertContains(resp,  'Your CV is incomplete')
+        self.assertContains(resp,  'first name')
+        self.assertContains(resp,  'gender')
 
     def test_job_creation(self):
         self.register()
