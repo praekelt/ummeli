@@ -3,6 +3,8 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from ummeli.base.models import Language
+
 class VLiveClient(Client):
     def post(self, url, data={}, **kwargs):
         defaults = {
@@ -46,4 +48,19 @@ class VLiveTestCase(TestCase):
     def assertNotVLiveRedirects(self, resp, url):
         timer_html = '<TIMER href="%s' % url
         self.assertNotContains(resp, timer_html)
+        
+    def fill_in_basic_info(self):
+        cv = self.get_user().get_profile()
+        cv.first_name = 'Test'
+        cv.surname = 'User'
+        cv.gender = 'Male'
+        cv.telephone_number = '0123456789'
+        cv.date_of_birth = '01 Jan 1900'
+        cv.highest_grade = '12'
+        
+        lang = Language(language = 'Afrikaans',  read_write = True)
+        lang.save()
+        cv.languages.add(lang)
+        
+        cv.save()
 

@@ -64,12 +64,8 @@ class JobsTestCase(VLiveTestCase):
     def test_job_apply_via_email(self):
         self.register()
         self.login()
-         # setup user's first_name and surname
-        post_data = {
-            'first_name': 'Test',
-            'surname': 'User',
-        }
-        resp = self.client.post(reverse('edit_personal'), post_data)
+        self.fill_in_basic_info()
+        
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
@@ -86,13 +82,8 @@ class JobsTestCase(VLiveTestCase):
     def test_job_apply_via_fax(self):
         self.register()
         self.login()
-
-         # setup user's first_name and surname
-        post_data = {
-            'first_name': 'Test',
-            'surname': 'User',
-        }
-        resp = self.client.post(reverse('edit_personal'), post_data)
+        self.fill_in_basic_info()
+        
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
