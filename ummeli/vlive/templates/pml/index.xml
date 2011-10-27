@@ -16,7 +16,7 @@
             at any time. You can also post jobs or bursary info you want your friends to 
             know about. Get started!
             <br/><br/>
-            {% if request.user.is_authenticated %}
+            {% if request.user.password %}
                 <LINK href="{% url edit %}?{{uuid}}">
                     <TEXT>Change your CV</TEXT>
                 </LINK><br/>
