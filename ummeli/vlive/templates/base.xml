@@ -24,7 +24,7 @@
 {% block banner %}
 <MODULE backgroundColor="true" palette="MiBlack">
     <CONTAINER type="image">
-        <IMAGE href="{{ STATIC_URL }}images/ummeli-logo.png" align="full" mime-type="image/png"/>
+        <IMAGE href="{{ STATIC_URL }}images/ummeli-logo.jpg" align="full" mime-type="image/jpeg"/>
     </CONTAINER>
 </MODULE>
 {% endblock %}
@@ -61,6 +61,15 @@
             <TEXT>Login</TEXT>
         </LINK>
         {% endif %}
+    </CONTAINER>
+</MODULE>
+
+<MODULE role="MOD17">
+    <CONTAINER type="image">
+        <IMAGE href="/media/static/back.gif" float="true" align="left" mime-type="image/gif"/>
+        <TITLE>
+            <LINK href="/live">return to Young Africa Live</LINK>
+        </TITLE>
     </CONTAINER>
 </MODULE>
 

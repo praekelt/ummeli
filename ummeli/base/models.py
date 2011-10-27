@@ -116,6 +116,24 @@ class CurriculumVitae(models.Model):
 
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
+        
+    def missing_fields(self):
+        fields = []
+        if not self.first_name:
+            fields.append('first name')
+        if not self.surname:
+            fields.append('surname')
+        if not self.gender:
+            fields.append('gender')
+        if not self.telephone_number:
+            fields.append('telephone number')
+        if not self.date_of_birth:
+            fields.append('date of birth')
+        if not self.highest_grade:
+            fields.append('highest grade passed')
+        if not self.languages.exists():
+            fields.append('atlease 1 language')
+        return fields
 
     def can_send_fax(self):
         return self.nr_of_faxes_sent < settings.MAX_LAUNCH_FAXES_COUNT
