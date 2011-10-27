@@ -144,7 +144,7 @@ def forgot_password_view(request):
 
         return pml_redirect_timer_view(request,  reverse('login'),
             redirect_time = 50,
-            redirect_message = 'Thank you. Your new pin has been sent to you cellphone.')
+            redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
 
     return render_to_response('pml/forgot_password.xml',
                                             context_instance=RequestContext(request),
