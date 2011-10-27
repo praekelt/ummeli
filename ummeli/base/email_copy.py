@@ -10,7 +10,7 @@ Regards,
 ----
 Brought to you by,
 Ummeli
-www.praekeltfoundation.org/ummeli
+www.ummeli.com
 
 --------------------------------------------------
 --------------------------------------------------
@@ -24,5 +24,5 @@ See attachment for details.
 
 Brought to you by,
 Ummeli
-www.praekeltfoundation.org/ummeli
+www.ummeli.com
  '''
