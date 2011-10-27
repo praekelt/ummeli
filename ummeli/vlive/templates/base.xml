@@ -24,7 +24,7 @@
 {% block banner %}
 <MODULE backgroundColor="true" palette="MiBlack">
     <CONTAINER type="image">
-        <IMAGE href="/static/images/ummeli-logo.png" align="full" mime-type="image/png"/>
+        <IMAGE href="{{ STATIC_URL }}images/ummeli-logo.png" align="full" mime-type="image/png"/>
     </CONTAINER>
 </MODULE>
 {% endblock %}
