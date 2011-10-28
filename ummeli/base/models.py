@@ -30,7 +30,7 @@ class UserSubmittedJobArticle(models.Model):
     user = models.ForeignKey(User, related_name='user_submitted_job_article_user')
 
     def __unicode__(self):  # pragma: no cover
-        return '%s - %s - %s' % (self.date,  self.title,  self.description)
+        return '%s - %s - %s' % (self.date,  self.title,  self.text)
 
     def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
