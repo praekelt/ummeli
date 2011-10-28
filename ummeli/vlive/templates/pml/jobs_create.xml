@@ -40,7 +40,7 @@
             <FIELD name="title" type="text"/><br/>
             <TEXT position="ABOVE">Description<br/>
             Please provide as much information about the job as possible including 
-            contact details.<br/>
+            contact details.
             </TEXT>
             <FIELD name="text" type="text"/><br/>
             <FIELD type='hidden' name='_action' value='POST' />
