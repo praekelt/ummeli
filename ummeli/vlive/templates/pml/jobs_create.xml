@@ -38,7 +38,10 @@
 
             <TEXT position="ABOVE">Title</TEXT>
             <FIELD name="title" type="text"/><br/>
-            <TEXT position="ABOVE">Description (max 200 characters)</TEXT>
+            <TEXT position="ABOVE">Description<br/>
+            Please provide as much information about the job as possible including 
+            contact details.<br/>
+            </TEXT>
             <FIELD name="text" type="text"/><br/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
