@@ -262,6 +262,10 @@ def jobs(request,  id,  search_id):
 def job(request,  id,  cat_id,  search_id):
     form = None
     if request.GET.get('user_submitted'):
+        if not UserSubmittedJobArticle.objects.filter(pk = id):
+            return pml_redirect_timer_view(request,  
+                                reverse('jobs',  args = [search_id,  cat_id]),
+                                redirect_message = 'Sorry, this ad has been removed.')
         article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
     else:
         article = Article.objects.get(pk = id)

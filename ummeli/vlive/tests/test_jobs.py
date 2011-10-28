@@ -54,6 +54,10 @@ class JobsTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('job', args=[1, 35, 21]))
         self.assertContains(resp, 'Accounts Administrator West')
+        
+        resp = self.client.get(reverse('job', args=[1, 35, 2100]), 
+                                                    {'user_submitted': True})
+        self.assertVLiveRedirects(resp, reverse('jobs', args=[1, 35]))
 
     def test_category_parser(self):
         items = JobsParser(html_str = jobs_test_data.articles_html1).parse()
