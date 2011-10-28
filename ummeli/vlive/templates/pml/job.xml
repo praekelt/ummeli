@@ -14,8 +14,10 @@
         {% endif %}
         <TEXT>
             {{ job.text }}
-        <br/><br/>
-        as advertised on <color value="blue">www.wegotads.co.za</color>
+        {% if not job.user_submitted %}
+            <br/><br/>
+            as advertised on <color value="blue">www.wegotads.co.za</color>
+        {% endif %}
         </TEXT>
     </CONTAINER>
     <br/>
