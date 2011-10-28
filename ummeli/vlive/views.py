@@ -227,15 +227,16 @@ def send_thanks(request):
                 redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
 
 def jobs_province(request):
-    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.count() > 0]
+    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
     return render_to_response('pml/jobs_province.xml',
                                                 {'provinces': provinces},
                                                 context_instance= RequestContext(request),
                                                 mimetype='text/xml')
 
 def jobs_list(request,  id):
+    categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
     return render_to_response('pml/jobs_list.xml',
-                              {'categories': Province.objects.get(search_id=id).category_set.all().order_by('title'),
+                              {'categories': categories,
                               'search_id': id},
                               context_instance= RequestContext(request),
                               mimetype='text/xml')

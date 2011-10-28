@@ -57,6 +57,9 @@ class Category(models.Model):
     province = models.ForeignKey(Province)
     articles = models.ManyToManyField(Article, blank=True,  null=True)
     user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
+    
+    def must_show(self):
+        return self.articles.exists() or self.user_submitted_job_articles()
 
     def __unicode__(self):  # pragma: no cover
         return self.title
