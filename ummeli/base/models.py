@@ -59,7 +59,7 @@ class Category(models.Model):
     user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
     
     def must_show(self):
-        return self.articles.exists() or self.user_submitted_job_articles()
+        return self.articles.exists() or self.user_submitted_job_articles.exists()
 
     def __unicode__(self):  # pragma: no cover
         return self.title
