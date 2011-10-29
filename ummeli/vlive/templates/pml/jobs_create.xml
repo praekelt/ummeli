@@ -36,7 +36,7 @@
                 {% endfor %}
             </SELECT>
 
-            <TEXT position="ABOVE">Title</TEXT>
+            <TEXT position="ABOVE">Job Title</TEXT>
             <FIELD name="title" type="text"/><br/>
             <TEXT position="ABOVE">Description<br/>
             Please provide as much information about the job as possible including 
