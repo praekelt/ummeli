@@ -8,7 +8,8 @@ a{text-decoration: none; font-weight: bold;}
 p,h1,h2,h3,ol,ul{margin-bottom: 5px;}
 div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #535353; border-bottom: 1px solid #add373; height: 18px; padding: 8px 10px 5px; margin-bottom: 0px;}
 
-.header{background-color: #fff; width: 100%;	height: 50px; border-top: 1px solid #add373; border-bottom: 1px solid #add373;}
+.header{background-color: #fff; width: 100%;	height: 65px; border-top: 1px solid #add373; border-bottom: 1px solid #add373;
+padding-left: 5px;}
 
 .breadcrumb{background-color: #345e3a; height: 18px; padding: 8px 10px 5px;	font-size: 11px; color: #fff;}
 .breadcrumb a, .tabs a{color: #efe579; font-weight: normal; font-size: 11px;}
