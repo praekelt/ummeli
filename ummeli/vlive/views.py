@@ -322,10 +322,8 @@ def health(request):
     return HttpResponse("")
 
 def stats(request):
-    cvs_complete = len([cv for cv in CurriculumVitae.objects.all() if not cv.missing_fields()])
     return render(request, 'stats.html',
-                                {'users': User.objects.count(),
-                                'cvs_complete': cvs_complete})
+                                {'users': User.objects.count()})
 
 @login_required
 def jobs_create(request):
