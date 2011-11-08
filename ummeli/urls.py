@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^sentry/', include('sentry.web.urls')),
     url(r'^health/$', views.health, name="health"),
+    url(r'^stats/$', views.stats, name="stats"),
 
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/', include('ummeli.vlive.urls')),

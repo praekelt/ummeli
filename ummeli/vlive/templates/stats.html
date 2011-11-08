@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>{{title|default:"Ummeli"}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/styles.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+<body>
+    <div class="header">
+        <a href="{% url stats %}"><img src="{{ STATIC_URL }}images/ummeli-logo.gif" alt="Ummeli" /></a>
+    </div>
+    <div class="h2">Ummeli Stats</div>
+    <form class='standard'>
+    <div>
+        <strong>Total Users: </strong>{{users}}<br/>
+        <strong>*CV's Complete: </strong>{{cvs_complete}}<br/>
+        <br/>
+        *CV's complete refers to all cv's with all the basic information filled in.
+    </div>
+    </form>
+</body>
+</html>
