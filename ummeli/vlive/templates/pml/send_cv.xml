@@ -12,13 +12,10 @@
         email address of the recipient in the field below and Ummeli will automatically 
         send it for you!
         <br/><br/>
-        As part of our launch promotion, we’re offering 2 
-        free job application FaxSends to the first 5000 smart jobseekers who create their 
-        mobile CV on Ummeli.</TEXT><br/>
-        <TEXT><color value="blue">You have <b>
-        {{user_profile.faxes_remaining}} 
-        fax{{user_profile.faxes_remaining|pluralize:"es"}}</b> 
-        remaining.</color></TEXT>
+        Thank you to everyone who participated in the Fax trial. 
+        <color value="blue">The Fax trial is now closed.</color>
+        We will be bringing back the fax option at a later stage. 
+        </TEXT>
     </CONTAINER>
     {% if form.errors %}
         <CONTAINER type="data">
@@ -45,7 +42,7 @@
             <CHOICE-GROUP type="radio" name="send_via">
                 <TEXT>Send via</TEXT>
                 <CHOICE value="email" checked="True">Email</CHOICE>
-                {% if user_profile.can_send_fax %}
+                {% if False %}
                 <CHOICE value="fax">Fax</CHOICE>
                 {% endif %}
             </CHOICE-GROUP>

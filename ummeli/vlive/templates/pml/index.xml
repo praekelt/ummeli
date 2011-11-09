@@ -31,8 +31,7 @@
                 <LINK href="{% url send %}?{{uuid}}">
                     <TEXT>Send your CV</TEXT>
                 </LINK><br/>
-                UMMELI LAUNCH OFFER: the first 5000 people to build a CV on Ummeli 
-                get 2 free fax applications for jobs!
+                Sending your CV by email is always free on Ummeli.
                 <br/><br/>
                 <LINK href="{% url jobs_province %}">
                     <TEXT>Find jobs</TEXT>
