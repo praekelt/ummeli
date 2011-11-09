@@ -34,7 +34,8 @@
         <TEXT>
         Thank you to everyone who participated in the Fax trial. 
         <color value="blue">The Fax trial is now closed.</color>
-        We will be bringing back the fax option at a later stage. <br/>
+        We will be bringing back the fax option at a later stage. 
+        <br/><br/>
         </TEXT>
     </CONTAINER>
     {% if form.errors %}
