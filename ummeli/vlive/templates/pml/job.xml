@@ -78,7 +78,7 @@
     <TEXT><color value="red">You are not logged in. Please log in to be able to 
     respond to a job advert.</color>
     <br/>
-        <LINK href="{% url login %}?next={{request.path}}">
+        <LINK href="{% url login %}?next={% url jobs search_id cat_id %}">
             <TEXT>Login</TEXT>
         </LINK>
     </TEXT>
