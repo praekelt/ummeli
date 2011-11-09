@@ -29,7 +29,7 @@
 </MODULE>
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
-    {% if request.user.is_authenticated %}
+    {% if request.is_authorized %}
     <CONTAINER type="data">
         <TEXT>
         Thank you to everyone who participated in the Fax trial. 

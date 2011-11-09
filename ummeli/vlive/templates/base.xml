@@ -52,7 +52,7 @@
         <LINK href="{% url terms %}">
             <TEXT>Terms</TEXT>
         </LINK>
-        {% if user.is_authenticated %}
+        {% if request.is_authorized %}
         <LINK href="{% url logout %}">
             <TEXT>Logout</TEXT>
         </LINK>

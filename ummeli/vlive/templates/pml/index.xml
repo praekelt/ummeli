@@ -45,7 +45,7 @@
         </TEXT>
     </CONTAINER>
 </MODULE>
-{% if request.user.is_authenticated %}
+{% if request.is_authorized %}
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Mange Profile</LABEL></HEADER>
     <CONTAINER  type="list">
