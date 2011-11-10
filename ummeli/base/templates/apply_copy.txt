@@ -3,15 +3,15 @@
 
 Hi,
 
-%(sender)s would like to respond to the position advertised below.
+{{sender}} would like to respond to the position advertised below.
 Attached please find a copy of their CV.
 
-To contact %(sender)s:
-Phone number: %(phone)s
+To contact {{sender}}:
+Phone number: {{phone}}
 
 ---------- Job Advertisement -----------
 
-%(job_ad)s
+{{job_ad}}
 
 ---------------------------------------------------
 

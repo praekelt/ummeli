@@ -3,11 +3,11 @@
 
 Hi,
 
-%(sender)s has chosen to send you their CV.
+{{sender}} has chosen to send you their CV.
 See attachment for details.
 
-To contact %(sender)s:
-Phone number: %(phone)s
+To contact {{sender}}:
+Phone number: {{phone}}
 
 
 Brought to you by,
