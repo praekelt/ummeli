@@ -1,0 +1,15 @@
+[THIS IS AN AUTO-GENERATED EMAIL. DO NOT REPLY DIRECTLY]
+
+
+Hi,
+
+%(sender)s has chosen to send you their CV.
+See attachment for details.
+
+To contact %(sender)s:
+Phone number: %(phone)s
+
+
+Brought to you by,
+Ummeli
+www.ummeli.com

@@ -3,8 +3,8 @@ from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.conf import settings
+from django.template.loader import render_to_string
 
-from ummeli.base import email_copy
 from ummeli.base.utils import render_to_pdf
 from django.core.mail import send_mail,  EmailMessage
 from datetime import datetime
@@ -163,12 +163,14 @@ class CurriculumVitae(models.Model):
     def email_cv(self, email_address, article_text = None,
                         from_address = settings.SEND_FROM_EMAIL_ADDRESS):
         email_text = ''
+        copy_context = {'sender': self.fullname(), 
+                                'job_ad': article_text, 
+                                'phone': self.telephone_number}
+        
         if article_text:
-            email_text = email_copy.APPLY_COPY % {'sender': self.fullname(),
-                                                    'job_ad':article_text}
+            email_text = render_to_string('apply_copy.txt', copy_context)
         else:
-            email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
-                                                   'job_ad':article_text}
+            email_text = render_to_string('send_copy.txt', copy_context)
 
         schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
 

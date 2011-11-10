@@ -1,0 +1,21 @@
+[THIS IS AN AUTO-GENERATED EMAIL. DO NOT REPLY DIRECTLY]
+
+
+Hi,
+
+%(sender)s would like to respond to the position advertised below.
+Attached please find a copy of their CV.
+
+To contact %(sender)s:
+Phone number: %(phone)s
+
+---------- Job Advertisement -----------
+
+%(job_ad)s
+
+---------------------------------------------------
+
+
+Brought to you by,
+Ummeli
+www.ummeli.com
