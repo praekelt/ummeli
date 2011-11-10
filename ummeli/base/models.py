@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.conf import settings
@@ -57,7 +57,7 @@ class Category(models.Model):
     province = models.ForeignKey(Province)
     articles = models.ManyToManyField(Article, blank=True,  null=True)
     user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
-    
+
     def must_show(self):
         return self.articles.exists() or self.user_submitted_job_articles.exists()
 
@@ -120,7 +120,7 @@ class CurriculumVitae(models.Model):
 
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
-        
+
     def missing_fields(self):
         fields = []
         if not self.first_name:
@@ -138,7 +138,7 @@ class CurriculumVitae(models.Model):
         if not self.languages.exists():
             fields.append('atleast 1 language')
         return fields
-        
+
     def update_is_complete(self):
         if not self.missing_fields():
             self.is_complete = True
@@ -156,24 +156,34 @@ class CurriculumVitae(models.Model):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
             self.save()
-            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''), 
+            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),
                                  article_text, settings.SEND_FROM_FAX_EMAIL_ADDRESS)
         return None
 
-    def email_cv(self, email_address, article_text = None, 
+    def email_cv(self, email_address, article_text = None,
                         from_address = settings.SEND_FROM_EMAIL_ADDRESS):
         email_text = ''
         if article_text:
             email_text = email_copy.APPLY_COPY % {'sender': self.fullname(),
-                                                                            'job_ad':article_text}
+                                                    'job_ad':article_text}
         else:
             email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
-                                                                           'job_ad':article_text}
-        
+                                                   'job_ad':article_text}
+
         schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
+
+def update_is_complete_property(sender, **kwargs):
+    instance = kwargs['instance']
+    # Use a list operation, prevents the signal to be fired again
+    # when it is being updated for the `is_complete` boolean.
+    CurriculumVitae.objects.filter(pk=instance.pk).update(
+        is_complete=not instance.missing_fields())
+
+post_save.connect(update_is_complete_property, sender=CurriculumVitae,
+    dispatch_uid='curriculum-vitae-is-complete-signal')
 
 class CurriculumVitaeForm(ModelForm):
     class Meta:

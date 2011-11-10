@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.core import mail
 from django.conf import settings
 
-from ummeli.base.models import Certificate, Category, Province
+from ummeli.base.models import (Certificate, Category, Province,
+    CurriculumVitae)
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 
 import json
@@ -53,11 +54,11 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertContains(resp, 'Male')
         # logout & login
         resp = self.logout()
-        
+
         # not provided pin yet so it should redirect to login page
         resp = self.client.post(reverse('edit_personal'), post_data)
         self.assertVLiveRedirects(resp, reverse('login'))
-        
+
         # FIXME: we shouldn't need to provide the MSISDN here.
         resp = self.login()
         # load the personal details again, ensure they're present
@@ -242,7 +243,7 @@ class VLiveCVTestCase(VLiveTestCase):
         resp = self.client.get(reverse('language_list'))
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'English')
-        
+
          # test editing of created language
         resp = self.client.get(reverse('language_edit',  args=[4]))
         self.assertEquals(resp.status_code, 200)
@@ -318,7 +319,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
         self.fill_in_basic_info()
-        
+
         resp = self.client.get(reverse('send'))
         self.assertEquals(resp.status_code, 200)
 
@@ -352,15 +353,15 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(mail.outbox[0].subject, 'CV for Test User')
 
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
-        
+
     def test_missing_fields_when_sending(self):
         # setup user's first_name and surname
         self.register()
         self.login()
-        
+
         post_data = {'send_to': 'madandat@gmail.com', 'send_via': 'email'}
         resp = self.client.post(reverse('send'), post_data)
-        
+
         self.assertContains(resp,  'Your CV is incomplete')
         self.assertContains(resp,  'first name')
         self.assertContains(resp,  'gender')
@@ -391,21 +392,27 @@ class VLiveCVTestCase(VLiveTestCase):
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
         self.assertContains(resp,  'Province - This field is required')
-        
+
     def test_cv_is_complete(self):
         # setup user's first_name and surname
         self.register()
         self.login()
         self.fill_in_basic_info()
-        
+
         cv = self.get_user().get_profile()
+        # remove a required field
+        cv.telephone_number = None
+        cv.save()
+        # reload & check to ensure that is the case
+        cv = CurriculumVitae.objects.get(pk=cv.pk)
+        self.assertTrue(cv.missing_fields())
         self.assertEquals(cv.is_complete,  False)
-        
+
         post_data = {
             'telephone_number': '0123456978',
             'street_name': 'Oak Rd',
         }
         resp = self.client.post(reverse('edit_contact'), post_data)
-        
+
         cv = self.get_user().get_profile()
         self.assertEquals(cv.is_complete,  True)
