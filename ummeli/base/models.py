@@ -116,6 +116,7 @@ class CurriculumVitae(models.Model):
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
+    is_complete = models.BooleanField(default=False,  editable=False)
 
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
@@ -137,6 +138,13 @@ class CurriculumVitae(models.Model):
         if not self.languages.exists():
             fields.append('atleast 1 language')
         return fields
+        
+    def update_is_complete(self):
+        if not self.missing_fields():
+            self.is_complete = True
+        else:
+            self.is_complete = False
+        self.save()
 
     def can_send_fax(self):
         return self.nr_of_faxes_sent < settings.MAX_LAUNCH_FAXES_COUNT

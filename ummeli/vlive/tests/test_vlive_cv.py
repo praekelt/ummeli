@@ -243,12 +243,12 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'English')
         
-         # test editing of created certificate
-        resp = self.client.get(reverse('language_edit',  args=[3]))
+         # test editing of created language
+        resp = self.client.get(reverse('language_edit',  args=[4]))
         self.assertEquals(resp.status_code, 200)
 
         post_data = {'language': 'Afrikaans', 'read_write': True}
-        resp = self.client.post(reverse('language_edit', args=[3]),
+        resp = self.client.post(reverse('language_edit', args=[4]),
                                 post_data)
 
         resp = self.client.get(reverse('language_list'))
@@ -258,10 +258,10 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(languages.count(), 1)
 
          # test delete action
-        resp = self.client.get(reverse('language_delete',  args=[3]))
+        resp = self.client.get(reverse('language_delete',  args=[4]))
         self.assertContains(resp, 'Are you sure')
 
-        resp = self.client.post(reverse('language_delete',  args=[3]))
+        resp = self.client.post(reverse('language_delete',  args=[4]))
         languages = self.get_user().get_profile().languages.all()
         self.assertEquals(languages.count(), 0)
 
@@ -391,3 +391,21 @@ class VLiveCVTestCase(VLiveTestCase):
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
         self.assertContains(resp,  'Province - This field is required')
+        
+    def test_cv_is_complete(self):
+        # setup user's first_name and surname
+        self.register()
+        self.login()
+        self.fill_in_basic_info()
+        
+        cv = self.get_user().get_profile()
+        self.assertEquals(cv.is_complete,  False)
+        
+        post_data = {
+            'telephone_number': '0123456978',
+            'street_name': 'Oak Rd',
+        }
+        resp = self.client.post(reverse('edit_contact'), post_data)
+        
+        cv = self.get_user().get_profile()
+        self.assertEquals(cv.is_complete,  True)

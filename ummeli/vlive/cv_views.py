@@ -33,6 +33,7 @@ def process_edit_request(request, model_form, page_title):
             form = model_form(request.POST, instance=cv)
             if form.is_valid():
                 form.save()
+                cv.update_is_complete()
                 return edit_view(request)
     else:
         form = model_form(instance=cv)
@@ -276,6 +277,7 @@ class LanguageEditView(UpdateView):
 
     def form_valid(self, form):
         form.save()
+        self.request.user.get_profile().update_is_complete()
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
@@ -301,6 +303,7 @@ class LanguageCreateView(CreateView):
     def form_valid(self, form):
         new_language = form.save()
         self.request.user.get_profile().languages.add(new_language)
+        self.request.user.get_profile().update_is_complete()
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
