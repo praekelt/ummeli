@@ -68,6 +68,7 @@
                 {% endif %}
             </CHOICE-GROUP>
             <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
