@@ -381,7 +381,10 @@ class VLiveCVTestCase(VLiveTestCase):
             'text': 'This is some sample text.',
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
-
+        self.assertEqual(Category.objects.count(), 1)
+        
+        #test duplicate submissions
+        resp = self.client.post(reverse('jobs_create'), post_data)
         self.assertEqual(Category.objects.count(), 1)
 
         post_data = {

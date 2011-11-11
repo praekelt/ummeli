@@ -3,6 +3,8 @@ import uuid
 import string
 import random
 
+from datetime import datetime, date, timedelta, time
+
 from django.conf import settings
 
 from ummeli.base.models import (Certificate, Language, WorkExperience,
@@ -331,22 +333,32 @@ def stats(request):
 def jobs_create(request):
     if request.method == 'POST':
         form = UserSubmittedJobArticleForm(request.POST)
+        
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        # check if the user hasn't placed the exact same job article
+        # with the exact same information in the last 5 minutes to prevent duplicates
+        delta = datetime.now() - timedelta(minutes=5)
+        duplicate = UserSubmittedJobArticle.objects \
+                        .filter(user=request.user, date__gte=delta, title = title,  text = text) \
+                        .exists()
         if form.is_valid():
-            user_article = form.save(commit=False)
-            user_article.user = request.user
-            user_article.save()
+            if not duplicate:
+                user_article = form.save(commit=False)
+                user_article.user = request.user
+                user_article.save()
 
-            province = Province.objects.get(pk = int(request.POST.get('province')))
+                province = Province.objects.get(pk = int(request.POST.get('province')))
 
-            category_title = request.POST.get('category')
-            category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
-            if not Category.objects.filter(hash_key = category_hash).exists():
-                cat  = Category(province = province, hash_key = category_hash,  title = category_title)
-                cat.save()
-            else:
-                cat  = Category.objects.get(hash_key = category_hash)
+                category_title = request.POST.get('category')
+                category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
+                if not Category.objects.filter(hash_key = category_hash).exists():
+                    cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+                    cat.save()
+                else:
+                    cat  = Category.objects.get(hash_key = category_hash)
 
-            cat.user_submitted_job_articles.add(user_article)
+                cat.user_submitted_job_articles.add(user_article)
 
             return pml_redirect_timer_view(request,  reverse('home'),
                 redirect_message = 'Thank you. Your job advert has been submitted.')
