@@ -39,16 +39,14 @@ def process_edit_request(request, model_form, page_title):
 
     return render_to_response('%s/%s' % (request.template_dir, 'edit_details.html'),
                             {'form': form, 'page_title': page_title},
-                            context_instance=RequestContext(request),
-                            mimetype = 'text/xml')
+                            context_instance=RequestContext(request))
 
 def redirect_pml(request,  redirect_url):
     return render_to_response('%s/%s' % (request.template_dir, 'redirect.html'),
                               {'redirect_url': redirect_url + '?' + str(uuid.uuid4()),
                               'redirect_time': 10,
                               'redirect_message': 'Thanks! Your information has been updated.'},
-                            context_instance=RequestContext(request),
-                            mimetype = 'text/xml')
+                            context_instance=RequestContext(request))
 
 def delete_and_redirect_pml(self, request, *args, **kwargs):
         self.object = self.get_object()
