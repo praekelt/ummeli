@@ -6,11 +6,18 @@
     <div>
         <ol>
         {% for article in articles %}
-            <li><a href="{% url job search_id cat_id article.pk %}">{{article.date}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}</a></li>
+            <li>
+            <a href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
+                {% if article.user_submitted %}
+                <color value="blue">***</color>
+                {% endif %}
+                {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+            </a>
+            </li>
         {% endfor %}
         </ol>
         <br/>
-        <p><a href="{% url jobs_province %}/{{search_id}}/">&lt;&lt; Back</a></p>
+        <p><a href="{% url jobs_list search_id %}">&lt;&lt; Back</a></p>
     </div>
     </form>
 {% endblock %}

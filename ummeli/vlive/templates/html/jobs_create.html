@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<div class="h2">Share jobs</div>
+<form method="POST" class="standard">
+    <div>Ummeli is unlike any other jobs network. We're a community of young 
+        people looking out for each other. You can help by adding jobs you have seen 
+        advertised in your community, or that you are not interested in yourself, but 
+        want to share so that others can apply. If you are a formal jobs provider, you 
+        are a VIP here on Ummeli and we welcome you to our community!
+    </div>
+    <br/>
+    {{ form.errors }}
+    <label for="province">Province</label>
+    <select id="province" name="province">
+        <option value="">Please select province</option>
+        {% for p in provinces %}
+        <option value="{{p.pk}}">{{p.name}}</option>
+        {% endfor %}
+    </select>
+    <label for="category">Category</label>
+    <select id="category" name="category">
+        <option value="">Please select category</option>
+        {% for category in categories %}
+        <option value="{{category.title}}">{{category.title}}</option>
+        {% endfor %}
+    </select>
+
+    <label >Job Title</label>
+    <input name="title" type="text"/>
+    <label>Description</label>
+    <div>Please provide as much information about the job as possible including 
+    contact details.
+    </div>
+    <input name="text" type="text"/>
+    <input type='hidden' name='_action' value='POST' />
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    <input type='submit' value='Submit' class="submit"/>
+    <span class="button"><a href="{% url home %}">Cancel</a></span>
+</form>
+{% endblock %}

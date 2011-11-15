@@ -3,12 +3,53 @@
 {% block content %}
     <div class="h2">Welcome to Ummeli</div>
     <form class='standard'>
+    <div>Ummeli is a jobseeker network on your phone that connects you and your 
+            friends to jobs in your community. No more waiting around. With a mobile 
+            CV in your back pocket, you’re ready to apply for a job you spot on Ummeli 
+            at any time. You can also post jobs or bursary info you want your friends to 
+            know about. Get started!</div>
     <div>
         <ul>
-            <li><a href="{% url edit %}">Edit CV</a></li>
-            <li><a href="{% url send %}">Send CV</a></li>
-            <li><a href="{% url jobs %}">View Jobs</a></li>
+        {% if request.user.password %}
+                <li>
+                    <a href="{% url edit %}?{{uuid}}">
+                        Change your CV
+                    </a>
+                <p>Need to add new info to your CV? Do it here.<p>
+                </li>
+            {% else %}
+                <li><a href="{% url register %}?{{uuid}}">
+                    Build your CV
+                </a>
+                <p>Set up your work profile - build a professional CV without a computer.</p>
+                </li>
+            {% endif %}
+                <li><a href="{% url send %}?{{uuid}}">
+                    Send your CV
+                </a>
+                <p>Sending your CV by email is always free on Ummeli.</p>
+                </li>
+                <li><a href="{% url jobs_province %}">
+                    Find jobs
+                </a>
+                <p>Start your job search right here. Find work in your area.</p>
+                </li>
+                <li><a href="{% url jobs_create %}?{{uuid}}">
+                    Share jobs
+                </a>
+                <p>Help others by adding jobs you’ve seen advertised in your community.</p>
+                </li>
         </ul>
     </div>
     </form>
+    {% if request.is_authorized %}
+    <div class="h2">Mange Profile</div>
+    <form class="standard">
+    <div>
+        <ul>
+        <li><a href="{% url password_change %}?{{uuid}}">Change pin</a></li>
+        </ul>
+    </div>
+    </form>
+    {% endif %}
 {% endblock %}

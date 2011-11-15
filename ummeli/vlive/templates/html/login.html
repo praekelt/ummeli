@@ -2,27 +2,25 @@
 
 {% block content %}
     <div class="h2">Sign In for {{msisdn}}</div>
-    <form class="signin" method="post">
-        {% if user_exists %}        
-            {% if form.errors %}
-                <div class="error">Sign in failed.<br />Please try again.</div>
-            {% endif %}
-            <p><label>Welcome to Ummeli. </label>
-            <label for="form-pin">Enter Pin to sign in.</label>
-            </p>
-            <br/>
-            <label for="form-pin">Pin</label>
-            {{form.password}}
-
-            <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
-            <input type="hidden" name="next" value="{{next}}" />
-            <input type="hidden" name="username" value="{{msisdn}}" />
-            {% csrf_token %}
-
-            <p><a href="{% url index %}forgot/">Forgotton your Pin?</a></p>
-        {% else %}  
-            <label>Welcome to Ummeli.</label><br/>
-            <label><a href="{% url register %}">Click here to create profile.</a></label>
+    <form class="signin" method="post">        
+        {% if form.errors %}
+            <div class="error">Sign in failed.<br />Please try again.</div>
         {% endif %}
+        <p><label>Welcome to Ummeli. </label>
+        <label for="form-pin">Enter Pin to sign in.</label>
+        </p>
+        <br/>
+        <label for="form-pin">Cell number</label>
+        {{form.username}}
+        
+        <label for="form-pin">Pin</label>
+        {{form.password}}
+
+        <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
+        <input type="hidden" name="next" value="{{next}}" />
+        {% csrf_token %}
+
+        <p><a href="{% url index %}forgot/">Forgotton your Pin?</a></p>
+        <label>Not registered? <a href="{% url register %}">Join here.</a></label>
     </form>
 {% endblock %}

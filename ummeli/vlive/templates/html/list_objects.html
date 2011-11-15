@@ -5,11 +5,11 @@
     <form class='standard' method="post">
         <ul>
         {% for item in object_list %}
-            <li><a href='{% url edit %}/{{list_name}}/{{ item.pk }}'>{{ item }}</a></li>
+            <li><a href='{% url edit %}{{list_name}}/{{ item.pk }}'>{{ item }}</a></li>
         {% endfor %}
         </ul>
         <br/>
-        <p><a href="{% url edit %}/{{list_name}}/new"> + Add new</a></p>
+        <p><a href="{% url edit %}{{list_name}}/new"> + Add new</a></p>
         <br/>
         <p><a href="{% url edit %}">&lt;&lt; Back</a></p>
     </form>
