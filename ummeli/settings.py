@@ -2,7 +2,10 @@
 import os.path
 import djcelery
 
-from local_settings import *
+try:
+    from local_settings import *
+except ImportError:
+    raise RuntimeError,  "you need a local_settings.py file"
 
 TEMPLATE_DEBUG = True
 
