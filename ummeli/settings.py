@@ -2,6 +2,8 @@
 import os.path
 import djcelery
 
+from local_settings import *
+
 djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -10,9 +12,6 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
     return os.path.join(PROJECT_ROOT, *args)
-
-DEBUG = True
-TEMPLATE_DEBUG = True
 
 ADMINS = (
     ('Foundation Developers', 'dev@praekeltfoundation.org'),
@@ -111,7 +110,7 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES += (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,6 +119,7 @@ MIDDLEWARE_CLASSES = (
     'vlive.auth.middleware.VodafoneLiveUserMiddleware',
     'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
     'vlive.middleware.FormActionMiddleware',
+    'vlive.middleware.TemplateSwitcherMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -195,12 +195,6 @@ AUTH_PROFILE_MODULE = "base.Curriculumvitae"
 LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "ummeli"
-BROKER_PASSWORD = "ummeli"
-BROKER_VHOST = "/ummeli/production"
-
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
 CELERY_ALWAYS_EAGER = DEBUG
@@ -212,9 +206,11 @@ MAX_LAUNCH_FAXES_COUNT = 2
 SEND_FROM_FAX_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
 SEND_FROM_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
 
-# specify in production
-VUMI_USERNAME = ''
-VUMI_PASSWORD = ''
-
 # Session Key for PIN auth
 UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "ummeli"
+BROKER_PASSWORD = "ummeli"
+BROKER_VHOST = "/ummeli/production"
