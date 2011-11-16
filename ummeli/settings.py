@@ -4,6 +4,8 @@ import djcelery
 
 from local_settings import *
 
+TEMPLATE_DEBUG = True
+
 djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -135,13 +137,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates"
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    "templates",
-)
 
 INSTALLED_APPS = (
     'django.contrib.admin',
