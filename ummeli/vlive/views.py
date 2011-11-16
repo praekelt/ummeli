@@ -51,16 +51,14 @@ def render_to_login(request,  form,  redirect_to,  template_name,
     return render_to_response(template_name, context,
                               context_instance=RequestContext(request, current_app=current_app))
 
-def login(request, template_name=None,
+def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
               
-    if not template_name:
-        template_name = '%s/%s' % (request.template_dir, 'login.html')
     """
-Displays the login form and handles the login action.
-"""
+    Displays the login form and handles the login action.
+    """
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
@@ -119,7 +117,7 @@ def register(request):
         'msisdn': request.vlive.msisdn,
         'uuid': str(uuid.uuid4()),
     }
-    return render_to_response('%s/%s' % (request.template_dir, 'register.html'),
+    return render_to_response('register.html',
                                context,
                               context_instance=RequestContext(request))
 
@@ -150,7 +148,7 @@ def forgot_password_view(request):
             redirect_time = 50,
             redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
 
-    return render_to_response('%s/%s' % (request.template_dir, 'forgot_password.html'),
+    return render_to_response('forgot_password.html',
                                             context_instance=RequestContext(request),
                                             )
 
@@ -171,19 +169,19 @@ def password_change_view(request):
         'msisdn': request.vlive.msisdn,
         'uuid': str(uuid.uuid4()),
     }
-    return render_to_response('%s/%s' % (request.template_dir, 'password_change.html'), 
+    return render_to_response('password_change.html', 
                               context,
                               context_instance=RequestContext(request))
 
 @cache_control(no_cache=True)
 def index(request):
-    return render_to_response('%s/%s' % (request.template_dir, 'index.html'),
+    return render_to_response('index.html',
         context_instance= RequestContext(request),
         )
 
 @cache_control(no_cache=True)
 def home(request):
-    return render_to_response('%s/%s' % (request.template_dir, 'index.html'), {'uuid': str(uuid.uuid4()),
+    return render_to_response('index.html', {'uuid': str(uuid.uuid4()),
         'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()},
         context_instance= RequestContext(request),
         )
@@ -192,7 +190,7 @@ def home(request):
 @pin_required
 @cache_control(no_cache=True)
 def edit(request):
-    return render_to_response('%s/%s' % (request.template_dir, 'cv.html'),  {'uuid': str(uuid.uuid4())},
+    return render_to_response('cv.html',  {'uuid': str(uuid.uuid4())},
                                                 context_instance= RequestContext(request),
                                                 )
 
@@ -220,7 +218,7 @@ def send(request):
                 user_profile.fax_cv(send_to)
                 return send_thanks(request)
 
-    return render_to_response('%s/%s' % (request.template_dir, 'send_cv.html'),  
+    return render_to_response('send_cv.html',  
                               {'form': form},
                               context_instance= RequestContext(request), )
 
@@ -232,14 +230,14 @@ def send_thanks(request):
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
-    return render_to_response('%s/%s' % (request.template_dir, 'jobs_province.html'),
+    return render_to_response('jobs_province.html',
                                                 {'provinces': provinces},
                                                 context_instance= RequestContext(request),
                                                 )
 
 def jobs_list(request,  id):
     categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
-    return render_to_response('%s/%s' % (request.template_dir, 'jobs_list.html'),
+    return render_to_response('jobs_list.html',
                               {'categories': categories,
                               'search_id': id},
                               context_instance= RequestContext(request),
@@ -256,7 +254,7 @@ def jobs(request,  id,  search_id):
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
 
-    return render_to_response('%s/%s' % (request.template_dir, 'jobs.html'),
+    return render_to_response('jobs.html',
                               {'articles': all_jobs,
                               'search_id': search_id,
                               'cat_id': id,
@@ -297,7 +295,7 @@ def job(request,  id,  cat_id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
 
-    return render_to_response('%s/%s' % (request.template_dir, 'job.html'),
+    return render_to_response('job.html',
                               {'job': article,
                               'search_id': search_id,
                               'cat_id': cat_id,
@@ -315,11 +313,11 @@ def jobs_cron(request):
     return render_to_response('vlive/cron.html')
 
 def about(request):
-    return render_to_response('%s/%s' % (request.template_dir, 'about.html'),
+    return render_to_response('about.html',
                               context_instance= RequestContext(request))
 
 def terms(request):
-    return render_to_response('%s/%s' % (request.template_dir, 'terms.html'),
+    return render_to_response('terms.html',
                               context_instance= RequestContext(request))
 
 def health(request):
@@ -371,6 +369,6 @@ def jobs_create(request):
     provinces = Province.objects.all().order_by('name').exclude(pk=1)
     categories = Category.objects.all().values('title').distinct().order_by('title')
 
-    return render(request, '%s/%s' % (request.template_dir, 'jobs_create.html'),
+    return render(request, 'jobs_create.html',
                                 {'form': form,  'provinces': provinces,
                                 'categories': categories})

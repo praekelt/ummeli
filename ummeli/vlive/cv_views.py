@@ -37,12 +37,12 @@ def process_edit_request(request, model_form, page_title):
     else:
         form = model_form(instance=cv)
 
-    return render_to_response('%s/%s' % (request.template_dir, 'edit_details.html'),
+    return render_to_response('edit_details.html',
                             {'form': form, 'page_title': page_title},
                             context_instance=RequestContext(request))
 
 def redirect_pml(request,  redirect_url):
-    return render_to_response('%s/%s' % (request.template_dir, 'redirect.html'),
+    return render_to_response('redirect.html',
                               {'redirect_url': redirect_url + '?' + str(uuid.uuid4()),
                               'redirect_time': 10,
                               'redirect_message': 'Thanks! Your information has been updated.'},
@@ -86,7 +86,7 @@ class CertificateListView(ListView):
         return self.request.user.get_profile().certificates.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'list_objects.html')
+        self.template_name = 'list_objects.html'
         
         return super(CertificateListView, self).render_to_response(context, **kwargs)
 
@@ -105,7 +105,7 @@ class CertificateEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(CertificateEditView, self).render_to_response(context, **kwargs)
 
     def form_valid(self, form):
@@ -132,7 +132,7 @@ class CertificateCreateView(CreateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(CertificateCreateView, self).render_to_response(context, **kwargs)
 
 class CertificateDeleteView(DeleteView):
@@ -148,7 +148,7 @@ class CertificateDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'delete.html')
+        self.template_name = 'delete.html'
         
         return super(CertificateDeleteView, self).render_to_response(context, **kwargs)
 
@@ -167,7 +167,7 @@ class WorkExperienceListView(ListView):
         return self.request.user.get_profile().work_experiences.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'list_objects.html')
+        self.template_name = 'list_objects.html'
         return super(WorkExperienceListView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceEditView(UpdateView):
@@ -189,7 +189,7 @@ class WorkExperienceEditView(UpdateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(WorkExperienceEditView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceCreateView(CreateView):
@@ -212,7 +212,7 @@ class WorkExperienceCreateView(CreateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(WorkExperienceCreateView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceDeleteView(DeleteView):
@@ -231,7 +231,7 @@ class WorkExperienceDeleteView(DeleteView):
         return delete_and_redirect_pml(self, request, args, kwargs)
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'delete.html')
+        self.template_name = 'delete.html'
         return super(WorkExperienceDeleteView, self).render_to_response(context, **kwargs)
 
 class LanguageListView(ListView):
@@ -246,7 +246,7 @@ class LanguageListView(ListView):
         return self.request.user.get_profile().languages.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'list_objects.html')
+        self.template_name = 'list_objects.html'
         return super(LanguageListView, self).render_to_response(context, **kwargs)
 
 
@@ -269,7 +269,7 @@ class LanguageEditView(UpdateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(LanguageEditView, self).render_to_response(context, **kwargs)
 
 
@@ -293,7 +293,7 @@ class LanguageCreateView(CreateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(LanguageCreateView, self).render_to_response(context, **kwargs)
 
 
@@ -313,7 +313,7 @@ class LanguageDeleteView(DeleteView):
         return delete_and_redirect_pml(self, request, args, kwargs)
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'delete.html')
+        self.template_name = 'delete.html'
         return super(LanguageDeleteView, self).render_to_response(context, **kwargs)
 
 class ReferenceListView(ListView):
@@ -328,7 +328,7 @@ class ReferenceListView(ListView):
         return self.request.user.get_profile().references.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'list_objects.html')
+        self.template_name = 'list_objects.html'
         return super(ReferenceListView, self).render_to_response(context, **kwargs)
 
 
@@ -351,7 +351,7 @@ class ReferenceEditView(UpdateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(ReferenceEditView, self).render_to_response(context, **kwargs)
 
 
@@ -375,7 +375,7 @@ class ReferenceCreateView(CreateView):
         return redirect_pml(self.request,  self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'edit_object.html')
+        self.template_name = 'edit_object.html'
         return super(ReferenceCreateView, self).render_to_response(context, **kwargs)
 
 
@@ -395,5 +395,5 @@ class ReferenceDeleteView(DeleteView):
         return delete_and_redirect_pml(self, request, args, kwargs)
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = '%s/%s' % (self.request.template_dir, 'delete.html')
+        self.template_name = 'delete.html'
         return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)
