@@ -21,6 +21,7 @@
         <FIELD name="new_password2" type="password"/>
 
         <FIELD name="next" type="hidden" value="{{next}}"/>
+        <FIELD name="username" type="hidden" value="{{request.user.username}}"/>
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>

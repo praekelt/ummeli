@@ -3,21 +3,19 @@
 {% block content %}
     <div class="h2">Create pin</div>
     <form class="standard" method="post">
-        {% if form.errors %}
-            <div class="error">Pin codes don&apos;t match.<br />Please try again.</div>
-        {% endif %}
-        
         <label for="form-username">Cell number</label>
-        {{form.username}}
-        <label for="form-pin1">Pin</label>
-        {{form.password1}}
-        <label for="form-pin2">Confirm Pin</label>
-        {{form.password2}}
+        {{form.username.errors}}
+        <input name="username" type="text"/>
+        <label>Pin</label>
+        {{form.password1.errors}}
+        <input name="password1" type="password"/>
+        <label>Confirm Pin</label>
+        {{form.password2.errors}}
+        <input name="password2" type="password"/>
         <input type="submit" class="submit" value="Create pin &raquo;" name="submit" />
         <span class="button"><a href="{% url index %}">Cancel</a></span>
         <br/><br/>
         <input type="hidden" name="next" value="{{next}}">
-        <input type="hidden" name="username" value="{{msisdn}}">
         {% csrf_token %}
     </form>
 {% endblock %}
