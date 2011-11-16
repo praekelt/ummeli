@@ -36,8 +36,7 @@
     <div>Please provide as much information about the job as possible including 
     contact details.
     </div>
-    <input name="text" type="text"/>
-    <input type='hidden' name='_action' value='POST' />
+    {{form.text}}
     <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     <input type='submit' value='Submit' class="submit"/>
     <span class="button"><a href="{% url home %}">Cancel</a></span>
