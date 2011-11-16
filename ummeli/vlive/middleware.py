@@ -10,15 +10,7 @@ class FormActionMiddleware(object):
             request.method = "POST"
             request.POST = request.GET
 
-class TemplateSwitcherMiddleware(object):
-    def process_request(self, request):
-        msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', None)
-        request.template_dir = 'html'
-        
-        if(msisdn != None):
-            request.template_dir = 'pml'
-            
+class ModifyPMLResponseMiddleware(object):
     def process_response(self, request,  response):
-        if(hasattr(request, 'template_dir') and request.template_dir == 'pml'):
-            response['Content-type'] = 'text/xml'
+        response['Content-type'] = 'text/xml'
         return response
