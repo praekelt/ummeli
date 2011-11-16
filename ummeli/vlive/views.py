@@ -14,9 +14,8 @@ from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
 from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
-
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
+from ummeli.vlive.forms import (EmailCVForm,  FaxCVForm, 
+                                UserSubmittedJobArticleForm, ForgotPasswordForm)
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -96,30 +95,38 @@ def login(request, template_name='login.html',
 
 def register(request):
     if request.method == 'POST':
-        # we need to call this so user.backend is set properly,
-        # Django's session / login mechanics require it.
-        user = authenticate(remote_user=request.user.username)
-        form = SetPasswordForm(user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            # setting the PIN for this session
-            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
-            # redirect through Django's auth mechanisms
-            auth_login(request, user)
-            return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'Thank you. You are now registered.')
+        username = request.POST.get('username')
+        
+        if request.vlive.msisdn == 'unknown':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                #auto-login user
+                password = request.POST.get('password1')
+                user = authenticate(username=username,  password=password)
+                auth_login(request, user)
+                request.session[settings.UMMELI_PIN_SESSION_KEY] = True
+                return pml_redirect_timer_view(request, reverse('home'),
+                    redirect_time = 0,
+                    redirect_message = 'Thank you. You are now registered.')
+        else:
+            # we need to call this so user.backend is set properly,
+            # Django's session / login mechanics require it.
+            user = authenticate(remote_user=username)
+            form = SetPasswordForm(user, data=request.POST)
+            if form.is_valid():
+                form.save()
+                # setting the PIN for this session
+                request.session[settings.UMMELI_PIN_SESSION_KEY] = True
+                # redirect through Django's auth mechanisms
+                auth_login(request, user)
+                return pml_redirect_timer_view(request, reverse('home'),
+                    redirect_time = 0,
+                    redirect_message = 'Thank you. You are now registered.')
     else:
         form = UserCreationForm()
 
-    context = {
-        'form': form,
-        'msisdn': request.vlive.msisdn,
-        'uuid': str(uuid.uuid4()),
-    }
-    return render_to_response('register.html',
-                               context,
-                              context_instance=RequestContext(request))
+    return render(request, 'register.html',{'form': form})
 
 def logout_view(request):
     # remove the pin from the session
@@ -137,20 +144,24 @@ def send_password(request,  new_password):
 
 def forgot_password_view(request):
     if request.method == 'POST':
-        new_password = generate_password(chars = string.digits)
+        form = ForgotPasswordForm(request.POST)
+        
+        if(form.is_valid()):
+            username = form.cleaned_data['username']
+            new_password = generate_password(chars = string.digits)
 
-        send_password(request,  new_password)
-        user = User.objects.get(username = request.vlive.msisdn)
-        user.set_password(new_password)
-        user.save()
+            send_password(request,  new_password)
+            user = User.objects.get(username = username)
+            user.set_password(new_password)
+            user.save()
 
-        return pml_redirect_timer_view(request,  reverse('login'),
-            redirect_time = 50,
-            redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
-
-    return render_to_response('forgot_password.html',
-                                            context_instance=RequestContext(request),
-                                            )
+            return pml_redirect_timer_view(request,  reverse('login'),
+                redirect_time = 50,
+                redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
+    else:
+        form = ForgotPasswordForm()
+        
+    return render(request,'forgot_password.html', {'form': form})
 
 @login_required
 @pin_required

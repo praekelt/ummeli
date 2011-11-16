@@ -2,8 +2,9 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae,  UserSubmittedJobArticle)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
                                             RegexField,  CharField,  BooleanField,  IntegerField,
-                                            Textarea)
+                                            Textarea,  ValidationError)
 
+from django.contrib.auth.models import User
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -154,3 +155,18 @@ class UserSubmittedJobArticleForm(PMLModelForm):
     class Meta:
         model = UserSubmittedJobArticle
         fields = ('title',  'text')
+
+class ForgotPasswordForm(Form):
+    username = RegexField('[0-9+]', required = True,
+                          error_message = 'Please enter a valid cellphone number.', 
+                          label="Enter the cellphone number to reset the pin for.")
+                          
+    def clean_username(self):
+        """
+        Validates that an active user exists with the given e-mail address.
+        """
+        username = self.cleaned_data["username"]
+        self.users_cache = User.objects.filter(username__iexact=username)
+        if not self.users_cache.exists():
+            raise ValidationError("That cellphone number doesn't have an associated user account. Are you sure you've registered?")
+        return username

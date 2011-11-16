@@ -36,9 +36,8 @@ DATABASES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS += (
     'django.contrib.auth.backends.ModelBackend',
-    'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
 )
 
 # Local time zone for this installation. Choices can be found here:
