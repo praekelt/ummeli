@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="h2">Sign In for {{msisdn}}</div>
-    <form class="signin" method="post">        
+    <form class="standard" method="post">        
         {% if form.errors %}
             <div class="error">Sign in failed.<br />Please try again.</div>
         {% endif %}
@@ -17,10 +17,12 @@
         {{form.password}}
 
         <input type="submit" class="submit" value="Sign In &raquo;" name="submit" />
+        <span class="button"><a href="{% url index %}">Cancel</a></span>
+        <br/><br/>
         <input type="hidden" name="next" value="{{next}}" />
         {% csrf_token %}
 
-        <p><a href="{% url index %}forgot/">Forgotton your Pin?</a></p>
+        <p><a href="{% url forgot %}">Forgotton your Pin?</a></p>
         <label>Not registered? <a href="{% url register %}">Join here.</a></label>
     </form>
 {% endblock %}
