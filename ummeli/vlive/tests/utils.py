@@ -21,6 +21,7 @@ class VLiveTestCase(TestCase):
 
     def register(self):
         resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
             'new_password1': self.pin,
             'new_password2': self.pin,
         })

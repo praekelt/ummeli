@@ -27,6 +27,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
     def test_login_view(self):
         resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
@@ -63,9 +64,11 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('register'))
         self.assertEquals(resp.status_code, 200)
+        print resp
         self.assertContains(resp, 'Create pin for %s' % (self.msisdn))
 
         resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
@@ -103,6 +106,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         #register user
         resp = self.client.post(reverse('register'),{
+            'username': self.msisdn,
             'password1': self.pin,
             'password2': self.pin,
         })
@@ -110,12 +114,13 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         resp = self.client.get(reverse('forgot'))
         self.assertContains(resp, 'Pin will be sent to %s.' % self.msisdn)
 
-        resp = self.client.post(reverse('forgot'))
+        resp = self.client.post(reverse('forgot'),  {'username':self.msisdn})
         self.assertContains(resp, 'Your new pin has been sent')
 
     def test_change_pin(self):
         # register user
         resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
