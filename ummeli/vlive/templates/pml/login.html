@@ -9,7 +9,6 @@
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if user_exists %}
         {% if form.errors %}
-            {{ form.errors }}
             <CONTAINER type="data">
                 <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
             </CONTAINER>
