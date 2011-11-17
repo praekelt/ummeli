@@ -96,33 +96,19 @@ def login(request, template_name='login.html',
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        
-        if request.vlive.msisdn == 'unknown':
-            form = UserCreationForm(request.POST)
-            if form.is_valid():
-                form.save()
-                #auto-login user
-                password = request.POST.get('password1')
-                user = authenticate(username=username,  password=password)
-                auth_login(request, user)
-                request.session[settings.UMMELI_PIN_SESSION_KEY] = True
-                return pml_redirect_timer_view(request, reverse('home'),
-                    redirect_time = 0,
-                    redirect_message = 'Thank you. You are now registered.')
-        else:
-            # we need to call this so user.backend is set properly,
-            # Django's session / login mechanics require it.
-            user = authenticate(remote_user=username)
-            form = SetPasswordForm(user, data=request.POST)
-            if form.is_valid():
-                form.save()
-                # setting the PIN for this session
-                request.session[settings.UMMELI_PIN_SESSION_KEY] = True
-                # redirect through Django's auth mechanisms
-                auth_login(request, user)
-                return pml_redirect_timer_view(request, reverse('home'),
-                    redirect_time = 0,
-                    redirect_message = 'Thank you. You are now registered.')
+        # we need to call this so user.backend is set properly,
+        # Django's session / login mechanics require it.
+        user = authenticate(remote_user=username)
+        form = SetPasswordForm(user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # setting the PIN for this session
+            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
+            # redirect through Django's auth mechanisms
+            auth_login(request, user)
+            return pml_redirect_timer_view(request, reverse('home'),
+                redirect_time = 0,
+                redirect_message = 'Thank you. You are now registered.')
     else:
         form = UserCreationForm()
 
