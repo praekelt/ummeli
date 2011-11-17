@@ -29,5 +29,6 @@ def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redire
     return render(request, 'redirect.html',
                                 {'redirect_url': redirect_url,
                                 'redirect_time': redirect_time,
-                                'redirect_message': redirect_message})
+                                'redirect_message': redirect_message}, 
+                                content_type='text/xml')
 
