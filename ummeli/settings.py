@@ -137,8 +137,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "vlive.custom_context_processors.user_profile_processor",
 )
 
-ROOT_URLCONF = 'urls'
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

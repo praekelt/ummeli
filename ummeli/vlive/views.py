@@ -127,6 +127,25 @@ def register(request):
         form = UserCreationForm()
 
     return render(request, 'register.html',{'form': form})
+    
+def mobi_register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')        
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            #auto-login user
+            password = request.POST.get('password1')
+            user = authenticate(username=username,  password=password)
+            auth_login(request, user)
+            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
+            return pml_redirect_timer_view(request, reverse('home'),
+                redirect_time = 0,
+                redirect_message = 'Thank you. You are now registered.')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'register.html',{'form': form})
 
 def logout_view(request):
     # remove the pin from the session
