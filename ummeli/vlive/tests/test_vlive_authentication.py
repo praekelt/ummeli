@@ -13,6 +13,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.msisdn = '0123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
+        self.client.login(remote_user=self.msisdn)
 
     def tearDown(self):
         pass
@@ -125,7 +126,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
             'new_password2': self.pin,
         })
         self.assertContains(resp, 'Submitted successfully')
-
+        
         # authorize with pin
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
