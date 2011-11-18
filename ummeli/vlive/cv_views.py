@@ -2,20 +2,13 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, ReferenceForm)
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response,  redirect
-from django.template import RequestContext
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_control
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                                     Reference)
 
-import uuid
-from django.core import mail
-
-from django.views.generic import list_detail, create_update
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
@@ -37,9 +30,8 @@ def process_edit_request(request, model_form, page_title):
     else:
         form = model_form(instance=cv)
 
-    return render_to_response('edit_details.html',
-                            {'form': form, 'page_title': page_title},
-                            context_instance=RequestContext(request))
+    return render(request, 'edit_details.html',
+                            {'form': form, 'page_title': page_title})
 
 @login_required
 @pin_required

@@ -18,21 +18,17 @@ from ummeli.vlive.forms import (EmailCVForm,  FaxCVForm,
                                 UserSubmittedJobArticleForm, ForgotPasswordForm)
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render_to_response,  render,  redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
 
 #imports for login
-from django.http import  HttpRequest, HttpResponse
+from django.http import  HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
-from django.template import RequestContext
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
     PasswordChangeForm, SetPasswordForm)
-from django.contrib.sites.models import get_current_site
-from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
@@ -159,24 +155,17 @@ def password_change_view(request):
 
 @cache_control(no_cache=True)
 def index(request):
-    return render_to_response('index.html',
-        context_instance= RequestContext(request),
-        )
+    return render(request, 'index.html')
 
 @cache_control(no_cache=True)
 def home(request):
-    return render_to_response('index.html', {'uuid': str(uuid.uuid4()),
-        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()},
-        context_instance= RequestContext(request),
-        )
+    return render(request, 'index.html')
 
 @login_required
 @pin_required
 @cache_control(no_cache=True)
 def edit(request):
-    return render_to_response('cv.html',  {'uuid': str(uuid.uuid4())},
-                                                context_instance= RequestContext(request),
-                                                )
+    return render(request, 'cv.html')
 
 @login_required
 @pin_required
@@ -202,9 +191,7 @@ def send(request):
                 user_profile.fax_cv(send_to)
                 return send_thanks(request)
 
-    return render_to_response('send_cv.html',  
-                              {'form': form},
-                              context_instance= RequestContext(request), )
+    return render(request, 'send_cv.html', {'form': form})
 
 @login_required
 @pin_required
@@ -213,18 +200,13 @@ def send_thanks(request):
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
-    return render_to_response('jobs_province.html',
-                                                {'provinces': provinces},
-                                                context_instance= RequestContext(request),
-                                                )
+    return render(request, 'jobs_province.html', {'provinces': provinces})
 
 def jobs_list(request,  id):
     categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
-    return render_to_response('jobs_list.html',
+    return render(request, 'jobs_list.html',
                               {'categories': categories,
-                              'search_id': id},
-                              context_instance= RequestContext(request),
-                              )
+                              'search_id': id})
 
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
@@ -237,13 +219,11 @@ def jobs(request,  id,  search_id):
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
 
-    return render_to_response('jobs.html',
+    return render(request, 'jobs.html',
                               {'articles': all_jobs,
                               'search_id': search_id,
                               'cat_id': id,
-                              'title':  '%s :: %s' % (province.name,  category.title)},
-                              context_instance= RequestContext(request),
-                              )
+                              'title':  '%s :: %s' % (province.name,  category.title)})
 
 def job(request,  id,  cat_id,  search_id):
     form = None
@@ -276,29 +256,25 @@ def job(request,  id,  cat_id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
 
-    return render_to_response('job.html',
+    return render(request, 'job.html',
                               {'job': article,
                               'search_id': search_id,
                               'cat_id': cat_id,
                               'title':  '%s :: %s' % (province.name,  category.title),
-                              'form':  form,},
-                              context_instance=RequestContext(request),
-                              )
+                              'form':  form,})
 
 def send_thanks_job_apply(request,  cat_id,  search_id):
     return redirect(reverse('jobs',  args=[search_id,  cat_id]))
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
-    return render_to_response('vlive/cron.html')
+    return render(request, 'vlive/cron.html')
 
 def about(request):
-    return render_to_response('about.html',
-                              context_instance= RequestContext(request))
+    return render(request, 'about.html')
 
 def terms(request):
-    return render_to_response('terms.html',
-                              context_instance= RequestContext(request))
+    return render(request, 'terms.html')
 
 def health(request):
     return HttpResponse("")
