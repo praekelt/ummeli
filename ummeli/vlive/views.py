@@ -36,20 +36,6 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
-def render_to_login(request,  form,  redirect_to,  template_name,
-                                current_app = None,
-                                extra_context = None,
-                                redirect_field_name=REDIRECT_FIELD_NAME):
-    context = {
-        'form': form,
-        redirect_field_name: redirect_to,
-        'msisdn': request.vlive.msisdn,
-        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
-    }
-    context.update(extra_context or {})
-    return render_to_response(template_name, context,
-                              context_instance=RequestContext(request, current_app=current_app))
-
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
@@ -89,7 +75,7 @@ def login(request, template_name='login.html',
 
     request.session.set_test_cookie()
 
-    return render_to_login(request,  form,  redirect_to,  template_name)
+    return render(request, template_name, {'form': form})
 
 def register(request):
     if request.method == 'POST':

@@ -7,33 +7,25 @@
 {% block content %}
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
-    {% if user_exists %}
-        {% if form.errors %}
-            <CONTAINER type="data">
-                <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
-            </CONTAINER>
-        {% endif %}
-        <CONTAINER type="form">
-            <FORM method="GET" href="{% url login %}" submit_text="Sign In">
-                <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
-                <FIELD name="password" type="password"/>
-                <FIELD name="next" type="hidden" value="{{next}}"/>
-                <FIELD name="username" type="hidden" value="{{user.username}}"/>
-                <FIELD type='hidden' name='_action' value='POST' />
-                <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-            </FORM>
-        </CONTAINER>
-        <CONTAINER type="list">
-            <LINK href="{% url forgot %}">
-                <TEXT>Forgotten your Pin?</TEXT>
-            </LINK>
-        </CONTAINER>
-    {% else %}
-        <CONTAINER type="list">
-            <LINK href="{% url register %}">
-                <TEXT>Click here to create profile.</TEXT>
-            </LINK>
+    {% if form.errors %}
+        <CONTAINER type="data">
+            <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
         </CONTAINER>
     {% endif %}
+    <CONTAINER type="form">
+        <FORM method="GET" href="{% url login %}" submit_text="Sign In">
+            <TEXT position="ABOVE">Enter Pin to sign in.</TEXT>
+            <FIELD name="password" type="password"/>
+            <FIELD name="next" type="hidden" value="{{next}}"/>
+            <FIELD name="username" type="hidden" value="{{user.username}}"/>
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        </FORM>
+    </CONTAINER>
+    <CONTAINER type="list">
+        <LINK href="{% url forgot %}">
+            <TEXT>Forgotten your Pin?</TEXT>
+        </LINK>
+    </CONTAINER>
 </MODULE>
 {% endblock %}
