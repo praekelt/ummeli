@@ -13,18 +13,18 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
-from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
+from ummeli.vlive.utils import pin_required
 from ummeli.vlive.forms import (EmailCVForm,  FaxCVForm, 
                                 UserSubmittedJobArticleForm, ForgotPasswordForm)
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render_to_response,  render
+from django.shortcuts import render_to_response,  render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
 
 #imports for login
-from django.http import HttpResponseRedirect,  HttpRequest, HttpResponse
+from django.http import  HttpRequest, HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
 from django.template import RequestContext
@@ -83,9 +83,7 @@ def login(request, template_name='login.html',
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
-            return pml_redirect_timer_view(request, redirect_to,
-                redirect_time = 0,
-                redirect_message = 'You have been logged in.')
+            return redirect(redirect_to)
     else:
         form = authentication_form(request)
 
@@ -106,9 +104,7 @@ def register(request):
             request.session[settings.UMMELI_PIN_SESSION_KEY] = True
             # redirect through Django's auth mechanisms
             auth_login(request, user)
-            return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'Thank you. You are now registered.')
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
 
@@ -125,9 +121,7 @@ def mobi_register(request):
             user = authenticate(username=username,  password=password)
             auth_login(request, user)
             request.session[settings.UMMELI_PIN_SESSION_KEY] = True
-            return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'Thank you. You are now registered.')
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
 
@@ -137,9 +131,7 @@ def logout_view(request):
     # remove the pin from the session
     request.session.pop(settings.UMMELI_PIN_SESSION_KEY, None)
     auth_logout(request)
-    return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'You have been logged out.')
+    return redirect(reverse('home'))
 
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
@@ -160,9 +152,7 @@ def forgot_password_view(request):
             user.set_password(new_password)
             user.save()
 
-            return pml_redirect_timer_view(request,  reverse('login'),
-                redirect_time = 50,
-                redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
+            return redirect(reverse('login'))
     else:
         form = ForgotPasswordForm()
         
@@ -175,19 +165,11 @@ def password_change_view(request):
         form = PasswordChangeForm(request.user,  data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your pin has been changed.')
+            return redirect(reverse('home'))
     else:
         form = PasswordChangeForm(request.user)
 
-    context = {
-        'form': form,
-        'msisdn': request.vlive.msisdn,
-        'uuid': str(uuid.uuid4()),
-    }
-    return render_to_response('password_change.html', 
-                              context,
-                              context_instance=RequestContext(request))
+    return render(request, 'password_change.html', {'form': form})
 
 @cache_control(no_cache=True)
 def index(request):
@@ -241,8 +223,7 @@ def send(request):
 @login_required
 @pin_required
 def send_thanks(request):
-    return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
+    return redirect(reverse('home'))
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
@@ -282,9 +263,7 @@ def job(request,  id,  cat_id,  search_id):
     form = None
     if request.GET.get('user_submitted'):
         if not UserSubmittedJobArticle.objects.filter(pk = id):
-            return pml_redirect_timer_view(request,  
-                                reverse('jobs',  args = [search_id,  cat_id]),
-                                redirect_message = 'Sorry, this ad has been removed.')
+            return redirect(reverse('jobs',  args = [search_id,  cat_id])) # Sorry, this ad has been removed.
         article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
     else:
         article = Article.objects.get(pk = id)
@@ -321,8 +300,7 @@ def job(request,  id,  cat_id,  search_id):
                               )
 
 def send_thanks_job_apply(request,  cat_id,  search_id):
-    return pml_redirect_timer_view(request, reverse('jobs',  args=[search_id,  cat_id]),
-                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
+    return redirect(reverse('jobs',  args=[search_id,  cat_id]))
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
@@ -377,8 +355,7 @@ def jobs_create(request):
 
                 cat.user_submitted_job_articles.add(user_article)
 
-            return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your job advert has been submitted.')
+            return redirect(reverse('home'))
     else:
         form = UserSubmittedJobArticleForm()
 

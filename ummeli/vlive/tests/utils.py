@@ -25,7 +25,7 @@ class VLiveTestCase(TestCase):
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
-        self.assertContains(resp, 'Thank you. You are now registered.')
+        self.assertContains(resp, 'Submitted successfully.')
         return resp
 
     def login(self):

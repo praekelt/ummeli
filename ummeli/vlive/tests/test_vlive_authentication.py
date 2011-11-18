@@ -31,10 +31,10 @@ class VliveAuthenticationTestCase(VLiveTestCase):
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
-        self.assertContains(resp, 'Thank you. You are now registered.')
+        self.assertContains(resp, 'Submitted successfully')
 
         resp = self.client.get(reverse('logout'))
-        self.assertContains(resp, 'You have been logged out.')
+        self.assertContains(resp, 'Submitted successfully')
 
         resp = self.client.get(reverse('login'), )
         self.assertEquals(resp.status_code, 200)
@@ -46,7 +46,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         })
 
         self.assertEquals(resp.status_code, 200)  # redirect to index
-        self.assertContains(resp, 'You have been logged in')
+        self.assertContains(resp, 'Submitted successfully')
 
         resp = self.client.post(reverse('login'),{
             'password': 'wrong_pin',
@@ -78,7 +78,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         user = ModelBackend().authenticate(username=self.msisdn, password=self.pin)
         self.assertEqual(user.username, self.msisdn)
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'You are now registered.')
+        self.assertContains(resp, 'Submitted successfully')
         # ensure the session's pin has been set
         self.assertTrue(self.client.session[settings.UMMELI_PIN_SESSION_KEY])
 
@@ -87,7 +87,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertContains(resp, 'Personal')
 
         resp = self.client.get(reverse('logout'))
-        self.assertContains(resp,  'You have been logged out')
+        self.assertContains(resp,  'Submitted successfully')
         # ensure the session's pin has been cleared
         self.assertNotIn(settings.UMMELI_PIN_SESSION_KEY, self.client.session)
 
@@ -115,7 +115,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertContains(resp, 'Pin will be sent to %s.' % self.msisdn)
 
         resp = self.client.post(reverse('forgot'),  {'username':self.msisdn})
-        self.assertContains(resp, 'Your new pin has been sent')
+        self.assertContains(resp, 'Submitted successfully')
 
     def test_change_pin(self):
         # register user
@@ -124,7 +124,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
-        self.assertContains(resp, 'You are now registered')
+        self.assertContains(resp, 'Submitted successfully')
 
         # authorize with pin
         resp = self.client.post(reverse('login'), {
@@ -141,11 +141,11 @@ class VliveAuthenticationTestCase(VLiveTestCase):
            'new_password1': '5678',
            'new_password2': '5678',
         })
-        self.assertContains(resp, 'Your pin has been changed')
+        self.assertContains(resp, 'Submitted successfully')
 
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
             'password': '5678',
         })
 
-        self.assertContains(resp, 'You have been logged in')
+        self.assertContains(resp, 'Submitted successfully')
