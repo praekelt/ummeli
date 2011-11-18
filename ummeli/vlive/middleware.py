@@ -1,4 +1,5 @@
 from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
+from django.contrib import messages
 
 class FormActionMiddleware(object):
     """
@@ -12,6 +13,7 @@ class FormActionMiddleware(object):
             request.method = "POST"
             request.POST = request.GET
 
+
 class ModifyPMLResponseMiddleware(object):
     def process_response(self, request,  response):
         if response.status_code == 301 or response.status_code == 302:
@@ -20,4 +22,12 @@ class ModifyPMLResponseMiddleware(object):
                 redirect_message = 'Submitted successfully.')
         
         response['Content-type'] = 'text/xml'
+        return response
+
+
+class AddMessageToResponseMiddleware(object):
+    def process_response(self, request,  response):
+        if (request.method == 'POST' and 
+            (response.status_code == 301 or response.status_code == 302)):
+                messages.add_message(request, messages.SUCCESS, 'Submitted successfully.')
         return response

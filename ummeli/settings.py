@@ -123,6 +123,7 @@ MIDDLEWARE_CLASSES += (
     'vlive.auth.middleware.VodafoneLiveUserMiddleware',
     'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
     'vlive.middleware.FormActionMiddleware',
+    'vlive.middleware.AddMessageToResponseMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

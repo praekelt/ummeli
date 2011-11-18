@@ -71,7 +71,7 @@ form.signin a, form.recover a{color: #a8ca93;}
 form.search input{ display: inline;	margin-bottom: 0px;}
 
 select#form-day, select#form-month, select#form-year, select#form-hour, select#form-minute, select.date-form{display: inline;}
-div.error, div.success{color: #fff; font-weight: bold; font-size: 12px; padding: 5px; margin-bottom: 5px;}
+div.error, div.success{color: #fff; font-weight: bold; font-size: 12px; padding: 5px;}
 div.error{ background-color: #e62b2b;}
 div.success{ background-color: #6eb558;}
 form label.error, ul.errorlist li { color: #e62b2b;}
