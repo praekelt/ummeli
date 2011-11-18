@@ -2,7 +2,7 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, ReferenceForm)
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 
