@@ -18,5 +18,5 @@ urlpatterns = patterns('',
 
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/register/$', views.mobi_register, name='mobi_register'),
-    url(r'^vlive/', include('ummeli.vlive.urls')),
+    url(r'^$', include('ummeli.vlive.urls')),
 )
