@@ -15,12 +15,12 @@ djcelery.setup_loader()
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # --- Environment Specific Settings --- 
-ROOT_URLCONF = 'pml_urls'
-#ROOT_URLCONF = 'mobi_urls'
+#ROOT_URLCONF = 'pml_urls'
+ROOT_URLCONF = 'mobi_urls'
 
 TEMPLATE_DIRS = (
-   #"vlive/templates/html",
-   "vlive/templates/pml",
+   "vlive/templates/html",
+   #"vlive/templates/pml",
 )
 
 def abspath(*args):
@@ -47,7 +47,7 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = (
     # FOR PML ONLY
-    'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
+    #'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -134,8 +134,8 @@ MIDDLEWARE_CLASSES += (
     'vlive.auth.middleware.VodafoneLiveUserMiddleware',
     'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
     'vlive.middleware.FormActionMiddleware',
-    #'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
-    'vlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
+    'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
+    #'vlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
