@@ -26,9 +26,9 @@ def pin_required(function):
     return wrapper
 
 def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
-    return render(request, 'pml/redirect.xml',
+    return render(request, 'redirect.html',
                                 {'redirect_url': redirect_url,
                                 'redirect_time': redirect_time,
-                                'redirect_message': redirect_message},
+                                'redirect_message': redirect_message}, 
                                 content_type='text/xml')
 

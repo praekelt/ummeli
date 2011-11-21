@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">View jobs</div>
+    <form class='standard'>
+    <div>
+        <p>
+        Ummeli jobs come from established online sources or have been posted 
+        by the Ummeli community. We've clearly marked which is which. Find jobs by 
+        selecting your province, then the  job category you’re interested in. Remember, 
+        your best chances of getting a job are to choose categories that you have real 
+        interest or experience in!
+        </p>
+        <ol>
+            {% for province in provinces %}
+            <li><a href="{% url jobs_list province.search_id %}">{{province.name}}</a></li>
+            {% endfor %}
+        </ol>
+        <br/>
+        <p><a href="{% url index %}">&lt;&lt; Back</a></p>
+    </div>
+    </form>
+{% endblock %}

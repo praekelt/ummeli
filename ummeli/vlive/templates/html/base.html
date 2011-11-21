@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>{{title|default:"Ummeli"}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/styles.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+<body>
+    <div class="header">
+        <a href="{% url index %}"><img src="{{ STATIC_URL }}images/ummeli-logo.jpg" alt="Ummeli" /></a>
+    </div>
+    
+    {% if messages %}
+    <div class="success">
+        {% for message in messages %}
+        {{ message }} <br/>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}  
+    <div class="footer">
+        &copy; {% now "Y" %} Ummeli
+        <a href="{% url home %}?{{uuid}}">Home</a> | 
+        <a href="{% url about %}">About</a> | 
+        <a href="{% url terms %}">Terms</a> | 
+        {% if request.is_authorized %}
+        <a href="{% url logout %}">Logout</a></div>
+        {% else %}
+        <a href="{% url login %}?next={{request.path}}">Login</a></div>
+        {% endif %}
+</body>
+</html>

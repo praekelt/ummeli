@@ -1,3 +1,6 @@
+from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
+from django.contrib import messages
+
 class FormActionMiddleware(object):
     """
     Friendlier access to device / request info that Vodafone Live makes 
@@ -9,3 +12,22 @@ class FormActionMiddleware(object):
         if (request.GET.get('_action',  None) == 'POST' and msisdn != None):
             request.method = "POST"
             request.POST = request.GET
+
+
+class ModifyPMLResponseMiddleware(object):
+    def process_response(self, request,  response):
+        if response.status_code == 301 or response.status_code == 302:
+            return pml_redirect_timer_view(request, response['Location'],
+                redirect_time = 0,
+                redirect_message = 'Submitted successfully.')
+        
+        response['Content-type'] = 'text/xml'
+        return response
+
+
+class AddMessageToResponseMiddleware(object):
+    def process_response(self, request,  response):
+        if (request.method == 'POST' and 
+            (response.status_code == 301 or response.status_code == 302)):
+                messages.add_message(request, messages.SUCCESS, 'Submitted successfully.')
+        return response

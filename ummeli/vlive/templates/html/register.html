@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Create pin</div>
+    <form class="standard" method="post">
+        <label for="form-username">Cell number</label>
+        {{form.username.errors}}
+        <input name="username" type="text"/>
+        <label>Pin</label>
+        {{form.password1.errors}}
+        <input name="password1" type="password"/>
+        <label>Confirm Pin</label>
+        {{form.password2.errors}}
+        <input name="password2" type="password"/>
+        <input type="submit" class="submit" value="Create pin &raquo;" name="submit" />
+        <span class="button"><a href="{% url index %}">Cancel</a></span>
+        <br/><br/>
+        <input type="hidden" name="next" value="{{next}}">
+        {% csrf_token %}
+    </form>
+{% endblock %}

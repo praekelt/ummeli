@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     url(r'^home/$', views.home, name='home'),
 
     url(r'^login/$', views.login, name='login'),
-    url(r'^register/$', views.register, name='register'),
     url(r'^logout/$', views.logout_view, name = 'logout'),
     url(r'^forgot/$', views.forgot_password_view, name = 'forgot'),
     url(r'^password_change/$', views.password_change_view, name = 'password_change'),

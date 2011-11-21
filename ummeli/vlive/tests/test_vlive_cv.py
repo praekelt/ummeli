@@ -40,7 +40,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertVLiveRedirects(resp, reverse('register'))
         # register pin
         resp = self.register()
-        self.assertContains(resp, 'Thank you. You are now registered.')
+        
         # try again, this time after having set the pin
         resp = self.client.post(reverse('edit_personal'), post_data)
         cv = self.get_user().get_profile()

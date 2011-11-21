@@ -13,52 +13,33 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
 from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
-from ummeli.vlive.utils import pin_required, pml_redirect_timer_view
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
-
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm, UserSubmittedJobArticleForm
+from ummeli.vlive.utils import pin_required
+from ummeli.vlive.forms import (EmailCVForm,  FaxCVForm, 
+                                UserSubmittedJobArticleForm, ForgotPasswordForm)
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render_to_response,  render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
 
 #imports for login
-from django.http import HttpResponseRedirect,  HttpRequest, HttpResponse
+from django.http import  HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
-from django.template import RequestContext
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
     PasswordChangeForm, SetPasswordForm)
-from django.contrib.sites.models import get_current_site
-from django.views.decorators.csrf import csrf_protect
 
 from django.views.decorators.cache import cache_control
 
-def render_to_login(request,  form,  redirect_to,  template_name,
-                                current_app = None,
-                                extra_context = None,
-                                redirect_field_name=REDIRECT_FIELD_NAME):
-    context = {
-        'form': form,
-        redirect_field_name: redirect_to,
-        'msisdn': request.vlive.msisdn,
-        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()
-    }
-    context.update(extra_context or {})
-    return render_to_response(template_name, context,
-                              mimetype='text/xml',
-                              context_instance=RequestContext(request, current_app=current_app))
-
-def login(request, template_name='pml/login.xml',
+def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
+              
     """
-Displays the login form and handles the login action.
-"""
+    Displays the login form and handles the login action.
+    """
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
@@ -84,21 +65,20 @@ Displays the login form and handles the login action.
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
-            return pml_redirect_timer_view(request, redirect_to,
-                redirect_time = 0,
-                redirect_message = 'You have been logged in.')
+            return redirect(redirect_to)
     else:
         form = authentication_form(request)
 
     request.session.set_test_cookie()
 
-    return render_to_login(request,  form,  redirect_to,  template_name)
+    return render(request, template_name, {'form': form})
 
 def register(request):
     if request.method == 'POST':
+        username = request.POST.get('username')
         # we need to call this so user.backend is set properly,
         # Django's session / login mechanics require it.
-        user = authenticate(remote_user=request.user.username)
+        user = authenticate(remote_user=username)
         form = SetPasswordForm(user, data=request.POST)
         if form.is_valid():
             form.save()
@@ -106,28 +86,34 @@ def register(request):
             request.session[settings.UMMELI_PIN_SESSION_KEY] = True
             # redirect through Django's auth mechanisms
             auth_login(request, user)
-            return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'Thank you. You are now registered.')
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
 
-    context = {
-        'form': form,
-        'msisdn': request.vlive.msisdn,
-        'uuid': str(uuid.uuid4()),
-    }
-    return render_to_response('pml/register.xml', context,
-                              mimetype='text/xml',
-                              context_instance=RequestContext(request))
+    return render(request, 'register.html',{'form': form})
+    
+def mobi_register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')        
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            #auto-login user
+            password = request.POST.get('password1')
+            user = authenticate(username=username,  password=password)
+            auth_login(request, user)
+            request.session[settings.UMMELI_PIN_SESSION_KEY] = True
+            return redirect(reverse('home'))
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'register.html',{'form': form})
 
 def logout_view(request):
     # remove the pin from the session
     request.session.pop(settings.UMMELI_PIN_SESSION_KEY, None)
     auth_logout(request)
-    return pml_redirect_timer_view(request, reverse('home'),
-                redirect_time = 0,
-                redirect_message = 'You have been logged out.')
+    return redirect(reverse('home'))
 
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
@@ -137,20 +123,22 @@ def send_password(request,  new_password):
 
 def forgot_password_view(request):
     if request.method == 'POST':
-        new_password = generate_password(chars = string.digits)
+        form = ForgotPasswordForm(request.POST)
+        
+        if(form.is_valid()):
+            username = form.cleaned_data['username']
+            new_password = generate_password(chars = string.digits)
 
-        send_password(request,  new_password)
-        user = User.objects.get(username = request.vlive.msisdn)
-        user.set_password(new_password)
-        user.save()
+            send_password(request,  new_password)
+            user = User.objects.get(username = username)
+            user.set_password(new_password)
+            user.save()
 
-        return pml_redirect_timer_view(request,  reverse('login'),
-            redirect_time = 50,
-            redirect_message = 'Thank you. Your new pin has been sent to your cellphone.')
-
-    return render_to_response('pml/forgot_password.xml',
-                                            context_instance=RequestContext(request),
-                                            mimetype='text/xml')
+            return redirect(reverse('login'))
+    else:
+        form = ForgotPasswordForm()
+        
+    return render(request,'forgot_password.html', {'form': form})
 
 @login_required
 @pin_required
@@ -159,40 +147,25 @@ def password_change_view(request):
         form = PasswordChangeForm(request.user,  data = request.POST)
         if form.is_valid():
             new_user = form.save()
-            return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your pin has been changed.')
+            return redirect(reverse('home'))
     else:
         form = PasswordChangeForm(request.user)
 
-    context = {
-        'form': form,
-        'msisdn': request.vlive.msisdn,
-        'uuid': str(uuid.uuid4()),
-    }
-    return render_to_response('pml/password_change.xml', context,
-                              mimetype='text/xml',
-                              context_instance=RequestContext(request))
+    return render(request, 'password_change.html', {'form': form})
 
 @cache_control(no_cache=True)
 def index(request):
-    return render_to_response('pml/index.xml',
-        context_instance= RequestContext(request),
-        mimetype='text/xml')
+    return render(request, 'index.html')
 
 @cache_control(no_cache=True)
 def home(request):
-    return render_to_response('pml/index.xml', {'uuid': str(uuid.uuid4()),
-        'user_exists': User.objects.filter(username=request.vlive.msisdn).exists()},
-        context_instance= RequestContext(request),
-        mimetype='text/xml')
+    return render(request, 'index.html')
 
 @login_required
 @pin_required
 @cache_control(no_cache=True)
 def edit(request):
-    return render_to_response('pml/cv.xml',  {'uuid': str(uuid.uuid4())},
-                                                context_instance= RequestContext(request),
-                                                mimetype='text/xml')
+    return render(request, 'cv.html')
 
 @login_required
 @pin_required
@@ -218,30 +191,22 @@ def send(request):
                 user_profile.fax_cv(send_to)
                 return send_thanks(request)
 
-    return render_to_response('pml/send_cv.xml',  {'form': form},
-                              mimetype='text/xml',
-                              context_instance= RequestContext(request), )
+    return render(request, 'send_cv.html', {'form': form})
 
 @login_required
 @pin_required
 def send_thanks(request):
-    return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
+    return redirect(reverse('home'))
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
-    return render_to_response('pml/jobs_province.xml',
-                                                {'provinces': provinces},
-                                                context_instance= RequestContext(request),
-                                                mimetype='text/xml')
+    return render(request, 'jobs_province.html', {'provinces': provinces})
 
 def jobs_list(request,  id):
     categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
-    return render_to_response('pml/jobs_list.xml',
+    return render(request, 'jobs_list.html',
                               {'categories': categories,
-                              'search_id': id},
-                              context_instance= RequestContext(request),
-                              mimetype='text/xml')
+                              'search_id': id})
 
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
@@ -254,21 +219,17 @@ def jobs(request,  id,  search_id):
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
     articles = category.articles.all()
 
-    return render_to_response('pml/jobs.xml',
+    return render(request, 'jobs.html',
                               {'articles': all_jobs,
                               'search_id': search_id,
                               'cat_id': id,
-                              'title':  '%s :: %s' % (province.name,  category.title)},
-                              context_instance= RequestContext(request),
-                              mimetype='text/xml')
+                              'title':  '%s :: %s' % (province.name,  category.title)})
 
 def job(request,  id,  cat_id,  search_id):
     form = None
     if request.GET.get('user_submitted'):
         if not UserSubmittedJobArticle.objects.filter(pk = id):
-            return pml_redirect_timer_view(request,  
-                                reverse('jobs',  args = [search_id,  cat_id]),
-                                redirect_message = 'Sorry, this ad has been removed.')
+            return redirect(reverse('jobs',  args = [search_id,  cat_id])) # Sorry, this ad has been removed.
         article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
     else:
         article = Article.objects.get(pk = id)
@@ -295,30 +256,25 @@ def job(request,  id,  cat_id,  search_id):
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
 
-    return render_to_response('pml/job.xml',
+    return render(request, 'job.html',
                               {'job': article,
                               'search_id': search_id,
                               'cat_id': cat_id,
                               'title':  '%s :: %s' % (province.name,  category.title),
-                              'form':  form,},
-                              context_instance=RequestContext(request),
-                              mimetype='text/xml')
+                              'form':  form,})
 
 def send_thanks_job_apply(request,  cat_id,  search_id):
-    return pml_redirect_timer_view(request, reverse('jobs',  args=[search_id,  cat_id]),
-                redirect_message = 'Thanks! Your CV is on its way to a prospective employer. Good luck!')
+    return redirect(reverse('jobs',  args=[search_id,  cat_id]))
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
-    return render_to_response('vlive/cron.html')
+    return render(request, 'vlive/cron.html')
 
 def about(request):
-    return render_to_response('pml/about.xml',  mimetype='text/xml',
-                              context_instance= RequestContext(request))
+    return render(request, 'about.html')
 
 def terms(request):
-    return render_to_response('pml/terms.xml',  mimetype='text/xml',
-                              context_instance= RequestContext(request))
+    return render(request, 'terms.html')
 
 def health(request):
     return HttpResponse("")
@@ -361,15 +317,13 @@ def jobs_create(request):
 
                 cat.user_submitted_job_articles.add(user_article)
 
-            return pml_redirect_timer_view(request,  reverse('home'),
-                redirect_message = 'Thank you. Your job advert has been submitted.')
+            return redirect(reverse('home'))
     else:
         form = UserSubmittedJobArticleForm()
 
     provinces = Province.objects.all().order_by('name').exclude(pk=1)
     categories = Category.objects.all().values('title').distinct().order_by('title')
 
-    return render(request, 'pml/jobs_create.xml',
+    return render(request, 'jobs_create.html',
                                 {'form': form,  'provinces': provinces,
-                                'categories': categories},
-                                content_type='text/xml')
+                                'categories': categories})

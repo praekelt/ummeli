@@ -7,6 +7,7 @@ body{background: #f7f8f4 url(../images/bg.gif) repeat-x; padding: 3px 0px 0px 0p
 a{text-decoration: none; font-weight: bold;}
 p,h1,h2,h3,ol,ul{margin-bottom: 5px;}
 div.h2{font-size: 13px; font-weight: bold; color: #f1f6d1; background-color: #535353; border-bottom: 1px solid #add373; height: 18px; padding: 8px 10px 5px; margin-bottom: 0px;}
+div.h3{font-size: 13px; font-weight: bold; color: #2E5333; height: 18px; padding: 5px 0; margin-bottom: 0px;}
 
 .header{background-color: #fff; width: 100%;	height: 65px; border-top: 1px solid #add373; border-bottom: 1px solid #add373;
 padding-left: 5px;}
@@ -28,13 +29,14 @@ padding-left: 5px;}
 /*==lists==*/
 ul, ol{margin-bottom: 0px; background-color: #f7f8f4;}
 ol{padding-left: 20px; list-style-type: decimal}
-ul li, ol li{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 10px;}
+ul li, ol li{color: #545454; font-size: 12px; border-bottom: 1px solid #e8e9e5; padding: 5px 0;}
 ul li a, ol li a{color: #f96400; font-size: 14px;}
 ul li label,ol li label{color: #000;}
 
 span.subtitle{text-transform: uppercase; font-size: 11px; color: #545454;}
 span.area{font-size: 11px; color: #000;}
 span.text{ color: #000;}
+span.button a{ color: #2E5333; font-weight: bold; font-size: 11px; padding: 3px;}
 
 .pagination{border-bottom: 0px solid; color: #555555; font-size: 12px; padding: 5px 10px;}
 .pagination a{font-size: 12px; color: #f96400;}
@@ -54,13 +56,13 @@ a.del{color: #e61b1b; font-size: 12px;}
 form.signin, form.recover, form.search{padding: 10px; background-color: #3c6c43;}
 form.standard {padding: 10px;}
 form.standard p{color: #000;}
-form input, form select{ display: block; margin-bottom: 10px;}
+form input, form select { display: block; margin-bottom: 10px;}
 textarea{ margin-bottom: 5px; font: 12px Arial, sans-serif;}
 form label{color: #000;	font-size: 12px; margin-bottom: 3px; display: block;}
 form.signin label, form.recover label{color: #fff;}
 label span, span.helptext {font-size: 11px; color: #545454;}
 
-form input.submit{ background-color: #efe579; color: #2e5333; font-weight: bold; font-size: 11px; border-bottom: 1px solid #36623d; border-right: 1px solid #36623d; border-left: 0px none; border-top: 0px none; padding: 3px;}
+form input.submit, .button{ background-color: #efe579; color: #2e5333; font-weight: bold; font-size: 11px; border-bottom: 1px solid #36623d; border-right: 1px solid #36623d; border-left: 0px none; border-top: 0px none; padding: 3px;}
 
 .content form input.submit{border-right: 1px solid #d1d2cf; border-bottom: 1px solid #d1d2cf;}
 .forgotsuccess a{color: #a8ca93;}
@@ -69,7 +71,7 @@ form.signin a, form.recover a{color: #a8ca93;}
 form.search input{ display: inline;	margin-bottom: 0px;}
 
 select#form-day, select#form-month, select#form-year, select#form-hour, select#form-minute, select.date-form{display: inline;}
-div.error, div.success{color: #fff; font-weight: bold; font-size: 12px; padding: 5px; margin-bottom: 5px;}
+div.error, div.success{color: #fff; font-weight: bold; font-size: 12px; padding: 5px;}
 div.error{ background-color: #e62b2b;}
 div.success{ background-color: #6eb558;}
 form label.error, ul.errorlist li { color: #e62b2b;}

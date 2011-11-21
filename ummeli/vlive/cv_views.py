@@ -2,20 +2,13 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, ReferenceForm)
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_control
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                                     Reference)
 
-import uuid
-from django.core import mail
-
-from django.views.generic import list_detail, create_update
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
@@ -33,27 +26,12 @@ def process_edit_request(request, model_form, page_title):
             form = model_form(request.POST, instance=cv)
             if form.is_valid():
                 form.save()
-                return edit_view(request)
+                return redirect(reverse('edit'))
     else:
         form = model_form(instance=cv)
 
-    return render_to_response('pml/edit_details.xml',
-                            {'form': form, 'page_title': page_title},
-                            context_instance=RequestContext(request),
-                            mimetype = 'text/xml')
-
-def redirect_pml(request,  redirect_url):
-    return render_to_response('pml/redirect.xml',
-                              {'redirect_url': redirect_url + '?' + str(uuid.uuid4()),
-                              'redirect_time': 10,
-                              'redirect_message': 'Thanks! Your information has been updated.'},
-                            context_instance=RequestContext(request),
-                            mimetype = 'text/xml')
-
-def delete_and_redirect_pml(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.delete()
-        return redirect_pml(self.request,  self.get_success_url())
+    return render(request, 'edit_details.html',
+                            {'form': form, 'page_title': page_title})
 
 @login_required
 @pin_required
@@ -77,7 +55,6 @@ def education_details(request):
                                                 'education details')
 
 class CertificateListView(ListView):
-    template_name = 'pml/list_objects.xml'
 
     def get_context_data(self, **kwargs):
         context = super(CertificateListView, self).get_context_data(**kwargs)
@@ -89,12 +66,12 @@ class CertificateListView(ListView):
         return self.request.user.get_profile().certificates.all()
 
     def render_to_response(self, context, **kwargs):
-        return super(CertificateListView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'list_objects.html'
+        
+        return super(CertificateListView, self).render_to_response(context, **kwargs)
 
 class CertificateEditView(UpdateView):
     model = Certificate
-    template_name = 'pml/edit_object.xml'
     form_class = CertificateForm
 
     def get_success_url(self):
@@ -108,16 +85,11 @@ class CertificateEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        return super(CertificateEditView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
-
-    def form_valid(self, form):
-        form.save()
-        return redirect_pml(self.request,  self.get_success_url())
+        self.template_name = 'edit_object.html'
+        return super(CertificateEditView, self).render_to_response(context, **kwargs)
 
 class CertificateCreateView(CreateView):
     model = Certificate
-    template_name = 'pml/edit_object.xml'
     form_class = CertificateForm
 
     def get_success_url(self):
@@ -133,15 +105,14 @@ class CertificateCreateView(CreateView):
     def form_valid(self, form):
         new_cert = form.save()
         self.request.user.get_profile().certificates.add(new_cert)
-        return redirect_pml(self.request,  self.get_success_url())
+        return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        return super(CertificateCreateView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(CertificateCreateView, self).render_to_response(context, **kwargs)
 
 class CertificateDeleteView(DeleteView):
     model = Certificate
-    template_name = 'pml/delete.xml'
 
     def get_success_url(self):
         return reverse("certificate_list")
@@ -153,14 +124,11 @@ class CertificateDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        return super(CertificateDeleteView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return delete_and_redirect_pml(self, request, args, kwargs)
+        self.template_name = 'delete.html'
+        
+        return super(CertificateDeleteView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceListView(ListView):
-    template_name = 'pml/list_objects.xml'
 
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceListView, self).get_context_data(**kwargs)
@@ -172,12 +140,11 @@ class WorkExperienceListView(ListView):
         return self.request.user.get_profile().work_experiences.all()
 
     def render_to_response(self, context, **kwargs):
-        return super(WorkExperienceListView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'list_objects.html'
+        return super(WorkExperienceListView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceEditView(UpdateView):
     model = WorkExperience
-    template_name = 'pml/edit_object.xml'
     form_class = WorkExperienceForm
 
     def get_success_url(self):
@@ -190,17 +157,12 @@ class WorkExperienceEditView(UpdateView):
         context['cancel_url'] = reverse("work_experience_list")
         return context
 
-    def form_valid(self, form):
-        form.save()
-        return redirect_pml(self.request,  self.get_success_url())
-
     def render_to_response(self, context, **kwargs):
-        return super(WorkExperienceEditView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(WorkExperienceEditView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceCreateView(CreateView):
     model = WorkExperience
-    template_name = 'pml/edit_object.xml'
     form_class = WorkExperienceForm
 
     def get_success_url(self):
@@ -216,15 +178,14 @@ class WorkExperienceCreateView(CreateView):
     def form_valid(self, form):
         new_workExperience = form.save()
         self.request.user.get_profile().work_experiences.add(new_workExperience)
-        return redirect_pml(self.request,  self.get_success_url())
+        return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        return super(WorkExperienceCreateView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(WorkExperienceCreateView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceDeleteView(DeleteView):
     model = WorkExperience
-    template_name = 'pml/delete.xml'
 
     def get_success_url(self):
         return reverse("work_experience_list")
@@ -235,15 +196,11 @@ class WorkExperienceDeleteView(DeleteView):
         context['cancel_url'] = reverse("work_experience_list")
         return context
 
-    def delete(self, request, *args, **kwargs):
-        return delete_and_redirect_pml(self, request, args, kwargs)
-
     def render_to_response(self, context, **kwargs):
-        return super(WorkExperienceDeleteView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'delete.html'
+        return super(WorkExperienceDeleteView, self).render_to_response(context, **kwargs)
 
 class LanguageListView(ListView):
-    template_name = 'pml/list_objects.xml'
 
     def get_context_data(self, **kwargs):
         context = super(LanguageListView, self).get_context_data(**kwargs)
@@ -255,13 +212,12 @@ class LanguageListView(ListView):
         return self.request.user.get_profile().languages.all()
 
     def render_to_response(self, context, **kwargs):
-        return super(LanguageListView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'list_objects.html'
+        return super(LanguageListView, self).render_to_response(context, **kwargs)
 
 
 class LanguageEditView(UpdateView):
     model = Language
-    template_name = 'pml/edit_object.xml'
     form_class = LanguageForm
 
     def get_success_url(self):
@@ -274,18 +230,13 @@ class LanguageEditView(UpdateView):
         context['cancel_url'] = reverse("language_list")
         return context
 
-    def form_valid(self, form):
-        form.save()
-        return redirect_pml(self.request,  self.get_success_url())
-
     def render_to_response(self, context, **kwargs):
-        return super(LanguageEditView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(LanguageEditView, self).render_to_response(context, **kwargs)
 
 
 class LanguageCreateView(CreateView):
     model = Language
-    template_name = 'pml/edit_object.xml'
     form_class = LanguageForm
 
     def get_success_url(self):
@@ -301,16 +252,15 @@ class LanguageCreateView(CreateView):
     def form_valid(self, form):
         new_language = form.save()
         self.request.user.get_profile().languages.add(new_language)
-        return redirect_pml(self.request,  self.get_success_url())
+        return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        return super(LanguageCreateView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(LanguageCreateView, self).render_to_response(context, **kwargs)
 
 
 class LanguageDeleteView(DeleteView):
     model = Language
-    template_name = 'pml/delete.xml'
 
     def get_success_url(self):
         return reverse("language_list")
@@ -321,15 +271,11 @@ class LanguageDeleteView(DeleteView):
         context['cancel_url'] = reverse("language_list")
         return context
 
-    def delete(self, request, *args, **kwargs):
-        return delete_and_redirect_pml(self, request, args, kwargs)
-
     def render_to_response(self, context, **kwargs):
-        return super(LanguageDeleteView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'delete.html'
+        return super(LanguageDeleteView, self).render_to_response(context, **kwargs)
 
 class ReferenceListView(ListView):
-    template_name = 'pml/list_objects.xml'
 
     def get_context_data(self, **kwargs):
         context = super(ReferenceListView, self).get_context_data(**kwargs)
@@ -341,13 +287,12 @@ class ReferenceListView(ListView):
         return self.request.user.get_profile().references.all()
 
     def render_to_response(self, context, **kwargs):
-        return super(ReferenceListView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'list_objects.html'
+        return super(ReferenceListView, self).render_to_response(context, **kwargs)
 
 
 class ReferenceEditView(UpdateView):
     model = Reference
-    template_name = 'pml/edit_object.xml'
     form_class = ReferenceForm
 
     def get_success_url(self):
@@ -360,18 +305,13 @@ class ReferenceEditView(UpdateView):
         context['cancel_url'] = reverse("reference_list")
         return context
 
-    def form_valid(self, form):
-        form.save()
-        return redirect_pml(self.request,  self.get_success_url())
-
     def render_to_response(self, context, **kwargs):
-        return super(ReferenceEditView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(ReferenceEditView, self).render_to_response(context, **kwargs)
 
 
 class ReferenceCreateView(CreateView):
     model = Reference
-    template_name = 'pml/edit_object.xml'
     form_class = ReferenceForm
 
     def get_success_url(self):
@@ -387,16 +327,15 @@ class ReferenceCreateView(CreateView):
     def form_valid(self, form):
         new_reference = form.save()
         self.request.user.get_profile().references.add(new_reference)
-        return redirect_pml(self.request,  self.get_success_url())
+        return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        return super(ReferenceCreateView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'edit_object.html'
+        return super(ReferenceCreateView, self).render_to_response(context, **kwargs)
 
 
 class ReferenceDeleteView(DeleteView):
     model = Reference
-    template_name = 'pml/delete.xml'
 
     def get_success_url(self):
         return reverse("reference_list")
@@ -407,9 +346,6 @@ class ReferenceDeleteView(DeleteView):
         context['cancel_url'] = reverse("reference_list")
         return context
 
-    def delete(self, request, *args, **kwargs):
-        return delete_and_redirect_pml(self, request, args, kwargs)
-
     def render_to_response(self, context, **kwargs):
-        return super(ReferenceDeleteView, self).render_to_response(context,
-                        content_type='text/xml', **kwargs)
+        self.template_name = 'delete.html'
+        return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)

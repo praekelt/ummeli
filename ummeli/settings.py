@@ -36,9 +36,8 @@ DATABASES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS += (
     'django.contrib.auth.backends.ModelBackend',
-    'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
 )
 
 # Local time zone for this installation. Choices can be found here:
@@ -124,6 +123,7 @@ MIDDLEWARE_CLASSES += (
     'vlive.auth.middleware.VodafoneLiveUserMiddleware',
     'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
     'vlive.middleware.FormActionMiddleware',
+    'vlive.middleware.AddMessageToResponseMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -137,8 +137,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "vlive.custom_context_processors.unique_id_processor",
     "vlive.custom_context_processors.user_profile_processor",
 )
-
-ROOT_URLCONF = 'urls'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
