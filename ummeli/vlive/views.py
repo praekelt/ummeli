@@ -268,7 +268,7 @@ def send_thanks_job_apply(request,  cat_id,  search_id):
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
-    return render(request, 'vlive/cron.html')
+    return render(request, 'cron.html')
 
 def about(request):
     return render(request, 'about.html')
