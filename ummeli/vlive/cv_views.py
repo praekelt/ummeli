@@ -38,21 +38,21 @@ def process_edit_request(request, model_form, page_title):
 @cache_control(no_cache=True)
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm,
-                                                'personal details')
+                                                'Personal details')
 
 @login_required
 @pin_required
 @cache_control(no_cache=True)
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm,
-                                                'contact details')
+                                                'Contact details')
 
 @login_required
 @pin_required
 @cache_control(no_cache=True)
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm,
-                                                'education details')
+                                                'Education details')
 
 class CertificateListView(ListView):
 
