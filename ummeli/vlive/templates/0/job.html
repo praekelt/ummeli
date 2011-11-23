@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">
+        <a href="{% url jobs_province %}">Jobs</a> &raquo; 
+        <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
+        <a href="{% url jobs search_id cat_id %}">{{category_title}}</a>
+    </div>
+    <div class="article">
+        {{ job.text }}
+        {% if not job.user_submitted %}
+            <br /><br /><strong>Source:</strong> {{job.source}}
+            <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
+        {% else %}
+            <br/><br/><span style="color: blue">submitted by Ummeli user</span>
+        {% endif %}
+    </div>
+    <div class="more"><a href="{% url jobs search_id cat_id %}">Back to jobs &rarr;</a></div>
+    
+    <div class="h2">Apply for this job</div>
+    <form name="pd" method="POST" class="content-form"> 
+    {% if request.is_authorized %}
+        {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+                <div class="warning">{{field.label}} - {{error}}</div><br/>
+            {% endfor %}
+            {% endfor %}
+        {% endif %}
+        {% if user_profile.missing_fields %}
+            <strong>Missing fields</strong>
+            <div class="warning">
+                Your CV is incomplete. Please make sure that the following information is 
+                completed before you can send your CV.
+            </div>
+            {% for field in user_profile.missing_fields %}
+                - {{field}}<br/>
+            {% endfor %}
+        {% else %}
+        <fieldset> 
+          <strong>* = Required</strong><br />
+          <label for="email">Email CV To:*</label> 
+          <input type="text" class="txt" name="send_to"/>
+          <input type="submit" name="signin-btn" value="Send" class="btn" />
+          <input type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
+          <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+          <input type="hidden" name="send_via" value="email" />
+        </fieldset>
+        {% endif %}
+    {% else %}
+        <div class="warning">Please <a href="{% url login %}?next={% url jobs search_id cat_id %}">sign in</a> 
+        or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
+    {% endif %}
+    </form>
+{% endblock %}

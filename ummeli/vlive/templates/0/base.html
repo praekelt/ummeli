@@ -13,9 +13,9 @@
     <div id="topnav"><span><a href="{% url home %}">Home</a></span>/<span><a href="{% url jobs_province %}">Jobs</a></span>/
     {% if request.is_authorized %}
     <span>
-        <a href="{% url logout %}">Logout</a>
+        <a href="{% url logout %}">Sign out</a>
         {% else %}
-        <a href="{% url login %}?next={% url home %}">Login</a>
+        <a href="{% url login %}?next={% url home %}">Sign in</a>
     </span>
     {% endif %}
     /<span><a href="tips.html">Tips</a></span></div>
@@ -33,9 +33,9 @@
         <a name="menu-dl" id="menu-dl"></a>
     	<div id="menu">
             <div><a href="{% url home %}">Home</a></div>
-            <div><a href="{% url jobs_province %}">Browse Jobs</a></div>
+            <div><a href="{% url jobs_province %}">Browse jobs</a></div>
             <div><a href="{% url edit %}">My CV</a></div>
-            <div><a href="{% url jobs_create %}">Add A Job</a></div>
+            <div><a href="{% url jobs_create %}">Share jobs</a></div>
             {% if request.is_authorized %}
             <div><a href="{% url password_change %}?{{uuid}}">Change pin</a></div>
             {% endif %}

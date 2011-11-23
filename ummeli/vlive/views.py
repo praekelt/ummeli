@@ -208,7 +208,8 @@ def jobs_list(request,  id):
     categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
     return render(request, 'jobs_list.html',
                               {'categories': categories,
-                              'search_id': id})
+                              'search_id': id, 
+                              'province_name': Province.objects.get(search_id=id).name})
 
 def jobs(request,  id,  search_id):
     province = Province.objects.get(search_id=search_id)
@@ -225,7 +226,8 @@ def jobs(request,  id,  search_id):
                               {'articles': all_jobs,
                               'search_id': search_id,
                               'cat_id': id,
-                              'title':  '%s :: %s' % (province.name,  category.title)})
+                              'province_name': province.name, 
+                              'category_title': category.title})
 
 def job(request,  id,  cat_id,  search_id):
     form = None
@@ -262,7 +264,8 @@ def job(request,  id,  cat_id,  search_id):
                               {'job': article,
                               'search_id': search_id,
                               'cat_id': cat_id,
-                              'title':  '%s :: %s' % (province.name,  category.title),
+                              'province_name':  province.name,
+                              'category_title':  category.title,
                               'form':  form,})
 
 def send_thanks_job_apply(request,  cat_id,  search_id):
