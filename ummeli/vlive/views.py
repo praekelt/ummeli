@@ -155,11 +155,13 @@ def password_change_view(request):
 
 @cache_control(no_cache=True)
 def index(request):
-    return render(request, 'index.html')
+    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
+    return render(request, 'index.html', {'provinces': provinces[0:4]})
 
 @cache_control(no_cache=True)
 def home(request):
-    return render(request, 'index.html')
+    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
+    return render(request, 'index.html', {'provinces': provinces[0:4]})
 
 @login_required
 @pin_required
