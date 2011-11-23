@@ -20,13 +20,6 @@
     <div class="h2">Apply for this job</div>
     <form name="pd" method="POST" class="content-form"> 
     {% if request.is_authorized %}
-        {% if form.errors %}
-            {% for field in form %}
-            {% for error in field.errors %}
-                <div class="warning">{{field.label}} - {{error}}</div><br/>
-            {% endfor %}
-            {% endfor %}
-        {% endif %}
         {% if user_profile.missing_fields %}
             <strong>Missing fields</strong>
             <div class="warning">
@@ -38,7 +31,14 @@
             {% endfor %}
         {% else %}
         <fieldset> 
-          <strong>* = Required</strong><br />
+        <strong>* = Required</strong><br />
+        {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+                <div><span style="color: red">{{field.label}} - {{error}}</span></div>
+            {% endfor %}
+            {% endfor %}
+        {% endif %}
           <label for="email">Email CV To:*</label> 
           <input type="text" class="txt" name="send_to"/>
           <input type="submit" name="signin-btn" value="Send" class="btn" />

@@ -34,12 +34,12 @@
     	<div id="menu">
             <div><a href="{% url home %}">Home</a></div>
             <div><a href="{% url jobs_province %}">Browse jobs</a></div>
-            <div><a href="{% url edit %}">My CV</a></div>
             <div><a href="{% url jobs_create %}">Share jobs</a></div>
+            <div><a href="{% url edit %}">Change your CV</a></div>
+            <div><a href="{% url send %}">Send your CV</a></div>
             {% if request.is_authorized %}
             <div><a href="{% url password_change %}?{{uuid}}">Change pin</a></div>
             {% endif %}
-            <div><a href="#">Tips &amp; Resources</a></div>
     	</div>
     </div>
     <div id="footer">&copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a>. <a href="{% url about %}">About</a>. <a href="{% url terms %}">Terms</a></div>
