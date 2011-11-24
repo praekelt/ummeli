@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Sign In</div>
+    <form class="content-form" method="post">        
+    <fieldset> 
+        {% if form.errors %}
+            <div class="warning">Sign in failed.<br />Please try again.</div>
+        {% endif %}
+        <label for="form-username">Mobile Number</label>
+        {{form.username}}
+        
+        <label for="form-pin">PIN</label>
+        {{form.password}}
+
+        <input type="submit" class="btn" value="Sign In" name="submit" />
+        <span><a href="{% url forgot %}">Forgot your PIN?</a></span> 
+        <span>Not registered? <a href="{% url register %}">Sign up here</a></span>
+        <input type="hidden" name="next" value="{{next}}" />
+        {% csrf_token %}
+    </fieldset> 
+    </form>
+{% endblock %}
