@@ -21,7 +21,9 @@ class ModifyPMLResponseMiddleware(object):
                 redirect_time = 0,
                 redirect_message = 'Submitted successfully.')
         
-        response['Content-type'] = 'text/xml'
+        msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', None)
+        if (msisdn != None):
+            response['Content-type'] = 'text/xml'
         return response
 
 
