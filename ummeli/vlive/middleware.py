@@ -16,12 +16,15 @@ class FormActionMiddleware(object):
 
 class ModifyPMLResponseMiddleware(object):
     def process_response(self, request,  response):
-        if response.status_code == 301 or response.status_code == 302:
-            return pml_redirect_timer_view(request, response['Location'],
-                redirect_time = 0,
-                redirect_message = 'Submitted successfully.')
+        msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', None)
+        if (msisdn != None):
+            if response.status_code == 301 or response.status_code == 302:
+                return pml_redirect_timer_view(request, response['Location'],
+                    redirect_time = 0,
+                    redirect_message = 'Submitted successfully.')
+            
+            response['Content-type'] = 'text/xml'
         
-        response['Content-type'] = 'text/xml'
         return response
 
 
