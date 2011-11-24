@@ -118,9 +118,6 @@ def logout_view(request):
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
 
-def send_password(request,  new_password):
-    send_password_reset.delay(request.vlive.msisdn,  new_password)
-
 def forgot_password_view(request):
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
@@ -129,7 +126,8 @@ def forgot_password_view(request):
             username = form.cleaned_data['username']
             new_password = generate_password(chars = string.digits)
 
-            send_password(request,  new_password)
+            send_password_reset.delay(username,  new_password)
+            
             user = User.objects.get(username = username)
             user.set_password(new_password)
             user.save()
