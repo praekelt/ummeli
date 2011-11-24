@@ -2,14 +2,17 @@
 
 {% block content %}
     <div class="h2">Browse Jobs</div>
-        <p>
-        Ummeli jobs come from established online sources or have been posted 
-        by the Ummeli community. We've clearly marked which is which. Find jobs by 
-        selecting your province, then the  job category you’re interested in. Remember, 
-        your best chances of getting a job are to choose categories that you have real 
-        interest or experience in!
-        </p>
-        {% for province in provinces %}
-        <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} &rarr;</a></div>
-        {% endfor %}
+    <div class="content-area">
+    Ummeli jobs come from established online sources or have been posted 
+    by the Ummeli community. We've clearly marked which is which. Find jobs by 
+    selecting your province, then the  job category you’re interested in. 
+    <br/>
+    <br/>
+    Remember, your best chances of getting a job are to choose categories that you 
+    have real interest or experience in!
+    </div>
+    <br/>
+    {% for province in provinces %}
+    <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} &rarr;</a></div>
+    {% endfor %}
 {% endblock %}
