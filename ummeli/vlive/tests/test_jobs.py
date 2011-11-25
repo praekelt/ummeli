@@ -4,6 +4,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core import mail
+from django.conf import settings
 
 from ummeli.vlive.jobs.parsers import CategoryParser,  JobsParser
 from ummeli.base.models import Province,  Article,  Category
@@ -30,6 +31,10 @@ class JobsTestCase(VLiveTestCase):
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         self.client.login(remote_user=self.msisdn)
+        settings.CELERY_ALWAYS_EAGER = True
+        
+    def tearDown(self):
+        settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_job_data_creation(self):
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result

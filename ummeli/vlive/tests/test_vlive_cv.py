@@ -19,9 +19,10 @@ class VLiveCVTestCase(VLiveTestCase):
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         self.client.login(remote_user=self.msisdn)
-
+        settings.CELERY_ALWAYS_EAGER = True
+        
     def tearDown(self):
-        pass
+        settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_edit_personal_page(self):
         resp = self.client.get(reverse('edit'))
