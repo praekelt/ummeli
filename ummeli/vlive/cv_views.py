@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
-                                                    Reference)
+                                                    Reference,  CurriculumVitae)
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
@@ -53,6 +53,17 @@ def contact_details(request):
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm,
                                                 'Education details')
+
+class PersonalDetailsEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = PersonalDetailsForm
+    template_name = 'personal_details.html'
+
+    def get_success_url(self):
+        return reverse("edit")
+        
+    def get_object(self,  queryset=None):
+        return self.request.user.get_profile()
 
 class CertificateListView(ListView):
 

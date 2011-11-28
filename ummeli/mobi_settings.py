@@ -7,7 +7,7 @@ try:
 except ImportError:
     raise RuntimeError,  "you need a local_settings.py file"
 
-DEBUG = False
+DEBUG = True#False
 TEMPLATE_DEBUG = True
 
 djcelery.setup_loader()

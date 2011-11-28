@@ -18,7 +18,9 @@ urlpatterns = patterns('',
 
     url(r'^edit/$', views.edit, name='edit'),
 
-    url(r'^edit/personal/$', cv_views.personal_details, name='edit_personal'),
+    url(r'^edit/personal/$', 
+        pin_required(login_required(cv_views.PersonalDetailsEditView.as_view())), 
+        name='edit_personal'),
     url(r'^edit/contact/$', cv_views.contact_details, name='edit_contact'),
     url(r'^edit/education/$', cv_views.education_details, name='edit_education'),
 
