@@ -71,7 +71,8 @@ def login(request, template_name='login.html',
 
     request.session.set_test_cookie()
 
-    return render(request, template_name, {'form': form})
+    return render(request, template_name, 
+              {'form': form, redirect_field_name: redirect_to})
 
 def register(request):
     if request.method == 'POST':
