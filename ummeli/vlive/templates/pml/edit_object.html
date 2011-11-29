@@ -21,9 +21,11 @@
         <LINK href="{{cancel_url}}">
             <TEXT>Cancel</TEXT>
         </LINK>
+        {% if object.id %}
         <LINK href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">
             <TEXT>Delete</TEXT>
         </LINK>
+        {% endif %}
     </CONTAINER>
 </MODULE>
 {% endblock %}

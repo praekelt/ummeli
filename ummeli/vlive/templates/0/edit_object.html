@@ -6,7 +6,10 @@
     <fieldset>
         <div>{{ form}}</div>
         <input type="submit" class="btn" value="Save" name="submit" />
-        <a href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">Delete</a><br/><br/>
+        {% if object.id %}
+            <a href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
+        {% endif %}
+        <br/><br/>
         <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
         {% csrf_token %}
     </fieldset>

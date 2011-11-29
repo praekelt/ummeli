@@ -5,7 +5,10 @@
     <form class='standard' method="post">
         <div>{{ form.as_p }}</div>
         <input type="submit" class="submit" value="Save" name="submit" />
-        <span class="button"><a href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">Delete</a></span><br/><br/>
+        {% if object.id %}
+        <span class="button"><a href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">Delete</a></span>
+        {% endif %}
+        <br/><br/>
         <span class="button"><a href="{{cancel_url}}">Cancel</a></span>
         {% csrf_token %}
     </form>
