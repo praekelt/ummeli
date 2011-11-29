@@ -4,6 +4,7 @@ from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
                                             RegexField,  CharField,  BooleanField,  IntegerField,
                                             Textarea,  ValidationError)
 
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
@@ -170,3 +171,11 @@ class ForgotPasswordForm(Form):
         if not self.users_cache.exists():
             raise ValidationError("That cellphone number doesn't have an associated user account. Are you sure you've registered?")
         return username
+
+
+class MobiUserCreationForm(UserCreationForm):
+    username = RegexField(
+        label='Phone number', 
+        regex=r'^[0-9]+$',
+        help_text = 'Required. Valid phone number in the format: 0821234567',
+        error_message = 'Please enter a valid phone number without spaces. e.g 0821234567')

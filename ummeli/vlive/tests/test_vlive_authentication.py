@@ -5,12 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from django.conf import settings
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
+from ummeli.vlive.utils import phone_number_to_international
 import urllib
 
 class VliveAuthenticationTestCase(VLiveTestCase):
 
     def setUp(self):
-        self.msisdn = '0123456789'
+        self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         self.client.login(remote_user=self.msisdn)
@@ -150,3 +151,11 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         })
 
         self.assertContains(resp, 'Submitted successfully')
+    
+    def test_phone_number_to_international(self):
+        self.assertEquals(phone_number_to_international('0123456789'), '27123456789')
+        self.assertEquals(phone_number_to_international('27123456789'), '27123456789')
+        self.assertEquals(phone_number_to_international('271234567'), 'invalid no')
+        self.assertEquals(phone_number_to_international('01234567'), 'invalid no')
+        self.assertEquals(phone_number_to_international('username'), 'invalid no')
+        

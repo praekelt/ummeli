@@ -10,11 +10,10 @@ from django.conf import settings
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
     UserSubmittedJobArticle)
-from ummeli.vlive.forms import EmailCVForm,  FaxCVForm
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset
-from ummeli.vlive.utils import pin_required
-from ummeli.vlive.forms import (EmailCVForm,  FaxCVForm, 
+from ummeli.vlive.utils import pin_required, process_post_data_username
+from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
                                 UserSubmittedJobArticleForm, ForgotPasswordForm)
 
 from django.contrib.auth.models import User
@@ -43,7 +42,7 @@ def login(request, template_name='login.html',
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
-        form = authentication_form(data=request.POST)
+        form = authentication_form(data=process_post_data_username(request.POST))
         if form.is_valid():
             netloc = urlparse.urlparse(redirect_to)[1]
 
@@ -95,8 +94,9 @@ def register(request):
     
 def mobi_register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')        
-        form = UserCreationForm(request.POST)
+        post_data = process_post_data_username(request.POST)
+        username = post_data['username']
+        form = MobiUserCreationForm(post_data)
         if form.is_valid():
             form.save()
             #auto-login user
@@ -106,7 +106,7 @@ def mobi_register(request):
             request.session[settings.UMMELI_PIN_SESSION_KEY] = True
             return redirect(reverse('home'))
     else:
-        form = UserCreationForm()
+        form = MobiUserCreationForm()
 
     return render(request, 'register.html',{'form': form})
 

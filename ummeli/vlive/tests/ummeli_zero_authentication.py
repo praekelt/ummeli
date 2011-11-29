@@ -11,7 +11,7 @@ import os
 class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
 
     def setUp(self):
-        self.msisdn = '012340000'
+        self.msisdn = '27123400000'
         self.pin = '1234'
         self.client = Client()
         
