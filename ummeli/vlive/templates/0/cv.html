@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Change your CV</div>
+    <div class="h2">Change your CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</div>
     <div class="list"><a href="{% url edit_personal %}">Personal Details &rarr;</a></div>
     <div class="list"><a href="{% url edit_contact %}">Contact Details &rarr;</a></div>
     <div class="list"><a href="{% url edit_education %}">Education Details &rarr;</a></div>

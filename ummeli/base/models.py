@@ -138,6 +138,42 @@ class CurriculumVitae(models.Model):
         if not self.languages.exists():
             fields.append('atleast 1 language')
         return fields
+    
+    def fields_complete(self):
+        count = 0.0
+        if  self.first_name:
+            count += 1
+        if  self.surname:
+            count += 1
+        if  self.gender:
+            count += 1
+        if  self.email:
+            count += 1
+        if  self.telephone_number:
+            count += 1
+        if  self.location:
+            count += 1
+        if  self.street_name:
+            count += 1
+        if  self.school:
+            count += 1
+        if  self.highest_grade:
+            count += 1
+        if  self.highest_grade_year:
+            count += 1
+        if  self.date_of_birth:
+            count += 1
+        if  self.house_number:
+            count += 1
+        if  self.certificates.exists():
+            count += 1
+        if  self.languages.exists():
+            count += 1
+        if  self.work_experiences.exists():
+            count += 1
+        if  self.references.exists():
+            count += 1
+        return (count/16)*100
 
     def update_is_complete(self):
         if not self.missing_fields():
