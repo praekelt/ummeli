@@ -212,6 +212,7 @@ EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 MAX_LAUNCH_FAXES_COUNT = 2
 SEND_FROM_FAX_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
 SEND_FROM_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
+UMMELI_SUPPORT = 'ummeli.support@praekeltfoundation.org'
 
 # Session Key for PIN auth
 UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'

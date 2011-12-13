@@ -179,3 +179,8 @@ class MobiUserCreationForm(UserCreationForm):
         regex=r'^[0-9]+$',
         help_text = 'Required. Valid phone number in the format: 0821234567',
         error_message = 'Please enter a valid phone number without spaces. e.g 0821234567')
+
+
+class ConcactSupportForm(PMLForm):
+    username = CharField(required = True)
+    message = CharField(required = True,  widget = Textarea)

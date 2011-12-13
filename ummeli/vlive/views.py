@@ -11,10 +11,11 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
     UserSubmittedJobArticle)
 from ummeli.vlive.jobs import tasks
-from ummeli.vlive.tasks import send_password_reset
+from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
 from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
-                                UserSubmittedJobArticleForm, ForgotPasswordForm)
+                                UserSubmittedJobArticleForm, ForgotPasswordForm,
+                                ConcactSupportForm)
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -279,6 +280,19 @@ def about(request):
 
 def terms(request):
     return render(request, 'terms.html')
+
+def contact_support(request):
+    if request.method == 'POST':
+        form = ConcactSupportForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            message = form.cleaned_data['message']
+            send_email(username, message)
+            return redirect(reverse('home'))
+    else:
+        form = ConcactSupportForm(request.user)
+
+    return render(request, 'contact_support.html', {'form': form})
 
 def health(request):
     return HttpResponse("")

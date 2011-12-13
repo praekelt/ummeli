@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from django.conf import settings
+from django.core import mail
+
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 from ummeli.vlive.utils import phone_number_to_international
 import urllib
@@ -15,9 +17,10 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         self.client.login(remote_user=self.msisdn)
-
+        settings.CELERY_ALWAYS_EAGER = True
+        
     def tearDown(self):
-        pass
+        settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_index_page(self):
         self.client.login(username=self.msisdn, password=self.pin)
@@ -159,3 +162,32 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertEquals(phone_number_to_international('01234567'), 'invalid no')
         self.assertEquals(phone_number_to_international('username'), 'invalid no')
         
+    def test_user_deactivated(self):
+        self.register()
+        user = User.objects.get(username=self.msisdn)
+        user.is_active = False
+        user.save()
+        
+        resp = self.client.post(reverse('login'), {
+            'username': self.msisdn,
+            'password': self.pin,
+        })
+        
+        self.assertContains(resp, 'Your account has been deactivated')
+        
+        resp = self.client.get(reverse('contactsupport'))
+        self.assertEquals(resp.status_code, 200)
+        
+        resp = self.client.post(reverse('contactsupport'), {
+            'username': self.msisdn,
+            'message': 'Im sorry I did this.',
+        })
+        
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEquals(mail.outbox[0].subject, 'Blocked User: %s' % self.msisdn)
+        self.assertEqual(mail.outbox[0].from_email, settings.SEND_FROM_EMAIL_ADDRESS)
+        self.assertEqual(mail.outbox[0].to[0], settings.UMMELI_SUPPORT)
+        
+        #restore user status
+        user.is_active = True
+        user.save()
