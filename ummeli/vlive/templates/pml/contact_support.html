@@ -21,11 +21,10 @@
     {% endif %}
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Send">
-            <TEXT position="ABOVE">Mobile number*</TEXT>
-            <FIELD name="username" type="text"/>
             <TEXT position="ABOVE">Message*</TEXT>
             <FIELD name="message" type="text"/>
             
+            <FIELD name="username" type="hidden" value="{{user.username}}"/>
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         </FORM>
