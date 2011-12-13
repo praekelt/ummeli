@@ -12,15 +12,14 @@
             {% for error in form.non_field_errors %}
                 {% if error == 'This account is inactive.' %}
                 <CONTAINER type="data">
-                    <TEXT><color value="red">Your account has been deactivated for violating the 
+                    <TEXT><color value="red">Your account has been deactivated for violating our 
                         <LINK href="{% url terms %}">
                             <TEXT>terms and conditions</TEXT>
-                        </LINK>
-                        of Ummeli. Please fill out 
+                        </LINK>. If you feel you should not have been removed from this community, 
+                    you may send a query
                         <LINK href="{% url contactsupport %}">
-                            <TEXT>this form</TEXT>
-                        </LINK>
-                        to contact us.</color></TEXT>
+                            <TEXT>here</TEXT>
+                        </LINK>.</color></TEXT>
                 </CONTAINER>
                 {% else %}
                     <CONTAINER type="data">

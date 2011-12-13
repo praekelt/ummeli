@@ -9,10 +9,9 @@
                 {% for error in form.non_field_errors %}
                     {% if error == 'This account is inactive.' %}
                         <div class="warning">
-                            Your account has been deactivated for violating the 
-                            <a href="{% url terms %}">terms and conditions</a> 
-                            of Ummeli. Please fill out 
-                            <a href="{% url contactsupport %}">this form</a> to contact us.
+                            Your account has been deactivated for violating our <a href="{% url terms %}">terms and conditions</a>.
+                            If you feel you should not have been removed from this community, you may send a query
+                            <a href="{% url contactsupport %}">here</a>.
                         </div>
                     {% else %}
                         <div class="warning">Sign in failed.<br />Please try again.</div>
