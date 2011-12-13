@@ -5,12 +5,26 @@
     <form class="content-form" method="post">        
     <fieldset> 
         {% if form.errors %}
-            <div class="warning">Sign in failed.<br />Please try again.</div>
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    {% if error == 'This account is inactive.' %}
+                        <div class="warning">
+                            Your account has been deactivated for violating the 
+                            <a href="{% url terms %}">terms and conditions</a> 
+                            of Ummeli. Please fill out 
+                            <a href="{% url contactsupport %}">this form</a> to contact us.
+                        </div>
+                    {% else %}
+                        <div class="warning">Sign in failed.<br />Please try again.</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {% endif %}
         <label for="form-username">Mobile Number</label>
-        {{form.username}}
-        
+        {% include "form_field_errors_snippet.html" with form_field=form.username %}
+        {{form.username}}        
         <label for="form-pin">PIN</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.password %}
         {{form.password}}
 
         <input type="submit" class="btn" value="Sign In" name="submit" />

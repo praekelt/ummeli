@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="h2">Contact Ummeli Support</div>
+<form method="POST" class="content-form">
+<fieldset> 
+    <strong>* = Required</strong><br />
+    <label for="username">Mobile number*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.username %}
+    <input type="text" class="txt" name="username" id="send_to"/>
+    
+    <label for="message">Message*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.message %}
+    <input type="text" class="txt" name="message" id="message"/>
+    
+    <input type="submit" value="Send" class="btn"/>
+
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+</fieldset> 
+</form>
+{% endblock %}

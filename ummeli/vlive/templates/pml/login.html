@@ -8,9 +8,31 @@
 <MODULE backgroundColor="false">
     <HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
     {% if form.errors %}
-        <CONTAINER type="data">
-            <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
-        </CONTAINER>
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                {% if error == 'This account is inactive.' %}
+                <CONTAINER type="data">
+                    <TEXT><color value="red">Your account has been deactivated for violating the 
+                        <LINK href="{% url terms %}">
+                            <TEXT>terms and conditions</TEXT>
+                        </LINK>
+                        of Ummeli. Please fill out 
+                        <LINK href="{% url contactsupport %}">
+                            <TEXT>this form</TEXT>
+                        </LINK>
+                        to contact us.</color></TEXT>
+                </CONTAINER>
+                {% else %}
+                    <CONTAINER type="data">
+                        <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
+                    </CONTAINER>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <CONTAINER type="data">
+                <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
+            </CONTAINER>
+        {% endif %}
     {% endif %}
     <CONTAINER type="form">
         <FORM method="GET" href="{% url login %}" submit_text="Sign In">
