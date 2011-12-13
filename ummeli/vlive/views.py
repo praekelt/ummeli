@@ -298,10 +298,13 @@ def health(request):
     return HttpResponse("")
 
 def stats(request):
+    users_count = User.objects.count()
     cvs_complete = len([cv for cv in CurriculumVitae.objects.all() if cv.is_complete])
+    cvs_complete_percent = (cvs_complete*1.00/users_count)*100.00
     return render(request, 'stats.html',
-                                {'users': User.objects.count(), 
+                                {'users': users_count, 
                                 'cvs_complete': cvs_complete, 
+                                'cvs_complete_percent': cvs_complete_percent, 
                                 'user_articles': UserSubmittedJobArticle.objects.count()})
 
 @login_required
