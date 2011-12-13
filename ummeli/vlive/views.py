@@ -305,6 +305,7 @@ def stats(request):
                                 'user_articles': UserSubmittedJobArticle.objects.count()})
 
 @login_required
+@pin_required
 def jobs_create(request):
     if request.method == 'POST':
         form = UserSubmittedJobArticleForm(request.POST)
