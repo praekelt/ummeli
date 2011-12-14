@@ -20,4 +20,5 @@ pytidylib
 Fabric==1.2.2
 lxml
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
+-e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
 django-sentry

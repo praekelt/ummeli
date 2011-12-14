@@ -3,6 +3,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from jmbovlive.utils import pml_redirect_timer_view
 
 def pin_required(function):
     """
@@ -24,13 +25,6 @@ def pin_required(function):
                     redirect_message = 'You need to create a pin first.')
                     
     return wrapper
-
-def pml_redirect_timer_view(request,  redirect_url,  redirect_time = 20,  redirect_message = 'Thank you.'):
-    return render(request, 'redirect.html',
-                                {'redirect_url': redirect_url,
-                                'redirect_time': redirect_time,
-                                'redirect_message': redirect_message}, 
-                                content_type='text/xml')
                                 
 def phone_number_to_international(phone_number):
     if phone_number.startswith('27') and len(phone_number) == 11:

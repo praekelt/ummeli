@@ -131,11 +131,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'vlive.auth.middleware.VodafoneLiveUserMiddleware',
-    'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
-    'vlive.middleware.FormActionMiddleware',
     'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
-    #'vlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
