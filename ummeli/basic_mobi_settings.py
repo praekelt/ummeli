@@ -27,12 +27,9 @@ def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
     return os.path.join(PROJECT_ROOT, *args)
 
-ADMINS = (
-    ('Foundation Developers', 'dev@praekeltfoundation.org'),
-    ('Milton', 'milton@praekeltfoundation.org'),
-)
-
-MANAGERS = ADMINS
+ADMINS = ()
+SENTRY_ADMINS = ('dev@praekeltfoundation.org',)
+MANAGERS = SENTRY_ADMINS
 
 DATABASES = {
     'default': {
