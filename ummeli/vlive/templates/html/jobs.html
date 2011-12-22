@@ -1,23 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">View jobs :: {{title}}</div>
-    <form class='standard'>
-    <div>
-        <ol>
-        {% for article in articles %}
-            <li>
+    <h4>
+        <a href="{% url jobs_province %}">Jobs</a> &raquo; 
+        <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
+        {{category_title}}
+    </h4>
+    <br/>
+    <p><strong>*** = Submitted by Ummeli user</strong></p>
+    {% for article in articles %}
+        <div class="list">
+            <span class="date"><strong>{{article.date|date:'d M y'}}</strong></span> 
             <a href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
-                {% if article.user_submitted %}
-                <color value="blue">***</color>
-                {% endif %}
-                {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+                {% if article.user_submitted %}<color value="blue">***</color>{% endif %}
+                {{ article.text|truncatewords:10 }}
             </a>
-            </li>
-        {% endfor %}
-        </ol>
-        <br/>
-        <p><a href="{% url jobs_list search_id %}">&lt;&lt; Back</a></p>
-    </div>
-    </form>
+        </div>
+    {% endfor %}
+    <br/>
+    <div class="more"><a href="{% url jobs_list search_id %}">&larr; Back to categories</a></div>
 {% endblock %}

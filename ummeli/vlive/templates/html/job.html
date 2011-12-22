@@ -1,72 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">{{title}}</div>
-    <form class='standard'>
-    <div>
-        <div class="h3">{{job.date|date:'d M y'}} ::  {{job.source}}</div>
-         {% if job.user_submitted %}
-        <span style="color: blue">submitted by Ummeli user</span><br/>
-        {% endif %}
+    <h4>
+        <a href="{% url jobs_province %}">Jobs</a> &raquo; 
+        <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
+        <a href="{% url jobs search_id cat_id %}">{{category_title}}</a>
+    </h4>
+    <p>
         {{ job.text }}
         {% if not job.user_submitted %}
-            <br/><br/>
-            as advertised on <span style="color: blue">www.wegotads.co.za</span>
+            <br /><br /><strong>Source:</strong> {{job.source}}
+            <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
+        {% else %}
+            <br/><br/><span style="color: blue">submitted by Ummeli user</span>
         {% endif %}
-        <br/>
-        <br/>
-        <p><a href="{% url jobs search_id cat_id %}">&lt;&lt; Back</a></p>
-    </div>
-    </form>
-    <div class="h2">Apply</div>
-    <form class='standard' method="POST">
+    </p>
+    <div class="more"><a href="{% url jobs search_id cat_id %}">&larr; Back to jobs</a></div>
+    
+    <div class="ruler"></div>
+    <h4>Apply for this job</h4>
+    <form name="pd" method="POST" class="content-form"> 
     {% if user.is_authenticated %}
-        <div>
-            Thank you to everyone who participated in the Fax trial. 
-            <color value="blue">The Fax trial is now closed.</color>
-            We will be bringing back the fax option at a later stage. 
-        </div>
-        {% if form.errors %}
-            {% for field in form %}
-            {% for error in field.errors %}
-                <div style="color: red">{{field.label}} - {{error}}</div><br/>
-            {% endfor %}
-            {% endfor %}
-        {% endif %}
         {% if user_profile.missing_fields %}
-            <div class="h3">Missing fields</div>
-            <div style="color: red">
+            <br/>
+            <strong>Missing fields</strong>
+            <div class="warning">
                 Your CV is incomplete. Please make sure that the following information is 
                 completed before you can send your CV.
             </div>
-            <br/>
             {% for field in user_profile.missing_fields %}
-                <div style="color: red">- {{field}}</div><br/>
+                - {{field}}<br/>
+            {% endfor %}
+        {% else %}
+        <fieldset> 
+        <p><strong>* = Required</strong></p>
+        {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+                <div><span style="color: red">{{field.label}} - {{error}}</span></div>
+            {% endfor %}
             {% endfor %}
         {% endif %}
-        
-        <br/>
-        <div>Send via</div>
-        <input style="display: inline" id="via_email" type="radio" name="send_via" value="email" checked="True"/>
-        <label style="display: inline" for="via_email">Email</label>
-        {% if False %}
-        <input id="via_fax" type="radio" name="send_via" value="fax"/>
-        <label for="via_fax">Fax</label>
+          <label for="email">Email CV To:*</label> 
+          <input type="text" class="txt" name="send_to"/>
+          <input type="submit" name="signin-btn" value="Send" class="btn" />
+          <input type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
+          <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+          <input type="hidden" name="send_via" value="email" />
+        </fieldset>
         {% endif %}
-        <input name="send_to" type="text"/><br/>
-        <input type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
-        <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-        <input class="submit" type="submit" value="Submit"/>
     {% else %}
-        <br/>
-        <div style="color: red">
-        You are not logged in. Please log in to be able to 
-        respond to a job advert.
-        </div>
-        <br/>
-        <a href="{% url login %}?next={% url jobs search_id cat_id %}">
-            Login
-        </a>
+        <div class="warning">Please <a href="{% url login %}?next={% url jobs search_id cat_id %}">sign in</a> 
+        or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
     {% endif %}
     </form>
 {% endblock %}
