@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Confirm delete</div>
-    <form class='standard' method="post">
-        <div>Are you sure you want to delete {{object}}?</div>
-        <br/>
-        <input type="submit" class="submit" value="Delete" name="submit" />
-        <span class="button"><a href="{{cancel_url}}">Cancel</a></span><br/>
+    <h4>Confirm delete</h4>
+    <form class='content-form' method="post">
+        <p>Are you sure you want to delete {{object}}?</p>
+        <input type="submit" class="btn" value="Delete" name="submit" />
+        <div class="more"><a href="{{cancel_url}}">&larr; Cancel</a></div>
         {% csrf_token %}
     </form>
 {% endblock %}

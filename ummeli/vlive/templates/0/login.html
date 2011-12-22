@@ -2,6 +2,8 @@
 
 {% block content %}
     <div class="h2">Sign In</div>
+    <p><span>Not registered? <a href="{% url register %}">Sign up here</a></span></p>
+    
     <form class="content-form" method="post">        
     <fieldset> 
         {% if form.errors %}
@@ -28,7 +30,6 @@
 
         <input type="submit" class="btn" value="Sign In" name="submit" />
         <span><a href="{% url forgot %}">Forgot your PIN?</a></span> 
-        <span>Not registered? <a href="{% url register %}">Sign up here</a></span>
         <input type="hidden" name="next" value="{{next}}" />
         {% csrf_token %}
     </fieldset> 

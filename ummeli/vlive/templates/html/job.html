@@ -34,14 +34,8 @@
         {% else %}
         <fieldset> 
         <p><strong>* = Required</strong></p>
-        {% if form.errors %}
-            {% for field in form %}
-            {% for error in field.errors %}
-                <div><span style="color: red">{{field.label}} - {{error}}</span></div>
-            {% endfor %}
-            {% endfor %}
-        {% endif %}
-          <label for="email">Email CV To:*</label> 
+          <label for="email">Email CV To:*</label>
+          {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
           <input type="text" class="txt" name="send_to"/>
           <input type="submit" name="signin-btn" value="Send" class="btn" />
           <input type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
