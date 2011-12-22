@@ -20,14 +20,8 @@
     {% endfor %}
 {% else %}
     <strong>* = Required</strong><br />
-    {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-            <div><span style="color: red">{{field.label}} - {{error}}</span></div>
-        {% endfor %}
-        {% endfor %}
-    {% endif %}
     <label for="send_to">Email CV To:*</label> 
+    {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
     <input type="text" class="txt" name="send_to" id="send_to"/>
     <input type="submit" value="Send" class="btn"/>
     
