@@ -1,12 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Edit personal details</div>
-    <form class='standard' method="post">
-        <div>{{ form.as_p }}</div>
-        <input type="submit" class="submit" value="Save" name="submit" />
-        <input name="cancel" class="submit" type="submit" value="Cancel" />
-        <input type="hidden" name="action" value="{{action}}"
+    <h4><a href="{% url edit %}">Change your CV</a> &raquo; Personal details</h4>
+    <br/>
+    <form class='content-form' method="post">
+    <fieldset>
+        <label for="form-first_name">First name</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.first_name %}
+        <input name="first_name" type="text" class="txt" value="{{form.first_name.value}}"/>
+        
+        <label for="form-surname">Surname</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.surname %}
+        <input name="surname" type="text" class="txt" value="{{form.surname.value}}"/>
+        
+        <label for="form-date_of_birth">Date of birth</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
+        <input name="date_of_birth" type="text" class="txt" value="{{form.date_of_birth.value}}"/>
+        
+        <label for="form-date_of_birth">Date of birth</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
+        <select name="gender">
+            {% if not form.gender.value or form.gender.value.lower == 'male' or form.gender.value.lower == 'm' %}
+            <option value="Male" selected="selected">Male</option>
+            <option value="Female">Female</option>
+            {% else %}
+            <option value="Male">Male</option>
+            <option value="Female" selected="selected">Female</option>
+            {% endif %}
+        </select>
+        <br/>
+        <input type="submit" class="btn" value="Save" name="submit" />
+        <br/>
+        <div class="more"><a href="{% url edit %}">&larr; Back</a></div>
         {% csrf_token %}
+    </fieldset>
     </form>
 {% endblock %}
