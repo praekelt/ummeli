@@ -1,46 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="h2">Send your CV</div>
-<form method="POST" class="standard">
+<h4>Send your CV</h4>
 <p>
     Sending your CV by email is always free on Ummeli - simply enter the 
     email address of the recipient in the field below and Ummeli will automatically 
     send it for you!
-    <br/><br/>
-    Thank you to everyone who participated in the Fax trial. 
-    <color value="blue">The Fax trial is now closed.</color>
-    We will be bringing back the fax option at a later stage.
 </p>
-{% if form.errors %}
-    {% for field in form %}
-    {% for error in field.errors %}
-        <div><span style="color: red">{{field.label}} - {{error}}</span></div>
-    {% endfor %}
-    {% endfor %}
-{% endif %}
+<form method="POST" class="content-form">
+<fieldset> 
 {% if user_profile.missing_fields %}
-    <div class="h3">Missing fields</div>
-    <div style="color:red">
+    <strong>Missing fields</strong>
+    <div class="warning">
         Your CV is incomplete. Please make sure that the following information is 
         completed before you can send your CV.
-        <br/>
-    {% for field in user_profile.missing_fields %}
-        <br/>- {{field}}
-    {% endfor %}
     </div>
-{% endif %}
-    <br/>
-    <div>Send via</div>
-    <input style="display: inline" id="via_email" type="radio" name="send_via" value="email" checked="True"/>
-    <label style="display: inline" for="via_email">Email</label>
-    {% if False %}
-    <input id="via_fax" type="radio" name="send_via" value="fax"/>
-    <label for="via_fax">Fax</label>
+    {% for field in user_profile.missing_fields %}
+        - {{field}}<br/>
+    {% endfor %}
+{% else %}
+    <strong>* = Required</strong><br />
+    {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+            <div><span style="color: red">{{field.label}} - {{error}}</span></div>
+        {% endfor %}
+        {% endfor %}
     {% endif %}
-    <input name="send_to" type="text"/>
+    <label for="send_to">Email CV To:*</label> 
+    <input type="text" class="txt" name="send_to" id="send_to"/>
+    <input type="submit" value="Send" class="btn"/>
+    
     <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-    <input class="submit" type="submit" value="submit"/>
-    <span class="button"><a href="{% url index %}">Cancel</a></span>
+    <input type="hidden" name="send_via" value="email" />
+{% endif %}
+</fieldset> 
 </form>
 {% endblock %}
