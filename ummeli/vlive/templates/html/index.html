@@ -3,7 +3,7 @@
 {% block content %}
     <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url edit %}">build your CV</a> &amp; create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
     {% if user.is_authenticated %}
-        <h3>Quick links</h3>
+        <h4>Quick links</h4>
         <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
         <div class="bullet"><a href="{% url send %}">Send my CV &rarr;</a></div>
         <div class="bullet"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>

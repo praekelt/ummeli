@@ -1,20 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Edit profile</div>
-    <form class='standard'>
-    <div>
-        <ol>
-            <li><a href="{% url edit_personal %}">Personal details</a></li>
-            <li><a href="{% url edit_contact %}">Contact details</a></li>
-            <li><a href="{% url edit_education %}">Education details</a></li>
-            <li><a href="{% url certificate_list %}">Certificates details</a></li>
-            <li><a href="{% url work_experience_list %}">Work experience details</a></li>
-            <li><a href="{% url language_list %}">Language details</a></li>
-            <li><a href="{% url reference_list %}">References details</a></li>
-        </ol>
-        <br/>
-        <p><a href="{% url index %}">&lt;&lt; Back</a></p>
-    </div>
-    </form>
+    <h4>Change your CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</h4>
+    <div class="bullet"><a href="{% url edit_personal %}">Personal Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url edit_contact %}">Contact Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url edit_education %}">Education Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url certificate_list %}">Certificates Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url work_experience_list %}">Work Experience Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url language_list %}">Language Details &rarr;</a></div>
+    <div class="bullet"><a href="{% url reference_list %}">References Details &rarr;</a></div>
 {% endblock %}
