@@ -1,47 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Welcome to Ummeli</div>
-    <form class='standard'>
-    <div>Ummeli is a jobseeker network on your phone that connects you and your 
-            friends to jobs in your community. No more waiting around. With a mobile 
-            CV in your back pocket, you’re ready to apply for a job you spot on Ummeli 
-            at any time. You can also post jobs or bursary info you want your friends to 
-            know about. Get started!</div>
-    <div>
-        <ul>
-            <li>
-                <a href="{% url edit %}?{{uuid}}">
-                    Change your CV
-                </a>
-            <p>Set up your work profile - build a professional CV without a computer.</p>
-            </li>
-            <li><a href="{% url send %}?{{uuid}}">
-                Send your CV
-            </a>
-            <p>Sending your CV by email is always free on Ummeli.</p>
-            </li>
-            <li><a href="{% url jobs_province %}">
-                Find jobs
-            </a>
-            <p>Start your job search right here. Find work in your area.</p>
-            </li>
-            <li><a href="{% url jobs_create %}?{{uuid}}">
-                Share jobs
-            </a>
-            <p>Help others by adding jobs you’ve seen advertised in your community.</p>
-            </li>
-        </ul>
-    </div>
-    </form>
+    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url edit %}">build your CV</a> &amp; create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
     {% if user.is_authenticated %}
-    <div class="h2">Mange Profile</div>
-    <form class="standard">
-    <div>
-        <ul>
-        <li><a href="{% url password_change %}?{{uuid}}">Change pin</a></li>
-        </ul>
-    </div>
-    </form>
+        <h3>Quick links</h3>
+        <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
+        <div class="bullet"><a href="{% url send %}">Send my CV &rarr;</a></div>
+        <div class="bullet"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
+    {% else %} 
+        <h3>Browse Jobs</h3>
+        {% for province in provinces %}
+            <div class="bullet"><a href="{% url jobs_list province.search_id %}">{{province.name}} &rarr;</a></div>
+        {% endfor %}
     {% endif %}
 {% endblock %}

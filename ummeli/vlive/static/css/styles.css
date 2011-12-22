@@ -72,7 +72,7 @@ input, textarea, select {font:90% "Arial", Helvetica, sans-serif;}
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .bullet {padding:2pt 0 2pt 10pt; background:url(../images/bullet.gif) 0 5pt no-repeat;}      
-
+.success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
 /*---------------------------
 8.	Footer
 -----------------------------*/
