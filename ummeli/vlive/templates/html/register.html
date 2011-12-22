@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">Create pin</div>
-    <form class="standard" method="post">
-        <label for="form-username">Cell number</label>
-        {{form.username.errors}}
-        <input name="username" type="text"/>
-        <label>Pin</label>
-        {{form.password1.errors}}
-        <input name="password1" type="password"/>
-        <label>Confirm Pin</label>
-        {{form.password2.errors}}
-        <input name="password2" type="password"/>
-        <input type="submit" class="submit" value="Create pin &raquo;" name="submit" />
-        <span class="button"><a href="{% url index %}">Cancel</a></span>
-        <br/><br/>
+    <h4>Sign Up</h4>
+    <p>Sign up with Ummeli to make a CV and apply for jobs.</p>
+    <form class="content-form" method="post">
+    <fieldset>
+        <label for="form-username">Mobile Number</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.username %}
+        <input name="username" type="text" class="txt"/>
+        <label>PIN</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.password1%}
+        <input name="password1" type="password" class="txt"/>
+        <label>Confirm PIN</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.password2 %}
+        <input name="password2" type="password" class="txt"/>
+        <input type="submit" class="btn" value="Submit" name="submit" />
         <input type="hidden" name="next" value="{{next}}">
         {% csrf_token %}
+    </fieldset>
     </form>
+    <div class="more"><a href="{% url login %}">Return to sign in</a></div>
 {% endblock %}
