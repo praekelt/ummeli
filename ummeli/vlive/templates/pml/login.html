@@ -32,6 +32,13 @@
         </CONTAINER>
     {% endif %}
 {% endif %}
+{% if not user.password %}
+<CONTAINER type="data">
+    <TEXT>You need to <LINK href="{% url register %}">
+                        <TEXT>create a PIN</TEXT>
+                    </LINK> first.</TEXT>
+</CONTAINER>
+{% else %}
 <CONTAINER type="form">
     <FORM method="GET" href="{% url login %}" submit_text="Sign In">
         <TEXT position="ABOVE">Enter PIN to sign in.</TEXT>
@@ -47,4 +54,5 @@
         <TEXT>Forgot your PIN?</TEXT>
     </LINK>
 </CONTAINER>
+{% endif %}
 {% endblock %}

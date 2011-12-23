@@ -64,12 +64,10 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('login'))
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Enter PIN to sign in.')
-        self.assertContains(resp, 'Forgot your PIN?')
+        self.assertContains(resp, 'create a PIN')
 
         resp = self.client.get(reverse('register'))
         self.assertEquals(resp.status_code, 200)
-        print resp
         self.assertContains(resp, 'Create PIN for %s' % (self.msisdn))
 
         resp = self.client.post(reverse('register'), {
@@ -95,6 +93,10 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertContains(resp,  'Submitted successfully')
         # ensure the session's pin has been cleared
         self.assertNotIn(settings.UMMELI_PIN_SESSION_KEY, self.client.session)
+        
+        resp = self.client.get(reverse('login'))
+        self.assertContains(resp, 'Enter PIN to sign in.')
+        self.assertContains(resp, 'Forgot your PIN?')
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'
