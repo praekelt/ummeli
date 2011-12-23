@@ -8,51 +8,49 @@
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
     <CONTAINER  type="data">
-        <TITLE>Your pocket CV</TITLE>
+    {% if user.is_authenticated %}
+        <div class="h2">Quick links</div>
+        <div class="list"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
+        <div class="list"><a href="{% url send %}">Send my CV &rarr;</a></div>
+        <div class="list"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
+    {% else %} 
+        <div class="h2">Browse Jobs</div>
+        {% for province in provinces %}
+            <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.category_set.count}})&rarr;</a></div>
+        {% endfor %}
+    {% endif %}
+        
         <TEXT>
-            Ummeli is a jobseeker network on your phone that connects you and your 
-            friends to jobs in your community. No more waiting around. With a mobile 
-            CV in your back pocket, you're ready to apply for a job you spot on Ummeli 
-            at any time. You can also post jobs or bursary info you want your friends to 
-            know about. Get started!
-            <br/><br/>
-            {% if request.user.password %}
-                <LINK href="{% url edit %}?{{uuid}}">
-                    <TEXT>Change your CV</TEXT>
-                </LINK><br/>
-                Need to add new info to your CV? Do it here.
-            {% else %}
-                <LINK href="{% url register %}?{{uuid}}">
-                    <TEXT>Build your CV</TEXT>
-                </LINK><br/>
-                Set up your work profile - build a professional CV without a computer.
-            {% endif %}
+            Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}">
+                    <TEXT>find jobs</TEXT>
+                </LINK>, <LINK href="{% url edit %}?{{uuid}}">
+                    <TEXT>build your CV</TEXT>
+                </LINK> &amp; create your own employment opportunities. <LINK href="{% url about %}">
+                    <TEXT>Learn more...</TEXT>
+                </LINK>
+                <br/><br/>
+            {% if user.is_authenticated %}
+                <TITLE>Quick links</TITLE>
+                <LINK href="{% url jobs_province %}?{{uuid}}">
+                    <TEXT>Browse jobs</TEXT>
+                </LINK>
                 <br/><br/>
                 <LINK href="{% url send %}?{{uuid}}">
-                    <TEXT>Send your CV</TEXT>
-                </LINK><br/>
-                Sending your CV by email is always free on Ummeli.
+                    <TEXT>Send my CV</TEXT>
+                </LINK>
                 <br/><br/>
-                <LINK href="{% url jobs_province %}">
-                    <TEXT>Find jobs</TEXT>
-                </LINK><br/>
-                    Start your job search right here. Find work in your area.
-                <br/><br/>
-                <LINK href="{% url jobs_create %}?{{uuid}}">
-                    <TEXT>Add a job</TEXT>
-                </LINK><br/>
-                Help others by adding jobs you've seen advertised in your community.
+                <LINK href="{% url edit %}?{{uuid}}">
+                    <TEXT>Update my CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
+                </LINK>
+            {% else %} 
+                <TITLE>Browse Jobs</TITLE>
+                {% for province in provinces %}
+                    <LINK href="{% url jobs_list province.search_id %}?{{uuid}}">
+                        <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
+                    </LINK><br/>
+                {% endfor %}
+            {% endif %}
         </TEXT>
     </CONTAINER>
 </MODULE>
-{% if request.is_authorized %}
-<MODULE backgroundColor="false" palette="MiMarine">
-    <HEADER><LABEL>Mange Profile</LABEL></HEADER>
-    <CONTAINER  type="list">
-        <LINK href="{% url password_change %}?{{uuid}}">
-            <TEXT>Change pin</TEXT>
-        </LINK>
-    </CONTAINER>
-</MODULE>
-{% endif %}
 {% endblock %}
