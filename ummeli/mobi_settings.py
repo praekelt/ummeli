@@ -2,12 +2,13 @@
 import os.path
 import djcelery
 
+DEBUG = False
+
 try:
     from local_settings import *
 except ImportError:
     raise RuntimeError,  "you need a local_settings.py file"
 
-DEBUG = False
 TEMPLATE_DEBUG = True
 
 djcelery.setup_loader()
