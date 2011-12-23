@@ -24,30 +24,11 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
             'django.middleware.csrf.CsrfViewMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',
-            'vlive.auth.middleware.VodafoneLiveUserMiddleware',
-            'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
-            'vlive.middleware.FormActionMiddleware',
             'vlive.middleware.AddMessageToResponseMiddleware', 
         )
 
     def tearDown(self):
-        settings.ROOT_URLCONF = 'pml_urls'
-        settings.TEMPLATE_DIRS = ("vlive/templates/pml", )
-        settings.AUTHENTICATION_BACKENDS = (
-        'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
-        'django.contrib.auth.backends.ModelBackend', )
-        settings.MIDDLEWARE_CLASSES = (
-            'django.middleware.common.CommonMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-            'vlive.auth.middleware.VodafoneLiveUserMiddleware',
-            'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
-            'vlive.middleware.FormActionMiddleware',
-            'vlive.middleware.AddMessageToResponseMiddleware', 
-            'vlive.middleware.ModifyPMLResponseMiddleware',
-        )
+        pass
 
     def test_index_page(self):
         self.client.login(username=self.msisdn, password=self.pin)
@@ -70,7 +51,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('login'), )
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Sign in')
+        self.assertContains(resp, 'Sign In')
 
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
@@ -80,6 +61,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
         self.assertEquals(resp.status_code, 302)  # redirect to index
 
         resp = self.client.post(reverse('login'),{
+            'username': self.msisdn,
             'password': 'wrong_pin',
         })
 
@@ -90,7 +72,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('login'))
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Sign in')
+        self.assertContains(resp, 'Sign In')
         self.assertContains(resp, 'Forgot your PIN?')
 
         resp = self.client.get(reverse('register'))

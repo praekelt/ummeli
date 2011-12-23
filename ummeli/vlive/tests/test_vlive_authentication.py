@@ -43,7 +43,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('login'), )
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Enter Pin to sign in.')
+        self.assertContains(resp, 'Enter PIN to sign in.')
 
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
@@ -64,13 +64,13 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('login'))
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Enter Pin to sign in.')
-        self.assertContains(resp, 'Forgotten your Pin?')
+        self.assertContains(resp, 'Enter PIN to sign in.')
+        self.assertContains(resp, 'Forgot your PIN?')
 
         resp = self.client.get(reverse('register'))
         self.assertEquals(resp.status_code, 200)
         print resp
-        self.assertContains(resp, 'Create pin for %s' % (self.msisdn))
+        self.assertContains(resp, 'Create PIN for %s' % (self.msisdn))
 
         resp = self.client.post(reverse('register'), {
             'username': self.msisdn,
@@ -105,7 +105,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
             'password1': password,
             'password2': 'wrong',
         })
-        self.assertContains(resp, 'Pin codes don&apos;t match.')
+        self.assertContains(resp, 'PIN codes don&apos;t match.')
 
     def test_forgot_pin(self):
 
@@ -117,7 +117,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         })
 
         resp = self.client.get(reverse('forgot'))
-        self.assertContains(resp, 'Pin will be sent to %s.' % self.msisdn)
+        self.assertContains(resp, 'PIN will be sent to %s.' % self.msisdn)
 
         resp = self.client.post(reverse('forgot'),  {'username':self.msisdn})
         self.assertContains(resp, 'Submitted successfully')
@@ -139,7 +139,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
 
         resp = self.client.get(reverse('password_change'))
         # print resp
-        self.assertContains(resp, 'Change pin for %s' % self.msisdn)
+        self.assertContains(resp, 'Change PIN for %s' % self.msisdn)
 
         resp = self.client.post(reverse('password_change'),{
             'old_password': self.pin,
