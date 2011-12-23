@@ -13,7 +13,7 @@
                 <LINK href="{% url edit %}?{{uuid}}"><TEXT>build your CV</TEXT></LINK> &amp; 
             create your own employment opportunities. <LINK href="{% url about %}"><TEXT>Learn more...</TEXT></LINK>
             <br/><br/>
-            {% if user.is_authenticated %}
+            {% if user.is_authorized %}
                 <TITLE>Quick links</TITLE><br/>
                 <LINK href="{% url jobs_province %}?{{uuid}}">
                     <TEXT>Browse jobs</TEXT>
@@ -34,7 +34,31 @@
                     </LINK><br/>
                 {% endfor %}
             {% endif %}
-        </TEXT>
+        </TEXT><br/>
+        {% if user.is_authorized %}
+            <TITLE>Quick links</TITLE>
+        {% else %}
+            <TITLE>Quick links</TITLE>
+        {% endif %}
+    </CONTAINER>
+    <CONTAINER type="list">
+    {% if user.is_authorized %}
+        <LINK href="{% url jobs_province %}?{{uuid}}">
+            <TEXT>Browse jobs</TEXT>
+        </LINK>
+        <LINK href="{% url send %}?{{uuid}}">
+            <TEXT>Send my CV</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}?{{uuid}}">
+            <TEXT>Update my CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
+        </LINK>
+    {% else %} 
+        {% for province in provinces %}
+            <LINK href="{% url jobs_list province.search_id %}?{{uuid}}">
+                <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
+            </LINK><br/>
+        {% endfor %}
+    {% endif %}
     </CONTAINER>
 </MODULE>
 {% endblock %}
