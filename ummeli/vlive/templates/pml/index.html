@@ -9,24 +9,20 @@
     <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
     <CONTAINER  type="data">        
         <TEXT>
-            Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}">
-                    <TEXT>find jobs</TEXT>
-                </LINK>, <LINK href="{% url edit %}?{{uuid}}">
-                    <TEXT>build your CV</TEXT>
-                </LINK> &amp; create your own employment opportunities. <LINK href="{% url about %}">
-                    <TEXT>Learn more...</TEXT>
-                </LINK>
-                <br/><br/>
+            Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find jobs</TEXT></LINK>, 
+                <LINK href="{% url edit %}?{{uuid}}"><TEXT>build your CV</TEXT></LINK> &amp; 
+            create your own employment opportunities. <LINK href="{% url about %}"><TEXT>Learn more...</TEXT></LINK>
+            <br/><br/>
             {% if user.is_authenticated %}
-                <TITLE>Quick links</TITLE>
+                <TITLE>Quick links</TITLE><br/>
                 <LINK href="{% url jobs_province %}?{{uuid}}">
                     <TEXT>Browse jobs</TEXT>
                 </LINK>
-                <br/><br/>
+                <br/>
                 <LINK href="{% url send %}?{{uuid}}">
                     <TEXT>Send my CV</TEXT>
                 </LINK>
-                <br/><br/>
+                <br/>
                 <LINK href="{% url edit %}?{{uuid}}">
                     <TEXT>Update my CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
                 </LINK>
