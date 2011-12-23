@@ -5,20 +5,18 @@
 {% endblock %}
 
 {% block content %}
-<MODULE backgroundColor="false">
-    <HEADER><LABEL>View jobs</LABEL></HEADER>
-    <CONTAINER  type="list">
-        {% for category in categories %}
-            <LINK href="{% url jobs search_id category.pk %}">
-                <TEXT>{{category.title}} ({{category.articles_count}})</TEXT>
-            </LINK>
-        {% endfor %}
-    </CONTAINER>
-    <br/>
-    <CONTAINER  type="list">
-        <LINK href="{% url jobs_province %}">
-            <TEXT>&lt;&lt; Back</TEXT>
+<HEADER><LABEL>View jobs</LABEL></HEADER>
+<CONTAINER  type="list">
+    {% for category in categories %}
+        <LINK href="{% url jobs search_id category.pk %}">
+            <TEXT>{{category.title}} ({{category.articles_count}})</TEXT>
         </LINK>
-    </CONTAINER>
-</MODULE>
+    {% endfor %}
+</CONTAINER>
+<br/>
+<CONTAINER  type="list">
+    <LINK href="{% url jobs_province %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}

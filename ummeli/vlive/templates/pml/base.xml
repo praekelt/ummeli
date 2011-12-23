@@ -32,8 +32,10 @@
 {% block header %}
 {% endblock %}
 
+<MODULE backgroundColor="false" palette="MiDove">
 {% block content %}
 {% endblock %}
+</MODULE>
 
 {% block footer %}
 {% endblock %}

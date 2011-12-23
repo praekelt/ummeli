@@ -5,23 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<MODULE backgroundColor="false">
-    <HEADER><LABEL>Confirm delete</LABEL></HEADER>
-    <CONTAINER  type="data">
-        <TEXT>Are you sure you want to delete {{object}}?</TEXT>
-    </CONTAINER>
-    <CONTAINER  type="form">
-        <FORM method="POST" href="{{request.path}}" submit_text="Delete">
-            {{ form.as_pml }}
-            <FIELD type='hidden' name='submit' value='Delete' />
-            <FIELD type='hidden' name='_action' value='POST' />
-            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-        </FORM>
-    </CONTAINER>
-    <CONTAINER  type="list">
-        <LINK href="{{cancel_url}}">
-            <TEXT>Cancel</TEXT>
-        </LINK>
-    </CONTAINER>
-</MODULE>
+<HEADER><LABEL>Confirm delete</LABEL></HEADER>
+<CONTAINER  type="data">
+    <TEXT>Are you sure you want to delete {{object}}?</TEXT>
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Delete">
+        {{ form.as_pml }}
+        <FIELD type='hidden' name='submit' value='Delete' />
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{{cancel_url}}">
+        <TEXT>Cancel</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}

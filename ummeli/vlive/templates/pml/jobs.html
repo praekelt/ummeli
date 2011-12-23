@@ -5,25 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<MODULE backgroundColor="false">
-    <HEADER><LABEL>{{title}}</LABEL></HEADER>
-    <CONTAINER  type="list">
-        {% for article in articles %}
-            <LINK href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
-                <TEXT>
-                {% if article.user_submitted %}
-                <color value="blue">***</color>
-                {% endif %}
-                {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
-                </TEXT>
-            </LINK>
-        {% endfor %}
-    </CONTAINER>
-    <br/>
-    <CONTAINER  type="list">
-        <LINK href="{% url jobs_list search_id %}">
-            <TEXT>&lt;&lt; Back</TEXT>
+<HEADER><LABEL>{{title}}</LABEL></HEADER>
+<CONTAINER  type="list">
+    {% for article in articles %}
+        <LINK href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
+            <TEXT>
+            {% if article.user_submitted %}
+            <color value="blue">***</color>
+            {% endif %}
+            {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+            </TEXT>
         </LINK>
-    </CONTAINER>
-</MODULE>
+    {% endfor %}
+</CONTAINER>
+<br/>
+<CONTAINER  type="list">
+    <LINK href="{% url jobs_list search_id %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}
