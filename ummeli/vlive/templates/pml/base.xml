@@ -40,7 +40,7 @@
 
 {% block footer_links %}
 
-<MODULE backgroundColor="false" palette="MiDarkRed">
+<MODULE backgroundColor="false" palette="MiOrange">
     <HEADER><LABEL>Menu</LABEL></HEADER>
     <CONTAINER  type="list">
         <LINK href="{% url home %}?{{uuid}}">
