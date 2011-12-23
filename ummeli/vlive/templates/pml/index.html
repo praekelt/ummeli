@@ -7,19 +7,7 @@
 {% block content %}
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
-    <CONTAINER  type="data">
-    {% if user.is_authenticated %}
-        <div class="h2">Quick links</div>
-        <div class="list"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
-        <div class="list"><a href="{% url send %}">Send my CV &rarr;</a></div>
-        <div class="list"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
-    {% else %} 
-        <div class="h2">Browse Jobs</div>
-        {% for province in provinces %}
-            <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.category_set.count}})&rarr;</a></div>
-        {% endfor %}
-    {% endif %}
-        
+    <CONTAINER  type="data">        
         <TEXT>
             Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}">
                     <TEXT>find jobs</TEXT>
