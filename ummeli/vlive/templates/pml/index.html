@@ -12,7 +12,7 @@
             <LINK href="{% url edit %}?{{uuid}}"><TEXT>build your CV</TEXT></LINK> &amp; 
         create your own employment opportunities. <LINK href="{% url about %}"><TEXT>Learn more...</TEXT></LINK>
         <br/><br/>
-        {% if user.is_authorized %}
+        {% if request.is_authorized %}
             <TITLE>Quick links</TITLE>
         {% else %}
             <TITLE>Browse jobs</TITLE>
@@ -20,7 +20,7 @@
     </TEXT>
 </CONTAINER>
 <CONTAINER type="list">
-{% if user.is_authorized %}
+{% if request.is_authorized %}
     <LINK href="{% url jobs_province %}?{{uuid}}">
         <TEXT>Browse jobs</TEXT>
     </LINK>
@@ -38,7 +38,7 @@
     {% endfor %}
 {% endif %}
 </CONTAINER>
-{% if not user.is_authorized %}
+{% if not request.is_authorized %}
 <CONTAINER type="data">        
     <TEXT>
         <LINK href="{% url jobs_province %}?{{uuid}}">
