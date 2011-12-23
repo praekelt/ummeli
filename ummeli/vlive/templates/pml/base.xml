@@ -46,17 +46,17 @@
         <LINK href="{% url home %}?{{uuid}}">
             <TEXT>Home</TEXT>
         </LINK>
-        <LINK href="{% url jobs_province %}">
+        <LINK href="{% url jobs_province %}?{{uuid}}">
             <TEXT>Browse Jobs</TEXT>
         </LINK>
-        <LINK href="{% url jobs_create %}">
+        <LINK href="{% url jobs_create %}?{{uuid}}">
             <TEXT>Add a job</TEXT>
         </LINK>
-        <LINK href="{% url edit %}">
+        <LINK href="{% url edit %}?{{uuid}}">
             <TEXT>My CV</TEXT>
         </LINK>
         {% if request.is_authorized %}
-        <LINK href="{% url password_change %}">
+        <LINK href="{% url password_change %}?{{uuid}}">
             <TEXT>Change PIN</TEXT>
         </LINK>
         {% endif %}
@@ -73,7 +73,7 @@
             <TEXT>Terms</TEXT>
         </LINK>
         {% if request.is_authorized %}
-        <LINK href="{% url logout %}">
+        <LINK href="{% url logout %}?{{uuid}}">
             <TEXT>Sign Out</TEXT>
         </LINK>
         {% else %}
