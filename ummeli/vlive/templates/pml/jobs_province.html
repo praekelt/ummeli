@@ -18,7 +18,7 @@
     <CONTAINER  type="list">
         {% for province in provinces %}
             <LINK href="{% url jobs_list province.search_id %}">
-                <TEXT>{{province.name}}</TEXT>
+                <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
             </LINK>
         {% endfor %}
     </CONTAINER>

@@ -10,7 +10,7 @@
     <CONTAINER  type="list">
         {% for category in categories %}
             <LINK href="{% url jobs search_id category.pk %}">
-                <TEXT>{{category.title}}</TEXT>
+                <TEXT>{{category.title}} ({{category.articles.count}})</TEXT>
             </LINK>
         {% endfor %}
     </CONTAINER>
