@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -39,6 +39,29 @@
 {% endblock %}
 
 {% block footer_links %}
+
+<MODULE backgroundColor="false" palette="MiMarine">
+    <HEADER><LABEL>Menu</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url home %}?{{uuid}}">
+            <TEXT>Home</TEXT>
+        </LINK>
+        <LINK href="{% url jobs_province %}">
+            <TEXT>Browse Jobs</TEXT>
+        </LINK>
+        <LINK href="{% url jobs_create %}">
+            <TEXT>Add a job</TEXT>
+        </LINK>
+        <LINK href="{% url edit %}">
+            <TEXT>My CV</TEXT>
+        </LINK>
+        {% if request.is_authorized %}
+        <LINK href="{% url password_change %}">
+            <TEXT>Change PIN</TEXT>
+        </LINK>
+        {% endif %}
+    </CONTAINER>
+</MODULE>
 
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
