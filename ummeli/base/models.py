@@ -30,7 +30,7 @@ class UserSubmittedJobArticle(models.Model):
     user = models.ForeignKey(User, related_name='user_submitted_job_article_user')
 
     def __unicode__(self):  # pragma: no cover
-        return '%s - %s - %s' % (self.date,  self.title,  self.text)
+        return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
 
     def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
@@ -65,7 +65,7 @@ class Category(models.Model):
         return self.articles.count() + self.user_submitted_job_articles.count()
 
     def __unicode__(self):  # pragma: no cover
-        return self.title
+        return '%s - %s (%s)' % (self.province.name, self.title, self.articles_count())
 
 
 class Certificate (models.Model):
@@ -121,6 +121,9 @@ class CurriculumVitae(models.Model):
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     is_complete = models.BooleanField(default=False,  editable=False)
 
+    def __str__(self):
+        return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
+    
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
 
