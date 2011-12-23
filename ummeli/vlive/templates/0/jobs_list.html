@@ -4,7 +4,7 @@
     <div class="h2"><a href="{% url jobs_province %}">Jobs</a> &raquo; {{province_name}}</div>
     <div id="list">
     {% for category in categories %}
-        <div><a href="{% url jobs search_id category.pk %}">{{category.title}} ({{category.articles.count}})</a></div>
+        <div><a href="{% url jobs search_id category.pk %}">{{category.title}} ({{category.articles_count}})</a></div>
     {% endfor %}
     </div>
     <br/><div class="more"><a href="{% url jobs_province %}">&larr; Back to provinces</a></div>
