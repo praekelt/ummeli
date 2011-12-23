@@ -60,6 +60,9 @@ class Category(models.Model):
 
     def must_show(self):
         return self.articles.exists() or self.user_submitted_job_articles.exists()
+    
+    def articles_count(self):
+        return self.articles.count() + self.user_submitted_job_articles.count()
 
     def __unicode__(self):  # pragma: no cover
         return self.title
