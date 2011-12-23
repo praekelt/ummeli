@@ -14,32 +14,11 @@
             create your own employment opportunities. <LINK href="{% url about %}"><TEXT>Learn more...</TEXT></LINK>
             <br/><br/>
             {% if user.is_authorized %}
-                <TITLE>Quick links</TITLE><br/>
-                <LINK href="{% url jobs_province %}?{{uuid}}">
-                    <TEXT>Browse jobs</TEXT>
-                </LINK>
-                <br/>
-                <LINK href="{% url send %}?{{uuid}}">
-                    <TEXT>Send my CV</TEXT>
-                </LINK>
-                <br/>
-                <LINK href="{% url edit %}?{{uuid}}">
-                    <TEXT>Update my CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
-                </LINK>
-            {% else %} 
-                <TITLE>Browse Jobs</TITLE>
-                {% for province in provinces %}
-                    <LINK href="{% url jobs_list province.search_id %}?{{uuid}}">
-                        <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
-                    </LINK><br/>
-                {% endfor %}
+                <TITLE>Quick links</TITLE>
+            {% else %}
+                <TITLE>Browse jobs</TITLE>
             {% endif %}
-        </TEXT><br/>
-        {% if user.is_authorized %}
-            <TITLE>Quick links</TITLE>
-        {% else %}
-            <TITLE>Quick links</TITLE>
-        {% endif %}
+        </TEXT>
     </CONTAINER>
     <CONTAINER type="list">
     {% if user.is_authorized %}
