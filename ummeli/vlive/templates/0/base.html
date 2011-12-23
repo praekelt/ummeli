@@ -12,7 +12,7 @@
     <a name="top" id="top"></a>
     <div id="topnav"><span><a href="{% url home %}">Home</a></span>/<span><a href="{% url jobs_province %}">Jobs</a></span>
     {% if user.is_authenticated %}
-        /<span><a href="{% url logout %}">Sign Out</a></span>/<span><a href="{% url password_change %}">Change PIN</a></span>
+        /<span><a href="{% url password_change %}">Change PIN</a></span>
     {% else %}
         /<span><a href="{% url login %}?next={% url home %}">Sign In</a></span>
     {% endif %}
