@@ -11,6 +11,10 @@ def pin_required(function):
     """
     @wraps(function)
     def wrapper(request, *args, **kwargs):
+        msisdn = request.META.get('HTTP_X_UP_CALLING_LINE_ID', None)
+        if not msisdn:
+            return function(request, *args, **kwargs)
+        
         auth_backend = ModelBackend()
         if request.session.get(settings.UMMELI_PIN_SESSION_KEY):
             return function(request, *args, **kwargs)
