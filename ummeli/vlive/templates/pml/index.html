@@ -6,7 +6,7 @@
 
 {% block content %}
 <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
-<CONTAINER  type="data">        
+<CONTAINER type="data">        
     <TEXT>
         Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find jobs</TEXT></LINK>, 
             <LINK href="{% url edit %}?{{uuid}}"><TEXT>build your CV</TEXT></LINK> &amp; 
@@ -38,4 +38,13 @@
     {% endfor %}
 {% endif %}
 </CONTAINER>
+{% if not user.is_authorized %}
+<CONTAINER type="data">        
+    <TEXT>
+        <LINK href="{% url jobs_province %}?{{uuid}}">
+            <TEXT>more...</TEXT>
+        </LINK>
+    </TEXT>
+</CONTAINER>
+{% endif %}
 {% endblock %}

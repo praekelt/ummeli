@@ -39,7 +39,14 @@
             {% endif %}
     	</div>
     </div>
-    <div id="footer">&copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a>. <a href="{% url about %}">About</a>. <a href="{% url terms %}">Terms</a></div>
+    <div id="footer">
+        &copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a> . <a href="{% url about %}">About</a> . <a href="{% url terms %}">Terms</a>
+        {% if user.is_authenticated %}
+            . <a href="{% url logout %}">Sign Out</a>
+        {% else %}
+            . <a href="{% url login %}">Sign In</a>
+        {% endif %}
+    </div>
 
 </body>
 </html>
