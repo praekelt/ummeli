@@ -8,6 +8,6 @@
     <br/>
     <br/>
     {% for province in provinces %}
-    <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.category_set.count}})&rarr;</a></div>
+    <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
     {% endfor %}
 {% endblock %}

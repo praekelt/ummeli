@@ -33,7 +33,7 @@
 {% else %} 
     {% for province in provinces %}
         <LINK href="{% url jobs_list province.search_id %}?{{uuid}}">
-            <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
+            <TEXT>{{province.name}} ({{province.articles_count|add:province.userarticles_count}})</TEXT>
         </LINK><br/>
     {% endfor %}
 {% endif %}

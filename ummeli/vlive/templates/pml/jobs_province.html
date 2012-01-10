@@ -14,7 +14,7 @@ by the Ummeli community.</TEXT>
 <CONTAINER  type="list">
     {% for province in provinces %}
         <LINK href="{% url jobs_list province.search_id %}">
-            <TEXT>{{province.name}} ({{province.category_set.count}})</TEXT>
+            <TEXT>{{province.name}} ({{province.articles_count|add:province.userarticles_count}})</TEXT>
         </LINK>
     {% endfor %}
 </CONTAINER>
