@@ -22,7 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
-from django.db.models import Sum, Count
+from django.db.models import Count
 
 #imports for login
 from django.http import  HttpResponse
