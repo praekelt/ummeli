@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
+from django.db.models import Sum, Count
 
 #imports for login
 from django.http import  HttpResponse
@@ -155,12 +156,7 @@ def password_change_view(request):
 
 @cache_control(no_cache=True)
 def index(request):
-    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
-    return render(request, 'index.html', {'provinces': provinces[0:4]})
-
-@cache_control(no_cache=True)
-def home(request):
-    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
+    provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles'), userarticles_count=Count('category__user_submitted_job_articles')) if province.category_set.exists()]
     return render(request, 'index.html', {'provinces': provinces[0:4]})
 
 @login_required
@@ -201,7 +197,7 @@ def send_thanks(request):
     return redirect(reverse('home'))
 
 def jobs_province(request):
-    provinces = [province for province in Province.objects.all().order_by('name') if province.category_set.exists()]
+    provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles'), userarticles_count=Count('category__user_submitted_job_articles')) if province.category_set.exists()]
     return render(request, 'jobs_province.html', {'provinces': provinces})
 
 def jobs_list(request,  id):
