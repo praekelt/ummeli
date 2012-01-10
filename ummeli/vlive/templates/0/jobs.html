@@ -8,7 +8,7 @@
     </div>
     <strong>*** = Submitted by Ummeli user</strong><br />
     <div id="list">
-    {% for article in articles %}
+    {% for article in articles.object_list %}
         <div>
             <span class="date"><strong>{{article.date|date:'d M y'}}</strong></span> 
             <a href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
@@ -17,6 +17,23 @@
             </a>
         </div>
     {% endfor %}
+    </div>
+    <div id="topnav">
+        {% if articles.has_previous %}
+            <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |
+        {% else %}
+            <span>Previous</span> |
+        {% endif %}
+
+        <span class="current">
+            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+        </span>
+
+        {% if articles.has_next %}
+            | <span><a href="?page={{ articles.next_page_number }}">Next</a></span>
+        {% else %}
+            | <span>Next</span>
+        {% endif %}
     </div>
     <div class="more"><a href="{% url jobs_list search_id %}">&larr; Back to categories</a></div>
 {% endblock %}

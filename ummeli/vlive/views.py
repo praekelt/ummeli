@@ -23,6 +23,7 @@ from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
 from django.db.models import Count
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #imports for login
 from django.http import  HttpResponse
@@ -216,10 +217,21 @@ def jobs(request,  id,  search_id):
     [all_jobs.append(a.to_view_model()) for a in category.user_submitted_job_articles.all()]
 
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
-    articles = category.articles.all()
+    
+    paginator = Paginator(all_jobs, 15) # Show 25 contacts per page
+    page = request.GET.get('page', 'none')
+    
+    try:
+        paged_jobs = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paged_jobs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paged_jobs = paginator.page(paginator.num_pages)
 
     return render(request, 'jobs.html',
-                              {'articles': all_jobs,
+                              {'articles': paged_jobs,
                               'search_id': search_id,
                               'cat_id': id,
                               'province_name': province.name, 

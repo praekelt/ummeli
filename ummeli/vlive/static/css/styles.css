@@ -35,10 +35,12 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 /*---------------------------
 3.	Navigation
 -----------------------------*/
-.nav {width:100%; margin:0 0 10pt; clear:both; text-align:center; color:#4c6c7e;}
+.nav, .paging{width:100%; margin:0 0 10pt; clear:both; text-align:center; color:#4c6c7e;}
 	.nav a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-size:115%; font-weight:bold;} 
-  
 
+.paging {color: #999 !important;} 
+.paging .current{color: #4c6c7e}  
+.paging a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-weight:bold;} 
 /*---------------------------
 4.	Images
 -----------------------------*/
