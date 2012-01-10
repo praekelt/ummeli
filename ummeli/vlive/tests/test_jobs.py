@@ -49,8 +49,7 @@ class JobsTestCase(VLiveTestCase):
         self.assertEquals(data[1].category_set.all()[0].articles.count(),  4)
 
         resp = self.client.get(reverse('jobs_province'))
-        print resp
-        self.assertContains(resp, 'Gauteng (8)')
+        self.assertContains(resp, 'Gauteng (4)')
 
         resp = self.client.get(reverse('jobs_list', args=[1]))
         self.assertContains(resp, 'Accounts/Financial')
