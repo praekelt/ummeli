@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>View jobs</LABEL></HEADER>
+<HEADER><LABEL>{{province_name}}</LABEL></HEADER>
 <CONTAINER  type="list">
     {% for category in categories %}
         <LINK href="{% url jobs search_id category.pk %}">

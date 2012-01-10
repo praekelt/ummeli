@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>{{title}}</LABEL></HEADER>
+<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
 <CONTAINER  type="list">
     {% for article in articles %}
         <LINK href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
