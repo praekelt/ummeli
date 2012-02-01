@@ -14,3 +14,5 @@ MANIFEST.in
 /logs/*.log
 /tmp/pids/*.pid
 /ummeli/local_settings.py
+/ummeli/cover/
+/ummeli/ummeli-static/
