@@ -18,7 +18,7 @@
     <p><a href="{% url article_list %}">more...</a></p>
     
     {% if user.is_authenticated %}
-        <h4><a href="#">Quick links</a></h4>
+        <h4><em>Quick links</em></h4>
         <div class="list">
         <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
         <div class="bullet"><a href="{% url send %}">Send my CV &rarr;</a></div>
