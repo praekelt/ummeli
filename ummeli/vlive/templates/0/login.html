@@ -21,12 +21,14 @@
                 {% endfor %}
             {% endif %}
         {% endif %}
+        <div class="form-fields">
         <label for="form-username">Mobile Number</label>
         {% include "form_field_errors_snippet.html" with form_field=form.username %}
         {{form.username}}        
         <label for="form-pin">PIN</label>
         {% include "form_field_errors_snippet.html" with form_field=form.password %}
         {{form.password}}
+        </div>
 
         <input type="submit" class="btn" value="Sign In" name="submit" />
         <span><a href="{% url forgot %}">Forgot your PIN?</a></span> 
