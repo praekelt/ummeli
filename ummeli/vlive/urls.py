@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^article/', include('jmboarticles.urls')),
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^ummeli/comments/', include('jmbocomments.urls')),
+    url(r'^poll/', include('jmboarticles.poll.urls')),
 
     url(r'^edit/$', views.edit, name='edit'),
 

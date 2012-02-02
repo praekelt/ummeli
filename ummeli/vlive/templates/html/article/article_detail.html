@@ -8,8 +8,7 @@
 
 {% block content %}
 <h4><a href="{% url article_list %}">News</a></h4>
-
-<div class="article">
+<div class="article list">
     <h4><a href="{% url article_detail article.pk %}">{{ article.title }}</a></h4>
 
     <small>
@@ -51,8 +50,12 @@
 </div>
 
 {% if article.poll and article.poll.published %}
-    <h2 class="black">Poll</h2>
+<div class="poll">
+    <h4>Poll</h4>
+    <div class="list">
     {% show_poll article.poll %}
+    </div>
+</div>
 {% endif %}
 
 {% if article.video %}
@@ -153,7 +156,7 @@
                     {{ form.comment }}
                 </p>
                 <p>
-                    <input type="submit" name="post" value="Comment" />
+                    <input type="submit" name="post" value="Comment" class="btn"/>
                 </p>
             </form>
 
