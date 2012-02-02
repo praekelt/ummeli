@@ -9,7 +9,7 @@
     <div class="header">
         <a href="{% url index %}"><img src="{{ STATIC_URL }}images/mobi-logo.gif" alt="Ummeli" /></a>
     </div>
-    <div class="nav"><a href="{% url home %}">Home</a> | <a href="{% url jobs_province %}">Jobs</a>
+    <div class="nav"><a href="{% url home %}">Home</a> | <a href="{% url article_list %}">News</a> | <a href="{% url jobs_province %}">Jobs</a>
     {% if user.is_authenticated %}
         | <a href="{% url password_change %}">Change PIN</a>
     {% else %}

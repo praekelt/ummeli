@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load comments %}
+
+{% block content %}
+<div class="wrap" id="comment_form">
+
+    <form action="{% comment_form_target %}" method="post">
+        
+        {% csrf_token %}
+        <div style="display:none;">        
+            {{ form.content_type }}
+            {{ form.object_pk }}
+            {{ form.timestamp }}
+            {{ form.security_hash }}
+            {{ form.honeypot }}
+            <input type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+        </div>
+
+        <p>
+            Write your comment:
+            {% if form.comment.errors %}
+            <span style="color:red;">This field is required.</span>
+            {% endif %}
+        </p>
+        <p>{{ form.comment }}</p>
+
+        <p>
+            <input type="submit" name="post" value="Comment" />
+        </p>
+    </form>
+</div>
+{% endblock %}

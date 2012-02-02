@@ -152,6 +152,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
+    'django.contrib.comments',
     'ummeli.base',
     'ummeli.vlive',
     # Uncomment the next line to enable admin documentation:
@@ -163,6 +165,16 @@ INSTALLED_APPS = (
     'gunicorn',
     'sentry',
     'raven.contrib.django',
+    
+    #jmbo
+    'jmboarticles',
+    'jmbocomments',
+    'jmboarticles.video',
+    'jmboarticles.poll',
+    'category',
+    
+    # 3rd party
+    'ckeditor',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -216,3 +228,31 @@ BROKER_PORT = 5672
 BROKER_USER = "ummeli"
 BROKER_PASSWORD = "ummeli"
 BROKER_VHOST = "/ummeli/production"
+
+# CKEDITOR
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline',
+              '-', 'Link', 'Unlink', 'Anchor',
+              #'-', 'Format',
+              #'-', 'SpellChecker', 'Scayt',
+              #'-', 'Maximize',
+            ],
+            [      'HorizontalRule',
+              #'-', 'Table',
+              '-', 'BulletedList', 'NumberedList',
+              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+              #'-', 'SpecialChar',
+              '-', 'Source',
+              #'-', 'About',
+            ]
+        ],
+        'width': 620,
+        'height': 300,
+        'toolbarCanCollapse': False,
+    }
+}
+
+COMMENTS_APP = 'jmbocomments'

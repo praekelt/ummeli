@@ -22,3 +22,9 @@ lxml
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
 -e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
 django-sentry
+-e git+git://github.com/praekelt/jmbo-articles.git@develop#egg=jmbo-articles
+-e git+git://github.com/praekelt/jmbo-comments.git@develop#egg=jmbo-comments
+django-category==0.0.3
+-e git+https://github.com/dwaiter/django-ckeditor.git#egg=django_ckeditor-dev
+django-dirtyfields
+pillow

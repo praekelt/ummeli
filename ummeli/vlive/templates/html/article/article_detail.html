@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% load poll_tags comments %}
+
+
+{% block title %}: {{ article.title }}{% endblock %}
+
+
+{% block content %}
+<h4><a href="{% url article_list %}">News</a></h4>
+
+<div class="article">
+    <h4><a href="{% url article_detail article.pk %}">{{ article.title }}</a></h4>
+
+    <small>
+        {{ article.updated|date:"D, j M Y, H:i" }} //
+        <a href="#comment_list">
+        	{{ comment_count.count }} comment{{ comment_count|pluralize }}
+        </a><br />
+        {{ article.like_count }} Like{{ article.like_count|pluralize }}
+
+        {% if user.is_authenticated %}
+            <a href="like/">+Like</a>
+        {% endif %}
+    </small>
+</div>
+
+<div class="wrap">
+    {{ article.content|safe }}
+
+    {% if article.linked_article or article.linked_page %}
+        <strong>See also:</strong>
+        <ul>
+        {% if article.linked_article %}
+            <li>
+                <a href="{% url article_detail article.linked_article.pk %}">
+                    {{ article.linked_article.title }}
+                </a>
+            </li>
+        {% endif %}
+
+        {% if article.linked_page %}
+            <li>
+                <a href="{{ article.linked_page.url }}">
+                    {{ article.linked_page.title }}
+                </a>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
+</div>
+
+{% if article.poll and article.poll.published %}
+    <h2 class="black">Poll</h2>
+    {% show_poll article.poll %}
+{% endif %}
+
+{% if article.video %}
+    <h2 class="black">Video</h2>
+    {% with article.video as video %}
+    <a href="{{video.video.url}}">
+        <img src="{{video.thumbnail.url}}">
+    </a>
+    {% endwith %}
+{% endif %}
+
+
+<h4 id="comment_list">{{ comment_count }} comment{{ comment_count|pluralize }}</h4>
+
+<div class="comment_list">
+    {% for comment in comment_list.object_list %}
+        <div id="c{{ comment.id }}">
+            <div class="t">
+                <!-- link to user profile -->
+                <a href="#">
+                    <strong>
+                        {% if comment.user.get_full_name %}
+                            {{ comment.user.get_full_name }}
+                        {% else %}
+                            Anon.
+                        {% endif %}
+                    </strong>
+                </a> -
+
+                {{ comment.submit_date|date:"D, j M Y, H:i" }}
+            </div>
+
+            <div>{% spaceless %}
+                {% if comment.is_community_moderated %}
+                    <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
+                {% else %}
+                    {% if comment.is_moderated %}
+                        <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
+                    {% else %}
+                        {{ comment.comment }}
+                    {% endif %}
+                {% endif %}{% endspaceless %}
+            </div>
+
+            <div class="b">
+                <span>
+                    {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
+                    {% if user.is_authenticated %}
+                        <a href="{% url comment_like comment.pk %}">+Like</a>
+                    {% endif %}
+                </span>
+                <span class="r">
+                    {% if user.is_authenticated %}
+                        <a href="{% url comment_flag comment.pk %}">Report</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="wrap pagination">
+    {% if comment_list.has_next %}
+        <a href="{% url article_detail article.pk comment_list.next_page_number %}">&larr; Newer comments</a>
+    {% endif %}
+    <span class="r">
+    {% if comment_list.has_previous %}
+        <a href="{% url article_detail article.pk comment_list.previous_page_number %}">Older Comments &rarr;</a>
+    {% endif %}
+    </span>
+</div>
+
+
+
+
+
+
+<div class="wrap" id="comment_form">
+    {% if article.comments_enabled %}
+        {% if user.is_authenticated %}
+
+            {% get_comment_form for article as form %}
+
+            <form action="{% comment_form_target %}" method="post">
+                {% csrf_token %}
+                <div style="display:none;">
+                    {{ form.content_type }}
+                    {{ form.object_pk }}
+                    {{ form.timestamp }}
+                    {{ form.security_hash }}
+                    {{ form.honeypot }}
+                    <input type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+                </div>
+
+                <p>
+                    Write your comment:
+                    <br/>
+                    {{ form.comment }}
+                </p>
+                <p>
+                    <input type="submit" name="post" value="Comment" />
+                </p>
+            </form>
+
+        {% else %}
+            <p><a href="{% url login %}">Sign in</a> or <a href="{% url register %}">register</a> to comment.</p>
+        {% endif %}
+    {% else %}
+        <p><em>Comments are closed.</em></p>
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+{% endblock %}

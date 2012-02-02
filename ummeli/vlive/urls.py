@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 from ummeli.vlive import views, cv_views
 from ummeli.vlive.utils import pin_required
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,11 @@ urlpatterns = patterns('',
     url(r'^about/$', views.about, name = 'about'),
     url(r'^terms/$', views.terms, name = 'terms'),
     url(r'^contactsupport/$', views.contact_support, name = 'contactsupport'),
+    
+    #Ummeli 2.0
+    url(r'^article/', include('jmboarticles.urls')),
+    url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^ummeli/comments/', include('jmbocomments.urls')),
 
     url(r'^edit/$', views.edit, name='edit'),
 

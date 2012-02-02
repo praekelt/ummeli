@@ -1,17 +1,36 @@
 {% extends "base.html" %}
 
+{% load article_tags %}
+
 {% block content %}
     <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url edit %}">build your CV</a> &amp; create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
+    <h4><a href="{% url article_list %}">News</a></h4>
+    {% get_articles 4 "article_list" %}
+    <div class="list">
+       {% for article in article_list %}
+        <div>
+            <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
+            <br/>
+            <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+        </div>
+        {% endfor %}
+    </div>
+    <p><a href="{% url article_list %}">more...</a></p>
+    
     {% if user.is_authenticated %}
-        <h4>Quick links</h4>
+        <h4><a href="#">Quick links</a></h4>
+        <div class="list">
         <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
         <div class="bullet"><a href="{% url send %}">Send my CV &rarr;</a></div>
         <div class="bullet"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
+        </div>
     {% else %} 
-        <h3>Browse Jobs</h3>
+        <h4><a href="{% url jobs_province %}">Browse Jobs</a></h4>
+        <div class="list">
         {% for province in provinces %}
             <div class="bullet"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
         {% endfor %}
+        </div>
         <div><a href="{% url jobs_province %}">more...</a></div>
     {% endif %}
 {% endblock %}
