@@ -152,8 +152,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.flatpages',
-    'django.contrib.comments',
     'ummeli.base',
     'ummeli.vlive',
     # Uncomment the next line to enable admin documentation:
@@ -165,6 +163,10 @@ INSTALLED_APPS = (
     'gunicorn',
     'sentry',
     'raven.contrib.django',
+    
+    #ummeli 2.0
+    'django.contrib.flatpages',
+    'django.contrib.comments',
     
     #jmbo
     'jmboarticles',

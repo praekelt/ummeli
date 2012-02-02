@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="h2">News</div>
+    {% for article in article_list %}
+    <div class="article">
+    <div>
+        <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
+    </div>
+    <span class="byline news">
+        <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+    </span>
+    </div>
+    {% endfor %}
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="{% url article_list page_obj.previous_page_number %}">
+        &lt; Newer articles
+    </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a href="{% url article_list page_obj.next_page_number %}">
+        Older articles &gt;
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
