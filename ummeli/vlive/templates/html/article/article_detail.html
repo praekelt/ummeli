@@ -59,15 +59,14 @@
 {% endif %}
 
 {% if article.video %}
-    <h2 class="black">Video</h2>
+    <h4 class="black">Video</h4>
     {% with article.video as video %}
     <a href="{{video.video.url}}">
         <img src="{{video.thumbnail.url}}">
     </a>
     {% endwith %}
+    <p></p>
 {% endif %}
-
-
 <h4 id="comment_list">{{ comment_count }} comment{{ comment_count|pluralize }}</h4>
 
 <div class="comment_list">
@@ -117,6 +116,8 @@
     {% endfor %}
 </div>
 
+<br/>
+
 <div class="wrap pagination">
     {% if comment_list.has_next %}
         <a href="{% url article_detail article.pk comment_list.next_page_number %}">&larr; Newer comments</a>
@@ -129,7 +130,7 @@
 </div>
 
 
-
+<br/>
 
 
 
