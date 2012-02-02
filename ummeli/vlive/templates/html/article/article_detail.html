@@ -29,23 +29,24 @@
 
     {% if article.linked_article or article.linked_page %}
         <strong>See also:</strong>
-        <ul>
+        <div>
         {% if article.linked_article %}
-            <li>
+            <div class="bullet">
                 <a href="{% url article_detail article.linked_article.pk %}">
                     {{ article.linked_article.title }}
                 </a>
-            </li>
+            </div>
         {% endif %}
 
         {% if article.linked_page %}
-            <li>
+            <div class="bullet">
                 <a href="{{ article.linked_page.url }}">
                     {{ article.linked_page.title }}
                 </a>
-            </li>
+            </div>
         {% endif %}
-        </ul>
+        </div>
+        <br/>
     {% endif %}
 </div>
 
@@ -154,7 +155,9 @@
                 <p>
                     Write your comment:
                     <br/>
+                    <div class="form-fields">
                     {{ form.comment }}
+                    </div>
                 </p>
                 <p>
                     <input type="submit" name="post" value="Comment" class="btn"/>
