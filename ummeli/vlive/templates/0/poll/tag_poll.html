@@ -1,0 +1,30 @@
+{% load poll_tags %}
+<em>{{ poll.question }}</em>
+
+{% if poll|has_user_voted:user or show_results %}
+    <div class="wrap">
+        {% get_poll_results poll %}
+        {% for c in poll_result_list %}
+            <p>
+                {{ c.choice }}<br />
+                <b>{{ c.percentage }}%</b>
+            </p>
+        {% endfor %}
+    </div>
+{% else %}
+    <form method="post" action="{% url poll_vote poll.pk %}">
+        {% csrf_token %}
+
+        {% for c in poll.choice_set.all %}
+        <input style="display: inline" type="radio" name="choice_pk" value="{{ c.pk }}" /> {{ c.choice }}<br />
+        {% endfor %}
+
+        <p>
+        {% if user.is_authenticated %}
+            <input type="submit" value="Cast vote" class="btn"/>
+        {% else %}
+            <p><a href="{% url login %}">Sign in</a> or <a href="{% url register %}">register</a> to vote.</p>
+        {% endif %}
+        </p>
+    </form>
+{% endif %}

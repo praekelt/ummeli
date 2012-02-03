@@ -32,12 +32,12 @@
     </select>
 
     <label >Job Title*</label>
-    <input name="title" type="text"/>
+    <input name="title" type="text" class="txt"/>
     <label>Description*</label>
     <div>Please provide as much information about the job as possible including 
     contact details.
     </div>
-    <textarea id="id_text" rows="10" cols="40" name="text"></textarea>
+    <textarea id="id_text" rows="10" name="text" class="txt"></textarea>
     <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     <input type='submit' value='Save' class="btn"/>
     </fieldset> 

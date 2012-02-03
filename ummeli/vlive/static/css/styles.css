@@ -77,7 +77,7 @@ input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; backgro
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .bullet {padding:2pt 0 2pt 10pt; background:url(../images/bullet.gif) 0 5pt no-repeat;}      
-.list {border-top:2px dotted #999; clear:both; margin:0; padding-top:5px; width:100%; line-height:20px;overflow: hidden}
+.list, .comment_list {border-top:2px dotted #999; clear:both; margin:0; padding-top:5px; width:100%; line-height:20px;overflow: hidden}
 .success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
 .warning{background-color:#c00;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
 .success a,.warning a{color:#fff;text-decoration:underline}
@@ -87,5 +87,25 @@ input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; backgro
 -----------------------------*/
 .footer {clear:both; padding:10pt 0; background:#d9dcde;}
 .footer p {}
+
+/*---------------------------
+9.	Comments
+-----------------------------*/
+.comment_list .t {clear:both; background:#d9dcde;}
+.comment_list h4 a{color: #C36E01;}
+.comment_list .b {clear:both; background:#eaedef;}
+.comment_list .r {float: right;}
+.comment_list .b a {color: #20bcbe;}
+
+/*---------------------------
+10.	Article
+-----------------------------*/
+.article h4 a{color: #C36E01;}
+
+/*---------------------------
+11.	Poll
+-----------------------------*/
+.poll .q {color: #C36E01;}
+
 
 

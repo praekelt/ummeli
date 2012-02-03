@@ -1,0 +1,11 @@
+{% extends "base.xml" %}
+
+{% load poll_tags %}
+
+{% block title %}: {{ poll.question }}{% endblock %}
+
+{% block content %}
+    <MODULE backgroundColor="false" palette="MiDove">
+        <HEADER><LABEL>Poll</LABEL></HEADER>
+        {% show_poll poll %}
+{% endblock %}

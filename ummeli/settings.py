@@ -79,7 +79,7 @@ MEDIA_ROOT = abspath('media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -168,6 +168,20 @@ INSTALLED_APPS = (
     'gunicorn',
     'sentry',
     'raven.contrib.django',
+    
+    #ummeli 2.0
+    'django.contrib.flatpages',
+    'django.contrib.comments',
+    
+    #jmbo
+    'jmboarticles',
+    'jmbocomments',
+    'jmboarticles.video',
+    'jmboarticles.poll',
+    'category',
+    
+    # 3rd party
+    'ckeditor',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -221,3 +235,31 @@ BROKER_PORT = 5672
 BROKER_USER = "ummeli"
 BROKER_PASSWORD = "ummeli"
 BROKER_VHOST = "/ummeli/production"
+
+# CKEDITOR
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline',
+              '-', 'Link', 'Unlink', 'Anchor',
+              #'-', 'Format',
+              #'-', 'SpellChecker', 'Scayt',
+              #'-', 'Maximize',
+            ],
+            [      'HorizontalRule',
+              #'-', 'Table',
+              '-', 'BulletedList', 'NumberedList',
+              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+              #'-', 'SpecialChar',
+              '-', 'Source',
+              #'-', 'About',
+            ]
+        ],
+        'width': 620,
+        'height': 300,
+        'toolbarCanCollapse': False,
+    }
+}
+
+COMMENTS_APP = 'jmbocomments'
