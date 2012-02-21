@@ -3,6 +3,9 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
     UserSubmittedJobArticle)
 from django.contrib import admin
 
+class UserSubmittedJobArticleAdmin(admin.ModelAdmin):
+    search_fields = ('title', 'text',)
+
 admin.site.register(CurriculumVitae)
 admin.site.register(Certificate)
 admin.site.register(Language)
@@ -11,4 +14,4 @@ admin.site.register(Reference)
 admin.site.register(Article)
 admin.site.register(Province)
 admin.site.register(Category)
-admin.site.register(UserSubmittedJobArticle)
+admin.site.register(UserSubmittedJobArticle, UserSubmittedJobArticleAdmin)
