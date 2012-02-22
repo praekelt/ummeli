@@ -3,7 +3,7 @@
 {% load article_tags %}
 
 {% block content %}
-    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url edit %}">build your CV</a> &amp; create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
+    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know to create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
     <h4><a href="{% url article_list %}">News</a></h4>
     {% get_articles 4 "article_list" %}
     <div class="list">
@@ -21,8 +21,7 @@
         <h4><em>Quick links</em></h4>
         <div class="list">
         <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
-        <div class="bullet"><a href="{% url send %}">Send my CV &rarr;</a></div>
-        <div class="bullet"><a href="{% url edit %}">Update my CV &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
+        <div class="bullet"><a href="{% url profile %}">Update my profile &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
         </div>
     {% else %} 
         <h4><a href="{% url jobs_province %}">Browse Jobs</a></h4>

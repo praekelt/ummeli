@@ -1,27 +1,49 @@
+from django.contrib.auth.models import User
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, ReferenceForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
-from django.views.decorators.cache import cache_control
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                                     Reference,  CurriculumVitae)
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
-
-from ummeli.vlive.views import edit as edit_view
 from ummeli.vlive.utils import pin_required
 
-@cache_control(no_cache=True)
+@login_required
+@pin_required
+def profile(request):
+    return render(request, 'profile/profile.html')
+
+@login_required
+@pin_required
+def profile_view(request, pk):
+    user = User.objects.get(pk=pk)
+    return render(request, 'profile/profile_view.html', 
+                {'other_user_profile': user.get_profile(),
+                 'other_user_pk':user.pk
+                 })
+
+@login_required
+@pin_required
+def edit_basic(request):
+    return render(request, 'profile/profile_personal_details.html')
+
+
+@login_required
+@pin_required
+def edit_personal(request):
+    return render(request, 'profile/profile_personal_details.html')
+
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
     if request.method == 'POST':
         cancel = request.POST.get('cancel', None)
         if cancel:
-            return edit_view(request)
+            return edit_basic(request)
         else:
             form = model_form(request.POST, instance=cv)
             if form.is_valid():
@@ -30,26 +52,23 @@ def process_edit_request(request, model_form, page_title):
     else:
         form = model_form(instance=cv)
 
-    return render(request, 'edit_details.html',
+    return render(request, 'profile/edit_details.html',
                             {'form': form, 'page_title': page_title})
 
 @login_required
 @pin_required
-@cache_control(no_cache=True)
 def personal_details(request):
     return process_edit_request(request, PersonalDetailsForm,
                                                 'Personal details')
 
 @login_required
 @pin_required
-@cache_control(no_cache=True)
 def contact_details(request):
     return process_edit_request(request, ContactDetailsForm,
                                                 'Contact details')
 
 @login_required
 @pin_required
-@cache_control(no_cache=True)
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm,
                                                 'Education details')
@@ -57,7 +76,7 @@ def education_details(request):
 class PersonalDetailsEditView(UpdateView):
     model = CurriculumVitae
     form_class = PersonalDetailsForm
-    template_name = 'personal_details.html'
+    template_name = 'profile/personal_details.html'
 
     def get_success_url(self):
         return reverse("edit")
@@ -77,7 +96,7 @@ class CertificateListView(ListView):
         return self.request.user.get_profile().certificates.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'list_objects.html'
+        self.template_name = 'profile/list_objects.html'
         
         return super(CertificateListView, self).render_to_response(context, **kwargs)
 
@@ -96,7 +115,7 @@ class CertificateEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(CertificateEditView, self).render_to_response(context, **kwargs)
 
 class CertificateCreateView(CreateView):
@@ -119,7 +138,7 @@ class CertificateCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(CertificateCreateView, self).render_to_response(context, **kwargs)
 
 class CertificateDeleteView(DeleteView):
@@ -135,7 +154,7 @@ class CertificateDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'delete.html'
+        self.template_name = 'profile/delete.html'
         
         return super(CertificateDeleteView, self).render_to_response(context, **kwargs)
 
@@ -151,7 +170,7 @@ class WorkExperienceListView(ListView):
         return self.request.user.get_profile().work_experiences.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'list_objects.html'
+        self.template_name = 'profile/list_objects.html'
         return super(WorkExperienceListView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceEditView(UpdateView):
@@ -169,7 +188,7 @@ class WorkExperienceEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(WorkExperienceEditView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceCreateView(CreateView):
@@ -192,7 +211,7 @@ class WorkExperienceCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(WorkExperienceCreateView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceDeleteView(DeleteView):
@@ -208,7 +227,7 @@ class WorkExperienceDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'delete.html'
+        self.template_name = 'profile/delete.html'
         return super(WorkExperienceDeleteView, self).render_to_response(context, **kwargs)
 
 class LanguageListView(ListView):
@@ -223,7 +242,7 @@ class LanguageListView(ListView):
         return self.request.user.get_profile().languages.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'list_objects.html'
+        self.template_name = 'profile/list_objects.html'
         return super(LanguageListView, self).render_to_response(context, **kwargs)
 
 
@@ -242,7 +261,7 @@ class LanguageEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(LanguageEditView, self).render_to_response(context, **kwargs)
 
 
@@ -266,7 +285,7 @@ class LanguageCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(LanguageCreateView, self).render_to_response(context, **kwargs)
 
 
@@ -283,7 +302,7 @@ class LanguageDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'delete.html'
+        self.template_name = 'profile/delete.html'
         return super(LanguageDeleteView, self).render_to_response(context, **kwargs)
 
 class ReferenceListView(ListView):
@@ -298,7 +317,7 @@ class ReferenceListView(ListView):
         return self.request.user.get_profile().references.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'list_objects.html'
+        self.template_name = 'profile/list_objects.html'
         return super(ReferenceListView, self).render_to_response(context, **kwargs)
 
 
@@ -317,7 +336,7 @@ class ReferenceEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(ReferenceEditView, self).render_to_response(context, **kwargs)
 
 
@@ -341,7 +360,7 @@ class ReferenceCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'edit_object.html'
+        self.template_name = 'profile/edit_object.html'
         return super(ReferenceCreateView, self).render_to_response(context, **kwargs)
 
 
@@ -358,5 +377,5 @@ class ReferenceDeleteView(DeleteView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'delete.html'
+        self.template_name = 'profile/delete.html'
         return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)

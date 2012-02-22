@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if user.pk == other_user_pk %}
+        <p><a href="{% url profile %}">[edit your profile]</a></p>
+    {% endif %}
+    <h4><a href="{% url profile %}">{{other_user_profile.fullname}}</a></h4>
+    <a href="#">Connections (25)</a></br/>
+    <a href="#">People worked with (5)</a></br/>
+    <br/>
+    <h4>Contact details</h4>
+    <div class="list">
+        {% if other_user_profile.house_number or other_user_profile.house_number or other_user_profile.house_number %}
+        <label>
+            {{other_user_profile.house_number}}, 
+            {{other_user_profile.street_name}},
+            {{other_user_profile.location}}
+        </label><br/>
+        {% endif %}
+        {% if other_user_profile.telephone_number %}
+        <label>[tel] </label>{{other_user_profile.telephone_number}}<br/>
+        {% endif %}
+        {% if other_user_profile.email %}
+        <label>[email] </label>{{other_user_profile.email}}
+        {% endif %}
+    </div>
+    <br/>
+    
+    <h4>Skills</h4>
+    <div class="list">
+        <div class="bullet">Skill 1</div>
+        <div class="bullet">Skill 2</div>
+        <div class="bullet">Skill 3</div>
+    </div>
+    <br/>
+
+    {% if other_user_profile.work_experiences.all %}
+    <h4>Work experience</h4>
+    <div class="list">
+        {% for exp in other_user_profile.work_experiences.all %}
+        <div class="bullet">{{exp}}</div>
+        {% endfor %}            
+    </div>
+    <br/>
+    {% endif %}
+
+    {% if other_user_profile.certificates.all %}
+    <h4>Qualifications</h4>
+    <div class="list">
+        {% for c in other_user_profile.certificates.all %}
+        <div class="bullet">{{c}}</div>
+        {% endfor %}
+    </div>
+    <br/>
+    {% endif %}
+{% endblock %}

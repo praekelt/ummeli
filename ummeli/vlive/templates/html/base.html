@@ -32,7 +32,7 @@
     <div class="bullet"><a href="{% url home %}">Home</a></div>
     <div class="bullet"><a href="{% url jobs_province %}">Browse jobs</a></div>
     <div class="bullet"><a href="{% url jobs_create %}">Add a job</a></div>
-    <div class="bullet"><a href="{% url edit %}">My CV</a></div>
+    <div class="bullet"><a href="{% url profile %}">My Profile</a></div>
     {% if user.is_authenticated %}
     <div class="bullet"><a href="{% url password_change %}?{{uuid}}">Change PIN</a></div>
     {% endif %}

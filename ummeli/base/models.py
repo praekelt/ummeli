@@ -40,6 +40,7 @@ class UserSubmittedJobArticle(models.Model):
                 self.text = user_article.text
                 self.date = user_article.date
                 self.user_submitted = True
+                self.user = user_article.user
         return UserSubmittedJobArticleViewModel(self)
 
 
