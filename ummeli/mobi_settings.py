@@ -32,16 +32,34 @@ ADMINS = ()
 SENTRY_ADMINS = ('dev@praekeltfoundation.org',)
 MANAGERS = SENTRY_ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ummeli',    # Or path to database file if using sqlite3.
-        'USER': 'ummeli',
-        'PASSWORD': 'ummeli',
-        'HOST': 'localhost',
-        'PORT': '',
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'ummeli',    # Or path to database file if using sqlite3.
+            'USER': 'ummeli',
+            'PASSWORD': 'ummeli',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
+else:
+    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': 'ummeli.db','USER': '','PASSWORD': '','HOST': '','PORT': '',}}
+
+NEO4J_DATABASES = {
+    'default' : {
+        'HOST':'localhost',
+        'PORT':7474,
+        'ENDPOINT':'/db/data'
     }
 }
+
+_data_path = os.path.join(PROJECT_ROOT, 'graphing_data')
+if not os.path.exists(_data_path):
+    os.mkdir(_data_path)
+    
+NEO4J_RESOURCE_URI = abspath(_data_path)
+NEO4J_OPTIONS = {}
 
 AUTHENTICATION_BACKENDS = (
     # FOR PML ONLY
