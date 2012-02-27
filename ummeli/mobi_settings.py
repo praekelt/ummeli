@@ -60,6 +60,7 @@ if not os.path.exists(_data_path):
     
 NEO4J_RESOURCE_URI = abspath(_data_path)
 NEO4J_OPTIONS = {}
+NEO4J_DELETE_KEY = 'ummeli-secret-key'
 
 AUTHENTICATION_BACKENDS = (
     # FOR PML ONLY

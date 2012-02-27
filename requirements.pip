@@ -31,3 +31,4 @@ pillow
 http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
 neo4jrestclient
 neo4django
+requests
