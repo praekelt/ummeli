@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4><a href="{% url profile_view user_node.user_id %}">{{ other_user_node.name }}</a> &raquo; connections</h4>
+        {% for node, is_connected in connections %}
+            <a href='{% url profile_view node.user_id %}'>&rarr; {{ node.name }}</a>
+            {% if node.user_id == user.pk %}
+                <strong>(you)</strong>
+            {% else %}
+                {% if not is_connected %}
+                    <a href="{% url add_connection node.user_id %}?next={{request.path}}">[+ connect]</a>
+                {% endif %}
+            {% endif %}
+            <br/>
+        {% endfor %}
+        <br/>
+        <div class="more"><a href="{% url profile_view user_node.user_id %}">&larr; Back</a></div>
+    </form>
+{% endblock %}

@@ -5,33 +5,77 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                                     Reference,  CurriculumVitae)
-
-from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
+from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
+from ummeli.graphing.utils import add_connection_for_user
 
 @login_required
 @pin_required
 def profile(request):
-    return render(request, 'profile/profile.html')
+    user_node = Person.get_and_update(request.user)
+    num_connections = len(user_node.connections())
+    return render(request, 'profile/profile.html', {'num_connections': num_connections})
 
 @login_required
 @pin_required
 def profile_view(request, pk):
-    user = User.objects.get(pk=pk)
+    user_node = Person.get_and_update(request.user)
+    other_user = get_object_or_404(User, pk=pk)
+    other_user_node = Person.get_and_update(other_user)
+    num_connections = len(other_user_node.connections())
     return render(request, 'profile/profile_view.html', 
-                {'other_user_profile': user.get_profile(),
-                 'other_user_pk':user.pk
+                {'other_user_profile': other_user.get_profile(),
+                 'other_user_pk':other_user.pk,
+                 'num_connections': num_connections,
+                 'connected_to_user': user_node.is_connected_to(other_user_node),
+                 'is_self': int(pk) == request.user.pk
                  })
+
+@login_required
+@pin_required
+def connections(request, user_id):
+    user_node = Person.get_and_update(request.user)
+    other_user_node = Person.get_and_update(User.objects.get(pk=user_id))
+    connections = [(node, user_node.is_connected_to(node)) \
+                   for node in other_user_node.connections()]
+    return render(request, 'profile/connections.html', 
+                {'user_node': user_node,
+                 'other_user_node': other_user_node,
+                 'connections': connections,
+                 })
+
+@login_required
+@pin_required
+def add_connection(request, user_id):
+    if request.user.pk == user_id: #don't allow user to add themself as a connection
+        redirect(reverse('profile'))
+    
+    user = get_object_or_404(User, pk = user_id)
+    
+    if request.method == 'POST':        
+        add_connection_for_user(request.user, user)
+        
+        redirect_to = request.POST.get('next', reverse('profile'))
+        return redirect(redirect_to)
+    
+    next = request.GET.get('next', reverse('profile'))
+    return render(request, 'profile/add_connection.html',
+                            {'other_user_profile': user.get_profile(),
+                             'other_user_pk':user.pk,
+                             'next':next})
+
+
 
 @login_required
 @pin_required
 def edit_basic(request):
     return render(request, 'profile/profile_personal_details.html')
-
 
 @login_required
 @pin_required
@@ -79,7 +123,7 @@ class PersonalDetailsEditView(UpdateView):
     template_name = 'profile/personal_details.html'
 
     def get_success_url(self):
-        return reverse("edit")
+        return reverse("edit_basic")
         
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()
