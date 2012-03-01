@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{{title|default:"Ummeli"}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/styles.css" />
+    </head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <a href="{% url index %}"><img src="{{ STATIC_URL }}images/mobi-logo.gif" alt="Ummeli" /></a>
+    </div>
+    <div class="nav"><a href="{% url home %}">Home</a> | <a href="{% url article_list %}">News</a> | <a href="{% url jobs_province %}">Jobs</a>
+    {% if user.is_authenticated %}
+        | <a href="{% url password_change %}">Change PIN</a>
+    {% else %}
+        | <a href="{% url login %}?next={% url home %}">Sign In</a>
+    {% endif %}
+    </div>
+    <div class="ruler"></div>
+    {% if messages %}
+    <div class="success">
+        {% for message in messages %}
+        {{ message }} <br/>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    <br/>
+    <div class="ruler"></div>
+    <div class="bullet"><a href="{% url home %}">Home</a></div>
+    <div class="bullet"><a href="{% url jobs_province %}">Browse jobs</a></div>
+    <div class="bullet"><a href="{% url jobs_create %}">Add a job</a></div>
+    <div class="bullet"><a href="{% url edit %}">My CV</a></div>
+    {% if user.is_authenticated %}
+    <div class="bullet"><a href="{% url password_change %}?{{uuid}}">Change PIN</a></div>
+    {% endif %}
+    <br/>
+</div>
+<div class="footer">
+    <div class="wrapper">
+        <div class="nav">
+    &copy; {% now "Y" %} Ummeli
+    <a href="{% url home %}?{{uuid}}">Home</a> | 
+    <a href="{% url about %}">About</a> | 
+    <a href="{% url terms %}">Terms</a> | 
+    {% if user.is_authenticated %}
+    <a href="{% url logout %}">Sign Out</a>
+    {% else %}
+    <a href="{% url login %}?next={{request.path}}">Sign In</a>
+    {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

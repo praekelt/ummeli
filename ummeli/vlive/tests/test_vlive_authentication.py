@@ -2,140 +2,194 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.backends import ModelBackend
+from django.conf import settings
+from django.core import mail
 
+from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
+from ummeli.vlive.utils import phone_number_to_international
 import urllib
 
-class VliveAuthenticationTestCase(TestCase):
-    
+class VliveAuthenticationTestCase(VLiveTestCase):
+
     def setUp(self):
-        self.client = Client()
-    
-    def tearDown(self):
-        pass
+        self.msisdn = '27123456789'
+        self.pin = '1234'
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
+        self.client.login(remote_user=self.msisdn)
+        settings.CELERY_ALWAYS_EAGER = True
         
+    def tearDown(self):
+        settings.CELERY_ALWAYS_EAGER = settings.DEBUG
+
     def test_index_page(self):
-        username = 'user'
-        password = 'password'
-        user = User.objects.create_user(username, '%s@domain.com' % username, 
-                                        password)
-        self.client.login(username=username, password=password)
+        self.client.login(username=self.msisdn, password=self.pin)
         resp = self.client.get(reverse('index'))
          #  there shouldn't be a Location header as this would mean a redirect
          #  to a login URL
-        self.assertEquals(resp.get('Location', None), None)
+        self.assertFalse(resp.get('Location', None))
         self.assertEquals(resp.status_code, 200)
-        
+
     def test_login_view(self):
-        msisdn = '0123456789'
-        password = 'password'
-        user = User.objects.create_user(msisdn, '%s@domain.com' % msisdn, 
-                                        password)
-        resp = self.client.get(reverse('login'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
+            'new_password1': self.pin,
+            'new_password2': self.pin,
+        })
+        self.assertContains(resp, 'Submitted successfully')
+
+        resp = self.client.get(reverse('logout'))
+        self.assertContains(resp, 'Submitted successfully')
+
+        resp = self.client.get(reverse('login'), )
         self.assertEquals(resp.status_code, 200)
-        
-        resp = self.client.get(reverse('login'), 
-                                {'username': msisdn, 'password': password, 
-                                '_action': 'POST'}, 
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
+        self.assertContains(resp, 'Enter PIN to sign in.')
+
+        resp = self.client.post(reverse('login'), {
+            'username': self.msisdn,
+            'password': self.pin,
+        })
+
         self.assertEquals(resp.status_code, 200)  # redirect to index
-        self.assertContains(resp, 'You have been logged in')
-        
-        resp = self.client.get(reverse('login'), 
-                               {'password': 'wrong_pin', '_action': 'POST'},
-                                HTTP_X_UP_CALLING_LINE_ID=msisdn)
-        
-        self.assertEquals(resp.status_code, 200)      
+        self.assertContains(resp, 'Submitted successfully')
+
+        resp = self.client.post(reverse('login'),{
+            'password': 'wrong_pin',
+        })
+
+        self.assertEquals(resp.status_code, 200)
         self.assertContains(resp, 'Sign in failed')
 
     def test_basic_registration_flow(self):
-        msisdn = '0123456789'
-        password = 'password'
-        
-        resp = self.client.get(reverse('index'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
-        #self.assertEquals(resp.status_code, 302)  # redirect to login
-        #self.assertEquals(resp.get('Location', None), 
-        #                'http://testserver/vlive/login?next=/vlive/')
-        
-        resp = self.client.get(reverse('login'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
+
+        resp = self.client.get(reverse('login'))
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'Click here to create profile.')
-        
-        resp = self.client.get(reverse('register'), HTTP_X_UP_CALLING_LINE_ID=msisdn)
+        self.assertContains(resp, 'create a PIN')
+
+        resp = self.client.get(reverse('register'))
         self.assertEquals(resp.status_code, 200)
-        
-        self.assertContains(resp, 'Create pin for %s' % (msisdn))
-        
-        resp = self.client.get(reverse('register'),
-                                {'username': msisdn, 'password1': password, 
-                                'password2': password,  '_action': 'POST'},  
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        self.assertContains(resp, 'Create PIN for %s' % (self.msisdn))
+
+        resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
+            'new_password1': self.pin,
+            'new_password2': self.pin,
+        })
+
+        # check that the PIN has been set and that we can now authenticate
+        # with the ModelBackend using the msisdn and pin
+        user = ModelBackend().authenticate(username=self.msisdn, password=self.pin)
+        self.assertEqual(user.username, self.msisdn)
         self.assertEquals(resp.status_code, 200)
-        self.assertContains(resp, 'You are now registered.')
-        
+        self.assertContains(resp, 'Submitted successfully')
+        # ensure the session's pin has been set
+        self.assertTrue(self.client.session[settings.UMMELI_PIN_SESSION_KEY])
+
         #test automatic login
         resp = self.client.get(reverse('edit'))
         self.assertContains(resp, 'Personal')
 
-        resp = self.client.get(reverse('logout'), 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertContains(resp,  'You have been logged out')
+        resp = self.client.get(reverse('logout'))
+        self.assertContains(resp,  'Submitted successfully')
+        # ensure the session's pin has been cleared
+        self.assertNotIn(settings.UMMELI_PIN_SESSION_KEY, self.client.session)
+        
+        resp = self.client.get(reverse('login'))
+        self.assertContains(resp, 'Enter PIN to sign in.')
+        self.assertContains(resp, 'Forgot your PIN?')
 
     def test_registration_invalid_pin(self):
         msisdn = '0123456789'
         password = 'password'
-        
-        resp = self.client.get(reverse('register'), 
-                               {'username': msisdn, 'password1': password, 
-                               'password2': 'wrong',  '_action': 'POST'}, 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertContains(resp, 'Pin codes don&apos;t match.')
-        
+
+        resp = self.client.post(reverse('register'), {
+            'username': msisdn,
+            'password1': password,
+            'password2': 'wrong',
+        })
+        self.assertContains(resp, 'PIN codes don&apos;t match.')
+
     def test_forgot_pin(self):
-        msisdn = '0123456789'
-        password = 'password'
-        
+
         #register user
-        resp = self.client.get(reverse('register'),
-                                {'username': msisdn, 'password1': password, 
-                                'password2': password,  '_action': 'POST'},  
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
-        resp = self.client.get(reverse('forgot'), HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertContains(resp, 'Pin will be sent to %s.' % msisdn)
-        
-        resp = self.client.get(reverse('forgot'), {'_action': 'POST'}, 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertContains(resp, 'Your new pin has been sent')
-        
+        resp = self.client.post(reverse('register'),{
+            'username': self.msisdn,
+            'password1': self.pin,
+            'password2': self.pin,
+        })
+
+        resp = self.client.get(reverse('forgot'))
+        self.assertContains(resp, 'PIN will be sent to %s.' % self.msisdn)
+
+        resp = self.client.post(reverse('forgot'),  {'username':self.msisdn})
+        self.assertContains(resp, 'Submitted successfully')
+
     def test_change_pin(self):
-        msisdn = '0123456789'
-        password = 'password'
+        # register user
+        resp = self.client.post(reverse('register'), {
+            'username': self.msisdn,
+            'new_password1': self.pin,
+            'new_password2': self.pin,
+        })
+        self.assertContains(resp, 'Submitted successfully')
         
-        #register user
-        resp = self.client.get(reverse('register'),
-                                {'username': msisdn, 'password1': password, 
-                                'password2': password,  '_action': 'POST'},  
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
-        resp = self.client.get(reverse('login'), 
-                    {'username': msisdn, 'password': password, '_action': 'POST'}, 
-                    HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
-        resp = self.client.get(reverse('password_change'), 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
+        # authorize with pin
+        resp = self.client.post(reverse('login'), {
+            'username': self.msisdn,
+            'password': self.pin,
+        })
+
+        resp = self.client.get(reverse('password_change'))
+        # print resp
+        self.assertContains(resp, 'Change PIN for %s' % self.msisdn)
+
+        resp = self.client.post(reverse('password_change'),{
+            'old_password': self.pin,
+           'new_password1': '5678',
+           'new_password2': '5678',
+        })
+        self.assertContains(resp, 'Submitted successfully')
+
+        resp = self.client.post(reverse('login'), {
+            'username': self.msisdn,
+            'password': '5678',
+        })
+
+        self.assertContains(resp, 'Submitted successfully')
+    
+    def test_phone_number_to_international(self):
+        self.assertEquals(phone_number_to_international('0123456789'), '27123456789')
+        self.assertEquals(phone_number_to_international('27123456789'), '27123456789')
+        self.assertEquals(phone_number_to_international('271234567'), 'invalid no')
+        self.assertEquals(phone_number_to_international('01234567'), 'invalid no')
+        self.assertEquals(phone_number_to_international('username'), 'invalid no')
         
-        self.assertContains(resp, 'Change pin for %s' % msisdn)
+    def test_user_deactivated(self):
+        self.register()
+        user = User.objects.get(username=self.msisdn)
+        user.is_active = False
+        user.save()
         
-        resp = self.client.get(reverse('password_change'), 
-                               {'_action': 'POST',  'old_password': password, 
-                               'new_password1': '1234',  'new_password2': '1234'}, 
-                               HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-        self.assertContains(resp, 'Your pin has been changed')
+        resp = self.client.post(reverse('login'), {
+            'username': self.msisdn,
+            'password': self.pin,
+        })
         
-        resp = self.client.get(reverse('login'), 
-                                {'username': msisdn, 'password': '1234', 
-                                '_action': 'POST'}, 
-                                HTTP_X_UP_CALLING_LINE_ID = msisdn, )
-                                
-        self.assertContains(resp, 'You have been logged in')
+        self.assertContains(resp, 'Your account has been deactivated')
+        
+        resp = self.client.get(reverse('contactsupport'))
+        self.assertEquals(resp.status_code, 200)
+        
+        resp = self.client.post(reverse('contactsupport'), {
+            'username': self.msisdn,
+            'message': 'Im sorry I did this.',
+        })
+        
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEquals(mail.outbox[0].subject, 'Blocked User: %s' % self.msisdn)
+        self.assertEqual(mail.outbox[0].from_email, settings.SEND_FROM_EMAIL_ADDRESS)
+        self.assertEqual(mail.outbox[0].to[0], settings.UMMELI_SUPPORT)
+        
+        #restore user status
+        user.is_active = True
+        user.save()

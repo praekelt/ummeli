@@ -2,8 +2,10 @@ from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae,  UserSubmittedJobArticle)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
                                             RegexField,  CharField,  BooleanField,  IntegerField,
-                                            Textarea)
+                                            Textarea,  ValidationError)
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.forms.forms import BoundField
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -75,7 +77,7 @@ class PMLForm(Form):
         return format_errors_as_pml(self)
 
 class PersonalDetailsForm(PMLModelForm):
-    first_name = CharField(label = 'Firstname')
+    first_name = CharField(label = 'First name')
     date_of_birth = CharField(label = 'Date of birth',  required = False)
 
     class Meta:
@@ -85,9 +87,9 @@ class PersonalDetailsForm(PMLModelForm):
 class ContactDetailsForm(PMLModelForm):
     telephone_number = CharField(label = 'Phone number',  required = False)
     email = CharField(label = 'Email address',  required = False)
-    house_number = CharField(label = 'House number',  required = False)
+    house_number = CharField(label = 'Home number',  required = False)
     street_name = CharField(label = 'Street name',  required = False)
-    location = CharField(label = 'Location name',  required = False)
+    location = CharField(label = 'Area name',  required = False)
 
     class Meta:
         model = CurriculumVitae
@@ -154,3 +156,31 @@ class UserSubmittedJobArticleForm(PMLModelForm):
     class Meta:
         model = UserSubmittedJobArticle
         fields = ('title',  'text')
+
+class ForgotPasswordForm(Form):
+    username = RegexField('[0-9+]', required = True,
+                          error_message = 'Please enter a valid cellphone number.', 
+                          label="Enter the cellphone number to reset the pin for.")
+                          
+    def clean_username(self):
+        """
+        Validates that an active user exists with the given e-mail address.
+        """
+        username = self.cleaned_data["username"]
+        self.users_cache = User.objects.filter(username__iexact=username)
+        if not self.users_cache.exists():
+            raise ValidationError("That cellphone number doesn't have an associated user account. Are you sure you've registered?")
+        return username
+
+
+class MobiUserCreationForm(UserCreationForm):
+    username = RegexField(
+        label='Phone number', 
+        regex=r'^[0-9]+$',
+        help_text = 'Required. Valid phone number in the format: 0821234567',
+        error_message = 'Please enter a valid phone number without spaces. e.g 0821234567')
+
+
+class ConcactSupportForm(PMLForm):
+    username = CharField(required = True)
+    message = CharField(required = True,  widget = Textarea)

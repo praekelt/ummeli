@@ -1,0 +1,36 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Contact Ummeli Support</LABEL></HEADER>
+<CONTAINER  type="data">
+    <TEXT>* = Required</TEXT><br/>
+</CONTAINER>
+{% if form.errors %}
+    <CONTAINER type="data">
+    {% for field in form %}
+    {% for error in field.errors %}
+        <TEXT><color value="red">{{field.label}} - {{error}}</color></TEXT><br/>
+    {% endfor %}
+    {% endfor %}
+    </CONTAINER>
+{% endif %}
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Send">
+        <TEXT position="ABOVE">Message*</TEXT>
+        <FIELD name="message" type="text"/>
+        
+        <FIELD name="username" type="hidden" value="{{user.username}}"/>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url login %}">
+        <TEXT>Cancel</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

@@ -2,7 +2,7 @@ Django>=1.3
 django-piston==0.2.2
 django-nose==0.1.3
 South==0.7.3
-coverage==3.5
+coverage==3.5.1
 pyflakes
 pep8
 pisa
@@ -12,7 +12,7 @@ reportlab
 django-celery
 django-celery-email
 supervisor==3.0a10
-gunicorn==0.13.1
+gunicorn==0.13.4
 psycopg2==2.4.1
 libxml2dom
 pyxml
@@ -20,4 +20,11 @@ pytidylib
 Fabric==1.2.2
 lxml
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
+-e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
 django-sentry
+-e git+git://github.com/praekelt/jmbo-articles.git@develop#egg=jmbo-articles
+-e git+git://github.com/praekelt/jmbo-comments.git@develop#egg=jmbo-comments
+django-category==0.0.3
+-e git+https://github.com/dwaiter/django-ckeditor.git#egg=django_ckeditor-dev
+django-dirtyfields
+pillow

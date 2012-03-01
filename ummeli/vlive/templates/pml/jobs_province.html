@@ -1,0 +1,21 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Find jobs</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>Ummeli jobs come from established online sources or have been posted 
+by the Ummeli community.</TEXT>
+</CONTAINER>
+<br/>
+<CONTAINER  type="list">
+    {% for province in provinces %}
+        <LINK href="{% url jobs_list province.search_id %}">
+            <TEXT>{{province.name}} ({{province.articles_count|add:province.userarticles_count}})</TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+{% endblock %}

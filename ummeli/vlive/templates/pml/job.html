@@ -1,0 +1,87 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+    <HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+    <CONTAINER  type="data">
+        <TITLE>{{job.date|date:'d M y'}} ::  {{job.source}}</TITLE>
+        {% if job.user_submitted %}
+        <TEXT><color value="blue">submitted by Ummeli user</color></TEXT><br/>
+        {% endif %}
+        <TEXT>
+            {{ job.text }}
+        {% if not job.user_submitted %}
+            <br/><br/>
+            as advertised on <color value="blue">www.wegotads.co.za</color>
+        {% endif %}
+        </TEXT>
+    </CONTAINER>
+    <br/>
+    <CONTAINER  type="list">
+        <LINK href="{% url jobs search_id cat_id %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="MiGreen">
+    <HEADER><LABEL>Apply</LABEL></HEADER>
+    {% if request.is_authorized %}
+    <CONTAINER type="data">
+        <TEXT>
+        Thank you to everyone who participated in the Fax trial. 
+        <color value="blue">The Fax trial is now closed.</color>
+        We will be bringing back the fax option at a later stage. 
+        <br/><br/>
+        </TEXT>
+    </CONTAINER>
+    {% if form.errors %}
+        <CONTAINER type="data">
+        {% for field in form %}
+        {% for error in field.errors %}
+            <TEXT><color value="red">{{field.label}} - {{error}}</color></TEXT><br/>
+        {% endfor %}
+        {% endfor %}
+        </CONTAINER>
+    {% endif %}
+    {% if user_profile.missing_fields %}
+        <CONTAINER type="data">
+            <TITLE>Missing fields</TITLE>
+            <TEXT><color value="red">
+                Your CV is incomplete. Please make sure that the following information is 
+                completed before you can send your CV.</color></TEXT><br/>
+        {% for field in user_profile.missing_fields %}
+            <TEXT><color value="red">- {{field}}</color></TEXT><br/>
+        {% endfor %}
+        </CONTAINER>
+    {% endif %}
+    <CONTAINER  type="form">
+        <FORM method="POST" href="{{request.path}}" submit_text="Apply">
+            <CHOICE-GROUP type="radio" name="send_via">
+                <TEXT>Send via</TEXT>
+                <CHOICE value="email" checked="True">Email</CHOICE>
+                {% if False %}
+                <CHOICE value="fax">Fax</CHOICE>
+                {% endif %}
+            </CHOICE-GROUP>
+            <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        </FORM>
+    </CONTAINER>
+    {% else %}
+    <br/>
+    <CONTAINER type="data">
+    <TEXT><color value="red">You are not logged in. Please log in to be able to 
+    respond to a job advert.</color>
+    <br/>
+        <LINK href="{% url login %}?next={% url jobs search_id cat_id %}">
+            <TEXT>Login</TEXT>
+        </LINK>
+    </TEXT>
+    </CONTAINER>
+    {% endif %}
+{% endblock %}

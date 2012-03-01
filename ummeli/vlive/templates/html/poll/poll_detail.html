@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load poll_tags %}
+
+{% block title %}: {{ poll.question }}{% endblock %}
+
+{% block content %}
+    <h4 style="color: #465B67">Poll</h4>
+    <div class="poll list">
+    {% show_poll poll %}
+    </div>
+{% endblock %}

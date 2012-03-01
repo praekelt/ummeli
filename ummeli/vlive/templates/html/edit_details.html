@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4><a href="{% url edit %}">Change your CV</a> &raquo; {{page_title}}</h4>
+    <br/>
+    <form class='content-form' method="post">
+    <fieldset>
+        <div class="form-fields">{{ form}}</div>
+        <input type="submit" class="btn" value="Save" name="submit" />
+        <br/>
+        <div class="more"><a href="{% url edit %}">&larr; Back</a></div>
+        {% csrf_token %}
+    </fieldset>
+    </form>
+{% endblock %}

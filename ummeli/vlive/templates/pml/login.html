@@ -1,0 +1,58 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Welcome to Ummeli.</LABEL></HEADER>
+{% if form.errors %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            {% if error == 'This account is inactive.' %}
+            <CONTAINER type="data">
+                <TEXT><color value="red">Your account has been deactivated for violating our 
+                    <LINK href="{% url terms %}">
+                        <TEXT>terms and conditions</TEXT>
+                    </LINK>. If you feel you should not have been removed from this community, 
+                you may send a query
+                    <LINK href="{% url contactsupport %}">
+                        <TEXT>here</TEXT>
+                    </LINK>.</color></TEXT>
+            </CONTAINER>
+            {% else %}
+                <CONTAINER type="data">
+                    <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
+                </CONTAINER>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <CONTAINER type="data">
+            <TEXT><color value="red">Sign in failed.<br />Please try again.</color></TEXT>
+        </CONTAINER>
+    {% endif %}
+{% endif %}
+{% if not user.password %}
+<CONTAINER type="data">
+    <TEXT>You need to <LINK href="{% url register %}">
+                        <TEXT>create a PIN</TEXT>
+                    </LINK> first.</TEXT>
+</CONTAINER>
+{% else %}
+<CONTAINER type="form">
+    <FORM method="GET" href="{% url login %}" submit_text="Sign In">
+        <TEXT position="ABOVE">Enter PIN to sign in.</TEXT>
+        <FIELD name="password" type="password"/>
+        <FIELD name="next" type="hidden" value="{{next}}"/>
+        <FIELD name="username" type="hidden" value="{{user.username}}"/>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER type="list">
+    <LINK href="{% url forgot %}">
+        <TEXT>Forgot your PIN?</TEXT>
+    </LINK>
+</CONTAINER>
+{% endif %}
+{% endblock %}

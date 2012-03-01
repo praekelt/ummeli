@@ -1,0 +1,40 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+<CONTAINER  type="list">
+    {% for article in articles.object_list %}
+        <LINK href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
+            <TEXT>
+            {% if article.user_submitted %}
+            <color value="blue">***</color>
+            {% endif %}
+            {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+            </TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</LABEL></HEADER>
+    <CONTAINER  type="list">
+        {% if articles.has_previous %}            
+            <LINK href="{{request.path}}?page={{ articles.previous_page_number }}">
+                <TEXT>Previous</TEXT>
+            </LINK>
+        {% endif %}
+
+        {% if articles.has_next %}
+            <LINK href="{{request.path}}?page={{ articles.next_page_number }}">
+                <TEXT>Next</TEXT>
+            </LINK>
+        {% endif %}
+        <LINK href="{% url jobs_list search_id %}">
+            <TEXT>&lt;&lt; Back to {{province_name}}</TEXT>
+        </LINK>
+    </CONTAINER>
+{% endblock %}

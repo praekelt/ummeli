@@ -1,0 +1,127 @@
+{% extends "base.xml" %}
+
+{% load poll_tags comments %}
+
+{% block content %}
+<HEADER><LABEL>Ummeli</LABEL></HEADER>
+<CONTAINER type="data">
+    <TITLE>{{ article.title }}</TITLE>
+    <TEXT>
+    <b>{{ article.updated|date:"D, j M Y, H:i" }}</b><br/>
+    <b>{{ article.like_count }} Like{{ article.like_count|pluralize }}</b>
+    {% if user.is_authenticated %}
+         | <LINK href="{% url article_detail article.pk %}like/?{{uuid}}">+Like</LINK>
+    {% endif %}
+    <br/>
+    </TEXT>
+    <TEXT>
+        {{ article.content|safe }}
+        <br/>
+        See also:
+        {% if article.linked_article or article.linked_page %}
+            <strong>See also:</strong>
+            {% if article.linked_article %}
+                <CONTAINER type="list">
+                    <LINK href="{% url article_detail article.linked_article.pk %}?{{uuid}}">
+                        <TEXT>{{ article.linked_article.title }}</TEXT>
+                    </LINK>
+                </CONTAINER>
+            {% endif %}
+
+            {% if article.linked_page %}
+                <CONTAINER type="list">
+                    <LINK href="{{ article.linked_page.url }}?{{uuid}}">
+                        <TEXT>{{ article.linked_page.title }}</TEXT>
+                    </LINK>
+                </CONTAINER>
+            {% endif %}
+            <br/>
+        {% endif %}
+    </TEXT>
+</CONTAINER>
+</MODULE>
+{% if article.poll and article.poll.published %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Poll</LABEL></HEADER>
+    {% show_poll article.poll %}
+</MODULE>
+{% endif %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
+        {% if article.comments_enabled %}
+            {% if request.is_authorized %}
+                <CONTAINER type="form">
+                {% get_comment_form for article as form %}
+                <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
+                    <FIELD type='hidden' name='_action' value='POST' />
+                    <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+                    <FIELD type='hidden' name='content_type' value='{{ form.content_type.value }}' />
+                    <FIELD type='hidden' name='object_pk' value='{{ form.object_pk.value }}' />
+                    <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
+                    <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
+                    <FIELD type='hidden' name='honepot' id='id_honeypod'/>
+                    <FIELD type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+                    <FIELD name="comment" type="text"/><br/>
+                </FORM>
+                </CONTAINER>
+            {% else %}
+                <CONTAINER type="data">
+                <TEXT>
+                <LINK href="{% url login %}"><TEXT>Sign in</TEXT>
+                </LINK> or 
+                <LINK href="{% url register %}"><TEXT>register</TEXT>
+                </LINK> to comment.
+                </TEXT>
+                </CONTAINER>
+            {% endif %}
+        {% else %}
+            <CONTAINER type="data">
+            <TEXT>
+            <b><i>Comments are closed.</i></b>
+            </TEXT>
+            </CONTAINER>
+        {% endif %}
+    <CONTAINER type="data">
+    {% for comment in comment_list.object_list %}
+        <TEXT><b>
+            {% if comment.user.get_full_name %}
+                {{ comment.user.get_full_name }}
+            {% else %}
+                Anon.
+            {% endif %}
+        </b> - {{ comment.submit_date|date:"D, j M Y, H:i" }} <br/>
+        </TEXT>
+        <TEXT>
+            {% spaceless %}
+            {% if comment.is_community_moderated %}
+                <b>Moderated:</b> {{ comment.community_moderation_flags.latest.reason }}
+            {% else %}
+                {% if comment.is_moderated %}
+                    <b>Moderated:</b> {{ comment.moderation_flags.latest.reason }}
+                {% else %}
+                    {{ comment.comment }}
+                {% endif %}
+            {% endif %}
+            {% endspaceless %}
+        </TEXT>
+        {% if request.is_authorized %}
+            <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
+                <TEXT>+Like ({{ comment.like_count }})</TEXT>
+            </LINK>
+        {% endif %}
+        {% if request.is_authorized %}
+            <LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
+                <TEXT>Report</TEXT>
+            </LINK>
+        {% endif %}
+    {% endfor %}
+    <TEXT><br/>
+        {% if comment_list.has_next %}
+        <LINK href="{% url article_detail article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT><< Newer comments</TEXT></LINK>
+        {% endif %}
+        {% if comment_list.has_previous %}
+        <LINK href="{% url article_detail article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>Older Comments >></TEXT></LINK>
+        {% endif %}
+    </TEXT>
+    </CONTAINER>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Change your CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</LABEL></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url edit_personal %}?{{uuid}}">
+        <TEXT>Personal details</TEXT>
+    </LINK>
+    <LINK href="{% url edit_contact %}?{{uuid}}">
+        <TEXT>Contact details</TEXT>
+    </LINK>
+    <LINK href="{% url edit_education %}?{{uuid}}">
+        <TEXT>Education details</TEXT>
+    </LINK>
+    <LINK href="{% url certificate_list %}?{{uuid}}">
+        <TEXT>Qualifications &amp; Certificates</TEXT>
+    </LINK>
+    <LINK href="{% url work_experience_list %}?{{uuid}}">
+        <TEXT>Work experience</TEXT>
+    </LINK>
+    <LINK href="{% url language_list %}?{{uuid}}">
+        <TEXT>Language details</TEXT>
+    </LINK>
+    <LINK href="{% url reference_list %}?{{uuid}}">
+        <TEXT>References</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

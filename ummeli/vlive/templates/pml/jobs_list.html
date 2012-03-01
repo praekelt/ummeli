@@ -1,0 +1,22 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>{{province_name}}</LABEL></HEADER>
+<CONTAINER  type="list">
+    {% for category in categories %}
+        <LINK href="{% url jobs search_id category.pk %}">
+            <TEXT>{{category.title}} ({{category.articles_count}})</TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+<br/>
+<CONTAINER  type="list">
+    <LINK href="{% url jobs_province %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

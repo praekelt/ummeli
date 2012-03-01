@@ -2,24 +2,35 @@
 import os.path
 import djcelery
 
+DEBUG = False
+
+try:
+    from local_settings import *
+except ImportError:
+    raise RuntimeError,  "you need a local_settings.py file"
+
+TEMPLATE_DEBUG = True
+
 djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
+# --- Environment Specific Settings --- 
+ROOT_URLCONF = 'pml_urls'
+#ROOT_URLCONF = 'mobi_urls'
+
+TEMPLATE_DIRS = (
+   #"vlive/templates/html",
+   "vlive/templates/pml",
+)
 
 def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
     return os.path.join(PROJECT_ROOT, *args)
 
-DEBUG = True
-TEMPLATE_DEBUG = True
-
-ADMINS = (
-    ('Foundation Developers', 'dev@praekeltfoundation.org'),
-    ('Milton', 'milton@praekeltfoundation.org'),
-)
-
-MANAGERS = ADMINS
+ADMINS = ()
+SENTRY_ADMINS = ('dev@praekeltfoundation.org',)
+MANAGERS = SENTRY_ADMINS
 
 DATABASES = {
     'default': {
@@ -31,6 +42,12 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    # FOR PML ONLY
+    'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -62,22 +79,22 @@ MEDIA_ROOT = abspath('media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = abspath('static')
+STATIC_ROOT = abspath('ummeli-static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '/ummeli-static/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/ummeli-static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -112,9 +129,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'vlive.auth.middleware.VodafoneLiveUserMiddleware',
-    'vlive.auth.middleware.VodafoneLiveInfoMiddleware',
-    'vlive.middleware.FormActionMiddleware',
+    'vlive.auth.middleware.UserAuthorizationMiddleware',
+    'jmbovlive.middleware.VodafoneLiveUserMiddleware',
+    'jmbovlive.middleware.VodafoneLiveInfoMiddleware',
+    'jmbovlive.middleware.PMLFormActionMiddleware',
+    #'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
+    'jmbovlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -123,19 +143,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages", 
-    "django.core.context_processors.request", 
-    "vlive.custom_context_processors.unique_id_processor", 
-    "vlive.custom_context_processors.user_profile_processor", 
-)
-
-ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates"
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    "templates",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
+    "vlive.custom_context_processors.unique_id_processor",
+    "vlive.custom_context_processors.user_profile_processor",
 )
 
 INSTALLED_APPS = (
@@ -157,6 +168,20 @@ INSTALLED_APPS = (
     'gunicorn',
     'sentry',
     'raven.contrib.django',
+    
+    #ummeli 2.0
+    'django.contrib.flatpages',
+    'django.contrib.comments',
+    
+    #jmbo
+    'jmboarticles',
+    'jmbocomments',
+    'jmboarticles.video',
+    'jmboarticles.poll',
+    'category',
+    
+    # 3rd party
+    'ckeditor',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -190,12 +215,6 @@ AUTH_PROFILE_MODULE = "base.Curriculumvitae"
 LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "ummeli"
-BROKER_PASSWORD = "ummeli"
-BROKER_VHOST = "/ummeli/production"
-
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
 CELERY_ALWAYS_EAGER = DEBUG
@@ -204,4 +223,43 @@ CELERY_RESULT_BACKEND = "amqp"
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 MAX_LAUNCH_FAXES_COUNT = 2
-SEND_FROM_EMAIL_ADDRESS = 'no-reply-ummeli@praekeltfoundation.org'
+SEND_FROM_FAX_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
+SEND_FROM_EMAIL_ADDRESS = 'ummeli@praekeltfoundation.org'
+UMMELI_SUPPORT = 'ummeli.support@praekeltfoundation.org'
+
+# Session Key for PIN auth
+UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'
+
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "ummeli"
+BROKER_PASSWORD = "ummeli"
+BROKER_VHOST = "/ummeli/production"
+
+# CKEDITOR
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline',
+              '-', 'Link', 'Unlink', 'Anchor',
+              #'-', 'Format',
+              #'-', 'SpellChecker', 'Scayt',
+              #'-', 'Maximize',
+            ],
+            [      'HorizontalRule',
+              #'-', 'Table',
+              '-', 'BulletedList', 'NumberedList',
+              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+              #'-', 'SpecialChar',
+              '-', 'Source',
+              #'-', 'About',
+            ]
+        ],
+        'width': 620,
+        'height': 300,
+        'toolbarCanCollapse': False,
+    }
+}
+
+COMMENTS_APP = 'jmbocomments'

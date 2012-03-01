@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Browse Jobs</h4>
+    <p>
+    Ummeli jobs come from established online sources or have been posted 
+    by the Ummeli community.
+    </p>
+    <br/>
+    {% for province in provinces %}
+    <div class="bullet"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
+    {% endfor %}
+{% endblock %}

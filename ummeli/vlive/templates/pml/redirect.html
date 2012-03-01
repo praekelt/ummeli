@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:vddr="http://namespaces.vodafone.com/applications/CRE#DDR"
+ xmlns:vmpml="http://namespaces.vodafone.com/applications/3PI#MPML"
+ xmlns:vsrch="http://namespaces.vodafone.com/applications/search#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://www.via.vodafone.com/schema/VZV-PARTNER.xsd">
+
+
+<PARTNER-PI>
+ <TRANSFORMER name="VZV-DEFAULT"/>
+</PARTNER-PI>
+
+<PARTNER-BODY>
+<TIMER href="{{redirect_url}}?{{uuid}}" tenthsOfSecond="{{redirect_time}}" />
+ <VZV-DEFAULT>
+<PARTNER-HEADER>
+<LABEL>Ummeli</LABEL>
+</PARTNER-HEADER>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Thank you</LABEL></HEADER>
+    <CONTAINER  type="data">
+    <TEXT>{{redirect_message}}
+    <br/>
+    Please wait while we automatically redirect you.
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+
+</VZV-DEFAULT>
+</PARTNER-BODY>
+</VZV-PARTNER>

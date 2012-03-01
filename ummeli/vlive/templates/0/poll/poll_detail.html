@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load poll_tags %}
+
+{% block title %}: {{ poll.question }}{% endblock %}
+
+{% block content %}
+    <div class="h2">Poll</div>
+    <div class="poll list">
+    {% show_poll poll %}
+    </div>
+{% endblock %}

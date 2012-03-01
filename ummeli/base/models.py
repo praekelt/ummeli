@@ -1,14 +1,15 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.conf import settings
+from django.template.loader import render_to_string
 
-from ummeli.base import email_copy
 from ummeli.base.utils import render_to_pdf
 from django.core.mail import send_mail,  EmailMessage
 from datetime import datetime
 
+from celery.task import task
 
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
@@ -29,7 +30,7 @@ class UserSubmittedJobArticle(models.Model):
     user = models.ForeignKey(User, related_name='user_submitted_job_article_user')
 
     def __unicode__(self):  # pragma: no cover
-        return '%s - %s - %s' % (self.date,  self.title,  self.description)
+        return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
 
     def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
@@ -57,8 +58,14 @@ class Category(models.Model):
     articles = models.ManyToManyField(Article, blank=True,  null=True)
     user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
 
+    def must_show(self):
+        return self.articles.exists() or self.user_submitted_job_articles.exists()
+    
+    def articles_count(self):
+        return self.articles.count() + self.user_submitted_job_articles.count()
+
     def __unicode__(self):  # pragma: no cover
-        return self.title
+        return '%s - %s (%s)' % (self.province.name, self.title, self.articles_count())
 
 
 class Certificate (models.Model):
@@ -112,9 +119,74 @@ class CurriculumVitae(models.Model):
     references = models.ManyToManyField(Reference, blank=True)
     user = models.OneToOneField('auth.User')
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
+    is_complete = models.BooleanField(default=False,  editable=False)
 
+    def __str__(self):
+        return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
+    
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
+
+    def missing_fields(self):
+        fields = []
+        if not self.first_name:
+            fields.append('first name')
+        if not self.surname:
+            fields.append('surname')
+        if not self.gender:
+            fields.append('gender')
+        if not self.telephone_number:
+            fields.append('telephone number')
+        if not self.date_of_birth:
+            fields.append('date of birth')
+        if not self.highest_grade:
+            fields.append('highest grade passed')
+        if not self.languages.exists():
+            fields.append('atleast 1 language')
+        return fields
+    
+    def fields_complete(self):
+        count = 0.0
+        if  self.first_name:
+            count += 1
+        if  self.surname:
+            count += 1
+        if  self.gender:
+            count += 1
+        if  self.email:
+            count += 1
+        if  self.telephone_number:
+            count += 1
+        if  self.location:
+            count += 1
+        if  self.street_name:
+            count += 1
+        if  self.school:
+            count += 1
+        if  self.highest_grade:
+            count += 1
+        if  self.highest_grade_year:
+            count += 1
+        if  self.date_of_birth:
+            count += 1
+        if  self.house_number:
+            count += 1
+        if  self.certificates.exists():
+            count += 1
+        if  self.languages.exists():
+            count += 1
+        if  self.work_experiences.exists():
+            count += 1
+        if  self.references.exists():
+            count += 1
+        return (count/16)*100
+
+    def update_is_complete(self):
+        if not self.missing_fields():
+            self.is_complete = True
+        else:
+            self.is_complete = False
+        self.save()
 
     def can_send_fax(self):
         return self.nr_of_faxes_sent < settings.MAX_LAUNCH_FAXES_COUNT
@@ -126,28 +198,36 @@ class CurriculumVitae(models.Model):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
             self.save()
-            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),  article_text)
+            return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),
+                                 article_text, settings.SEND_FROM_FAX_EMAIL_ADDRESS)
         return None
 
-    def email_cv(self, email_address, article_text = None):
+    def email_cv(self, email_address, article_text = None,
+                        from_address = settings.SEND_FROM_EMAIL_ADDRESS):
         email_text = ''
+        copy_context = {'sender': self.fullname(), 
+                                'job_ad': article_text, 
+                                'phone': self.telephone_number}
+        
         if article_text:
-            email_text = email_copy.APPLY_COPY % {'sender': self.fullname(),
-                                                                            'job_ad':article_text}
+            email_text = render_to_string('apply_copy.txt', copy_context)
         else:
-            email_text = email_copy.SEND_COPY % {'sender': self.fullname(),
-                                                                           'job_ad':article_text}
+            email_text = render_to_string('send_copy.txt', copy_context)
 
-        email = EmailMessage('CV for %s' % self.fullname(), email_text,
-                                            settings.SEND_FROM_EMAIL_ADDRESS,
-                                            [email_address])
-        pdf = render_to_pdf('pdf_template.html', {'model': self})
-        email.attach('curriculum_vitae_for_%s_%s' % (self.first_name, self.surname),
-                            pdf,  'application/pdf')
-        return email.send(fail_silently=False)
+        schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
+
+def update_is_complete_property(sender, **kwargs):
+    instance = kwargs['instance']
+    # Use a list operation, prevents the signal to be fired again
+    # when it is being updated for the `is_complete` boolean.
+    CurriculumVitae.objects.filter(pk=instance.pk).update(
+        is_complete=not instance.missing_fields())
+
+post_save.connect(update_is_complete_property, sender=CurriculumVitae,
+    dispatch_uid='curriculum-vitae-is-complete-signal')
 
 class CurriculumVitaeForm(ModelForm):
     class Meta:
@@ -162,3 +242,13 @@ def create_cv(sender, instance, created, **kwargs):
 
 post_save.connect(create_cv, sender = User,
                   dispatch_uid = "users-profilecreation-signal")
+
+@task
+def schedule_cv_email(cv,  email_address,  email_text, from_address):
+    email = EmailMessage('CV for %s' % cv.fullname(), email_text,
+                                            from_address,
+                                            [email_address], ['ummeli@praekeltfoundation.org'])
+    pdf = render_to_pdf('pdf_template.html', {'model': cv})
+    email.attach('curriculum_vitae_for_%s_%s.pdf' % (cv.first_name, cv.surname),
+                        pdf,  'application/pdf')
+    email.send(fail_silently=False)

@@ -1,0 +1,28 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Create PIN for {{request.user.username}}
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Register</LABEL></HEADER>
+{% if form.errors %}
+    <CONTAINER type="form">
+        <TEXT class="error">PIN codes don&apos;t match.<br />
+        Please try again.</TEXT>
+    </CONTAINER>
+{% endif %}
+<CONTAINER type="form">
+    <FORM method="POST" href="{% url register %}" submit_text="Create PIN">
+    <TEXT position="ABOVE">PIN</TEXT>
+    <FIELD name="new_password1" type="password"/>
+    <TEXT position="ABOVE">Confirm PIN</TEXT>
+    <FIELD name="new_password2" type="password"/>
+
+    <FIELD name="next" type="hidden" value="{{next}}"/>
+    <FIELD name="username" type="hidden" value="{{request.user.username}}"/>
+    <FIELD type='hidden' name='_action' value='POST' />
+    <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+{% endblock %}
