@@ -33,7 +33,7 @@
             <div><a href="{% url home %}">Home</a></div>
             <div><a href="{% url jobs_province %}">Browse jobs</a></div>
             <div><a href="{% url jobs_create %}">Add a job</a></div>
-            <div><a href="{% url edit %}">My CV</a></div>
+            <div><a href="{% url profile %}">My Profile</a></div>
             {% if user.is_authenticated %}
             <div><a href="{% url password_change %}?{{uuid}}">Change PIN</a></div>
             {% endif %}

@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url edit %}">Change your CV</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</div>
+    <div class="h2"><a href="{% url profile %}">Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</div>
     <form class='content-form' method="post">
     <fieldset>
         <div class="form-fields">{{ form}}</div>
         <input type="submit" class="btn" value="Save" name="submit" />
         {% if object.id %}
-            <a href="{% url edit %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
+            <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
         {% endif %}
         <br/><br/>
-        <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
         {% csrf_token %}
     </fieldset>
     </form>
+    <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
 {% endblock %}

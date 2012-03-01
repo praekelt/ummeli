@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url edit %}">Change your CV</a> &raquo; Personal details</div>
+    <div class="h2"><a href="{% url profile %}">Profile</a> &raquo; <a href="{% url edit_basic %}">Basic info</a> &raquo; Personal details</div>
     <form class='content-form' method="post">
     <fieldset>
         <label for="form-first_name">First name</label>
@@ -29,8 +29,8 @@
         </select>
         
         <input type="submit" class="btn" value="Save" name="submit" />
-        <div class="more"><a href="{% url edit %}">&larr; Back</a></div>
         {% csrf_token %}
     </fieldset>
     </form>
+    <div class="more"><a href="{% url edit_basic %}">&larr; Back</a></div>
 {% endblock %}
