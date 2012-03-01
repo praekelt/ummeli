@@ -2,6 +2,9 @@ from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
 
+from neo4django import db
+db.DEFAULT_DB_ALIAS = 'test'
+
 from ummeli.graphing.models import Person
 from ummeli.graphing.utils import add_connection_for_user
 
@@ -10,7 +13,7 @@ import requests
 def cleandb():
     key = getattr(settings, 'NEO4J_DELETE_KEY', None)
     server = getattr(settings, 'NEO4J_DATABASES', None)
-    server = server.get('default', None) if server else None
+    server = server.get(db.DEFAULT_DB_ALIAS, None) if server else None
     
     resp = requests.delete('http://%s:%s/cleandb/%s' %
                            (server['HOST'], str(server['PORT']), key))
@@ -74,9 +77,14 @@ class UserConnectionsTestcase(TestCase):
         profile.save()
         
     def test_user_node_creation(self):
+        tom = Person.get_and_update(self.tom)
+        luke = Person.get_and_update(self.luke)
+        
+        self.assertEquals(len(tom.connections()), 0)
+        
         add_connection_for_user(self.tom, self.luke)
-        tom = Person.objects.get(user_id = self.tom.pk)
-        luke = Person.objects.get(user_id = self.luke.pk)
         
         self.assertEquals(len(tom.connections()), 1)
         self.assertEquals(len(luke.connections()), 1)
+        
+        self.assertTrue(tom.is_connected_to(luke))
