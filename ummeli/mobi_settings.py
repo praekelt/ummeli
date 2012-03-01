@@ -32,24 +32,26 @@ ADMINS = ()
 SENTRY_ADMINS = ('dev@praekeltfoundation.org',)
 MANAGERS = SENTRY_ADMINS
 
-if not DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ummeli',    # Or path to database file if using sqlite3.
-            'USER': 'ummeli',
-            'PASSWORD': 'ummeli',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ummeli',    # Or path to database file if using sqlite3.
+        'USER': 'ummeli',
+        'PASSWORD': 'ummeli',
+        'HOST': 'localhost',
+        'PORT': '',
     }
-else:
-    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': 'ummeli.db','USER': '','PASSWORD': '','HOST': '','PORT': '',}}
+}
 
 NEO4J_DATABASES = {
     'default' : {
         'HOST':'localhost',
         'PORT':7474,
+        'ENDPOINT':'/db/data'
+    },
+    'test' : {
+        'HOST':'localhost',
+        'PORT':7475,
         'ENDPOINT':'/db/data'
     }
 }
