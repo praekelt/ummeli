@@ -24,9 +24,9 @@ def profile(request):
 
 @login_required
 @pin_required
-def profile_view(request, pk):
+def profile_view(request, user_id):
     user_node = Person.get_and_update(request.user)
-    other_user = get_object_or_404(User, pk=pk)
+    other_user = get_object_or_404(User, pk=user_id)
     other_user_node = Person.get_and_update(other_user)
     num_connections = len(other_user_node.connections())
     return render(request, 'profile/profile_view.html', 
@@ -34,7 +34,7 @@ def profile_view(request, pk):
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
-                 'is_self': int(pk) == request.user.pk
+                 'is_self': int(user_id) == request.user.pk
                  })
 
 @login_required
@@ -48,6 +48,7 @@ def connections(request, user_id):
                 {'user_node': user_node,
                  'other_user_node': other_user_node,
                  'connections': connections,
+                 'is_self': int(user_id) == request.user.pk
                  })
 
 @login_required

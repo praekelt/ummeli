@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if user.pk == other_user_pk %}
+    {% if is_self %}
         <p><a href="{% url profile %}">[edit your profile]</a></p>
     {% endif %}
     <h4>
@@ -12,7 +12,6 @@
     </h4>
         
     <a href="{% url connections other_user_pk %}">Connections ({{num_connections}})</a></br/>
-    <a href="#">People worked with (5)</a></br/>
     <br/>
     
     {% if connected_to_user or is_self %}
