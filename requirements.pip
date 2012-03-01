@@ -29,6 +29,5 @@ django-category==0.0.3
 django-dirtyfields
 pillow
 http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
-neo4jrestclient
-neo4django
+-e git+https://github.com/scholrly/neo4django/#egg=neo4django
 requests
