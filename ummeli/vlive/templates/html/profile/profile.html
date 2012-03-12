@@ -3,6 +3,7 @@
 {% block content %}
     <h4><a href="{% url edit_personal %}">{{user_profile.fullname}}</a></h4>
     <a href="{% url connections user.pk %}">Connections ({{num_connections}})</a></br/>
+    <a href="{% url connection_requests %}">Requests ({{user_profile.connection_requests.count}})</a></br/>
     <br/>
     <h4>Contact details</h4>
     <div class="list">

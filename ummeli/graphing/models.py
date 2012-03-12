@@ -2,6 +2,8 @@ from neo4django.db import models
 import neo4django
 from neo4jrestclient import client
 
+from django.db import models as djangoModels
+
 class Person(models.NodeModel):
     user_id = models.IntegerProperty(indexed=True)
     name = models.StringProperty()

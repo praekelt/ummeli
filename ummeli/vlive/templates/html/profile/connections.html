@@ -12,18 +12,30 @@
             &raquo; My Connections
         {% endif %}
     </h4>
-        {% for node, is_connected in connections %}
-            <a href='{% url profile_view node.user_id %}'>&rarr; {{ node.name }}</a>
-            {% if node.user_id == user.pk %}
-                <strong>(me)</strong>
-            {% else %}
-                {% if not is_connected %}
-                    <a href="{% url add_connection node.user_id %}?next={{request.path}}">[+ connect]</a>
+        {% if connections %}
+            {% for node, is_connected, is_already_requested, is_request_received in connections %}
+                <a href='{% url profile_view node.user_id %}'>&rarr; {{ node.name }}</a>
+                {% if node.user_id == user.pk %}
+                    <strong>(me)</strong>
+                {% else %}
+                    {% if not is_connected %}
+                        {% if not is_already_requested %}
+                            {% if not is_request_received %}
+                                <a href="{% url add_connection node.user_id %}?next={{request.path}}">[+ connect]</a>
+                            {% else %}
+                                <a href="{% url confirm_request node.user_id %}?next={{request.path}}">[+ accept]</a>
+                                <a href="#">[- reject]</a>
+                            {% endif %}
+                        {% else %}
+                            <small>[request pending]</small></a>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-            <br/>
-        {% endfor %}
+                <br/>
+            {% endfor %}
+        {% else %}
+            0 connections.
+        {% endif %}
         <br/>
         <div class="more"><a href="{% url profile_view user_node.user_id %}">&larr; Back</a></div>
-    </form>
 {% endblock %}

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
+from django.http import Http404
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                                     Reference,  CurriculumVitae)
@@ -29,26 +30,38 @@ def profile_view(request, user_id):
     other_user = get_object_or_404(User, pk=user_id)
     other_user_node = Person.get_and_update(other_user)
     num_connections = len(other_user_node.connections())
+    
+    already_requested = other_user.get_profile().is_connection_requested(request.user.pk)
+    connection_requested = request.user.get_profile().is_connection_requested(user_id)
     return render(request, 'profile/profile_view.html', 
                 {'other_user_profile': other_user.get_profile(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
-                 'is_self': int(user_id) == request.user.pk
+                 'is_self': int(user_id) == request.user.pk,
+                 'already_requested':already_requested,
+                 'connection_requested':connection_requested,
                  })
 
 @login_required
 @pin_required
 def connections(request, user_id):
+    other_user = get_object_or_404(User, pk = user_id)
+    other_user_node = Person.get_and_update(other_user)
+    
     user_node = Person.get_and_update(request.user)
-    other_user_node = Person.get_and_update(User.objects.get(pk=user_id))
-    connections = [(node, user_node.is_connected_to(node)) \
+    connections = [(node, user_node.is_connected_to(node), \
+                    request.user.connection_requests.filter(user__pk=node.user_id).exists(), \
+                    request.user.get_profile().is_connection_requested(node.user_id)) \
                    for node in other_user_node.connections()]
+                   
+    already_requested = other_user.get_profile().connection_requests.filter(pk=request.user.pk).exists()
     return render(request, 'profile/connections.html', 
                 {'user_node': user_node,
                  'other_user_node': other_user_node,
                  'connections': connections,
-                 'is_self': int(user_id) == request.user.pk
+                 'is_self': int(user_id) == request.user.pk,
+                 'already_requested':already_requested,
                  })
 
 @login_required
@@ -58,20 +71,46 @@ def add_connection(request, user_id):
         redirect(reverse('profile'))
     
     user = get_object_or_404(User, pk = user_id)
+    profile = user.get_profile()
     
     if request.method == 'POST':        
-        add_connection_for_user(request.user, user)
+        profile.connection_requests.add(request.user)
         
         redirect_to = request.POST.get('next', reverse('profile'))
         return redirect(redirect_to)
     
     next = request.GET.get('next', reverse('profile'))
     return render(request, 'profile/add_connection.html',
-                            {'other_user_profile': user.get_profile(),
+                            {'other_user_profile': profile,
                              'other_user_pk':user.pk,
                              'next':next})
 
+@login_required
+@pin_required
+def confirm_request(request, user_id):
+    user = get_object_or_404(User, pk = user_id)
+    profile = user.get_profile()
+    
+    if not request.user.get_profile().connection_requests.filter(pk=user_id).exists():
+        raise Http404
+        
+    if request.method == 'POST':        
+        add_connection_for_user(user, request.user)
+        request.user.get_profile().connection_requests.remove(user)
+        redirect_to = request.POST.get('next', reverse('profile'))
+        return redirect(redirect_to)
+    
+    next = request.GET.get('next', reverse('profile'))
+    return render(request, 'profile/confirm_request.html',
+                            {'other_user_profile': profile,
+                             'other_user_pk':user.pk,
+                             'next':next})
 
+@login_required
+@pin_required
+def connection_requests(request):
+    return render(request, 'profile/connection_requests.html',
+                            {'requests': request.user.get_profile().connection_requests.all()})
 
 @login_required
 @pin_required

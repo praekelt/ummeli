@@ -5,13 +5,30 @@
         <p><a href="{% url profile %}">[edit your profile]</a></p>
     {% endif %}
     <h4>
-        <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a>&nbsp;
+        {% if is_self %}
+            <a href="{% url profile %}">{{other_user_profile.fullname}}</a>&nbsp;
+        {% else %}
+            <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a>&nbsp;
+        {% endif %}
+            
         {% if not connected_to_user and not is_self %}
-        <a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ connect]</a>
+            {% if not already_requested %}
+                {% if connection_requested %}
+                    <a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ accept]</a>
+                    <a href="#">[- reject]</a>
+                {% else %}
+                    <a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ connect]</a>
+                {% endif %}
+            {% else %}
+                <small>[request pending]</small></a>
+            {% endif %}
         {% endif %}
     </h4>
         
     <a href="{% url connections other_user_pk %}">Connections ({{num_connections}})</a></br/>
+    {% if is_self %}
+        <a href="{% url connection_requests %}">Requests ({{user_profile.connection_requests.count}})</a></br/>
+    {% endif %}
     <br/>
     
     {% if connected_to_user or is_self %}

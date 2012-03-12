@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>
+        <a href="{% url profile %}">My Profile</a>
+            &raquo; Connection Requests
+    </h4>
+    {% if requests %}
+        {% for other_user in requests %}
+            <a href='{% url profile_view other_user.pk %}'>&rarr; {{ other_user.get_profile.fullname }}</a>
+            <a href="{% url confirm_request other_user.pk %}?next={{request.path}}">[+ accept]</a>
+            <a href="#">[- reject]</a>
+            <br/>
+        {% endfor %}
+    {% else %}
+        0 connection requests.
+    {% endif %}
+    <br/>
+{% endblock %}
