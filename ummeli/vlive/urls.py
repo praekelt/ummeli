@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url, include
-from ummeli.vlive import views, cv_views
+from ummeli.vlive import views
 from ummeli.vlive.utils import pin_required
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
