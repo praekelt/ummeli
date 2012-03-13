@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^connections/add/(?P<user_id>\d+)/$', views.add_connection, name='add_connection'),
     url(r'^connections/requests/$', views.connection_requests, name='connection_requests'),
     url(r'^connections/confirm/(?P<user_id>\d+)/$', views.confirm_request, name='confirm_request'),
+    url(r'^connections/reject/(?P<user_id>\d+)/$', views.reject_request, name='reject_request'),
 
     url(r'^basic/$', views.edit_basic, name='edit_basic'),
     url(r'^basic/personal/$', 

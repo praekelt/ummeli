@@ -24,7 +24,7 @@
                                 <a href="{% url add_connection node.user_id %}?next={{request.path}}">[+ connect]</a>
                             {% else %}
                                 <a href="{% url confirm_request node.user_id %}?next={{request.path}}">[+ accept]</a>
-                                <a href="#">[- reject]</a>
+                                <a href="{% url reject_request node.user_id %}?next={{request.path}}">[- reject]</a>
                             {% endif %}
                         {% else %}
                             <small>[request pending]</small></a>

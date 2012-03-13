@@ -15,7 +15,7 @@
             {% if not already_requested %}
                 {% if connection_requested %}
                     <a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ accept]</a>
-                    <a href="#">[- reject]</a>
+                    <a href="{% url reject_request other_user_pk %}?next={{request.path}}">[- reject]</a>
                 {% else %}
                     <a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ connect]</a>
                 {% endif %}

@@ -108,6 +108,27 @@ def confirm_request(request, user_id):
 
 @login_required
 @pin_required
+def reject_request(request, user_id):
+    user = get_object_or_404(User, pk = user_id)
+    profile = user.get_profile()
+    profile.connection_requests.remove(request.user)
+    
+    if not request.user.get_profile().connection_requests.filter(pk=user_id).exists():
+        raise Http404
+        
+    if request.method == 'POST':
+        request.user.get_profile().connection_requests.remove(user)
+        redirect_to = request.POST.get('next', reverse('profile'))
+        return redirect(redirect_to)
+    
+    next = request.GET.get('next', reverse('profile'))
+    return render(request, 'profile/reject_request.html',
+                            {'other_user_profile': profile,
+                             'other_user_pk':user.pk,
+                             'next':next})
+
+@login_required
+@pin_required
 def connection_requests(request):
     return render(request, 'profile/connection_requests.html',
                             {'requests': request.user.get_profile().connection_requests.all()})

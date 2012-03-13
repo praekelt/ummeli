@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Reject connection request for <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a></h4>
+    <p>
+    Are you sure you <strong>don't</strong> want to connect with {{other_user_profile.fullname}}?
+    <br/>
+    <br/>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+    occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
+    mollit anim id est laborum.
+    </p>
+        
+    <form action='{% url reject_request other_user_pk %}' method='POST'>
+        <input class="btn" type="submit" value="- reject"/>
+        <input type="hidden" name="next" value="{{next}}"/>
+        {% csrf_token %}
+        <br/>
+    </form>
+        
+{% endblock %}

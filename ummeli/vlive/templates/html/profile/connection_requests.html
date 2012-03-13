@@ -9,7 +9,7 @@
         {% for other_user in requests %}
             <a href='{% url profile_view other_user.pk %}'>&rarr; {{ other_user.get_profile.fullname }}</a>
             <a href="{% url confirm_request other_user.pk %}?next={{request.path}}">[+ accept]</a>
-            <a href="#">[- reject]</a>
+            <a href="{% url reject_request other_user.pk %}?next={{request.path}}">[- reject]</a>
             <br/>
         {% endfor %}
     {% else %}
