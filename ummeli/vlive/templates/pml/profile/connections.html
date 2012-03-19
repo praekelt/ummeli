@@ -34,20 +34,20 @@
                         {% if not is_already_requested %}
                             {% if not is_request_received %}
                                 <br/>
-                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&{{uuid}}">
+                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&amp;{{uuid}}">
                                     <TEXT>[+ connect]</TEXT>
                                 </LINK>
                             {% else %}
                                 <br/>
-                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&{{uuid}}">
+                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&amp;{{uuid}}">
                                     <TEXT>[+ connect]</TEXT>
                                 </LINK>
                                 <br/>
-                                <LINK href="{% url confirm_request node.user_id %}?next={{request.path}}&{{uuid}}">
+                                <LINK href="{% url confirm_request node.user_id %}?next={{request.path}}&amp;{{uuid}}">
                                     <TEXT>[+ accept]</TEXT>
                                 </LINK>
                                 <br/>
-                                <LINK href="{% url reject_request node.user_id %}?next={{request.path}}&{{uuid}}">
+                                <LINK href="{% url reject_request node.user_id %}?next={{request.path}}&amp;{{uuid}}">
                                     <TEXT>[+ reject]</TEXT>
                                 </LINK>
                             {% endif %}

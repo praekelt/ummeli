@@ -13,11 +13,11 @@
             <LINK href="{% url profile_view other_user.pk %}?{{uuid}}">
                 <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
             </LINK><br/>
-            <LINK href="{% url confirm_request other_user.pk %}?next={{request.path}}&{{uuid}}">
-                <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+            <LINK href="{% url confirm_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
+                <TEXT>[+ accept]</TEXT>
             </LINK><br/>
-            <LINK href="{% url reject_request other_user.pk %}?next={{request.path}}&{{uuid}}">
-                <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+            <LINK href="{% url reject_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
+                <TEXT>[- reject]</TEXT>
             </LINK><br/>
             -------
         {% endfor %}
