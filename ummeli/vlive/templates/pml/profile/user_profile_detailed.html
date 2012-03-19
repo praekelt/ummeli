@@ -16,7 +16,7 @@
         </TEXT>
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         <LINK href="{% url edit_basic %}?{{uuid}}">
             <TEXT>[edit]</TEXT>
         </LINK>
@@ -31,7 +31,7 @@
         <TEXT>Skill 3</TEXT><br/>
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         <LINK href="">
             <TEXT>[edit]</TEXT>
         </LINK>
@@ -46,7 +46,7 @@
         {% endfor %}
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         <LINK href="{% url work_experience_list %}">
             <TEXT>[edit]</TEXT>
         </LINK>
@@ -61,7 +61,7 @@
         {% endfor %}
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         <LINK href="{% url certificate_list %}">
             <TEXT>[edit]</TEXT>
         </LINK>
