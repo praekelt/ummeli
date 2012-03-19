@@ -43,6 +43,27 @@ DATABASES = {
     }
 }
 
+NEO4J_DATABASES = {
+    'default' : {
+        'HOST':'localhost',
+        'PORT':7474,
+        'ENDPOINT':'/db/data'
+    },
+    'test' : {
+        'HOST':'localhost',
+        'PORT':7475,
+        'ENDPOINT':'/db/data'
+    }
+}
+
+_data_path = os.path.join(PROJECT_ROOT, 'graphing_data')
+if not os.path.exists(_data_path):
+    os.mkdir(_data_path)
+    
+NEO4J_RESOURCE_URI = abspath(_data_path)
+NEO4J_OPTIONS = {}
+NEO4J_DELETE_KEY = 'ummeli-secret-key'
+
 AUTHENTICATION_BACKENDS = (
     # FOR PML ONLY
     #'ummeli.vlive.auth.backends.VodafoneLiveUserBackend',

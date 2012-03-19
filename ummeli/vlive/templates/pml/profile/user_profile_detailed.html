@@ -1,0 +1,69 @@
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Contact details</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TEXT>
+        {% if a_user_profile.house_number or a_user_profile.house_number or a_user_profile.house_number %}
+            {{a_user_profile.house_number}}, 
+            {{a_user_profile.street_name}},
+            {{a_user_profile.location}} <br/>
+        {% endif %}
+        {% if a_user_profile.telephone_number %}
+        [tel] {{a_user_profile.telephone_number}}<br/>
+        {% endif %}
+        {% if a_user_profile.email %}
+        [email] {{a_user_profile.email}}
+        {% endif %}
+        </TEXT>
+    </CONTAINER>
+    {% if user_is_self %}
+    <CONTAINER type="list">
+        <LINK href="{% url edit_basic %}?{{uuid}}">
+            <TEXT>[edit]</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Skills</LABEL></HEADER>
+    <CONTAINER type="list">    
+        <TEXT>Skill 1</TEXT>
+        <TEXT>Skill 2</TEXT>
+        <TEXT>Skill 3</TEXT>
+    </CONTAINER>
+    {% if user_is_self %}
+    <CONTAINER type="list">
+        <LINK href="">
+            <TEXT>[edit]</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Work experience</LABEL></HEADER>
+    <CONTAINER type="list">
+        {% for exp in a_user_profile.work_experiences.all %}
+            <TEXT>{{exp}}</TEXT>
+        {% endfor %}
+    </CONTAINER>
+    {% if user_is_self %}
+    <CONTAINER type="list">
+        <LINK href="{% url work_experience_list %}">
+            <TEXT>[edit]</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Qualifications</LABEL></HEADER>
+    <CONTAINER type="list">
+        {% for c in a_user_profile.certificates.all %}
+            <TEXT>{{c}}</TEXT>
+        {% endfor %}
+    </CONTAINER>
+    {% if user_is_self %}
+    <CONTAINER type="list">
+        <LINK href="{% url certificate_list %}">
+            <TEXT>[edit]</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}

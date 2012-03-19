@@ -25,7 +25,7 @@ class VLiveCVTestCase(VLiveTestCase):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_edit_personal_page(self):
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertEquals(resp.status_code, 200)
 
         resp = self.client.get(reverse('edit_personal'))
@@ -72,7 +72,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertEquals(resp.status_code, 200)
 
         resp = self.client.get(reverse('edit_contact'))
@@ -90,7 +90,7 @@ class VLiveCVTestCase(VLiveTestCase):
 
     def test_edit_education_details_page(self):
 
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertEquals(resp.status_code, 200)
         self.assertVLiveRedirects(resp, reverse('register'))
         self.register()
@@ -112,7 +112,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(cv.school, 'Some school')
 
     def test_edit_certificates_details_page(self):
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertVLiveRedirects(resp, reverse('register'))
 
          # test certificates listing
@@ -168,7 +168,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertNotVLiveRedirects(resp, reverse('login'))
 
          # test certificates listing
@@ -225,7 +225,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertEquals(resp.status_code, 200)
 
          # test languages listing
@@ -246,11 +246,11 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertContains(resp, 'English')
 
          # test editing of created language
-        resp = self.client.get(reverse('language_edit',  args=[4]))
+        resp = self.client.get(reverse('language_edit',  args=[1]))
         self.assertEquals(resp.status_code, 200)
 
         post_data = {'language': 'Afrikaans', 'read_write': True}
-        resp = self.client.post(reverse('language_edit', args=[4]),
+        resp = self.client.post(reverse('language_edit', args=[1]),
                                 post_data)
 
         resp = self.client.get(reverse('language_list'))
@@ -260,10 +260,10 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(languages.count(), 1)
 
          # test delete action
-        resp = self.client.get(reverse('language_delete',  args=[4]))
+        resp = self.client.get(reverse('language_delete',  args=[1]))
         self.assertContains(resp, 'Are you sure')
 
-        resp = self.client.post(reverse('language_delete',  args=[4]))
+        resp = self.client.post(reverse('language_delete',  args=[1]))
         languages = self.get_user().get_profile().languages.all()
         self.assertEquals(languages.count(), 0)
 
@@ -271,7 +271,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertEquals(resp.status_code, 200)
 
          # test references listing

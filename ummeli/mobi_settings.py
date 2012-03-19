@@ -34,14 +34,35 @@ MANAGERS = SENTRY_ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ummeli',    # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', #postgresql_psycopg2,
+        'NAME': 'ummeli.db',    # Or path to database file if using sqlite3.
         'USER': 'ummeli',
         'PASSWORD': 'ummeli',
         'HOST': 'localhost',
         'PORT': '',
     }
 }
+
+NEO4J_DATABASES = {
+    'default' : {
+        'HOST':'localhost',
+        'PORT':7474,
+        'ENDPOINT':'/db/data'
+    },
+    'test' : {
+        'HOST':'localhost',
+        'PORT':7475,
+        'ENDPOINT':'/db/data'
+    }
+}
+
+_data_path = os.path.join(PROJECT_ROOT, 'graphing_data')
+if not os.path.exists(_data_path):
+    os.mkdir(_data_path)
+    
+NEO4J_RESOURCE_URI = abspath(_data_path)
+NEO4J_OPTIONS = {}
+NEO4J_DELETE_KEY = 'ummeli-secret-key'
 
 AUTHENTICATION_BACKENDS = (
     # FOR PML ONLY
@@ -74,7 +95,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = abspath('media')
+MEDIA_ROOT = abspath('ummeli-static')#abspath('media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -85,11 +106,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = abspath('ummeli-static')
+STATIC_ROOT = abspath('media')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/ummeli-static/'
+STATIC_URL = '/media/./'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.

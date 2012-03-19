@@ -75,10 +75,10 @@
         <div id="c{{ comment.id }}">
             <div class="t">
                 <!-- link to user profile -->
-                <a href="#">
+                <a href="{% url profile_view comment.user.pk %}">
                     <strong>
-                        {% if comment.user.get_full_name %}
-                            {{ comment.user.get_full_name }}
+                        {% if comment.user.get_profile.fullname %}
+                            {{ comment.user.get_profile.fullname }}
                         {% else %}
                             Anon.
                         {% endif %}

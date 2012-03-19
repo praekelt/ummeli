@@ -40,6 +40,7 @@ class UserSubmittedJobArticle(models.Model):
                 self.text = user_article.text
                 self.date = user_article.date
                 self.user_submitted = True
+                self.user = user_article.user
         return UserSubmittedJobArticleViewModel(self)
 
 
@@ -121,6 +122,11 @@ class CurriculumVitae(models.Model):
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     is_complete = models.BooleanField(default=False,  editable=False)
 
+    connection_requests = models.ManyToManyField('auth.User', related_name='connection_requests', blank=True)
+    
+    def is_connection_requested(self, user_id):
+        return self.connection_requests.filter(pk=user_id).exists()
+    
     def __str__(self):
         return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
     

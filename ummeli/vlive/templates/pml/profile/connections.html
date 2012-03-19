@@ -1,0 +1,70 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+    <HEADER>
+        <LABEL>
+            {% if not is_self %}
+                {{ other_user_node.name }}'s Connections
+            {% else %}
+                My Connections
+            {% endif %}
+        </LABEL>
+    </HEADER>
+    <CONTAINER type="data">
+        {% if not is_self %}
+        <LINK href="{% url profile_view user_node.user_id %}?{{uuid}}">
+            <TEXT>View {{ other_user_node.name }}'s Profile</TEXT>
+        </LINK><br/>
+        {% endif %}
+            
+        {% if connections %}
+            {% for node, is_connected, is_already_requested, is_request_received in connections %}
+                <LINK href="{% url profile_view node.user_id %}?{{uuid}}">
+                    <TEXT>{{ node.name }}</TEXT>
+                </LINK>
+                {% if node.user_id == user.pk %}
+                    <strong>(me)</strong>
+                {% else %}
+                    {% if not is_connected %}
+                        {% if not is_already_requested %}
+                            {% if not is_request_received %}
+                                <br/>
+                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&{{uuid}}">
+                                    <TEXT>[+ connect]</TEXT>
+                                </LINK>
+                            {% else %}
+                                <br/>
+                                <LINK href="{% url add_connection node.user_id %}?next={{request.path}}&{{uuid}}">
+                                    <TEXT>[+ connect]</TEXT>
+                                </LINK>
+                                <br/>
+                                <LINK href="{% url confirm_request node.user_id %}?next={{request.path}}&{{uuid}}">
+                                    <TEXT>[+ accept]</TEXT>
+                                </LINK>
+                                <br/>
+                                <LINK href="{% url reject_request node.user_id %}?next={{request.path}}&{{uuid}}">
+                                    <TEXT>[+ reject]</TEXT>
+                                </LINK>
+                            {% endif %}
+                        {% else %}
+                            [request pending]
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <br/> -----
+            {% endfor %}
+        {% else %}
+            0 connections.
+        {% endif %}
+        <br/>
+    </CONTAINER>
+    <CONTAINER  type="list">
+        <LINK href="{% url profile_view user_node.user_id %}">
+            <TEXT>Back</TEXT>
+        </LINK>
+    </CONTAINER>
+{% endblock %}

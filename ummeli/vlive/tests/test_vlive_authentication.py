@@ -86,7 +86,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertTrue(self.client.session[settings.UMMELI_PIN_SESSION_KEY])
 
         #test automatic login
-        resp = self.client.get(reverse('edit'))
+        resp = self.client.get(reverse('edit_basic'))
         self.assertContains(resp, 'Personal')
 
         resp = self.client.get(reverse('logout'))

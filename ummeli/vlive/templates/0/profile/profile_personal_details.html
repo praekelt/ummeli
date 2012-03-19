@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url profile %}">Profile</a> &raquo; Basic info</div>
+    <div class="list"><a href="{% url edit_personal %}">Personal Details &rarr;</a></div>
+    <div class="list"><a href="{% url edit_contact %}">Contact Details &rarr;</a></div>
+    <div class="list"><a href="{% url edit_education %}">Education Details &rarr;</a></div>
+{% endblock %}

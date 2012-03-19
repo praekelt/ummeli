@@ -1,0 +1,27 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+    <HEADER><LABEL>My Profile >> Connection Requests</LABEL></HEADER>
+    <CONTAINER type="data">
+    {% if requests %}
+        {% for other_user in requests %}
+            <LINK href="{% url profile_view other_user.pk %}?{{uuid}}">
+                <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+            </LINK><br/>
+            <LINK href="{% url confirm_request other_user.pk %}?next={{request.path}}&{{uuid}}">
+                <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+            </LINK><br/>
+            <LINK href="{% url reject_request other_user.pk %}?next={{request.path}}&{{uuid}}">
+                <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+            </LINK><br/>
+            -------
+        {% endfor %}
+    {% else %}
+        0 connection requests.
+    {% endif %}
+    </CONTAINER>
+{% endblock %}

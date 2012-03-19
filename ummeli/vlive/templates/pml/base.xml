@@ -54,8 +54,8 @@
         <LINK href="{% url jobs_create %}?{{uuid}}">
             <TEXT>Add a job</TEXT>
         </LINK>
-        <LINK href="{% url edit %}?{{uuid}}">
-            <TEXT>My CV</TEXT>
+        <LINK href="{% url profile %}?{{uuid}}">
+            <TEXT>My Profile</TEXT>
         </LINK>
         {% if request.is_authorized %}
         <LINK href="{% url password_change %}?{{uuid}}">

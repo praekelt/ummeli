@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url profile %}">Profile</a> &raquo; {{page_title}}</div>
+        {% for item in object_list %}
+            <div class="list"><a href='{% url profile %}{{list_name}}/{{ item.pk }}'>&rarr; {{ item }}</a></div>
+        {% endfor %}
+        <br/>
+        <div class="more"><a href="{% url profile %}{{list_name}}/new">+ Add another</a></div>
+        <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+    </form>
+{% endblock %}

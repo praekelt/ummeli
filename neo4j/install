@@ -1,0 +1,6 @@
+wget http://dist.neo4j.org/neo4j-community-1.6.1-unix.tar.gz
+tar -zxvf neo4j-community-1.6.1-unix.tar.gz
+cp neo4j-community-1.6.1/* neo4j-main/ -R
+cp neo4j-community-1.6.1/* neo4j-test/ -R
+git checkout .
+start

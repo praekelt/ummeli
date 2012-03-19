@@ -7,12 +7,17 @@
         <a href="{% url jobs search_id cat_id %}">{{category_title}}</a>
     </h4>
     <p>
+        {% if job.user_submitted %}
+        <strong>{{job.source}}</strong><br/>
+        {% endif %}
+            
         {{ job.text }}
+            
         {% if not job.user_submitted %}
             <br /><br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
         {% else %}
-            <br/><br/><span style="color: blue">submitted by Ummeli user</span>
+            <br/><br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
         {% endif %}
     </p>
     <div class="more"><a href="{% url jobs search_id cat_id %}">&larr; Back to jobs</a></div>

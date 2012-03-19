@@ -54,15 +54,15 @@ class JobsTestCase(VLiveTestCase):
         resp = self.client.get(reverse('jobs_list', args=[1]))
         self.assertContains(resp, 'Accounts/Financial')
 
-        resp = self.client.get(reverse('jobs', args=[1, 35]))
-        self.assertContains(resp, '35')
+        resp = self.client.get(reverse('jobs', args=[1, 1]))
+        self.assertContains(resp, '1')
 
-        resp = self.client.get(reverse('job', args=[1, 35, 21]))
+        resp = self.client.get(reverse('job', args=[1, 1, 3]))
         self.assertContains(resp, 'Accounts Administrator West')
         
-        resp = self.client.get(reverse('job', args=[1, 35, 2100]), 
+        resp = self.client.get(reverse('job', args=[1, 1, 2100]), 
                                                     {'user_submitted': True})
-        self.assertVLiveRedirects(resp, reverse('jobs', args=[1, 35]))
+        self.assertVLiveRedirects(resp, reverse('jobs', args=[1, 1]))
         
         self.assertEquals(Category.objects.all()[0].must_show(),  True)
 
@@ -101,7 +101,7 @@ class JobsTestCase(VLiveTestCase):
         result.successful()
 
         # apply via fax
-        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+        resp = self.client.post(reverse('job', args=[1, 1, 3]),
                                         {'send_via':'fax',  'send_to':'+27123456789'})
 
         self.assertEqual(len(mail.outbox), 1)
@@ -113,7 +113,7 @@ class JobsTestCase(VLiveTestCase):
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.post(reverse('job', args=[1, 18, 10]),
+        resp = self.client.post(reverse('job', args=[1, 1, 3]),
                                         {'send_via':'fax',  'send_to':''})
 
         self.assertContains(resp,  'This field is required')

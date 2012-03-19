@@ -32,8 +32,6 @@ from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
     PasswordChangeForm, SetPasswordForm)
 
-from django.views.decorators.cache import cache_control
-
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
@@ -155,16 +153,10 @@ def password_change_view(request):
 
     return render(request, 'password_change.html', {'form': form})
 
-@cache_control(no_cache=True)
 def index(request):
     provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles', distinct=True), userarticles_count=Count('category__user_submitted_job_articles', distinct=True)) if province.category_set.exists()]
     return render(request, 'index.html', {'provinces': provinces[0:4]})
 
-@login_required
-@pin_required
-@cache_control(no_cache=True)
-def edit(request):
-    return render(request, 'cv.html')
 
 @login_required
 @pin_required
