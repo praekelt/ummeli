@@ -4,12 +4,9 @@ import djcelery
 
 DEBUG = False
 
-try:
-    from local_settings import *
-except ImportError:
-    raise RuntimeError,  "you need a local_settings.py file"
 
-TEMPLATE_DEBUG = True
+
+TEMPLATE_DEBUG = DEBUG
 
 djcelery.setup_loader()
 
@@ -285,3 +282,9 @@ CKEDITOR_CONFIGS = {
 }
 
 COMMENTS_APP = 'jmbocomments'
+
+
+try:
+    from local_settings import *
+except ImportError:
+    raise RuntimeError,  "you need a local_settings.py file"
