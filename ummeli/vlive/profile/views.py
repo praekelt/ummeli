@@ -153,7 +153,7 @@ def process_edit_request(request, model_form, page_title):
             form = model_form(request.POST, instance=cv)
             if form.is_valid():
                 form.save()
-                return redirect(reverse('edit'))
+                return redirect(reverse('edit_basic'))
     else:
         form = model_form(instance=cv)
 

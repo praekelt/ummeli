@@ -11,7 +11,7 @@
 <CONTAINER type="data">        
     <TEXT>
         Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find jobs</TEXT></LINK>, 
-            <LINK href="{% url edit %}?{{uuid}}"><TEXT>build your CV</TEXT></LINK> &amp; 
+            <LINK href="{% url profile %}?{{uuid}}"><TEXT>build your profile</TEXT></LINK> &amp; 
         create your own employment opportunities. <LINK href="{% url about %}"><TEXT>Learn more...</TEXT></LINK>
     </TEXT>
 </CONTAINER>
@@ -48,10 +48,10 @@
         <TEXT>Browse jobs</TEXT>
     </LINK>
     <LINK href="{% url send %}?{{uuid}}">
-        <TEXT>Send my CV</TEXT>
+        <TEXT>Send my profile</TEXT>
     </LINK>
-    <LINK href="{% url edit %}?{{uuid}}">
-        <TEXT>Update my CV ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
+    <LINK href="{% url profile %}?{{uuid}}">
+        <TEXT>Update my profile ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
     </LINK>
 {% else %} 
     {% for province in provinces %}

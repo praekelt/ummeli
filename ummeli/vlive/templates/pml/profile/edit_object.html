@@ -5,21 +5,25 @@
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit personal details</LABEL></HEADER>
+<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
 <CONTAINER  type="form">
-    <FORM method="POST" href="{{request.path}}" submit_text="Submit">
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
         {{ form.as_pml }}
-        <FIELD type='hidden' name='form_name' value='{{form_name}}' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
 </CONTAINER>
 <CONTAINER  type="list">
-    <LINK href="{% url edit %}?{{uuid}}">
+    <LINK href="{{cancel_url}}">
         <TEXT>Cancel</TEXT>
     </LINK>
+    {% if object.id %}
+    <LINK href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">
+        <TEXT>Delete</TEXT>
+    </LINK>
+    {% endif %}
 </CONTAINER>
 {% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+    <HEADER><LABEL>Basic info</LABEL></HEADER>
+    <CONTAINER type="list">
+        <LINK href="{% url edit_personal %}?{{uuid}}">
+            <TEXT>Personal Details</TEXT>
+        </LINK>
+        <LINK href="{% url edit_contact %}?{{uuid}}">
+            <TEXT>Contact Details</TEXT>
+        </LINK>
+        <LINK href="{% url edit_education %}?{{uuid}}">
+            <TEXT>Education Details</TEXT>
+        </LINK>
+    </CONTAINER>
+{% endblock %}

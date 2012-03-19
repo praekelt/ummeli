@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+<HEADER><LABEL>Edit personal details</LABEL></HEADER>
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
@@ -18,7 +18,7 @@
     </FORM>
 </CONTAINER>
 <CONTAINER  type="list">
-    <LINK href="{% url edit %}?{{uuid}}">
+    <LINK href="{% url edit_basic %}?{{uuid}}">
         <TEXT>Cancel</TEXT>
     </LINK>
 </CONTAINER>

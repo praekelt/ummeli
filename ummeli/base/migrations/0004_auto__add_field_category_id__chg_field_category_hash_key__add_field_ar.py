@@ -10,12 +10,12 @@ class Migration(SchemaMigration):
         # Changing field 'Category.hash_key'
         db.delete_column('base_category', 'hash_key')
         db.add_column('base_category', 'hash_key', self.gf('django.db.models.fields.CharField')(unique=True, max_length=32))
-        db.add_column('base_category', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True))
+        db.add_column('base_category', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True, default=0))
 
         # Changing field 'Article.hash_key'
         db.delete_column('base_article', 'hash_key')
         db.add_column('base_article', 'hash_key', self.gf('django.db.models.fields.CharField')(unique=True, max_length=32))
-        db.add_column('base_article', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True))
+        db.add_column('base_article', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True, default=0))
 
 
     def backwards(self, orm):
