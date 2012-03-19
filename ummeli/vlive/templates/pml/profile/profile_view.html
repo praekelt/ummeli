@@ -20,14 +20,14 @@
         {% if not connected_to_user and not is_self %}
             {% if not already_requested %}
                 {% if connection_requested %}
-                    <LINK href="{% url confirm_request other_user_pk %}?next={{request.path}}&{{uuid}}">
+                    <LINK href="{% url confirm_request other_user_pk %}?next={{request.path}}&amp;{{uuid}}">
                         <TEXT>[+ accept]</TEXT>
                     </LINK><br/>
-                    <LINK href="{% url reject_request other_user_pk %}?next={{request.path}}&{{uuid}}">
+                    <LINK href="{% url reject_request other_user_pk %}?next={{request.path}}&amp;{{uuid}}">
                         <TEXT>[- reject]</TEXT>
                     </LINK><br/>
                 {% else %}
-                    <LINK href="{% url add_connection other_user_pk %}?next={{request.path}}&{{uuid}}">
+                    <LINK href="{% url add_connection other_user_pk %}?next={{request.path}}&amp;{{uuid}}">
                         <TEXT>[+ connect]</TEXT>
                     </LINK><br/>
                 {% endif %}
