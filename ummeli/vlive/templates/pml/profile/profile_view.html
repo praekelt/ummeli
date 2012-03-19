@@ -17,6 +17,7 @@
     </CONTAINER>
     <CONTAINER type="data">
     <TEXT>
+        {{other_user_profile.fullname}} <br/>
         {% if not connected_to_user and not is_self %}
             {% if not already_requested %}
                 {% if connection_requested %}
@@ -42,9 +43,11 @@
         <LINK href="{% url connections other_user_pk %}?{{uuid}}">
             <TEXT>Connections ({{num_connections}})</TEXT>
         </LINK><br/>
+    {% if is_self %}
         <LINK href="{% url connection_requests %}?{{uuid}}">
             <TEXT>Requests ({{user_profile.connection_requests.count}})</TEXT>
         </LINK><br/>
+    {% endif %}
     </TEXT>
     </CONTAINER>    
 
