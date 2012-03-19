@@ -4,7 +4,10 @@ import djcelery
 
 DEBUG = False
 
-
+try:
+    from local_settings import *
+except ImportError:
+    raise RuntimeError,  "you need a local_settings.py file"
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -198,6 +201,7 @@ INSTALLED_APPS = (
     'jmboarticles.video',
     'jmboarticles.poll',
     'category',
+    'geckoboard',
     
     # 3rd party
     'ckeditor',
@@ -282,9 +286,3 @@ CKEDITOR_CONFIGS = {
 }
 
 COMMENTS_APP = 'jmbocomments'
-
-
-try:
-    from local_settings import *
-except ImportError:
-    raise RuntimeError,  "you need a local_settings.py file"
