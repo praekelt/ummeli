@@ -7,11 +7,13 @@
 {% block content %}
     <HEADER><LABEL>Profile</LABEL></HEADER>
     <CONTAINER type="data">
+    <TEXT>
     {% if is_self %}
         <LINK href="{% url profile %}?{{uuid}}">
             <TEXT>[edit your profile]</TEXT>
         </LINK><br/>
     {% endif %}
+    </TEXT>
     </CONTAINER>
     <CONTAINER type="list">
         {% if not connected_to_user and not is_self %}
@@ -34,12 +36,14 @@
         {% endif %}
     </CONTAINER>
     <CONTAINER type="data">
+    <TEXT>
         <LINK href="{% url connections other_user_pk %}?{{uuid}}">
             <TEXT>Connections ({{num_connections}})</TEXT>
         </LINK><br/>
         <LINK href="{% url connection_requests %}?{{uuid}}">
             <TEXT>Requests ({{user_profile.connection_requests.count}})</TEXT>
         </LINK><br/>
+    </TEXT>
     </CONTAINER>
 </MODULE>
     

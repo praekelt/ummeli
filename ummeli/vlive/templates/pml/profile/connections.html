@@ -15,6 +15,7 @@
         </LABEL>
     </HEADER>
     <CONTAINER type="data">
+    <TEXT>
         {% if not is_self %}
         <LINK href="{% url profile_view user_node.user_id %}?{{uuid}}">
             <TEXT>View {{ other_user_node.name }}'s Profile</TEXT>
@@ -61,6 +62,7 @@
             0 connections.
         {% endif %}
         <br/>
+    </TEXT>
     </CONTAINER>
     <CONTAINER  type="list">
         <LINK href="{% url profile_view user_node.user_id %}">
