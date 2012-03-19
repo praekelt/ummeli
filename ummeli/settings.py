@@ -34,8 +34,8 @@ MANAGERS = SENTRY_ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', #postgresql_psycopg2',
-        'NAME': 'ummeli.db',    # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ummeli',    # Or path to database file if using sqlite3.
         'USER': 'ummeli',
         'PASSWORD': 'ummeli',
         'HOST': 'localhost',
