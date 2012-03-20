@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/register/$', views.register, name='register'),
     url(r'^vlive/', include('ummeli.vlive.urls')),
+    url(r'^vlive/accounts/', include('ummeli.accounts.urls')),
 )

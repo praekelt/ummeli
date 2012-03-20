@@ -50,6 +50,13 @@
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
         {% if article.comments_enabled %}
             {% if request.is_authorized %}
+                <CONTAINER type="data">
+                    {% if not user.get_full_name %}
+                        <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Create an alias</TEXT></LINK></TEXT>
+                    {% else %}
+                        <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Change your alias</TEXT></LINK></TEXT>
+                    {% endif %}
+                </CONTAINER>
                 <CONTAINER type="form">
                 {% get_comment_form for article as form %}
                 <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
@@ -85,7 +92,7 @@
     {% for comment in comment_list.object_list %}
         <TEXT><b>
             {% if comment.user.get_full_name %}
-                {{ comment.user.get_full_name }}
+                <LINK href="{% url accounts_profile comment.user.pk %}"><TEXT>{{ comment.user.get_full_name }}</TEXT></LINK>
             {% else %}
                 Anon.
             {% endif %}

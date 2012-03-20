@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'jmboarticles.video',
     'jmboarticles.poll',
     'category',
+    'accounts',
     
     # 3rd party
     'ckeditor',

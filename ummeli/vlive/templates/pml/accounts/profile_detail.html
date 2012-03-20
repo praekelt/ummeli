@@ -1,0 +1,33 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>{{ nickname }}'s Profile</LABEL></HEADER>
+{% if editable %}
+<CONTAINER type="form">
+<FORM method="POST" href="{{request.path}}" submit_text="Update">
+	<TEXT position="ABOVE">Nickname:</TEXT>
+	<FIELD name="nickname" type="text" default="{{ nickname }}"/><br/>
+	<FIELD name="send_to" type="text"/><br/>
+	<FIELD type='hidden' name='_action' value='POST' />
+	<FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+</FORM>
+</CONTAINER>
+{% else %}
+<CONTAINER type="data">
+<TEXT>Nickname: {{ nickname }}</TEXT>
+</CONTAINER>		
+{% endif %}
+
+{% if editable %}
+<CONTAINER type="data">
+<TEXT><b>Mobile number:</b> {{ profile_user.username }}<br/></TEXT>
+</CONTAINER>
+{% endif %}
+<CONTAINER type="data">
+<TEXT><b>Member since:</b> {{ profile_user.date_joined|date:"D, j M Y, H:i" }}</TEXT>
+</CONTAINER>
+{% endblock %}
