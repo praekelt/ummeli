@@ -1,0 +1,205 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+{% if app_list %}
+    {% if app_list|length > 1 %}
+    <div class="module">
+    <table summary="Models available in the Auth application.">
+    <caption>Auth</caption>
+        <tr>
+            <th scope="row"><a href="auth/group/">Groups</a></th>
+            <td><a href="/admin/auth/group/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="auth/group/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/auth/user/">Users</a></th>
+            <td><a href="/admin/auth/user/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/auth/user/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="auth/sites/site/">Sites</a></th>
+            <td><a href="/admin/sites/site/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="auth/sites/site/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Editorial stuff application.">
+    <caption>Ummeli Editorial Content</caption>
+        <tr>
+            <th scope="row"><a href="/admin/jmboarticles/article/">Articles</a></th>
+            <td><a href="/admin/jmboarticles/article/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmboarticles/article/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbocomments/usercomment/">Comments</a></th>
+            <td><a href="/admin/jmbocomments/usercomment/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbocomments/usercomment/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbocomments/usercommentflag/">Comment moderation flags</a></th>
+            <td><a href="/admin/jmbocomments/usercommentflag/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbocomments/usercommentflag/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/poll/poll/">Polls</a></th>
+            <td><a href="/admin/poll/poll/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/poll/poll/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/video/video/">Videos</a></th>
+            <td><a href="/admin/video/video/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/video/video/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/category/category/">Categories</a></th>
+            <td><a href="/admin/category/category/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/category/category/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/category/tag/">Tags</a></th>
+            <td><a href="/admin/category/tag/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/category/tag/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/flatpages/flatpage/">Flat Pages</a></th>
+            <td><a href="/admin/flatpages/flatpage/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/flatpages/flatpage/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>Jobs Content</caption>
+        <tr>
+            <th scope="row"><a href="/admin/base/article/">Job Articles</a></th>
+            <td><a href="/admin/base/article/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/article/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/province/">Provinces</a></th>
+            <td><a href="/admin/base/province/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/province/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/category/">Job Categories</a></th>
+            <td><a href="/admin/base/category/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/category/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/usersubmittedjobarticle/">User Submitted Job Articles</a></th>
+            <td><a href="/admin/base/usersubmittedjobarticle/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/usersubmittedjobarticle/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>User Profile Data</caption>
+        <tr>
+            <th scope="row"><a href="/admin/base/curriculumvitae/">User Profiles</a></th>
+            <td><a href="/admin/base/curriculumvitae/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/curriculumvitae/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/certificate/">Certificates</a></th>
+            <td><a href="/admin/base/certificate/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/certificate/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/language/">Languages</a></th>
+            <td><a href="/admin/base/language/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/language/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/reference/">References</a></th>
+            <td><a href="/admin/base/reference/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/reference/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/workexperience/">Work Experiences</a></th>
+            <td><a href="/admin/base/workexperience/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/workexperience/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+    {% else %}
+    {% for app in app_list %}
+        <div class="module">
+        <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}">
+        <caption><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
+        {% for model in app.models %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+    {% endfor %}
+    {% endif %}
+{% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% trans 'Recent Actions' %}</h2>
+        <h3>{% trans 'My Actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% trans 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br/>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
