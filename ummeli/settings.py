@@ -155,8 +155,7 @@ MIDDLEWARE_CLASSES = (
     'jmbovlive.middleware.VodafoneLiveUserMiddleware',
     'jmbovlive.middleware.VodafoneLiveInfoMiddleware',
     'jmbovlive.middleware.PMLFormActionMiddleware',
-    #'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
-    'jmbovlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
+    'jmbovlive.middleware.ModifyPMLResponseMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
