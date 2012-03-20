@@ -1,6 +1,7 @@
 {% extends "base.xml" %}
 
 {% load article_tags %}
+{% load poll_tags %}
 
 {% block title %}
     Welcome
@@ -32,6 +33,13 @@
     </TEXT>
     </CONTAINER>
 </MODULE>
+{% get_featured_poll "featured_poll" %}
+{% if featured_poll %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Poll</LABEL></HEADER>
+    {% show_poll featured_poll %}
+</MODULE>
+{% endif %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER>
         <LABEL>
