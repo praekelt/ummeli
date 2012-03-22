@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% load article_tags %}
-
+{% load poll_tags %}
+    
 {% block content %}
     <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know to create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
     <h4><a href="{% url article_list %}">News</a></h4>
@@ -16,7 +17,11 @@
         {% endfor %}
     </div>
     <p><a href="{% url article_list %}">more...</a></p>
-    
+    {% get_featured_poll "featured_poll" %}
+    {% if featured_poll %}
+        <h4><a href="{% url article_list %}">Poll</a></h4>
+        {% show_poll featured_poll %}
+    {% endif %}
     {% if user.is_authenticated %}
         <h4><em>Quick links</em></h4>
         <div class="list">

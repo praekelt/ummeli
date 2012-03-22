@@ -78,7 +78,7 @@ AUTHENTICATION_BACKENDS = (
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Johannesburg'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -155,8 +155,7 @@ MIDDLEWARE_CLASSES = (
     'jmbovlive.middleware.VodafoneLiveUserMiddleware',
     'jmbovlive.middleware.VodafoneLiveInfoMiddleware',
     'jmbovlive.middleware.PMLFormActionMiddleware',
-    #'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
-    'jmbovlive.middleware.ModifyPMLResponseMiddleware', # FOR PML ONLY
+    'jmbovlive.middleware.ModifyPMLResponseMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -200,6 +199,7 @@ INSTALLED_APPS = (
     'jmbocomments',
     'jmboarticles.video',
     'jmboarticles.poll',
+    'jmboarticles.featured',
     'category',
     'geckoboard',
     

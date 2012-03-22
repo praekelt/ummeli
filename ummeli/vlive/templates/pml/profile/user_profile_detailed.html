@@ -16,54 +16,62 @@
         </TEXT>
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
+    <TEXT>
         <LINK href="{% url edit_basic %}?{{uuid}}">
             <TEXT>[edit]</TEXT>
         </LINK>
+    </TEXT>
     </CONTAINER>
     {% endif %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Skills</LABEL></HEADER>
-    <CONTAINER type="list">    
-        <TEXT>Skill 1</TEXT>
-        <TEXT>Skill 2</TEXT>
-        <TEXT>Skill 3</TEXT>
+    <CONTAINER type="data">    
+        <TEXT>Skill 1</TEXT><br/>
+        <TEXT>Skill 2</TEXT><br/>
+        <TEXT>Skill 3</TEXT><br/>
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
+    <TEXT>
         <LINK href="">
             <TEXT>[edit]</TEXT>
         </LINK>
+    </TEXT>
     </CONTAINER>
     {% endif %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Work experience</LABEL></HEADER>
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         {% for exp in a_user_profile.work_experiences.all %}
-            <TEXT>{{exp}}</TEXT>
+            <TEXT>{{exp}}</TEXT><br/>
         {% endfor %}
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
+    <TEXT>
         <LINK href="{% url work_experience_list %}">
             <TEXT>[edit]</TEXT>
         </LINK>
+    </TEXT>
     </CONTAINER>
     {% endif %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Qualifications</LABEL></HEADER>
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         {% for c in a_user_profile.certificates.all %}
-            <TEXT>{{c}}</TEXT>
+            <TEXT>{{c}}</TEXT><br/>
         {% endfor %}
     </CONTAINER>
     {% if user_is_self %}
-    <CONTAINER type="list">
+    <CONTAINER type="data">
+    <TEXT>
         <LINK href="{% url certificate_list %}">
             <TEXT>[edit]</TEXT>
         </LINK>
+    </TEXT>
     </CONTAINER>
     {% endif %}
