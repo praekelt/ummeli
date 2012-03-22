@@ -1,0 +1,2 @@
+#!/bin/bash
+source ve/bin/activate && python ummeli/manage.py article_content_scheduler && deactivate
