@@ -199,6 +199,7 @@ INSTALLED_APPS = (
     'jmbocomments',
     'jmboarticles.video',
     'jmboarticles.poll',
+    'jmboarticles.featured',
     'category',
     'geckoboard',
     
