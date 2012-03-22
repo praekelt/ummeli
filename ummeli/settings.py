@@ -9,7 +9,7 @@ try:
 except ImportError:
     raise RuntimeError,  "you need a local_settings.py file"
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 djcelery.setup_loader()
 
@@ -201,6 +201,7 @@ INSTALLED_APPS = (
     'jmboarticles.video',
     'jmboarticles.poll',
     'category',
+    'geckoboard',
     
     # 3rd party
     'ckeditor',

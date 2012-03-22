@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^sentry/', include('sentry.web.urls')),
     url(r'^health/$', views.health, name="health"),
     url(r'^stats/$', views.stats, name="stats"),
+    url(r'^geckoboard/', include('geckoboard.urls')),
     
     url(r'^register/$', views.mobi_register, name='register'),
     url(r'', include('ummeli.vlive.urls')),
