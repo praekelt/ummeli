@@ -4,8 +4,14 @@
 
 {% block content %}
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
-<CONTAINER type="data">
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="image">
+    <IMAGE href="/vlive{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>{{ article.title }}</TITLE>
+    <TEXT>{{ article.description }}</TEXT>
+</CONTAINER>
+<CONTAINER type="data">
     <TEXT>
     <b>{{ article.updated|date:"D, j M Y, H:i" }}</b><br/>
     <b>{{ article.like_count }} Like{{ article.like_count|pluralize }}</b>
@@ -50,13 +56,6 @@
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
         {% if article.comments_enabled %}
             {% if request.is_authorized %}
-                <CONTAINER type="data">
-                    {% if not user.get_full_name %}
-                        <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Create an alias</TEXT></LINK></TEXT>
-                    {% else %}
-                        <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Change your alias</TEXT></LINK></TEXT>
-                    {% endif %}
-                </CONTAINER>
                 <CONTAINER type="form">
                 {% get_comment_form for article as form %}
                 <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
@@ -92,7 +91,7 @@
     {% for comment in comment_list.object_list %}
         <TEXT><b>
             {% if comment.user.get_full_name %}
-                <LINK href="{% url accounts_profile comment.user.pk %}"><TEXT>{{ comment.user.get_full_name }}</TEXT></LINK>
+                {{ comment.user.get_full_name }}
             {% else %}
                 Anon.
             {% endif %}
