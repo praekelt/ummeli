@@ -9,18 +9,17 @@ try:
 except ImportError:
     raise RuntimeError,  "you need a local_settings.py file"
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# --- Environment Specific Settings --- 
 ROOT_URLCONF = 'pml_urls'
-#ROOT_URLCONF = 'mobi_urls'
+LOGIN_URL = '/vlive/login/'
+LOGIN_REDIRECT_URL = '/vlive/'
 
 TEMPLATE_DIRS = (
-   #"vlive/templates/html",
    "vlive/templates/pml",
 )
 
@@ -74,12 +73,12 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = abspath('media')
+MEDIA_ROOT = abspath('ummeli-static/media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
+MEDIA_URL = '/ummeli-static/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -214,8 +213,6 @@ SKIP_SOUTH_TESTS = True
 SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
 AUTH_PROFILE_MODULE = "base.Curriculumvitae"
-LOGIN_URL = '/vlive/login/'
-LOGIN_REDIRECT_URL = '/vlive/'
 
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
