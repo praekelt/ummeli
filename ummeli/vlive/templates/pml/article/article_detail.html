@@ -6,7 +6,7 @@
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
 <MODULE backgroundColor="false" role="MOD16">
     <CONTAINER type="image">
-        <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+        <IMAGE href="/vlive{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
         <TITLE>{{ article.title }}</TITLE>
         <TEXT>{{ article.description }}</TEXT>
     </CONTAINER>
