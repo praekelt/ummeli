@@ -7,7 +7,7 @@
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="image">
-    <IMAGE href="/vlive{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>{{ article.title }}</TITLE>
     <TEXT>{{ article.description }}</TEXT>
 </CONTAINER>
