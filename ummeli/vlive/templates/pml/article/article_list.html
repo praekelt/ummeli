@@ -1,26 +1,26 @@
-{% extends "base.html" %}
+{% extends "base.xml" %}
 
 {% block content %}
-<h4><a href="{% url article_list %}">News</a></h4>
-<ul class="list">
-    {% for article in article_list %}
-    <li>
-        <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}<br />
-        <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
-    </li>
-    {% endfor %}
-</ul>
-
-<div class="pagination">
+<HEADER><LABEL>Featured</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+{% for article in article_list %}
+    <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+        <TEXT>{{ article.title }}</TEXT>
+    </LINK>  {{ article.description }} <br/>
+{% endfor %}
+</TEXT>
+</CONTAINER>
+<CONTAINER type="list">
     {% if page_obj.has_previous %}
-    <a href="{% url article_list page_obj.previous_page_number %}">
-        &lt; Newer articles
-    </a>
+    <LINK href="{% url article_list page_obj.previous_page_number %}?{{uuid}}">
+        <TEXT>&lt; Newer articles</TEXT>
+    </LINK>
     {% endif %}
     {% if page_obj.has_next %}
-    <a href="{% url article_list page_obj.next_page_number %}">
-        Older articles &gt;
-    </a>
+    <LINK href="{% url article_list page_obj.next_page_number %}?{{uuid}}">
+        <TEXT>Older articles &gt;</TEXT>
+    </LINK>
     {% endif %}
-</div>
+</CONTAINER>
 {% endblock %}
