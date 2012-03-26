@@ -23,9 +23,9 @@
     <TEXT>
         {{ article.content|safe }}
         <br/>
-        See also:
+        <br/>
         {% if article.linked_article or article.linked_page %}
-            <strong>See also:</strong>
+            <b>See also:</b>
             {% if article.linked_article %}
                 <CONTAINER type="list">
                     <LINK href="{% url article_detail article.linked_article.pk %}?{{uuid}}">
