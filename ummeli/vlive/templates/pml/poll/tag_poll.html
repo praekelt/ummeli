@@ -5,7 +5,7 @@
     <TITLE>{{ poll.question }}</TITLE>
 </CONTAINER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<MODULE backgroundColor="false" palette="MiDove">
 {% if poll|has_user_voted:user or show_results %}
 <CONTAINER type="data">
         {% get_poll_results poll %}
