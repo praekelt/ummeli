@@ -19,6 +19,9 @@ class Article(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s' % (self.date,  self.source,  self.text)
+    
+    def user_submitted(self):
+                return 0
 
 
 class UserSubmittedJobArticle(models.Model):
@@ -31,6 +34,9 @@ class UserSubmittedJobArticle(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
+    
+    def user_submitted(self):
+                return 1
 
     def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
@@ -39,7 +45,9 @@ class UserSubmittedJobArticle(models.Model):
                 self.source = user_article.title
                 self.text = user_article.text
                 self.date = user_article.date
-                self.user_submitted = True
+            def user_submitted(self):
+                return 1
+            
         return UserSubmittedJobArticleViewModel(self)
 
 

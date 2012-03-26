@@ -237,9 +237,9 @@ def jobs(request,  id,  search_id):
                               'province_name': province.name, 
                               'category_title': category.title})
 
-def job(request,  id,  cat_id,  search_id):
+def job(request,  id,  cat_id,  search_id, user_submitted=None):
     form = None
-    if request.GET.get('user_submitted'):
+    if user_submitted:
         if not UserSubmittedJobArticle.objects.filter(pk = id):
             return redirect(reverse('jobs',  args = [search_id,  cat_id])) # Sorry, this ad has been removed.
         article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
