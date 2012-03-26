@@ -23,7 +23,7 @@
     <TEXT>
         {{ article.content|safe }}
         <br/>
-        See also:
+        <br/>
         {% if article.linked_article or article.linked_page %}
             <strong>See also:</strong>
             {% if article.linked_article %}

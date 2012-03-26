@@ -1,10 +1,12 @@
 {% load poll_tags %}
 
 <CONTAINER type="image">
-    <IMAGE href="/media/photologue/photos/cache/love_3_thumbnail.jpg" mime-type="image/jpeg" align="left"/>
+    <IMAGE href="/ummeli-static/media/poll.jpg" mime-type="image/jpeg" align="left"/>
     <TITLE>{{ poll.question }}</TITLE>
 </CONTAINER>
+</MODULE>
 {% if poll|has_user_voted:user or show_results %}
+<MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
         {% get_poll_results poll %}
         {% for c in poll_result_list %}

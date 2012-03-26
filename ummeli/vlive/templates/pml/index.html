@@ -22,19 +22,19 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Featured</LABEL></HEADER>
 </MODULE>
-    {% for article in article_list %}
-    <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-        <CONTAINER type="image">
-        <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
-        <TITLE>
-            <LINK href="{% url article_detail article.pk %}?{{uuid}}">
-                {{ article.title }}
-            </LINK>
-        </TITLE>
-        <TEXT>{{ article.description }}</TEXT>
-        </CONTAINER>
-    </MODULE>
-    {% endfor %}
+{% for article in article_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+            {{ article.title }}
+        </LINK>
+    </TITLE>
+    <TEXT>{{ article.description }}</TEXT>
+    </CONTAINER>
+</MODULE>
+{% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
 <TEXT>
@@ -48,7 +48,7 @@
     
 {% get_featured_poll "featured_poll" %}
 {% if featured_poll %}
-<MODULE backgroundColor="false" palette="MiDove">
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <HEADER><LABEL>Poll</LABEL></HEADER>
     {% show_poll featured_poll %}
 </MODULE>
