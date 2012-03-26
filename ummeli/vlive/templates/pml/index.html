@@ -17,11 +17,12 @@
     </TEXT>
 </CONTAINER>
 </MODULE>
+{% get_articles 4 "article_list" %}
+{% if article_list %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Featured</LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    {% get_articles 4 "article_list" %}
     {% for article in article_list %}
         <LINK href="{% url article_detail article.pk %}?{{uuid}}">
             <TEXT>{{ article.title }}</TEXT>
@@ -33,6 +34,8 @@
     </TEXT>
     </CONTAINER>
 </MODULE>
+{% endif %}
+
 {% get_featured_poll "featured_poll" %}
 {% if featured_poll %}
 <MODULE backgroundColor="false" palette="MiDove">
