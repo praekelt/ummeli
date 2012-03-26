@@ -28,3 +28,4 @@ django-category==0.0.3
 -e git+https://github.com/dwaiter/django-ckeditor.git#egg=django_ckeditor-dev
 django-dirtyfields
 pillow
+django_geckoboard

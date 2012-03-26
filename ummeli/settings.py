@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     #ummeli 2.0
     'django.contrib.flatpages',
     'django.contrib.comments',
+    'geckoboard',
     
     #jmbo
     'jmboarticles',
