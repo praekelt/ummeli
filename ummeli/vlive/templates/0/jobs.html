@@ -11,7 +11,7 @@
     {% for article in articles.object_list %}
         <div>
             <span class="date"><strong>{{article.date|date:'d M y'}}</strong></span> 
-            <a href="{% url job search_id cat_id article.pk%}?user_submitted={{article.user_submitted}}">
+            <a href="{% url job search_id cat_id article.pk article.user_submitted %}">
                 {% if article.user_submitted %}<color value="blue">***</color>{% endif %}
                 {{ article.text|truncatewords:10 }}
             </a>

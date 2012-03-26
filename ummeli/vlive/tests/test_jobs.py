@@ -60,8 +60,7 @@ class JobsTestCase(VLiveTestCase):
         resp = self.client.get(reverse('job', args=[1, 1, 3]))
         self.assertContains(resp, 'Accounts Administrator West')
         
-        resp = self.client.get(reverse('job', args=[1, 1, 2100]), 
-                                                    {'user_submitted': True})
+        resp = self.client.get(reverse('job', args=[1, 1, 2100, 1]))
         self.assertVLiveRedirects(resp, reverse('jobs', args=[1, 1]))
         
         self.assertEquals(Category.objects.all()[0].must_show(),  True)
