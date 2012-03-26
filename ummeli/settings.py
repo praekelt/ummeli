@@ -265,14 +265,14 @@ CKEDITOR_CONFIGS = {
         'toolbar': [
             [      'Undo', 'Redo',
               '-', 'Bold', 'Italic', 'Underline',
-              '-', 'Link', 'Unlink', 'Anchor',
+              #'-', 'Link', 'Unlink', 'Anchor',
               #'-', 'Format',
               #'-', 'SpellChecker', 'Scayt',
               #'-', 'Maximize',
             ],
-            [      'HorizontalRule',
+            [ #'HorizontalRule',
               #'-', 'Table',
-              '-', 'BulletedList', 'NumberedList',
+              #'-', 'BulletedList', 'NumberedList',
               '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
               #'-', 'SpecialChar',
               '-', 'Source',
@@ -282,6 +282,7 @@ CKEDITOR_CONFIGS = {
         'width': 620,
         'height': 300,
         'toolbarCanCollapse': False,
+        'basicEntities': False,
     }
 }
 
