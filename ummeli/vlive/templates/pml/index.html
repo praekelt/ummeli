@@ -19,9 +19,11 @@
 </MODULE>
 {% get_articles 4 "article_list" %}
 {% if article_list %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Featured</LABEL></HEADER>
+</MODULE>
     {% for article in article_list %}
+    <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
         <CONTAINER type="image">
         <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
         <TITLE>
@@ -31,14 +33,16 @@
         </TITLE>
         <TEXT>{{ article.description }}</TEXT>
         </CONTAINER>
+    </MODULE>
     {% endfor %}
-    <CONTAINER type="data">
-    <TEXT>
-    <LINK href="{% url article_list %}?{{uuid}}">
-        <TEXT>more...</TEXT>
-    </LINK>
-    </TEXT>
-    </CONTAINER>
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="data">
+<TEXT>
+<LINK href="{% url article_list %}?{{uuid}}">
+    <TEXT>more...</TEXT>
+</LINK>
+</TEXT>
+</CONTAINER>
 </MODULE>
 {% endif %}
     

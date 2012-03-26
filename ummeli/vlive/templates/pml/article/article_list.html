@@ -3,6 +3,8 @@
 {% block content %}
 <HEADER><LABEL>Featured</LABEL></HEADER>
 {% for article in article_list %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <CONTAINER type="image">
     <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>
@@ -12,7 +14,9 @@
     </TITLE>
     <TEXT>{{ article.description }}</TEXT>
     </CONTAINER>
+</MODULE>
 {% endfor %}
+<MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="list">
     {% if page_obj.has_previous %}
     <LINK href="{% url article_list page_obj.previous_page_number %}?{{uuid}}">
