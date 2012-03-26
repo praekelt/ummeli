@@ -242,23 +242,18 @@ CKEDITOR_CONFIGS = {
         'toolbar': [
             [      'Undo', 'Redo',
               '-', 'Bold', 'Italic', 'Underline',
-              '-', 'Link', 'Unlink', 'Anchor',
-              #'-', 'Format',
-              #'-', 'SpellChecker', 'Scayt',
-              #'-', 'Maximize',
             ],
-            [      'HorizontalRule',
-              #'-', 'Table',
-              '-', 'BulletedList', 'NumberedList',
-              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
-              #'-', 'SpecialChar',
+            [ '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
               '-', 'Source',
-              #'-', 'About',
             ]
         ],
         'width': 620,
         'height': 300,
         'toolbarCanCollapse': False,
+        'basicEntities': False,
+        'forcePasteAsPlainText': True,
+        'enterMode': 2,
+        'coreStyles_bold': { 'element': 'b', 'overrides': 'strong' }
     }
 }
 
