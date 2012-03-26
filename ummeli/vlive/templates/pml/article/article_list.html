@@ -2,15 +2,17 @@
 
 {% block content %}
 <HEADER><LABEL>Featured</LABEL></HEADER>
-<CONTAINER type="data">
-<TEXT>
 {% for article in article_list %}
-    <LINK href="{% url article_detail article.pk %}?{{uuid}}">
-        <TEXT>{{ article.title }}</TEXT>
-    </LINK>  {{ article.description }} <br/>
+    <CONTAINER type="image">
+    <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+            {{ article.title }}
+        </LINK>
+    </TITLE>
+    <TEXT>{{ article.description }}</TEXT>
+    </CONTAINER>
 {% endfor %}
-</TEXT>
-</CONTAINER>
 <CONTAINER type="list">
     {% if page_obj.has_previous %}
     <LINK href="{% url article_list page_obj.previous_page_number %}?{{uuid}}">
