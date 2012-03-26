@@ -2,8 +2,8 @@
 
 {% block content %}
 <HEADER><LABEL>Featured</LABEL></HEADER>
-{% for article in article_list %}
 </MODULE>
+{% for article in article_list %}
 <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <CONTAINER type="image">
     <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
