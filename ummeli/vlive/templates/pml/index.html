@@ -21,21 +21,31 @@
 {% if article_list %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Featured</LABEL></HEADER>
-    <CONTAINER type="data">
-    <TEXT>
+</MODULE>
     {% for article in article_list %}
-        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
-            <TEXT>{{ article.title }}</TEXT>
-        </LINK>  {{ article.description }} <br/>
+    <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+        <CONTAINER type="image">
+        <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+        <TITLE>
+            <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+                {{ article.title }}
+            </LINK>
+        </TITLE>
+        <TEXT>{{ article.description }}</TEXT>
+        </CONTAINER>
+    </MODULE>
     {% endfor %}
-    <LINK href="{% url article_list %}?{{uuid}}">
-        <TEXT>more...</TEXT>
-    </LINK>
-    </TEXT>
-    </CONTAINER>
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="data">
+<TEXT>
+<LINK href="{% url article_list %}?{{uuid}}">
+    <TEXT>more...</TEXT>
+</LINK>
+</TEXT>
+</CONTAINER>
 </MODULE>
 {% endif %}
-
+    
 {% get_featured_poll "featured_poll" %}
 {% if featured_poll %}
 <MODULE backgroundColor="false" palette="MiDove">
