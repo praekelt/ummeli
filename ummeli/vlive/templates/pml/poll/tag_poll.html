@@ -4,6 +4,8 @@
     <IMAGE href="/ummeli-static/media/poll.jpg" mime-type="image/jpeg" align="left"/>
     <TITLE>{{ poll.question }}</TITLE>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
 {% if poll|has_user_voted:user or show_results %}
 <CONTAINER type="data">
         {% get_poll_results poll %}
