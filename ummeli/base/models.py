@@ -21,7 +21,7 @@ class Article(models.Model):
         return '%s - %s - %s' % (self.date,  self.source,  self.text)
     
     def user_submitted(self):
-                return 0
+        return 0
 
 
 class UserSubmittedJobArticle(models.Model):
@@ -36,7 +36,7 @@ class UserSubmittedJobArticle(models.Model):
         return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
     
     def user_submitted(self):
-                return 1
+        return 1
 
     def to_view_model(self):
         class UserSubmittedJobArticleViewModel(object):
