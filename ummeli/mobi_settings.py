@@ -13,8 +13,8 @@ except ImportError:
 from settings import *
 
 ROOT_URLCONF = 'mobi_urls'
-LOGIN_URL = '/vlive/login/'
-LOGIN_REDIRECT_URL = '/vlive/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 TEMPLATE_DIRS = (
    "vlive/templates/html",
