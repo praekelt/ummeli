@@ -201,7 +201,7 @@ INSTALLED_APPS = (
     'jmboarticles.poll',
     'jmboarticles.featured',
     'category',
-    'geckoboard',
+    'jmbodashboard.geckoboard',
     
     # 3rd party
     'ckeditor',
