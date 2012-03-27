@@ -11,7 +11,6 @@
 <FORM method="POST" href="{{request.path}}" submit_text="Update">
 	<TEXT position="ABOVE">Nickname:</TEXT>
 	<FIELD name="nickname" type="text" default="{{ nickname }}"/><br/>
-	<FIELD name="send_to" type="text"/><br/>
 	<FIELD type='hidden' name='_action' value='POST' />
 	<FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
 </FORM>
