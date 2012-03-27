@@ -102,7 +102,7 @@
             {% else %}
                 Anon.
             {% endif %}
-        </b> - {{ comment.submit_date|date:"D, j M Y, H:i" }} <br/>
+         - {{ comment.submit_date|date:"D, j M Y, H:i" }} </b><br/>
         </TEXT>
         <TEXT>
             {% spaceless %}
@@ -117,6 +117,7 @@
             {% endif %}
             {% endspaceless %}
         </TEXT>
+        <TEXT>
         {% if request.is_authorized %}
             <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
                 <TEXT>+Like ({{ comment.like_count }})</TEXT>
@@ -127,6 +128,7 @@
                 <TEXT>Report</TEXT>
             </LINK>
         {% endif %}
+        </TEXT>
     {% endfor %}
     <TEXT><br/>
         {% if comment_list.has_next %}
