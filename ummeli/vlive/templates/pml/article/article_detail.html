@@ -5,12 +5,14 @@
 {% block content %}
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove">
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
 <CONTAINER type="image">
     <IMAGE href="{% if article.image %}{{ article.image.url }}{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>{{ article.title }}</TITLE>
     <TEXT>{{ article.description }}</TEXT>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
     <TEXT>
     <b>{{ article.updated|date:"D, j M Y, H:i" }}</b><br/>
@@ -95,7 +97,7 @@
             {% else %}
                 Anon.
             {% endif %}
-        </b> - {{ comment.submit_date|date:"D, j M Y, H:i" }} <br/>
+         - {{ comment.submit_date|date:"D, j M Y, H:i" }} </b><br/>
         </TEXT>
         <TEXT>
             {% spaceless %}
@@ -110,6 +112,7 @@
             {% endif %}
             {% endspaceless %}
         </TEXT>
+        <TEXT>
         {% if request.is_authorized %}
             <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
                 <TEXT>+Like ({{ comment.like_count }})</TEXT>
@@ -120,6 +123,7 @@
                 <TEXT>Report</TEXT>
             </LINK>
         {% endif %}
+        </TEXT>
     {% endfor %}
     <TEXT><br/>
         {% if comment_list.has_next %}
