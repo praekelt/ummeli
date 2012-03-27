@@ -5,12 +5,14 @@
 {% block content %}
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove">
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
 <CONTAINER type="image">
     <IMAGE href="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>{{ article.title }}</TITLE>
     <TEXT>{{ article.description }}</TEXT>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
     <TEXT>
     <b>{{ article.updated|date:"D, j M Y, H:i" }}</b><br/>
