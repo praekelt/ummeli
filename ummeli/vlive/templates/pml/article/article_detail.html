@@ -134,10 +134,10 @@
     {% endfor %}
     <TEXT><br/>
         {% if comment_list.has_next %}
-        <LINK href="{% url article_detail article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT><< Newer comments</TEXT></LINK>
+        <LINK href="{% url article_detail article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT>Newer comments</TEXT></LINK>
         {% endif %}
         {% if comment_list.has_previous %}
-        <LINK href="{% url article_detail article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>Older Comments >></TEXT></LINK>
+        <LINK href="{% url article_detail article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>Older Comments</TEXT></LINK>
         {% endif %}
     </TEXT>
     </CONTAINER>
