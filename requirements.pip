@@ -29,3 +29,4 @@ django-category==0.0.3
 django-dirtyfields
 pillow
 django_geckoboard
+-e git+git://github.com/praekelt/jmbo-dashboard.git@develop#egg=jmbo-dashboard
