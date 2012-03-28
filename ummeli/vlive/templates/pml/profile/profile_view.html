@@ -8,12 +8,11 @@
     <HEADER><LABEL>Profile</LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
+        {{other_user_profile.fullname}}
         {% if is_self %}
             <LINK href="{% url edit_personal %}?{{uuid}}">
-                <TEXT>{{other_user_profile.fullname}}</TEXT>
+                <TEXT>[edit]</TEXT>
             </LINK>
-        {% else %}
-            {{other_user_profile.fullname}}
         {% endif %}
         <br/>
         {% if not connected_to_user and not is_self %}

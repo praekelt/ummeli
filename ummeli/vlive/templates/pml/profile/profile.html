@@ -8,8 +8,9 @@
     <HEADER><LABEL>My Profile</LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
+        {{user_profile.fullname}}
         <LINK href="{% url edit_personal %}?{{uuid}}">
-            <TEXT>{{user_profile.fullname}}</TEXT>
+            <TEXT>[edit]</TEXT>
         </LINK><br/>
         <LINK href="{% url connections user.pk %}?{{uuid}}">
             <TEXT>Connections ({{num_connections}})</TEXT>
