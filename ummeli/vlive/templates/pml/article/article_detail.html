@@ -92,8 +92,8 @@
     <CONTAINER type="data">
     {% for comment in comment_list.object_list %}
         <TEXT><b>
-            {% if comment.user.get_full_name %}
-                {{ comment.user.get_full_name }}
+            {% if comment.user.get_profile.fullname %}
+                <LINK href="{% url profile_view comment.user.pk %}"><TEXT>{{ comment.user.get_profile.fullname }}</TEXT></LINK>
             {% else %}
                 Anon.
             {% endif %}
