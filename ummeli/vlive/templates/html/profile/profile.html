@@ -1,49 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4><a href="{% url edit_personal %}">{{user_profile.fullname}}</a></h4>
+    <h4>{{user_profile.fullname}} <a href="{% url edit_personal %}">[edit]</a></h4>
     <a href="{% url connections user.pk %}">Connections ({{num_connections}})</a></br/>
     <a href="{% url connection_requests %}">Requests ({{user_profile.connection_requests.count}})</a></br/>
     <br/>
-    <h4>Contact details</h4>
-    <div class="list">
-        {% if user_profile.house_number or user_profile.house_number or user_profile.house_number %}
-        <label>
-            {{user_profile.house_number}}, 
-            {{user_profile.street_name}},
-            {{user_profile.location}}
-        </label><br/>
-        {% endif %}
-        {% if user_profile.telephone_number %}
-        <label>[tel] </label>{{user_profile.telephone_number}}<br/>
-        {% endif %}
-        {% if user_profile.email %}
-        <label>[email] </label>{{user_profile.email}}
-        {% endif %}
-    </div>
-    <p><a href="{% url edit_basic %}">[edit]</a></p>
-    
-    <h4>Skills</h4>
-    <div class="list">
-        <div class="bullet">Skill 1</div>
-        <div class="bullet">Skill 2</div>
-        <div class="bullet">Skill 3</div>
-    </div>
-    <p><a href="#">[edit]</a></p>
-
-    <h4>Work experience</h4>
-    <div class="list">
-        {% for exp in user_profile.work_experiences.all %}
-        <div class="bullet">{{exp}}</div>
-        {% endfor %}
-    </div>
-    <p><a href="{% url work_experience_list %}">[edit]</a></p>
-
-    <h4>Qualifications</h4>
-    <div class="list">
-        {% for c in user_profile.certificates.all %}
-        <div class="bullet">{{c}}</div>
-        {% endfor %}
-    </div>
-    <p><a href="{% url certificate_list %}">[edit]</a></p>
+    {% include "profile/user_profile_detailed.html" with a_user_profile=user_profile user_is_self="True" %}
 {% endblock %}

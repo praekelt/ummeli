@@ -1,0 +1,55 @@
+<h4>Contact details</h4>
+<div class="list">
+    {% if a_user_profile.house_number or a_user_profile.house_number or a_user_profile.house_number %}
+    <label>
+        {{a_user_profile.house_number}}, 
+        {{a_user_profile.street_name}},
+        {{a_user_profile.location}}
+    </label><br/>
+    {% endif %}
+    {% if a_user_profile.telephone_number %}
+    <label>[tel] </label>{{a_user_profile.telephone_number}}<br/>
+    {% endif %}
+    {% if a_user_profile.email %}
+    <label>[email] </label>{{a_user_profile.email}}
+    {% endif %}
+</div>
+{% if user_is_self %}
+<p><a href="{% url edit_basic %}">[edit]</a></p>
+{% endif %}
+<br/>
+<h4>Skills</h4>
+<div class="list">
+    <div class="bullet">Skill 1</div>
+    <div class="bullet">Skill 2</div>
+    <div class="bullet">Skill 3</div>
+</div>
+{% if user_is_self %}
+<p><a href="{% url edit_basic %}">[edit]</a></p>
+{% endif %}
+
+{% if a_user_profile.work_experiences.all %}
+<br/>
+<h4>Work experience</h4>
+<div class="list">
+    {% for exp in a_user_profile.work_experiences.all %}
+    <div class="bullet">{{exp}}</div>
+    {% endfor %}            
+</div>
+{% if user_is_self %}
+<p><a href="{% url work_experience_list %}">[edit]</a></p>
+{% endif %}
+{% endif %}
+
+{% if a_user_profile.certificates.all %}
+<br/>
+<h4>Qualifications</h4>
+<div class="list">
+    {% for c in a_user_profile.certificates.all %}
+    <div class="bullet">{{c}}</div>
+    {% endfor %}
+</div>
+{% if user_is_self %}
+<p><a href="{% url certificate_list %}">[edit]</a></p>
+{% endif %}
+{% endif %}
