@@ -1,8 +1,5 @@
 #!/bin/bash
-if not 've/';
-then
-    virtualenv --no-site-packages ve
-fi
+virtualenv --no-site-packages ve
 source ve/bin/activate && \
     pip install -r requirements.pip && \
     find ./ -name '*.pyc' -delete && \
