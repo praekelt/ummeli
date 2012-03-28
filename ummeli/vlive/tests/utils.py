@@ -19,9 +19,12 @@ class VLiveTestCase(TestCase):
             msisdn = self.msisdn
         return User.objects.get(username=msisdn)
 
-    def register(self):
+    def register(self, msisdn = None):
+        if not msisdn:
+            msisdn = self.msisdn
+            
         resp = self.client.post(reverse('register'), {
-            'username': self.msisdn,
+            'username': msisdn,
             'new_password1': self.pin,
             'new_password2': self.pin,
         })
