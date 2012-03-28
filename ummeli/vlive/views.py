@@ -231,7 +231,7 @@ def jobs(request,  id,  search_id):
 
 def job(request,  id,  cat_id,  search_id, user_submitted=0):
     form = None
-    if user_submitted == 1:
+    if int(user_submitted) == 1:
         if not UserSubmittedJobArticle.objects.filter(pk = id):
             return redirect(reverse('jobs',  args = [search_id,  cat_id])) # Sorry, this ad has been removed.
         article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()

@@ -100,7 +100,11 @@ class JobsTestCase(VLiveTestCase):
         result.successful()
 
         # apply via fax
-        resp = self.client.post(reverse('job', args=[1, 1, 3]),
+        
+        resp = self.client.get(reverse('jobs', args=[1, 1]))
+        print resp
+        
+        resp = self.client.post(reverse('job', args=[1, 1, 3, 0]),
                                         {'send_via':'fax',  'send_to':'+27123456789'})
 
         self.assertEqual(len(mail.outbox), 1)
@@ -112,7 +116,7 @@ class JobsTestCase(VLiveTestCase):
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.post(reverse('job', args=[1, 1, 3]),
+        resp = self.client.post(reverse('job', args=[1, 1, 3, 0]),
                                         {'send_via':'fax',  'send_to':''})
 
         self.assertContains(resp,  'This field is required')
