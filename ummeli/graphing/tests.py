@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from neo4django import db
-db.DEFAULT_DB_ALIAS = 'test'
 
 from ummeli.graphing.models import Person
 from ummeli.graphing.utils import add_connection_for_user

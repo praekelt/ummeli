@@ -48,11 +48,6 @@ NEO4J_DATABASES = {
         'HOST':'localhost',
         'PORT':7474,
         'ENDPOINT':'/db/data'
-    },
-    'test' : {
-        'HOST':'localhost',
-        'PORT':7475,
-        'ENDPOINT':'/db/data'
     }
 }
 
