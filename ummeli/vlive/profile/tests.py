@@ -25,12 +25,13 @@ def cleandb():
     
     if resp.status_code != 200:
         print "\nTest database couldn't be cleared - have you installed the cleandb extension at https://github.com/jexp/neo4j-clean-remote-db-addon?"
-
-cleandb()
+        
 
 class ProfileTestCase(VLiveTestCase):
 
     def setUp(self):
+        cleandb()
+        
         self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
@@ -38,6 +39,7 @@ class ProfileTestCase(VLiveTestCase):
         settings.CELERY_ALWAYS_EAGER = True
         
     def tearDown(self):
+        cleandb()
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_own_profile_page(self):
@@ -80,4 +82,5 @@ class ProfileTestCase(VLiveTestCase):
         self.assertVLiveRedirects(resp, reverse('profile'))
         
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
+        print resp
         self.assertContains(resp, 'request pending')

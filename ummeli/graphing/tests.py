@@ -20,10 +20,10 @@ def cleandb():
     if resp.status_code != 200:
         print "\nTest database couldn't be cleared - have you installed the cleandb extension at https://github.com/jexp/neo4j-clean-remote-db-addon?"
 
-cleandb()
-
 class BaseTestCase(TestCase):
     def setUp(self):        
+        cleandb()
+        
         self.joe = Person.objects.get_or_create(name='Joe', user_id=100)
         self.bob = Person.objects.get_or_create(name='Bob', user_id=200)
         self.alice = Person.objects.get_or_create(name='Alice', user_id=300)
@@ -48,6 +48,9 @@ class BaseTestCase(TestCase):
         
         self.pete.knows.add(self.will)
         self.pete.save()
+        
+    def tearDown(self):
+        cleandb()
         
     def test_model_connections(self):
         self.assertEquals(len(list(self.joe.knows.all())), 2)
