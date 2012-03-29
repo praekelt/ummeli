@@ -31,9 +31,12 @@ class VLiveTestCase(TestCase):
         self.assertContains(resp, 'Submitted successfully.')
         return resp
 
-    def login(self):
+    def login(self, msisdn = None):
+        if not msisdn:
+            msisdn = self.msisdn
+            
         resp = self.client.post(reverse('login'), {
-            'username': self.msisdn,
+            'username': msisdn,
             'password': self.pin,
         })
         self.assertNotContains(resp, 'Sign in failed.')

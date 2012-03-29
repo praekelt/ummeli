@@ -28,14 +28,16 @@ def cleandb():
         
 
 class ProfileTestCase(VLiveTestCase):
-
+    fixtures = [
+        'vlive/tests/auth/fixtures/sample.json',
+    ]
+    
     def setUp(self):
         cleandb()
         
         self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
-        self.client.login(remote_user=self.msisdn)
         settings.CELERY_ALWAYS_EAGER = True
         
     def tearDown(self):
@@ -43,7 +45,8 @@ class ProfileTestCase(VLiveTestCase):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_own_profile_page(self):
-        self.register()
+        #self.register()
+        print User.objects.all()
         self.login()
         self.fill_in_basic_info()
         
@@ -61,12 +64,11 @@ class ProfileTestCase(VLiveTestCase):
         self.assertContains(resp, '[edit]')
         
     def test_add_connection(self):
-        self.register()
-        self.register('0123456789')
+        other_msisdn = '27121111111' 
         self.login()
         self.fill_in_basic_info()
         
-        user = User.objects.get(username='0123456789')
+        user = User.objects.get(username=other_msisdn)
         profile = user.get_profile()
         profile.first_name = 'Joe'
         profile.surname = 'Blog'
@@ -74,6 +76,8 @@ class ProfileTestCase(VLiveTestCase):
         
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
         self.assertContains(resp, 'Joe Blog')
+        self.assertContains(resp, 'Skills')
+        self.assertNotContains(resp, 'Contact Details')
         
         resp = self.client.get(reverse('add_connection', args=[user.pk]))
         self.assertContains(resp, 'Joe Blog')
@@ -82,5 +86,28 @@ class ProfileTestCase(VLiveTestCase):
         self.assertVLiveRedirects(resp, reverse('profile'))
         
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
-        print resp
         self.assertContains(resp, 'request pending')
+        
+        user = User.objects.get(username=self.msisdn)
+        self.logout()
+        
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=other_msisdn)
+        self.msisdn = other_msisdn
+        self.login()
+        resp = self.client.get(reverse('profile'))
+        self.assertContains(resp, 'Requests (1)')
+        
+        user = User.objects.get(username='27123456789')
+        
+        resp = self.client.get(reverse('confirm_request', args=[user.pk]))
+        self.assertContains(resp, 'Test User')
+        
+        resp = self.client.post(reverse('confirm_request', args=[user.pk]))
+        self.assertVLiveRedirects(resp, reverse('profile'))
+        
+        resp = self.client.get(reverse('profile'))
+        self.assertContains(resp, 'Requests (0)')
+        self.assertContains(resp, 'Connections (1)')
+        
+        resp = self.client.get(reverse('profile_view', args=[user.pk]))
+        self.assertNotContains(resp, 'Contact Details')
