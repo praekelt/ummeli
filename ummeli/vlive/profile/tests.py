@@ -69,6 +69,8 @@ class ProfileTestCase(VLiveTestCase):
         self.fill_in_basic_info()
         
         user = User.objects.get(username=other_msisdn)
+        user2 = User.objects.get(username='27122222222')
+        
         profile = user.get_profile()
         profile.first_name = 'Joe'
         profile.surname = 'Blog'
@@ -88,9 +90,17 @@ class ProfileTestCase(VLiveTestCase):
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
         self.assertContains(resp, 'request pending')
         
-        user = User.objects.get(username=self.msisdn)
+        resp = self.client.post(reverse('add_connection', args=[user2.pk]))
+        self.assertVLiveRedirects(resp, reverse('profile'))
+        
+        resp = self.client.get(reverse('profile_view', args=[user2.pk]))
+        self.assertContains(resp, 'request pending')
+        
         self.logout()
         
+        user = User.objects.get(username=self.msisdn)
+        
+        #User 2
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=other_msisdn)
         self.msisdn = other_msisdn
         self.login()
@@ -109,5 +119,37 @@ class ProfileTestCase(VLiveTestCase):
         self.assertContains(resp, 'Requests (0)')
         self.assertContains(resp, 'Connections (1)')
         
+        self.logout()
+        
+        #User 1
+        self.login()
+        
+        resp = self.client.get(reverse('profile'))
+        self.assertContains(resp, 'Requests (0)')
+        self.assertContains(resp, 'Connections (1)')
+        
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
         self.assertNotContains(resp, 'Contact Details')
+        
+        self.logout()
+        
+        #User 3
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID='27122222222')
+        self.msisdn = '27122222222'
+        self.login()
+        
+        resp = self.client.post(reverse('reject_request', args=[user.pk]))
+        self.logout()
+        
+        #User 1
+        
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID='27123456789')
+        self.msisdn = '27123456789'
+        self.login()
+        
+        resp = self.client.get(reverse('profile'))
+        self.assertContains(resp, 'Requests (0)')
+        self.assertContains(resp, 'Connections (1)')
+        
+        resp = self.client.get(reverse('profile_view', args=[user2.pk]))
+        self.assertNotContains(resp, 'request pending')
