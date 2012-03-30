@@ -108,6 +108,11 @@ class Reference (models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return self.fullname
+    
+    
+class Skill (models.Model):
+    skill = models.CharField(max_length=45, null=False, blank=False)
+
 
 class CurriculumVitae(models.Model):
     first_name = models.CharField(max_length=45, null=True, blank=True)
@@ -129,6 +134,9 @@ class CurriculumVitae(models.Model):
     user = models.OneToOneField('auth.User')
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     is_complete = models.BooleanField(default=False,  editable=False)
+    
+    preferred_skill = models.ForeignKey(Skill, blank=True, null=True, related_name='profiles_preferred')
+    skills = models.ManyToManyField(Skill, blank=True, null=True, related_name='profiles')
 
     connection_requests = models.ManyToManyField('auth.User', related_name='connection_requests', blank=True)
     
