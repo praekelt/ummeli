@@ -1,5 +1,5 @@
 {% load poll_tags %}
-
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
 <CONTAINER type="image">
     <IMAGE href="/ummeli-static/media/poll.jpg" mime-type="image/jpeg" align="left"/>
     <TITLE>{{ poll.question }}</TITLE>
@@ -17,6 +17,7 @@
         {% endfor %}
 </CONTAINER>
 {% else %}
+<MODULE backgroundColor="false" palette="MiDove">
     {% if user.is_authenticated %}
     <CONTAINER type="form">
         <FORM method="post" href="{% url poll_vote poll.pk %}??{{uuid}}" submit_text="Vote">

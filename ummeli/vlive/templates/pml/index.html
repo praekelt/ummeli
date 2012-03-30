@@ -48,8 +48,9 @@
     
 {% get_featured_poll "featured_poll" %}
 {% if featured_poll %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Poll</LABEL></HEADER>
+</MODULE>
     {% show_poll featured_poll %}
 </MODULE>
 {% endif %}
