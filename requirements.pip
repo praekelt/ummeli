@@ -33,3 +33,4 @@ http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
 requests
 django_geckoboard
 -e git+git://github.com/praekelt/jmbo-dashboard.git@develop#egg=jmbo-dashboard
+-e git+git://github.com/praekelt/jmbo-word-suggest.git@develop#egg=jmbo-word-suggest

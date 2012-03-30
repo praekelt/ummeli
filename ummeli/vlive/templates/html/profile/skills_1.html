@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h4>Skills: Choose skill</h4>
+<div class="list">
+{% if not skills %}
+    We couldn't find your skill. Please go back and choose a different skill.
+    <br/>
+    <a href="{% url skills_new %}" />
+{% else %}
+<form action="." method="post">
+{% csrf_token %}
+{% for skill, rank in skills %}
+    <input style="display:inline" type="radio" name='{{step0}}-selected_skill' value="{{skill}}" {% if rank == 1 %}checked="checked"{% endif %} />
+    <span style="display:inline">{{skill}}</span><br/>
+{% endfor %}
+<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />
+{{ previous_fields|safe }}
+<input type="submit" class="btn" />
+<br/>
+<a href="{% url skills_new %}" />
+</form>
+{% endif %}
+</div>
+{% endblock %}

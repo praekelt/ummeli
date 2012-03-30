@@ -1,5 +1,5 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae,  UserSubmittedJobArticle)
+    Reference, CurriculumVitae,  UserSubmittedJobArticle, Skill)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
                                             RegexField,  CharField,  BooleanField,  IntegerField,
                                             Textarea,  ValidationError)
@@ -138,6 +138,16 @@ class ReferenceForm(PMLModelForm):
 
     class Meta:
         model = Reference
+
+class SkillForm(PMLModelForm):
+    skill = CharField(label = 'Skill')
+        
+class SkillWizardForm(PMLForm):
+    skill = CharField(label = 'Skill')
+        
+class SkillWizardFormPick(PMLForm):
+    selected_skill = CharField(label = 'Skill')
+
 
 class EmailCVForm(PMLForm):
     send_via = CharField(required = True)

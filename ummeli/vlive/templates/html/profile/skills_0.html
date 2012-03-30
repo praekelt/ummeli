@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h4><a href="{% url skills %}">Skills</a> &raquo; Name of skill</h4>
+<form action="{{request.path}}" method="post">
+{% csrf_token %}
+<div class="list">
+Name of skill you want to add:
+<input type="text" name="{{step0}}-skill" />
+<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />
+{{ previous_fields|safe }}
+<input type="submit" class="btn"/>
+</div>
+</form>
+{% endblock %}

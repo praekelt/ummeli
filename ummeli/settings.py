@@ -197,6 +197,7 @@ INSTALLED_APPS = (
     'jmboarticles.featured',
     'category',
     'jmbodashboard.geckoboard',
+    'jmbowordsuggest',
     
     # 3rd party
     'ckeditor',

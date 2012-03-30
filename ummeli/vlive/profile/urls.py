@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url, include
+from ummeli.vlive.forms import SkillWizardForm, SkillWizardFormPick
 from ummeli.vlive.profile import views
 from ummeli.vlive.utils import pin_required
 from django.contrib.auth.decorators import login_required
@@ -72,4 +73,17 @@ urlpatterns = patterns('',
     url(r'references/delete/(?P<pk>\d+)/$',
         pin_required(views.ReferenceDeleteView.as_view()),
         name='reference_delete'),
+    
+    url(r'skills/$',
+        pin_required(views.SkillListView.as_view()),
+        name='skills'),
+    url(r'skills/new/$',
+        #pin_required(
+                     views.SkillsWizard([SkillWizardForm, SkillWizardFormPick], 
+        #condition_dict={'1': views.get_skill_from_first_step})
+        ),
+        name='skills_new'),
+    url(r'skills/delete/(?P<pk>\d+)/$',
+        pin_required(views.SkillDeleteView.as_view()),
+        name='skills_delete'),
 )

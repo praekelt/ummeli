@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
-                                WorkExperienceForm, LanguageForm, ReferenceForm)
+                                WorkExperienceForm, LanguageForm, 
+                                ReferenceForm, SkillForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -11,10 +12,12 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
-                                                    Reference,  CurriculumVitae)
+                                Reference,  CurriculumVitae, Skill)
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
+
+from jmbowordsuggest.utils import suggest_words
 
 @login_required
 @pin_required
@@ -484,3 +487,61 @@ class ReferenceDeleteView(DeleteView):
     def render_to_response(self, context, **kwargs):
         self.template_name = 'profile/delete.html'
         return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)
+
+class SkillListView(ListView):
+
+    def get_context_data(self, **kwargs):
+        context = super(SkillListView, self).get_context_data(**kwargs)
+        context['list_name'] = 'skills'
+        context['page_title'] = 'Skills'
+        return context
+
+    def get_queryset(self):
+        return self.request.user.get_profile().skills.all()
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/list_skills.html'
+        return super(SkillListView, self).render_to_response(context, **kwargs)
+
+
+class SkillDeleteView(DeleteView):
+    model = Skill
+
+    def get_success_url(self):
+        return reverse("skills")
+
+    def get_context_data(self, **kwargs):
+        context = super(SkillDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'skills'
+        context['cancel_url'] = reverse("skills")
+        return context
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/delete.html'
+        return super(SkillDeleteView, self).render_to_response(context, **kwargs)
+
+
+from django.contrib.formtools.wizard import FormWizard
+
+def get_skill_from_first_step(FormWizard):
+    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+    return cleaned_data.get('skill', None)
+
+class SkillsWizard(FormWizard):
+
+    def done(self, request, form_list):
+        data = [form.cleaned_data for form in form_list]
+        skill = Skill(skill=data[1]['selected_skill'])
+        skill.save()
+        request.user.get_profile().skills.add(skill)
+        return redirect(reverse('skills'))
+    
+    def get_template(self, step):
+        return 'profile/skills_%s.html' % step
+    
+    def process_step(self, request, form, step):
+        if step == 0:
+            skill = form.cleaned_data.get('skill', None)
+            
+            words = suggest_words('skills', skill)
+            self.extra_context = {'skills': words}

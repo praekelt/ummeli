@@ -112,6 +112,9 @@ class Reference (models.Model):
     
 class Skill (models.Model):
     skill = models.CharField(max_length=45, null=False, blank=False)
+    
+    def __unicode__(self):  # pragma: no cover
+        return self.skill
 
 
 class CurriculumVitae(models.Model):
