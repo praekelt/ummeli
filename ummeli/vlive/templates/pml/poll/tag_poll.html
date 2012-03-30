@@ -5,8 +5,8 @@
     <TITLE>{{ poll.question }}</TITLE>
 </CONTAINER>
 </MODULE>
-{% if poll|has_user_voted:user or show_results %}
 <MODULE backgroundColor="false" palette="MiDove">
+{% if poll|has_user_voted:user or show_results %}
 <CONTAINER type="data">
         {% get_poll_results poll %}
         {% for c in poll_result_list %}
@@ -17,7 +17,6 @@
         {% endfor %}
 </CONTAINER>
 {% else %}
-<MODULE backgroundColor="false" palette="MiDove">
     {% if user.is_authenticated %}
     <CONTAINER type="form">
         <FORM method="post" href="{% url poll_vote poll.pk %}??{{uuid}}" submit_text="Vote">
