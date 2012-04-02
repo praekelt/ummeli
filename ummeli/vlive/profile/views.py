@@ -17,6 +17,7 @@ from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
 
+from jmbowordsuggest.models import AcceptedWord, AcceptedWordCategory
 from jmbowordsuggest.utils import suggest_words
 
 @login_required
@@ -129,7 +130,8 @@ def reject_request(request, user_id):
                             {'other_user_profile': profile,
                              'other_user_pk':user.pk,
                              'next':next})
-
+                             
+                             
 @login_required
 @pin_required
 def connection_requests(request):
@@ -521,27 +523,31 @@ class SkillDeleteView(DeleteView):
         return super(SkillDeleteView, self).render_to_response(context, **kwargs)
 
 
-from django.contrib.formtools.wizard import FormWizard
+@login_required
+@pin_required
+def add_skill(request):
+    existing_skills = request.user.get_profile().skills.all()
+    skills = AcceptedWordCategory.objects.get(name='skills')\
+            .words.exclude(word__in = [skill.skill for skill in existing_skills])
+    return render(request, 'profile/skills_0.html',
+                            {'skills': skills})
 
-def get_skill_from_first_step(FormWizard):
-    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
-    return cleaned_data.get('skill', None)
-
-class SkillsWizard(FormWizard):
-
-    def done(self, request, form_list):
-        data = [form.cleaned_data for form in form_list]
-        skill = Skill(skill=data[1]['selected_skill'])
-        skill.save()
-        request.user.get_profile().skills.add(skill)
-        return redirect(reverse('skills'))
-    
-    def get_template(self, step):
-        return 'profile/skills_%s.html' % step
-    
-    def process_step(self, request, form, step):
-        if step == 0:
-            skill = form.cleaned_data.get('skill', None)
+@login_required
+@pin_required
+def add_skill_from_list(request, skill_id):
+    word = get_object_or_404(AcceptedWord, pk = skill_id) #Get word from list of skills
+    profile = request.user.get_profile()
+        
+    if request.method == 'POST':
+        if not profile.skills.filter(skill=word.word).exists():
+            skill = Skill(skill=word.word)
+            skill.save()
             
-            words = suggest_words('skills', skill)
-            self.extra_context = {'skills': words}
+            profile.skills.add(skill)
+            return redirect(reverse('skills'))
+        else:
+            return render(request, 'profile/skill_duplicate.html',
+                            {'skill': word.word})
+    
+    return render(request, 'profile/skill_from_list_confirm.html',
+                            {'skill': word.word})

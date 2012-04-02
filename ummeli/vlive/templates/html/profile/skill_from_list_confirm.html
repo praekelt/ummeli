@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Confirm skill: {{skill}}</h4>
+    <p>
+    Do you want to add <strong>{{skill}}</strong> to your profile?
+    </p>
+        
+    <form action='{{request.path}}' method='POST'>
+        <input class="btn" type="submit" value="+ add"/>
+        {% csrf_token %}
+        <br/>
+    </form>
+        
+{% endblock %}

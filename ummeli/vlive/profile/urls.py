@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+
 urlpatterns = patterns('',
     url(r'^$', views.profile, name='profile'),
     url(r'^(?P<user_id>\d+)/$', views.profile_view, name='profile_view'),
@@ -77,11 +78,9 @@ urlpatterns = patterns('',
     url(r'skills/$',
         pin_required(views.SkillListView.as_view()),
         name='skills'),
-    url(r'skills/new/$',
-        #pin_required(
-                     views.SkillsWizard([SkillWizardForm, SkillWizardFormPick], 
-        #condition_dict={'1': views.get_skill_from_first_step})
-        ),
+    url(r'skills/new/$',views.add_skill,
+        name='skills_new'),
+    url(r'skills/new/(?P<skill_id>\d+)/$',views.add_skill_from_list,
         name='skills_new'),
     url(r'skills/delete/(?P<pk>\d+)/$',
         pin_required(views.SkillDeleteView.as_view()),

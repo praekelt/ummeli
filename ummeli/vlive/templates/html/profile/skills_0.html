@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h4><a href="{% url skills %}">Skills</a> &raquo; Name of skill</h4>
-<form action="{{request.path}}" method="post">
-{% csrf_token %}
-<div class="list">
-Name of skill you want to add:
-<input type="text" name="{{step0}}-skill" />
-<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />
-{{ previous_fields|safe }}
-<input type="submit" class="btn"/>
-</div>
-</form>
+<h4><a href="{% url skills %}">Roles</a> &raquo; Choose a role</h4>
+<p>Select a role to add to your profile:</p>
+{% for skill in skills %}
+    <div class="list">
+    <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
+    </div>
+{% endfor %}
+<div class="list"></div>
+<div class="more"><a href="{% url skills %}">&larr; Back</a></div>
 {% endblock %}
