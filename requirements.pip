@@ -19,6 +19,7 @@ pyxml
 pytidylib
 Fabric==1.2.2
 lxml
+BeautifulSoup>=3.0.8.1
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
 -e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
 django-sentry

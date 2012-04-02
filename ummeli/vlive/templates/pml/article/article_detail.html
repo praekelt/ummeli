@@ -1,6 +1,6 @@
 {% extends "base.xml" %}
 
-{% load poll_tags comments %}
+{% load poll_tags comments vlive_tags %}
 
 {% block content %}
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
@@ -23,7 +23,7 @@
     <br/>
     </TEXT>
     <TEXT>
-        {{ article.content|safe }}
+        {{ article.content|sanitize_html|safe }}
         <br/>
         <br/>
         {% if article.linked_article or article.linked_page %}
