@@ -506,6 +506,25 @@ class SkillListView(ListView):
         return super(SkillListView, self).render_to_response(context, **kwargs)
 
 
+class SkillsEditView(UpdateView):
+    model = Skill
+    form_class = SkillForm
+
+    def get_success_url(self):
+        return reverse("skills")
+
+    def get_context_data(self, **kwargs):
+        context = super(SkillsEditView, self).get_context_data(**kwargs)
+        context['list_name'] = 'skills'
+        context['page_title'] = 'Job Roles'
+        context['cancel_url'] = reverse("skills")
+        return context
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/edit_skill.html'
+        return super(SkillsEditView, self).render_to_response(context, **kwargs)
+    
+    
 class SkillDeleteView(DeleteView):
     model = Skill
 
@@ -537,17 +556,35 @@ def add_skill(request):
 def add_skill_from_list(request, skill_id):
     word = get_object_or_404(AcceptedWord, pk = skill_id) #Get word from list of skills
     profile = request.user.get_profile()
-        
-    if request.method == 'POST':
-        if not profile.skills.filter(skill=word.word).exists():
-            skill = Skill(skill=word.word)
-            skill.save()
-            
-            profile.skills.add(skill)
-            return redirect(reverse('skills'))
-        else:
-            return render(request, 'profile/skill_duplicate.html',
-                            {'skill': word.word})
+    form = SkillForm()
     
-    return render(request, 'profile/skill_from_list_confirm.html',
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            if not profile.skills.filter(skill=word.word).exists():
+                skill = Skill(skill=word.word)
+                skill.save()
+                
+                profile.skills.add(skill)
+                return redirect(reverse('skills'))
+            else:
+                return render(request, 'profile/skill_duplicate.html',
                             {'skill': word.word})
+            
+    return render(request, 'profile/skill_from_list_confirm.html',
+                            {'skill': word.word,
+                             'form': form})
+
+@login_required
+@pin_required
+def mark_skill_as_primary(request, skill_id):
+    user_skills = request.user.get_profile().skills
+    if user_skills.filter(pk = skill_id).exists():
+        skill = user_skills.get(pk = skill_id) #Get word from list of skills
+        
+        skill.primary = True;
+        skill.save()
+        
+        user_skills.exclude(pk=skill_id).update(primary=False)
+    
+    return redirect(reverse('skills'))

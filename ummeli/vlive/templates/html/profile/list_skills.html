@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4><a href="{% url profile %}">Profile</a> &raquo; {{page_title}}</h4>
+    <h4><a href="{% url profile %}">Profile</a> &raquo; Job Roles</h4>
         {% for item in object_list %}
-            &rarr; {{ item }} <a href='{% url skills_delete item.pk %}'>[Delete]</a><br/>
+            {% if item.primary %}
+            <strong>
+            &rarr; <a href='{% url skills item.pk %}'>{{ item }}</a><br/>
+            </strong>
+            {% else %}
+            &rarr; <a href='{% url skills item.pk %}'>{{ item }}</a> <a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a><br/>
+            {% endif %}
         {% endfor %}
         <br/>
         <div class="more"><a href="{% url skills_new %}">+ Add another</a></div>

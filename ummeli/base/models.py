@@ -109,12 +109,22 @@ class Reference (models.Model):
     def __unicode__(self):  # pragma: no cover
         return self.fullname
     
-    
-class Skill (models.Model):
+SKILL_LEVEL_CHOICES = (
+        (0, 'Laaitjie'),
+        (2, 'Junior'),
+        (5, 'Middleweight'),
+        (10, 'Pro'),
+        (20, 'Bozza'),
+        )
+            
+class Skill (models.Model):    
     skill = models.CharField(max_length=45, null=False, blank=False)
+    level = models.PositiveIntegerField(choices=SKILL_LEVEL_CHOICES, null=False, blank=False, default=0)
+    primary = models.BooleanField(default=False)
     
     def __unicode__(self):  # pragma: no cover
-        return self.skill
+        choices = dict(SKILL_LEVEL_CHOICES)
+        return '%s (%s)' % (self.skill, choices[self.level])
 
 
 class CurriculumVitae(models.Model):
@@ -145,6 +155,13 @@ class CurriculumVitae(models.Model):
     
     def is_connection_requested(self, user_id):
         return self.connection_requests.filter(pk=user_id).exists()
+    
+    def primary_skill(self):
+        skills = self.skills.filter(primary = True)
+        return skills[0] if skills.exists() else ''
+    
+    def other_skills(self):
+        return self.skills.filter(primary = False)
     
     def __str__(self):
         return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)

@@ -1,8 +1,8 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae,  UserSubmittedJobArticle, Skill)
+    Reference, CurriculumVitae,  UserSubmittedJobArticle, Skill, SKILL_LEVEL_CHOICES)
 from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
-                                            RegexField,  CharField,  BooleanField,  IntegerField,
-                                            Textarea,  ValidationError)
+                          RegexField,  CharField,  BooleanField,  IntegerField,
+                          Textarea,  ValidationError, RadioSelect)
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -140,7 +140,11 @@ class ReferenceForm(PMLModelForm):
         model = Reference
 
 class SkillForm(PMLModelForm):
+    class Meta:
+        model = Skill
+        
     skill = CharField(label = 'Skill')
+    level = IntegerField(widget=RadioSelect(choices=SKILL_LEVEL_CHOICES))
         
 class SkillWizardForm(PMLForm):
     skill = CharField(label = 'Skill')
