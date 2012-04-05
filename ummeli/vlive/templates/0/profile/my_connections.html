@@ -6,9 +6,9 @@
     <div class="list"><a href="#">Add connection by Name</a></div>
     <div class="list"><a href="#">Add connection by Industry</a></div>
     <div class="h2">Connection Requests</div>
-    {% if request.user.connection_requests.any %}
-        {% for user in request.user.connection_requests.all %}
-            <div class="list"><a href="#">{{user.get_profile.get_fullname}}</a></div>
+    {% if user_profile.connection_requests.exists %}
+        {% for user in user_profile.connection_requests.all %}
+            <div class="list"><a href="{% url profile_view user.pk %}">{{user.get_profile.fullname}}</a></div>
         {% endfor %}
     {% else %}
         0 requests
