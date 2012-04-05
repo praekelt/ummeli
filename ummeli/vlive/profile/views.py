@@ -49,6 +49,11 @@ def profile_view(request, user_id):
 
 @login_required
 @pin_required
+def my_connections(request):
+    return render(request, 'profile/my_connections.html')
+                 
+@login_required
+@pin_required
 def connections(request, user_id):
     other_user = get_object_or_404(User, pk = user_id)
     other_user_node = Person.get_and_update(other_user)

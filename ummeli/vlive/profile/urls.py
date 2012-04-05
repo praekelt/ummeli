@@ -10,6 +10,7 @@ from django.conf import settings
 urlpatterns = patterns('',
     url(r'^$', views.profile, name='profile'),
     url(r'^(?P<user_id>\d+)/$', views.profile_view, name='profile_view'),
+    url(r'^connections/$', views.my_connections, name='my_connections'),
     url(r'^connections/(?P<user_id>\d+)/$', views.connections, name='connections'),
     url(r'^connections/add/(?P<user_id>\d+)/$', views.add_connection, name='add_connection'),
     url(r'^connections/requests/$', views.connection_requests, name='connection_requests'),

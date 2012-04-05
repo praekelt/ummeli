@@ -8,9 +8,9 @@
     <div>
         <div style="float: left"><img src="{{STATIC_URL}}images/sentry.png"/></div>
         <div style="float: left">
-            <div class="h3">{{other_user_profile.primary_skill}}</div>
-            {{other_user_profile.location}} <br/>
-            DOB: {{other_user_profile.date_of_birth}}
+            {% if other_user_profile.primary_skill %}<div class="h3">{{other_user_profile.primary_skill}}</div>{% endif %}
+            {% if other_user_profile.location %}{{other_user_profile.location}} <br/>{% endif %}
+            {% if other_user_profile.date_of_birth %}DOB: {{other_user_profile.date_of_birth}}{% endif %}
         </div>
     </div>
     <div style="clear: both"></div>

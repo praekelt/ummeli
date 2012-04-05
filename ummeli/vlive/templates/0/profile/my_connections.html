@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</div>
+    <div class="h2">Add Connections</div>
+    <div class="list"><a href="#">Add connection by Name</a></div>
+    <div class="list"><a href="#">Add connection by Industry</a></div>
+    <div class="h2">Connection Requests</div>
+    {% if request.user.connection_requests.any %}
+        {% for user in request.user.connection_requests.all %}
+            <div class="list"><a href="#">{{user.get_profile.get_fullname}}</a></div>
+        {% endfor %}
+    {% else %}
+        0 requests
+    {% endif %}
+    <div class="h2">My Connections</div>
+        {% if request.user.get_profile.get_connections %}
+            {% for node in request.user.get_profile.get_connections %}
+                <div class="list"><a href='{% url profile_view node.user_id %}'>{{ node.name }}</a>{% if node.primary_skill %} ({{node.primary_skill}}){% endif %}</div>
+            {% endfor %}
+        {% else %}
+            0 connections.
+        {% endif %}
+        <br/>
+        <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
+{% endblock %}

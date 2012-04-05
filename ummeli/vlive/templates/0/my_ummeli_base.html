@@ -28,17 +28,19 @@
     {% block content %}
     {% endblock %}
     <div class="h2">My Ummeli</div>
-    <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% Complete</span></div>
-    <div class="list"><a href="{% url connections user.pk %}">My Connections</a> <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span></div>
+    <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
+    <div class="list"><a href="{% url my_connections %}">My Connections</a>
+        {% if user_profile.connection_requests.any %}
+        <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
+        {% else %}
+        <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
+        {% endif %}
+    </div>
     <div class="list"><a href="#">My Jobs &rarr; </a></div>
     <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
     <div id="footer">
         &copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a> . <a href="{% url about %}">About</a> . <a href="{% url terms %}">Terms</a>
-        {% if user.is_authenticated %}
-            . <a href="{% url logout %}">Sign Out</a>
-        {% else %}
-            . <a href="{% url login %}">Sign In</a>
-        {% endif %}
+        . <a href="{% url logout %}">Sign Out</a>
     </div>
 
 </body>

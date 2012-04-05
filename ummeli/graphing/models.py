@@ -7,6 +7,7 @@ from django.db import models as djangoModels
 class Person(models.NodeModel):
     user_id = models.IntegerProperty(indexed=True)
     name = models.StringProperty()
+    primary_skill = models.StringProperty()
     knows = models.Relationship('Person',
                                   rel_type = neo4django.Outgoing.KNOWS,
                                   related_name = 'is_known')
@@ -26,5 +27,6 @@ class Person(models.NodeModel):
     def get_and_update(cls, user):
         person = cls.objects.get_or_create(user_id=user.pk)
         person.name = user.get_profile().fullname()
+        person.primary_skill = user.get_profile().primary_skill()
         person.save()
         return person

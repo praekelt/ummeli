@@ -163,11 +163,14 @@ class CurriculumVitae(models.Model):
     def other_skills(self):
         return self.skills.filter(primary = False)
     
-    def get_connections(self):
+    def get_connection_node(self):
         from ummeli.graphing.models import Person
         
         user_node = Person.get_and_update(self.user)
-        return user_node.connections()
+        return user_node
+    
+    def get_connections(self):
+        return self.get_connection_node().connections()
     
     def get_connnections_count(self):
         return len(self.get_connections())
