@@ -552,7 +552,8 @@ class SkillDeleteView(DeleteView):
 def add_skill(request):
     existing_skills = request.user.get_profile().skills.all()
     skills = AcceptedWordCategory.objects.get(name='skills')\
-            .words.exclude(word__in = [skill.skill for skill in existing_skills])
+            .words.exclude(word__in = [skill.skill for skill in existing_skills])\
+            .order_by('word')
     return render(request, 'profile/skills_0.html',
                             {'skills': skills})
 

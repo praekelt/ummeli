@@ -1,0 +1,27 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url skills %}">Industry</a> &raquo; {{object}}</div>
+    <form class='content-form' method="post">
+    <fieldset>
+        <strong>Experience Level</strong><br/>
+        {% include "form_field_errors_snippet.html" with form_field=form.level %}
+        <input class="radio" type="radio" name="level" value="0" {% if object.level == 0 %}checked="checked"{% endif %}/>0 - 6 months<br/>
+        <input class="radio" type="radio" name="level" value="2" {% if object.level == 2 %}checked="checked"{% endif %}/>6 months - 2yrs<br/>
+        <input class="radio" type="radio" name="level" value="5" {% if object.level == 5 %}checked="checked"{% endif %}/>2 - 5 yrs<br/>
+        <input class="radio" type="radio" name="level" value="10" {% if object.level == 10 %}checked="checked"{% endif %}/>5 - 10 yrs<br/>
+        <input class="radio" type="radio" name="level" value="20" {% if object.level == 20 %}checked="checked"{% endif %}/>10+ yrs<br/>
+        <br/>
+        <input type="hidden" name="skill" value="{{object.skill}}" />
+        <input type="hidden" name="primary" value="{{object.primary}}" />
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% if object.id %}
+            <a href="{% url skills_delete object.pk %}">Delete</a>
+            <br/>
+        {% endif %}
+        <br/>
+        <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
+        {% csrf_token %}
+    </fieldset>
+    </form>
+{% endblock %}
