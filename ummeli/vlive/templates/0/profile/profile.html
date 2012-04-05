@@ -1,9 +1,33 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <div class="h2">{{user_profile.fullname}} <a href="{% url edit_personal %}">[edit]</a></div>
-    <div class="list"><a href="{% url connections user.pk %}">Connections ({{num_connections}})</a></div>
-    <div class="list"><a href="{% url connection_requests %}">Requests ({{user_profile.connection_requests.count}})</a></div>
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Profile</div>
+    <div class="h2">
+        {{user_profile.fullname}}
+    </div>
+    <div>
+        <div style="float: left"><img src="{{STATIC_URL}}images/sentry.png"/></div>
+        <div style="float: left">
+            <div class="h3">{{user_profile.primary_skill}}</div>
+            {{user_profile.location}} <br/>
+            DOB: {{user_profile.date_of_birth}}
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    {% if user_profile.skills.all %}
+        <strong>Other areas of interest:</strong><br/>
+        {% for skill in user_profile.other_skills.all %}
+        {{skill}}<br/>
+        {% endfor %}
+    {% endif %}
+    <p><em>"Young, ambitious designer."</em></p>
     
-    {% include "profile/user_profile_detailed.html" with a_user_profile=user_profile user_is_self="True" %}
+    <div class="h2">Full Profile</div>
+    <div class="list"><a href="{% url edit_personal %}">Personal details</a></div>
+    <div class="list"><a href="{% url edit_contact %}">Contact details</a></div>
+    <div class="list"><a href="#">Personal Statement</a></div>
+    <!-- <div class="list"><a href="{% url skills %}">Attributes</a><br/> -->
+    <div class="list"><a href="{% url language_list %}">Languages</a></div>
+    <div class="list"><a href="{% url work_experience_list %}">Work Experience</a></div>
+    <div class="list"><a href="{% url certificate_list %}">Education</a></div>
 {% endblock %}
