@@ -14,26 +14,12 @@
     <span>[email] </span>{{a_user_profile.email}}
     {% endif %}
 </div>
-{% if user_is_self %}
-<a href="{% url edit_basic %}">[edit]</a><br/>
-{% endif %}
-    
-<div class="h2">Skills</div>
-<div class="list">Skill 1</div>
-<div class="list">Skill 2</div>
-<div class="list">Skill 3</div>
-{% if user_is_self %}
-<a href="{% url edit_basic %}">[edit]</a><br/>
-{% endif %}
 
 {% if a_user_profile.work_experiences.all %}
 <div class="h2">Work experience</div>
 {% for exp in a_user_profile.work_experiences.all %}
 <div class="list">{{exp}}</div>
 {% endfor %}            
-{% if user_is_self %}
-<a href="{% url work_experience_list %}">[edit]</a><br/>
-{% endif %}
 {% endif %}
 
 {% if a_user_profile.certificates.all %}
@@ -41,7 +27,4 @@
 {% for c in a_user_profile.certificates.all %}
 <div class="list">{{c}}</div>
 {% endfor %}
-{% if user_is_self %}
-<a href="{% url certificate_list %}">[edit]</a><br/>
-{% endif %}
 {% endif %}

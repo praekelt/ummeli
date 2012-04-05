@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^ummeli/comments/', include('jmbocomments.urls')),
     url(r'^poll/', include('jmboarticles.poll.urls')),
-    url(r'^profile/', include('ummeli.vlive.profile.urls')),
+    url(r'^my/profile/', include('ummeli.vlive.profile.urls')),
 
     url(r'^send/$', views.send, name='send'),
     url(r'^send/thanks/$', views.send_thanks, name='send_thanks'),

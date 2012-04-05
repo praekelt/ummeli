@@ -22,7 +22,7 @@
     {% endif %}
     <p><em>"Young, ambitious designer."</em></p>
     
-    <div class="h2">Full Profile</div>
+    <div class="h2">Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></div>
     <div class="list"><a href="{% url edit_personal %}">Personal details</a></div>
     <div class="list"><a href="{% url edit_contact %}">Contact details</a></div>
     <div class="list"><a href="#">Personal Statement</a></div>
