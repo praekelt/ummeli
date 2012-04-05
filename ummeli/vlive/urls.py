@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     #url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
     url(r'^$', views.index, name='index'),
     url(r'^home/$', views.index, name='home'),
+    url(r'^my/$', views.my_ummeli, name='my_ummeli'),
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout_view, name = 'logout'),

@@ -157,6 +157,11 @@ def index(request):
     provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles', distinct=True), userarticles_count=Count('category__user_submitted_job_articles', distinct=True)) if province.category_set.exists()]
     return render(request, 'index.html', {'provinces': provinces[0:4]})
 
+@login_required
+@pin_required
+def my_ummeli(request):
+    return render(request, 'my_ummeli.html')
+
 
 @login_required
 @pin_required
