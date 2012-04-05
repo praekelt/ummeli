@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>{{skill}} already added.</h4>
+    <p>
+    <strong>{{skill}}</strong> is already add to your profile.
+    </p>
+    
+    <div class="more"><a href="{% url skills %}">&larr; Back</a></div>
+        
+{% endblock %}

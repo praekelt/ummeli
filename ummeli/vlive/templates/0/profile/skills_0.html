@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url profile %}">Industry</a> &raquo; new</div>
+What type of job are you looking for?
+<br/>
+<br/>
+{% for skill in skills %}
+    <div class="list">
+        <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
+    </div>
+{% endfor %}
+<br/>
+<div class="more"><a href="{% url skills %}">&larr; Back</a></div>
+{% endblock %}

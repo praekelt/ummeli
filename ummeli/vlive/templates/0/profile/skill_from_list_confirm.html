@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url profile %}">Industry</a> &raquo; new</div>
+Do you have any experience as a <strong>{{skill}}</strong>?
+<br/>
+<br/>
+<form action='{{request.path}}' method='POST'>
+    <strong>Experience Level</strong><br/>
+    {% include "form_field_errors_snippet.html" with form_field=form.level %}
+    <input class="radio" type="radio" name="level" value="0"/><span>0 - 6 months</span><br/>
+    <input class="radio" type="radio" name="level" value="2"/><span>6 months - 2yrs</span><br/>
+    <input class="radio" type="radio" name="level" value="5"/><span>2 - 5 yrs</span><br/>
+    <input class="radio" type="radio" name="level" value="10"/><span>5 - 10 yrs</span><br/>
+    <input class="radio" type="radio" name="level" value="20"/><span>10+ yrs</span><br/>
+    <input class="btn" type="submit" value="+ add"/>
+    <input type="hidden" name="skill" value="{{skill}}" />
+    {% csrf_token %}
+    <br/>
+</form>
+        
+{% endblock %}

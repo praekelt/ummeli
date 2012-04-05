@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; Industry</div>
+        {% for item in object_list %}
+            <div class="list">
+            {% if item.primary %}
+            <strong>
+            <a href='{% url skills item.pk %}'>{{ item }}</a>
+            </strong>
+            {% else %}
+            <a href='{% url skills item.pk %}'>{{ item }}</a> <a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a>
+            {% endif %}
+            </div>
+        {% endfor %}
+        <br/>
+        <div class="more"><a href="{% url skills_new %}">+ Add another</a></div>
+        <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+{% endblock %}
