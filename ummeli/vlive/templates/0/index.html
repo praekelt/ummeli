@@ -29,15 +29,12 @@
         </div>
     {% endfor %}
     <div><a href="{% url article_list %}">more...</a></div>
-    <div class="h2">My Ummeli</div>
     {% if user.is_authenticated %}
+        <div class="h2">My Ummeli</div>
         <div class="list"><a href="{% url profile %}">My profile &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
         <div class="list"><a href="{% url connections user.pk %}">My Connections &rarr;</a></div>
         <div class="list"><a href="#">My Jobs &rarr; </a></div>
-    {% else %}
-        <div class="list"><a href="{% url profile %}">My profile &rarr; </a></div>
-        <div class="list"><a href="{% url login %}">My Connections &rarr;</a></div>
-        <div class="list"><a href="#">My Jobs &rarr; </a></div>
+        <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
     {% endif %}
-    <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
+
 {% endblock %}
