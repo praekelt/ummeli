@@ -31,8 +31,14 @@
     <div><a href="{% url article_list %}">more...</a></div>
     {% if user.is_authenticated %}
         <div class="h2">My Ummeli</div>
-        <div class="list"><a href="{% url profile %}">My profile &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
-        <div class="list"><a href="{% url connections user.pk %}">My Connections &rarr;</a></div>
+        <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
+        <div class="list"><a href="{% url my_connections %}">My Connections</a>
+            {% if user_profile.connection_requests.any %}
+            <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
+            {% else %}
+            <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
+            {% endif %}
+        </div>
         <div class="list"><a href="#">My Jobs &rarr; </a></div>
         <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
     {% endif %}
