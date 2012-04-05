@@ -16,7 +16,7 @@
     <div class="h2">My Connections</div>
         {% if request.user.get_profile.get_connections %}
             {% for node in request.user.get_profile.get_connections %}
-                <div class="list"><a href='{% url profile_view node.user_id %}'>{{ node.name }}</a>{% if node.primary_skill %} ({{node.primary_skill}}){% endif %}</div>
+                <div class="list"><a href='{% url profile_view node.user_id %}'>{{ node.name }}</a>{% if node.primary_skill %} <span class="subtext">{{node.primary_skill}}</span>{% endif %}</div>
             {% endfor %}
         {% else %}
             0 connections.
