@@ -5,13 +5,11 @@
     <div class="h2">Add Connections</div>
     <div class="list"><a href="#">Add connection by Name</a></div>
     <div class="list"><a href="#">Add connection by Industry</a></div>
-    <div class="h2">Connection Requests</div>
     {% if user_profile.connection_requests.exists %}
+        <div class="h2">Connection Requests</div>
         {% for user in user_profile.connection_requests.all %}
             <div class="list"><a href="{% url profile_view user.pk %}">{{user.get_profile.fullname}}</a></div>
         {% endfor %}
-    {% else %}
-        0 requests
     {% endif %}
     <div class="h2">My Connections</div>
         {% if request.user.get_profile.get_connections %}
