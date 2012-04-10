@@ -25,7 +25,7 @@ class VLiveCVTestCase(VLiveTestCase):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_edit_personal_page(self):
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertEquals(resp.status_code, 200)
 
         resp = self.client.get(reverse('edit_personal'))
@@ -72,7 +72,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertEquals(resp.status_code, 200)
 
         resp = self.client.get(reverse('edit_contact'))
@@ -92,7 +92,7 @@ class VLiveCVTestCase(VLiveTestCase):
 
     def test_edit_education_details_page(self):
 
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertEquals(resp.status_code, 200)
         self.assertVLiveRedirects(resp, reverse('register'))
         self.register()
@@ -114,7 +114,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEquals(cv.school, 'Some school')
 
     def test_edit_certificates_details_page(self):
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertVLiveRedirects(resp, reverse('register'))
 
          # test certificates listing
@@ -170,7 +170,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertNotVLiveRedirects(resp, reverse('login'))
 
          # test certificates listing
@@ -227,7 +227,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertEquals(resp.status_code, 200)
 
          # test languages listing
@@ -273,7 +273,7 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        resp = self.client.get(reverse('edit_basic'))
+        resp = self.client.get(reverse('profile'))
         self.assertEquals(resp.status_code, 200)
 
          # test references listing
