@@ -14,7 +14,7 @@
         
         <label for="form-date_of_birth">Date of birth</label>
         {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
-        <input name="date_of_birth" type="text" class="txt" value="{{form.date_of_birth.value}}"/>
+        <input name="date_of_birth" type="text" class="txt" value="{% if form.date_of_birth.value %}{{form.date_of_birth.value}}{% endif %}"/>
         
         <label for="form-gender">Gender</label>
         {% include "form_field_errors_snippet.html" with form_field=form.gender %}

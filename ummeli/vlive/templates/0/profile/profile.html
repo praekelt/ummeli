@@ -9,8 +9,8 @@
         <div style="float: left"><img src="{{STATIC_URL}}images/sentry.png"/></div>
         <div style="float: left">
             <div class="h3">{{user_profile.primary_skill}}</div>
-            {{user_profile.location}} <br/>
-            DOB: {{user_profile.date_of_birth}}
+            {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
+            {% if user_profile.date_of_birth %}DOB: {{user_profile.date_of_birth}} <br/>{% endif %}
         </div>
     </div>
     <div style="clear: both"></div>
@@ -20,12 +20,12 @@
         {{skill}}<br/>
         {% endfor %}
     {% endif %}
-    <p><em>"Young, ambitious designer."</em></p>
+    <p><em>"{{user_profile.about_me}}"</em></p>
     
     <div class="h2">Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></div>
     <div class="list"><a href="{% url edit_personal %}">Personal details</a></div>
     <div class="list"><a href="{% url edit_contact %}">Contact details</a></div>
-    <div class="list"><a href="#">Personal Statement</a></div>
+    <div class="list"><a href="{% url edit_about_me %}">Personal Statement</a></div>
     <div class="list"><a href="{% url skills %}">Industry</a></div>
     <!-- <div class="list"><a href="{% url skills %}">Attributes</a></div> -->
     <div class="list"><a href="{% url language_list %}">Languages</a></div>

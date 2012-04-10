@@ -134,6 +134,8 @@ class CurriculumVitae(models.Model):
     email = models.CharField(max_length=45, null=True, blank=True)
     telephone_number = models.CharField(max_length=45, null=True, blank=True)
     
+    about_me = models.TextField(null=True, blank=True)
+    
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=45, null=True, blank=True)
     

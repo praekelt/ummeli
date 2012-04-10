@@ -20,7 +20,7 @@
         {{skill}}<br/>
         {% endfor %}
     {% endif %}
-    <p><em>"Young, ambitious designer."</em></p>
+    <p><em>"{{other_user_profile.about_me}}"</em></p>
     <p>
     <div class="list">
         <a href="{% url connections other_user_pk %}">{{other_user_profile.get_connnections_count}} Connection{{ other_user_profile.get_connnections_count|pluralize }}</a>

@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, 
-                                ReferenceForm, SkillForm)
+                                ReferenceForm, SkillForm,
+                                PersonalStatementForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -168,18 +169,6 @@ def process_edit_request(request, model_form, page_title):
 
 @login_required
 @pin_required
-def personal_details(request):
-    return process_edit_request(request, PersonalDetailsForm,
-                                                'Personal details')
-
-@login_required
-@pin_required
-def contact_details(request):
-    return process_edit_request(request, ContactDetailsForm,
-                                                'Contact details')
-
-@login_required
-@pin_required
 def education_details(request):
     return process_edit_request(request, EducationDetailsForm,
                                                 'Education details')
@@ -188,6 +177,28 @@ class PersonalDetailsEditView(UpdateView):
     model = CurriculumVitae
     form_class = PersonalDetailsForm
     template_name = 'profile/personal_details.html'
+
+    def get_success_url(self):
+        return reverse("profile")
+        
+    def get_object(self,  queryset=None):
+        return self.request.user.get_profile()
+
+class ContactDetailsEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = ContactDetailsForm
+    template_name = 'profile/contact_details.html'
+
+    def get_success_url(self):
+        return reverse("profile")
+        
+    def get_object(self,  queryset=None):
+        return self.request.user.get_profile()
+    
+class PersonalStatementEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = PersonalStatementForm
+    template_name = 'profile/personal_statement.html'
 
     def get_success_url(self):
         return reverse("profile")
