@@ -156,14 +156,10 @@ def edit_personal(request):
 def process_edit_request(request, model_form, page_title):
     cv = request.user.get_profile()
     if request.method == 'POST':
-        cancel = request.POST.get('cancel', None)
-        if cancel:
-            return edit_basic(request)
-        else:
-            form = model_form(request.POST, instance=cv)
-            if form.is_valid():
-                form.save()
-                return redirect(reverse('edit_basic'))
+        form = model_form(request.POST, instance=cv)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('profile'))
     else:
         form = model_form(instance=cv)
 
@@ -194,7 +190,7 @@ class PersonalDetailsEditView(UpdateView):
     template_name = 'profile/personal_details.html'
 
     def get_success_url(self):
-        return reverse("edit_basic")
+        return reverse("profile")
         
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()

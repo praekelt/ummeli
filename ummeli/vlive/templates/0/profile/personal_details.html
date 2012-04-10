@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url profile %}">Profile</a> &raquo; <a href="{% url edit_basic %}">Basic info</a> &raquo; Personal details</div>
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; Personal details</div>
     <form class='content-form' method="post">
     <fieldset>
         <label for="form-first_name">First name</label>
@@ -16,21 +16,20 @@
         {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
         <input name="date_of_birth" type="text" class="txt" value="{{form.date_of_birth.value}}"/>
         
-        <label for="form-date_of_birth">Date of birth</label>
-        {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
-        <select name="gender">
-            {% if not form.gender.value or form.gender.value.lower == 'male' or form.gender.value.lower == 'm' %}
-            <option value="Male" selected="selected">Male</option>
-            <option value="Female">Female</option>
-            {% else %}
-            <option value="Male">Male</option>
-            <option value="Female" selected="selected">Female</option>
-            {% endif %}
-        </select>
+        <label for="form-gender">Gender</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.gender %}
+            
+        {% if not form.gender.value or form.gender.value.lower == 'male' or form.gender.value.lower == 'm' %}
+        <input type="radio" name="gender" value="Male" checked="checked"/> Male <br/>
+        <input type="radio" name="gender" value="Female" /> Female <br/>
+        {% else %}
+        <input type="radio" name="gender" value="Male"/> Male <br/>
+        <input type="radio" name="gender" value="Female" checked="checked"/> Female <br/>
+        {% endif %}
         
         <input type="submit" class="btn" value="Save" name="submit" />
         {% csrf_token %}
     </fieldset>
     </form>
-    <div class="more"><a href="{% url edit_basic %}">&larr; Back</a></div>
+    <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
 {% endblock %}
