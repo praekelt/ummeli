@@ -241,7 +241,7 @@ class CertificateEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_education.html'
         return super(CertificateEditView, self).render_to_response(context, **kwargs)
 
 class CertificateCreateView(CreateView):
@@ -264,7 +264,7 @@ class CertificateCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_education.html'
         return super(CertificateCreateView, self).render_to_response(context, **kwargs)
 
 class CertificateDeleteView(DeleteView):

@@ -1,0 +1,39 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</div>
+    <form class='content-form' method="post">
+    <fieldset>
+        <div class="form-fields">
+            <label>Course name:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.name %}
+            <input type="text" name="name" id="id_name" value="{% if form.name.value %}{{form.name.value}}{% endif %}">
+            
+            <label>Institution:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.institution %}
+            <input type="text" name="institution" value="{% if form.institution.value %}{{form.institution.value}}{% endif %}">
+            
+            <label>Year completed:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.year %}
+            <input type="text" name="year" value="{% if form.year.value %}{{form.year.value}}{% endif %}">
+            
+            <label>Duration:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.duration %}
+            <select name="duration">
+                <option value="0" {% if form.duration.value == 0 %}selected="selected"{% endif %}>0 - 6 months</option>
+                <option value="1" {% if form.duration.value == 1 %}selected="selected"{% endif %}>1 Year</option>
+                <option value="2" {% if form.duration.value == 2 %}selected="selected"{% endif %}>2 Years</option>
+                <option value="3" {% if form.duration.value == 3 %}selected="selected"{% endif %}>3 Years</option>
+                <option value="4" {% if form.duration.value == 4 %}selected="selected"{% endif %}>4+ Years</option>
+            </select>
+        </div>
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% if object.id %}
+            <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
+        {% endif %}
+        <br/><br/>
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
+{% endblock %}

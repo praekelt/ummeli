@@ -114,6 +114,7 @@ class CertificateForm(PMLModelForm):
     name = CharField(label = 'Name of certificate')
     institution = CharField(label = 'Name of institution', required = False)
     year = IntegerField(label = 'Year completed', required = False)
+    duration = IntegerField(label = 'Duration', required = False)
 
     class Meta:
         model = Certificate
