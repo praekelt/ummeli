@@ -31,10 +31,10 @@
         <div class="h2">Connect</div>
         {% if not already_requested %}
             {% if connection_requested %}
-                <div class="list"><a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ ACCEPT]</a></div>
-                <div class="list"><a href="{% url reject_request other_user_pk %}?next={{request.path}}">[- DECLINE]</a></div>
+                <div class="list"><a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ Accept]</a></div>
+                <div class="list"><a href="{% url reject_request other_user_pk %}?next={{request.path}}">[- Decline]</a></div>
             {% else %}
-                <div class="list"><a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ INVITE]</a></div>
+                <div class="list"><a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ Invite]</a></div>
             {% endif %}
         {% else %}
             <small>[request pending]</small>
