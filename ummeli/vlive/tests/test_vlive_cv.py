@@ -80,13 +80,15 @@ class VLiveCVTestCase(VLiveTestCase):
 
         post_data = {
             'telephone_number': '0123456978',
-            'street_name': 'Oak Rd',
+            'address': 'Oak Rd',
+            'city': 'Durban',
         }
         resp = self.client.post(reverse('edit_contact'), post_data)
 
         cv = self.get_user().get_profile()
         self.assertEquals(cv.telephone_number, '0123456978')
-        self.assertEquals(cv.street_name, 'Oak Rd')
+        self.assertEquals(cv.address, 'Oak Rd')
+        self.assertEquals(cv.city, 'Durban')
 
     def test_edit_education_details_page(self):
 
@@ -414,7 +416,8 @@ class VLiveCVTestCase(VLiveTestCase):
 
         post_data = {
             'telephone_number': '0123456978',
-            'street_name': 'Oak Rd',
+            'address': 'Oak Rd',
+            'city': 'Durban',
         }
         resp = self.client.post(reverse('edit_contact'), post_data)
 

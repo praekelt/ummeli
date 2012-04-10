@@ -87,14 +87,12 @@ class PersonalDetailsForm(PMLModelForm):
 class ContactDetailsForm(PMLModelForm):
     telephone_number = CharField(label = 'Phone number',  required = False)
     email = CharField(label = 'Email address',  required = False)
-    house_number = CharField(label = 'Home number',  required = False)
-    street_name = CharField(label = 'Street name',  required = False)
-    location = CharField(label = 'Area name',  required = False)
+    address = CharField(label = 'Address',  required = False)
+    city = CharField(label = 'City',  required = True)
 
     class Meta:
         model = CurriculumVitae
-        fields = ('telephone_number', 'email', 'house_number', 'street_name',
-                'location')
+        fields = ('telephone_number', 'email', 'address', 'city')
 
 class EducationDetailsForm(PMLModelForm):
     highest_grade = CharField(label = 'Highest grade passed',  required = False)

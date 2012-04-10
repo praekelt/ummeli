@@ -133,13 +133,14 @@ class CurriculumVitae(models.Model):
     gender = models.CharField(max_length=45, null=True, blank=True)
     email = models.CharField(max_length=45, null=True, blank=True)
     telephone_number = models.CharField(max_length=45, null=True, blank=True)
-    location = models.CharField(max_length=45, null=True, blank=True)
-    street_name = models.CharField(max_length=45, null=True, blank=True)
+    
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=45, null=True, blank=True)
+    
     school = models.CharField(max_length=45, null=True, blank=True)
     highest_grade = models.CharField(max_length=45, null=True, blank=True)
     highest_grade_year = models.IntegerField(default=0, null=True, blank=True)
     date_of_birth = models.CharField(max_length=45, null=True, blank=True)
-    house_number = models.CharField(max_length=45, null=True, blank=True)
     certificates = models.ManyToManyField(Certificate, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
     work_experiences = models.ManyToManyField(WorkExperience, blank=True)
@@ -211,9 +212,7 @@ class CurriculumVitae(models.Model):
             count += 1
         if  self.telephone_number:
             count += 1
-        if  self.location:
-            count += 1
-        if  self.street_name:
+        if  self.address:
             count += 1
         if  self.school:
             count += 1
@@ -223,7 +222,7 @@ class CurriculumVitae(models.Model):
             count += 1
         if  self.date_of_birth:
             count += 1
-        if  self.house_number:
+        if  self.city:
             count += 1
         if  self.certificates.exists():
             count += 1
@@ -233,7 +232,7 @@ class CurriculumVitae(models.Model):
             count += 1
         if  self.references.exists():
             count += 1
-        return (count/16)*100
+        return (count/15)*100
 
     def update_is_complete(self):
         if not self.missing_fields():

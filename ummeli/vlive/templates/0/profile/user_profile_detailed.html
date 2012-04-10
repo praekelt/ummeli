@@ -1,10 +1,8 @@
 <div class="h2">Contact details</div>
 <div class="list">
-    {% if a_user_profile.house_number or a_user_profile.house_number or a_user_profile.house_number %}
+    {% if a_user_profile.city %}
     <span>
-        {{a_user_profile.house_number}}, 
-        {{a_user_profile.street_name}},
-        {{a_user_profile.location}}
+        {{a_user_profile.city}}
     </span><br/>
     {% endif %}
     {% if a_user_profile.telephone_number %}

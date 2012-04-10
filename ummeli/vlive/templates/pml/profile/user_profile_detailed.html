@@ -2,10 +2,8 @@
     <HEADER><LABEL>Contact details</LABEL></HEADER>
     <CONTAINER type="data">
         <TEXT>
-        {% if a_user_profile.house_number or a_user_profile.house_number or a_user_profile.house_number %}
-            {{a_user_profile.house_number}}, 
-            {{a_user_profile.street_name}},
-            {{a_user_profile.location}} <br/>
+        {% if a_user_profile.city %}
+            {{a_user_profile.city}} <br/>
         {% endif %}
         {% if a_user_profile.telephone_number %}
         [tel] {{a_user_profile.telephone_number}}<br/>
