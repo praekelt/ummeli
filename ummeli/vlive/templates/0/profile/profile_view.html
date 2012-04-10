@@ -20,7 +20,9 @@
         {{skill}}<br/>
         {% endfor %}
     {% endif %}
+    {% if other_user_profile.about_me %}
     <p><em>"{{other_user_profile.about_me}}"</em></p>
+    {% endif %}
     <p>
     <div class="list">
         <a href="{% url connections other_user_pk %}">{{other_user_profile.get_connnections_count}} Connection{{ other_user_profile.get_connnections_count|pluralize }}</a>

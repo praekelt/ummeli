@@ -1,0 +1,28 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; Contact details</div>
+    <form class='content-form' method="post">
+    <fieldset>
+        <label>Phone number:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.telephone_number %}
+        <input name="telephone_number" type="text" class="txt" value="{{form.telephone_number.value}}"/>
+        
+        <label>Email:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.email %}
+        <input name="email" type="text" class="txt" value="{{form.email.value}}"/>
+        
+        <label>Address:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.address %}
+        <input name="address" type="text" class="txt" value="{% if form.address.value %}{{form.address.value}}{% endif %}"/>
+        
+        <label>City:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.city %}
+        <input name="city" type="text" class="txt" value="{% if form.city.value %}{{form.city.value}}{% endif %}"/>
+        
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+{% endblock %}
