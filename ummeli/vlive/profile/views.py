@@ -170,8 +170,12 @@ def process_edit_request(request, model_form, page_title):
 @login_required
 @pin_required
 def education_details(request):
-    return process_edit_request(request, EducationDetailsForm,
-                                                'Education details')
+    if request.method == 'POST':
+        cv = request.user.get_profile()
+        form = EducationDetailsForm(request.POST, instance=cv)
+        if form.is_valid():
+            form.save()
+    return redirect(reverse('certificate_list'))
 
 class PersonalDetailsEditView(UpdateView):
     model = CurriculumVitae
@@ -211,14 +215,14 @@ class CertificateListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(CertificateListView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
-        context['page_title'] = 'Qualifications'
+        context['page_title'] = 'Eductaion'
         return context
 
     def get_queryset(self):
         return self.request.user.get_profile().certificates.all()
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/list_objects.html'
+        self.template_name = 'profile/list_education.html'
         
         return super(CertificateListView, self).render_to_response(context, **kwargs)
 
@@ -232,7 +236,7 @@ class CertificateEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(CertificateEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
-        context['page_title'] = 'Qualification'
+        context['page_title'] = 'Eductaion'
         context['cancel_url'] = reverse("certificate_list")
         return context
 
@@ -250,7 +254,7 @@ class CertificateCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CertificateCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'certificates'
-        context['page_title'] = 'Qualifications'
+        context['page_title'] = 'Eductaion'
         context['cancel_url'] = reverse("certificate_list")
         return context
 
@@ -305,7 +309,7 @@ class WorkExperienceEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'work_experiences'
-        context['page_title'] = 'Work Experience'
+        context['page_title'] = 'Work Experiences'
         context['cancel_url'] = reverse("work_experience_list")
         return context
 
@@ -323,7 +327,7 @@ class WorkExperienceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(WorkExperienceCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'work_experiences'
-        context['page_title'] = 'Work Experience'
+        context['page_title'] = 'Work Experiences'
         context['cancel_url'] = reverse("work_experience_list")
         return context
 
@@ -378,7 +382,7 @@ class LanguageEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(LanguageEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'languages'
-        context['page_title'] = 'Language'
+        context['page_title'] = 'Languages'
         context['cancel_url'] = reverse("language_list")
         return context
 
@@ -397,7 +401,7 @@ class LanguageCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(LanguageCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'languages'
-        context['page_title'] = 'Language'
+        context['page_title'] = 'Languages'
         context['cancel_url'] = reverse("language_list")
         return context
 
@@ -453,7 +457,7 @@ class ReferenceEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ReferenceEditView, self).get_context_data(**kwargs)
         context['list_name'] = 'references'
-        context['page_title'] = 'Reference'
+        context['page_title'] = 'References'
         context['cancel_url'] = reverse("reference_list")
         return context
 
@@ -472,7 +476,7 @@ class ReferenceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(ReferenceCreateView, self).get_context_data(**kwargs)
         context['list_name'] = 'references'
-        context['page_title'] = 'Reference'
+        context['page_title'] = 'References'
         context['cancel_url'] = reverse("reference_list")
         return context
 
