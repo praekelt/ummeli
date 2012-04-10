@@ -1,0 +1,45 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>School Details</LABEL></HEADER>
+</MODULE>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{% url edit_education %}" submit_text="Save">
+        <TEXT position="ABOVE">Highest grade:</TEXT>
+        <FIELD name="highest_grade" type="number" value="{% if user_profile.highest_grade %}{{user_profile.highest_grade}}{% endif %}"/>
+        <TEXT position="ABOVE">Year:</TEXT>
+        <FIELD name="highest_grade_year" type="number" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
+        <TEXT position="ABOVE">School:</TEXT>
+        <FIELD name="school" type="number" value="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
+        
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Other Education</LABEL></HEADER>
+<CONTAINER  type="list">
+    {% for item in object_list %}
+        <LINK href="{% url profile %}{{list_name}}/{{ item.pk }}/">
+            <TEXT>{{ item }}</TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+<br/>
+<CONTAINER  type="list">
+    <LINK href="{% url profile %}{{list_name}}/new/">
+        <TEXT> + Add new</TEXT>
+    </LINK>
+    <LINK href="{% url profile %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
