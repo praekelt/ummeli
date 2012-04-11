@@ -250,20 +250,24 @@ class CurriculumVitae(models.Model):
     def faxes_remaining(self):
         return settings.MAX_LAUNCH_FAXES_COUNT - self.nr_of_faxes_sent
 
-    def fax_cv(self,  fax_nr, article_text = None):
+    def fax_cv(self,  fax_nr, article_text = None, email_message = None):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
             self.save()
             return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),
-                                 article_text, settings.SEND_FROM_FAX_EMAIL_ADDRESS)
+                                 article_text, 
+                                 settings.SEND_FROM_FAX_EMAIL_ADDRESS,
+                                 email_message)
         return None
 
     def email_cv(self, email_address, article_text = None,
-                        from_address = settings.SEND_FROM_EMAIL_ADDRESS):
+                        from_address = settings.SEND_FROM_EMAIL_ADDRESS,
+                        email_message = None):
         email_text = ''
         copy_context = {'sender': self.fullname(), 
                                 'job_ad': article_text, 
-                                'phone': self.telephone_number}
+                                'phone': self.telephone_number,
+                                'message': email_message}
         
         if article_text:
             email_text = render_to_string('apply_copy.txt', copy_context)

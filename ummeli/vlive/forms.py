@@ -162,11 +162,13 @@ class SkillWizardFormPick(PMLForm):
 class EmailCVForm(PMLForm):
     send_via = CharField(required = True)
     send_to = EmailField(required = True)
+    send_message = CharField(required = False)
 
 class FaxCVForm(PMLForm):
     send_via = CharField(required = True)
     send_to = RegexField('[0-9+]', required = True,
                                     error_message = 'Please enter a valid fax number.')
+    send_message = CharField(required = False)
 
 class UserSubmittedJobArticleForm(PMLModelForm):
     province = IntegerField(required = True)

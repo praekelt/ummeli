@@ -6,6 +6,8 @@ Hi,
 {{sender}} has chosen to send you their CV.
 See attachment for details.
 
+{{message}}
+
 To contact {{sender}}:
 Phone number: {{phone}}
 

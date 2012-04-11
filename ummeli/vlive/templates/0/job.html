@@ -37,7 +37,8 @@
         {% else %}
         <fieldset> 
         <strong>* = Required</strong><br />
-          <label for="email">Email CV To:*</label> 
+          <label for="email">Email CV To:*</label>
+          <span class="subtext">(example) someone@email.com</span>
           {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
           <input type="text" class="txt" name="send_to"/>
           <input type="submit" name="signin-btn" value="Send" class="btn" />

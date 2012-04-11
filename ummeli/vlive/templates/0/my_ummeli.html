@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 
-{% load article_tags %}
-{% load poll_tags %}
-    
 {% block content %}
     <div class="h2">Welcome {{user_profile.first_name}}!</div>
     <div class="h2">My Ummeli</div>
@@ -15,5 +12,6 @@
             {% endif %}
         </div>
         <div class="list"><a href="#">My Jobs &rarr; </a></div>
+        <div class="list"><a href="{% url send %}">Send as CV &rarr; </a></div>
     <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
 {% endblock %}

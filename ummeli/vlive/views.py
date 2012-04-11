@@ -179,12 +179,13 @@ def send(request):
         if form.is_valid() and not user_profile.missing_fields():
             send_via = form.cleaned_data['send_via']
             send_to = form.cleaned_data['send_to']
+            send_message = form.cleaned_data['send_message']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to)
+                user_profile.email_cv(send_to, email_message=send_message)
                 return send_thanks(request)
             else:
-                user_profile.fax_cv(send_to)
+                user_profile.fax_cv(send_to, email_message=send_message)
                 return send_thanks(request)
 
     return render(request, 'send_cv.html', {'form': form})
@@ -192,7 +193,7 @@ def send(request):
 @login_required
 @pin_required
 def send_thanks(request):
-    return redirect(reverse('home'))
+    return redirect(reverse('my_ummeli'))
 
 def jobs_province(request):
     provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles', distinct=True), userarticles_count=Count('category__user_submitted_job_articles', distinct=True)) if province.category_set.exists()]
