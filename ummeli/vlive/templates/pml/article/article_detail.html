@@ -17,9 +17,7 @@
     <TEXT>
     <b>{{ article.updated|date:"D, j M Y, H:i" }}</b><br/>
     <b>{{ article.like_count }} Like{{ article.like_count|pluralize }}</b>
-    {% if user.is_authenticated %}
          | <LINK href="{% url article_detail article.pk %}like/?{{uuid}}">+Like</LINK>
-    {% endif %}
     <br/>
     </TEXT>
     <TEXT>
@@ -57,31 +55,20 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
         {% if article.comments_enabled %}
-            {% if request.is_authorized %}                
-                <CONTAINER type="form">
-                {% get_comment_form for article as form %}
-                <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
-                    <FIELD type='hidden' name='_action' value='POST' />
-                    <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-                    <FIELD type='hidden' name='content_type' value='{{ form.content_type.value }}' />
-                    <FIELD type='hidden' name='object_pk' value='{{ form.object_pk.value }}' />
-                    <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
-                    <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
-                    <FIELD type='hidden' name='honepot' id='id_honeypod'/>
-                    <FIELD type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
-                    <FIELD name="comment" type="text"/><br/>
-                </FORM>
-                </CONTAINER>
-            {% else %}
-                <CONTAINER type="data">
-                <TEXT>
-                <LINK href="{% url login %}"><TEXT>Sign in</TEXT>
-                </LINK> or 
-                <LINK href="{% url register %}"><TEXT>register</TEXT>
-                </LINK> to comment.
-                </TEXT>
-                </CONTAINER>
-            {% endif %}
+            <CONTAINER type="form">
+            {% get_comment_form for article as form %}
+            <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
+                <FIELD type='hidden' name='_action' value='POST' />
+                <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+                <FIELD type='hidden' name='content_type' value='{{ form.content_type.value }}' />
+                <FIELD type='hidden' name='object_pk' value='{{ form.object_pk.value }}' />
+                <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
+                <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
+                <FIELD type='hidden' name='honepot' id='id_honeypod'/>
+                <FIELD type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+                <FIELD name="comment" type="text"/><br/>
+            </FORM>
+            </CONTAINER>
         {% else %}
             <CONTAINER type="data">
             <TEXT>
@@ -113,16 +100,12 @@
             {% endspaceless %}
         </TEXT>
         <TEXT>
-        {% if request.is_authorized %}
-            <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
-                <TEXT>+Like ({{ comment.like_count }})</TEXT>
-            </LINK>
-        {% endif %}
-        {% if request.is_authorized %}
-            <LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
-                <TEXT>Report</TEXT>
-            </LINK>
-        {% endif %}
+        <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
+            <TEXT>+Like ({{ comment.like_count }})</TEXT>
+        </LINK>
+        <LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
+            <TEXT>Report</TEXT>
+        </LINK>
         </TEXT>
     {% endfor %}
     <TEXT><br/>
