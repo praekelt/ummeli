@@ -32,7 +32,7 @@
         <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connection{{user_profile.get_connnections_count|pluralize}}</span>
         {% endif %}
     </div>
-    <div class="list"><a href="#">My Jobs &rarr; </a></div>
+    <div class="list"><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
     <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
     <div id="footer">
         &copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a> . <a href="{% url about %}">About</a> . <a href="{% url terms %}">Terms</a>

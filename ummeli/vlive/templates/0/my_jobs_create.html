@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_jobs %}">My Jobs</a> &raquo; edit</div>
+<form method="POST" class="content-form">
+    <fieldset> 
+    <strong>* = Required</strong><br />
+    <label for="province">Province:*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.province %}
+    <select id="province" name="province">
+        <option value="">Please select province</option>
+        {% for p in provinces %}
+        <option value="{{p.name}}" {% if p.name == form.province.value %}selected="selected"{%endif%}>{{p.name}}</option>
+        {% endfor %}
+    </select>
+    <label for="job_category">Category:*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.job_category %}
+    <select id="job_category" name="job_category">
+        <option value="">Please select category</option>
+        {% for category in categories %}
+        <option value="{{category.title}}" {% if category.title == form.job_category.value %}selected="selected"{%endif%}>{{category.title}}</option>
+        {% endfor %}
+    </select>
+
+    <label >Job Title:*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.title %}
+    <input name="title" type="text" class="txt" value="{{form.title.value}}"/>
+    
+    <label>Description:*</label>
+    <div>Please provide as much information about the job as possible including 
+    contact details.
+    </div>
+    {% include "form_field_errors_snippet.html" with form_field=form.description %}
+    <textarea id="id_text" rows="10" name="text" class="txt">{{form.text.value}}</textarea>
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    <input type='submit' value='Save' class="btn"/>
+    </fieldset> 
+</form>
+<div class="more"><a href="{% url my_jobs %}">&larr; Back</a></div>
+{% endblock %}

@@ -3,7 +3,9 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm, 
                                 ReferenceForm, SkillForm,
-                                PersonalStatementForm)
+                                PersonalStatementForm, 
+                                UserSubmittedJobArticleForm,
+                                UserSubmittedJobArticleEditForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -13,7 +15,9 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
-                                Reference,  CurriculumVitae, Skill)
+                                Reference,  CurriculumVitae, Skill,
+                                UserSubmittedJobArticle,
+                                Province,  Category)
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
@@ -505,6 +509,74 @@ class ReferenceDeleteView(DeleteView):
     def render_to_response(self, context, **kwargs):
         self.template_name = 'profile/delete.html'
         return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)
+
+class MyJobsListView(ListView):
+    def get_queryset(self):
+        return self.request.user.user_submitted_job_article_user.all().order_by('-date')
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/list_my_jobs.html'
+        return super(MyJobsListView, self).render_to_response(context, **kwargs)
+
+
+class MyJobsEditView(UpdateView):
+    model = UserSubmittedJobArticle
+    form_class = UserSubmittedJobArticleEditForm
+
+    def get_success_url(self):
+        return reverse("my_jobs")
+
+    def get_context_data(self, **kwargs):
+        context = super(MyJobsEditView, self).get_context_data(**kwargs)
+        
+        context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
+        context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
+        return context
+    
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'my_jobs_create.html'
+        return super(MyJobsEditView, self).render_to_response(context, **kwargs)
+
+
+class MyJobsCreateView(CreateView):
+    model = Reference
+    form_class = ReferenceForm
+
+    def get_success_url(self):
+        return reverse("reference_list")
+
+    def get_context_data(self, **kwargs):
+        context = super(MyJobsCreateView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['page_title'] = 'References'
+        context['cancel_url'] = reverse("reference_list")
+        return context
+
+    def form_valid(self, form):
+        new_reference = form.save()
+        self.request.user.get_profile().references.add(new_reference)
+        return redirect(self.get_success_url())
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/edit_object.html'
+        return super(MyJobsCreateView, self).render_to_response(context, **kwargs)
+
+
+class MyJobsDeleteView(DeleteView):
+    model = Reference
+
+    def get_success_url(self):
+        return reverse("reference_list")
+
+    def get_context_data(self, **kwargs):
+        context = super(MyJobsDeleteView, self).get_context_data(**kwargs)
+        context['list_name'] = 'references'
+        context['cancel_url'] = reverse("reference_list")
+        return context
+
+    def render_to_response(self, context, **kwargs):
+        self.template_name = 'profile/delete.html'
+        return super(MyJobsDeleteView, self).render_to_response(context, **kwargs)
 
 class SkillListView(ListView):
 

@@ -175,9 +175,20 @@ class UserSubmittedJobArticleForm(PMLModelForm):
     category = CharField(required = True)
     title = CharField(required = True)
     text = CharField(required = True,  widget = Textarea,  label = 'Description')
+
     class Meta:
         model = UserSubmittedJobArticle
         fields = ('title',  'text')
+        
+class UserSubmittedJobArticleEditForm(PMLModelForm):
+    province = CharField(required = True)
+    job_category = CharField(required = True)
+    title = CharField(required = True)
+    text = CharField(required = True,  widget = Textarea,  label = 'Description')
+
+    class Meta:
+        model = UserSubmittedJobArticle
+        fields = ('title',  'text', 'province', 'job_category')
 
 class ForgotPasswordForm(Form):
     username = RegexField('[0-9+]', required = True,
