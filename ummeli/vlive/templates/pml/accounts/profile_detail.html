@@ -10,7 +10,7 @@
 <CONTAINER type="form">
 <FORM method="POST" href="{{request.path}}" submit_text="Update">
 	<TEXT position="ABOVE">Nickname:</TEXT>
-	<FIELD name="nickname" type="text" default="{{ nickname }}"/><br/>
+	<FIELD name="nickname" maxentry="30" type="text" default="{{ nickname }}"/><br/>
 	<FIELD type='hidden' name='_action' value='POST' />
 	<FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
 </FORM>
