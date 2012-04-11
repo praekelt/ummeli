@@ -35,6 +35,9 @@ urlpatterns = patterns('',
     url(r'^jobs/(?P<search_id>-\d+|\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/$', views.job, name='job'),
     url(r'^jobs/(?P<search_id>-\d+|\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/(?P<user_submitted>\d+)/$', views.job, name='job'),
 
+    url(r'^community/jobs/$', views.community_jobs, name='community_jobs'),
+    url(r'^community/jobs/(?P<id>\d+)/$', views.community_job, name='community_jobs'),
+    
     url(r'^jobs/cron/$', views.jobs_cron, name='jobs_cron'),
     url(r'^jobs/create/$', views.jobs_create, name='jobs_create'),
 )

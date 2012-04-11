@@ -27,6 +27,8 @@ class Article(models.Model):
 class UserSubmittedJobArticle(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField(default='')
+    province = models.TextField(default='')
+    job_category = models.TextField(default='')
     moderated = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now_add = True)
     date_updated = models.DateTimeField(auto_now = True)

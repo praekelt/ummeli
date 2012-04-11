@@ -6,7 +6,7 @@
 {% block content %}
     <div id="promotxt">Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know. <a href="{% url about %}">Learn more...</a></div>
     <div class="h2">News</div>
-    {% get_articles 4 "article_list" %}
+    {% get_articles 3 "article_list" %}
     {% for article in article_list %}
         <div class="list">
             <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
@@ -21,14 +21,21 @@
         {% show_poll featured_poll %}
     {% endif %}
     <div class="h2">Community</div>
-    {% for article in article_list %}
+    {% for article in community_list %}
         <div class="list">
-            <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
+            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
             <br/>
-            <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
+            <small>
+                {{ article.date|date:"D, j M Y, H:i" }}
+                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
+            </small>
         </div>
     {% endfor %}
-    <div><a href="{% url article_list %}">more...</a></div>
+    <div class="list"><a href="{% url community_jobs %}">more...</a></div>
+    <br/>
+    <div class="list">Got somthing to share?</a></div>
+    <div class="list"><a href="{% url jobs_create %}">Add job</a></div>
     {% if user.is_authenticated %}
         <div class="h2">My Ummeli</div>
         <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>

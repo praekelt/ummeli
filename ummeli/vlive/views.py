@@ -154,8 +154,8 @@ def password_change_view(request):
     return render(request, 'password_change.html', {'form': form})
 
 def index(request):
-    provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles', distinct=True), userarticles_count=Count('category__user_submitted_job_articles', distinct=True)) if province.category_set.exists()]
-    return render(request, 'index.html', {'provinces': provinces[0:4]})
+    community_list = UserSubmittedJobArticle.objects.all().order_by('-date')[:3]
+    return render(request, 'index.html', {'community_list': community_list})
 
 @login_required
 @pin_required
@@ -274,6 +274,51 @@ def job(request,  id,  cat_id,  search_id, user_submitted=0):
                               'category_title':  category.title,
                               'form':  form,})
 
+def community_jobs(request):
+    articles = UserSubmittedJobArticle.objects.all().order_by('-date')
+    
+    paginator = Paginator(articles, 15) # Show 15 contacts per page
+    page = request.GET.get('page', 'none')
+    
+    try:
+        paged_jobs = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paged_jobs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paged_jobs = paginator.page(paginator.num_pages)
+    return render(request, 'community_jobs.html', {'articles': paged_jobs})
+                             
+def community_job(request, id):
+    form = None
+    if not UserSubmittedJobArticle.objects.filter(pk = id):
+        return redirect(reverse('community_jobs')) # Sorry, this ad has been removed.
+    article = UserSubmittedJobArticle.objects.get(pk = id)
+
+    if request.method == 'POST':
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data = request.POST)
+        else:
+            form = FaxCVForm(data = request.POST)
+            
+        user_profile = request.user.get_profile()
+
+        if form.is_valid() and not user_profile.missing_fields():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+
+            if send_via == 'email':
+                user_profile.email_cv(send_to,  article.text)
+                return redirect(reverse('community_jobs'))
+            else:
+                user_profile.fax_cv(send_to, article.text)
+                return redirect(reverse('community_jobs'))
+
+    return render(request, 'community_job.html',
+                              {'job': article,
+                              'form':  form,})
+
 def send_thanks_job_apply(request,  cat_id,  search_id):
     return redirect(reverse('jobs',  args=[search_id,  cat_id]))
 
@@ -329,10 +374,6 @@ def jobs_create(request):
                         .exists()
         if form.is_valid():
             if not duplicate:
-                user_article = form.save(commit=False)
-                user_article.user = request.user
-                user_article.save()
-
                 province = Province.objects.get(pk = int(request.POST.get('province')))
 
                 category_title = request.POST.get('category')
@@ -343,6 +384,12 @@ def jobs_create(request):
                 else:
                     cat  = Category.objects.get(hash_key = category_hash)
 
+                user_article = form.save(commit=False)
+                user_article.user = request.user
+                user_article.province = province.name
+                user_article.job_category = cat.title
+                user_article.save()
+                
                 cat.user_submitted_job_articles.add(user_article)
 
             return redirect(reverse('home'))
