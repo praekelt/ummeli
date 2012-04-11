@@ -511,18 +511,18 @@ class ReferenceDeleteView(DeleteView):
         return super(ReferenceDeleteView, self).render_to_response(context, **kwargs)
 
 class MyJobsListView(ListView):
+    paginate_by = 5
+    template_name = 'my_jobs_list.html'
+    
     def get_queryset(self):
         return self.request.user.user_submitted_job_article_user.all().order_by('-date')
-
-    def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/list_my_jobs.html'
-        return super(MyJobsListView, self).render_to_response(context, **kwargs)
 
 
 class MyJobsEditView(UpdateView):
     model = UserSubmittedJobArticle
     form_class = UserSubmittedJobArticleEditForm
-
+    template_name = 'my_jobs_create.html'
+    
     def get_success_url(self):
         return reverse("my_jobs")
 
@@ -532,51 +532,15 @@ class MyJobsEditView(UpdateView):
         context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
         context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
         return context
-    
-    def render_to_response(self, context, **kwargs):
-        self.template_name = 'my_jobs_create.html'
-        return super(MyJobsEditView, self).render_to_response(context, **kwargs)
-
-
-class MyJobsCreateView(CreateView):
-    model = Reference
-    form_class = ReferenceForm
-
-    def get_success_url(self):
-        return reverse("reference_list")
-
-    def get_context_data(self, **kwargs):
-        context = super(MyJobsCreateView, self).get_context_data(**kwargs)
-        context['list_name'] = 'references'
-        context['page_title'] = 'References'
-        context['cancel_url'] = reverse("reference_list")
-        return context
-
-    def form_valid(self, form):
-        new_reference = form.save()
-        self.request.user.get_profile().references.add(new_reference)
-        return redirect(self.get_success_url())
-
-    def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
-        return super(MyJobsCreateView, self).render_to_response(context, **kwargs)
 
 
 class MyJobsDeleteView(DeleteView):
-    model = Reference
-
+    model = UserSubmittedJobArticle
+    template_name = 'my_jobs_delete.html'
+    
     def get_success_url(self):
-        return reverse("reference_list")
+        return reverse("my_jobs")
 
-    def get_context_data(self, **kwargs):
-        context = super(MyJobsDeleteView, self).get_context_data(**kwargs)
-        context['list_name'] = 'references'
-        context['cancel_url'] = reverse("reference_list")
-        return context
-
-    def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/delete.html'
-        return super(MyJobsDeleteView, self).render_to_response(context, **kwargs)
 
 class SkillListView(ListView):
 
