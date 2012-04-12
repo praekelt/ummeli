@@ -34,7 +34,7 @@
         <ul>
         {% if article.linked_article %}
             <li>
-                <a href="{% url article_detail article.linked_article.pk %}">
+                <a href="{% url article_detail_redo article.linked_article.pk %}">
                     {{ article.linked_article.title }}
                 </a>
             </li>
@@ -116,15 +116,22 @@
     {% endfor %}
 </div>
 
-<div class="wrap pagination">
-    {% if comment_list.has_next %}
-        <a href="{% url article_detail article.pk comment_list.next_page_number %}">&larr; Newer comments</a>
-    {% endif %}
-    <span class="r">
+<div id="topnav">
     {% if comment_list.has_previous %}
-        <a href="{% url article_detail article.pk comment_list.previous_page_number %}">Older Comments &rarr;</a>
+        <span><a href="{% url article_detail_redo article.pk comment_list.previous_page_number %}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
     {% endif %}
+
+    <span class="current">
+        Page {{ comment_list.number }} of {{ comment_list.paginator.num_pages }}
     </span>
+
+    {% if comment_list.has_next %}
+        | <span><a href="{% url article_detail_redo article.pk comment_list.next_page_number %}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
 </div>
 
 <div class="wrap" id="comment_form">
