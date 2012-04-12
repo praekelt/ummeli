@@ -1,0 +1,32 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_settings %}">My Settings</a> &raquo; Contact Details Privacy</div>
+    <form class='content-form' method="post">
+    <fieldset>
+        <label>Please choose the information you want your connections to see when viewing your Full Profile.</label>
+        
+        <label><strong>Telephone Number</strong></label>
+        {% if form.show_contact_number.value %}
+        <input type="radio" name="show_contact_number" value="True" checked="checked"/> Yes<br/>
+        <input type="radio" name="show_contact_number" value="False" /> No<br/>
+        {% else %}
+        <input type="radio" name="show_contact_number" value="True"/> Yes<br/>
+        <input type="radio" name="show_contact_number" value="False" checked="checked"/> No<br/>
+        {% endif %}
+            
+        <label><strong>Address</strong></label>
+        {% if form.show_address.value %}
+        <input type="radio" name="show_address" value="True" checked="checked"/> Yes<br/>
+        <input type="radio" name="show_address" value="False" /> No<br/>
+        {% else %}
+        <input type="radio" name="show_address" value="True"/> Yes<br/>
+        <input type="radio" name="show_address" value="False" checked="checked"/> No<br/>
+        {% endif %}
+        
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{% url my_settings %}">&larr; Back</a></div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Settings</div>
+    <div class="h2">My Ummeli</div>
+    <div class="list"><a href="{% url password_change %}">Change PIN</a></div>
+    <div class="list"><a href="{% url my_contact_privacy %}">Contact Details Privacy</a></div>
+{% endblock %}

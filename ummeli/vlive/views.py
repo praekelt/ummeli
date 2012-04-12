@@ -15,7 +15,7 @@ from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
 from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
                                 UserSubmittedJobArticleForm, ForgotPasswordForm,
-                                ConcactSupportForm)
+                                ConcactSupportForm, MyContactPrivacyForm)
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -24,6 +24,7 @@ from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
 from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic.edit import UpdateView
 
 #imports for login
 from django.http import  HttpResponse
@@ -162,6 +163,21 @@ def index(request):
 def my_ummeli(request):
     return render(request, 'my_ummeli.html')
 
+@login_required
+@pin_required
+def my_settings(request):
+    return render(request, 'my_settings.html')
+
+class MyContactPrivacyEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = MyContactPrivacyForm
+    template_name = 'my_contact_privacy.html'
+    
+    def get_success_url(self):
+        return reverse("my_settings")
+    
+    def get_object(self, queryset=None):
+        return self.request.user.get_profile()
 
 @login_required
 @pin_required

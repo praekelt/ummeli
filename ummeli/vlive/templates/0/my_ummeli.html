@@ -3,15 +3,15 @@
 {% block content %}
     <div class="h2">Welcome {{user_profile.first_name}}!</div>
     <div class="h2">My Ummeli</div>
-        <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
-        <div class="list"><a href="{% url my_connections %}">My Connections</a>
-            {% if user_profile.connection_requests.exists %}
-            <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
-            {% else %}
-            <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connection{{user_profile.get_connnections_count|pluralize}}</span>
-            {% endif %}
-        </div>
-        <div class="list"><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
-        <div class="list"><a href="{% url send %}">Send as CV &rarr; </a></div>
-    <div class="list"><a href="{% url password_change %}">Change PIN &rarr; </a></div>
+    <div class="list"><a href="{% url profile %}">My Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
+    <div class="list"><a href="{% url my_connections %}">My Connections</a>
+        {% if user_profile.connection_requests.exists %}
+        <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
+        {% else %}
+        <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connection{{user_profile.get_connnections_count|pluralize}}</span>
+        {% endif %}
+    </div>
+    <div class="list"><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
+    <div class="list"><a href="{% url my_settings %}">My Settings &rarr; </a></div>
+    <div class="list"><a href="{% url send %}">Send as CV &rarr; </a></div>
 {% endblock %}

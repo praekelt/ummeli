@@ -217,3 +217,8 @@ class MobiUserCreationForm(UserCreationForm):
 class ConcactSupportForm(PMLForm):
     username = CharField(required = True)
     message = CharField(required = True,  widget = Textarea)
+
+class MyContactPrivacyForm(PMLModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('show_contact_number', 'show_address')

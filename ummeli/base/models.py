@@ -159,6 +159,9 @@ class CurriculumVitae(models.Model):
 
     connection_requests = models.ManyToManyField('auth.User', related_name='connection_requests', blank=True)
     
+    show_contact_number = models.BooleanField(default=False)
+    show_address = models.BooleanField(default=False)
+    
     def is_connection_requested(self, user_id):
         return self.connection_requests.filter(pk=user_id).exists()
     
