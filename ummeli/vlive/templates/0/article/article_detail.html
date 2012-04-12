@@ -7,7 +7,7 @@
 
 
 {% block content %}
-<div class="h2">News</div>
+<div class="h2"><a href="{% url article_list %}">News</a> &raquo;  {{article.title}}</div>
 <div class="article list">
     <div class="h3">{{ article.title }}</div>
 
