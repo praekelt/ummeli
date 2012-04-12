@@ -5,7 +5,8 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 ReferenceForm, SkillForm,
                                 PersonalStatementForm, 
                                 UserSubmittedJobArticleForm,
-                                UserSubmittedJobArticleEditForm)
+                                UserSubmittedJobArticleEditForm,
+                                IndustrySearchForm)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -17,7 +18,7 @@ from django.http import Http404
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
                                 UserSubmittedJobArticle,
-                                Province,  Category)
+                                Province,  Category, PROVINCE_CHOICES)
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
@@ -202,6 +203,11 @@ class ContactDetailsEditView(UpdateView):
         
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()
+    
+    def get_context_data(self, **kwargs):
+        context = super(ContactDetailsEditView, self).get_context_data(**kwargs)
+        context['provinces'] = PROVINCE_CHOICES
+        return context
     
 class PersonalStatementEditView(UpdateView):
     model = CurriculumVitae
@@ -603,6 +609,43 @@ def add_skill(request):
             .order_by('word')
     return render(request, 'profile/skills_0.html',
                             {'skills': skills})
+                            
+@login_required
+@pin_required
+def add_connection_by_industry(request):
+    form = IndustrySearchForm()
+    if request.method == 'POST':
+        form = IndustrySearchForm(request.POST)
+        if form.is_valid():
+            industry = int(form.cleaned_data['industry'])
+            province = int(form.cleaned_data['province'])
+            
+            profiles_qs = CurriculumVitae.objects.exclude(first_name='')
+            if industry > 0:
+                profiles_qs = CurriculumVitae.objects.filter(skills__pk = industry)
+                selected_industry = AcceptedWord.objects.get(pk=industry).word
+            else:
+                selected_industry = 'All'
+                
+            if province > 0:
+                profiles_qs = CurriculumVitae.objects.filter(province = province)
+                selected_province = dict(PROVINCE_CHOICES)[province]
+            else:
+                selected_province = 'All'
+                
+            return render(request, 'profile/add_connection_by_industry_result.html',
+                                  {'user_profiles': profiles_qs,
+                                   'provinces': PROVINCE_CHOICES,
+                                   'industry': selected_industry,
+                                   'province': selected_province,
+                                   'form': form})
+    
+    skills = AcceptedWordCategory.objects.get(name='skills')\
+            .words.order_by('word')
+    return render(request, 'profile/add_connection_by_industry.html',
+                            {'skills': skills, 
+                             'provinces': PROVINCE_CHOICES, 
+                             'form': form})
 
 @login_required
 @pin_required

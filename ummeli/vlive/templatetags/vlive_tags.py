@@ -5,6 +5,10 @@ from tidylib import tidy_fragment
 register = template.Library()
 
 @register.filter
+def list_get(key, value):
+    return dict(key)[value]
+
+@register.filter
 @stringfilter
 def sanitize_html(value):
     from BeautifulSoup import BeautifulSoup, Comment, Tag

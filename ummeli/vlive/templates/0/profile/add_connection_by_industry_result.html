@@ -1,0 +1,28 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</div>
+<div class="h2">Search: "{{industry}}" | "{{province}}"</div>
+{% for skill in skills %}
+    <div class="list">
+        <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
+    </div>
+{% endfor %}
+{% for profile in user_profiles %}
+    <div class="list">
+        <a href='{% url profile_view profile.user.pk %}'>{{ profile.fullname }}</a><br/>
+        {% if profile.primary_skill or profile.province %}
+        {{profile.primary_skill.skill}}
+        {% if profile.province %}
+            {% for key, value in provinces %}
+            {% if profile.province == key %}({{value}}){%endif%}
+            {% endfor %}
+        {%endif%}<br/>
+        {% endif %}
+    </div>
+{% empty %}
+    <div class="list">0 users found.</div>
+{% endfor %}
+<br/>
+<div class="more"><a href="{% url add_connection_by_industry %}">&larr; Back</a></div>
+{% endblock %}

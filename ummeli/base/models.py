@@ -129,6 +129,17 @@ class Skill (models.Model):
         choices = dict(SKILL_LEVEL_CHOICES)
         return '%s (%s)' % (self.skill, choices[self.level])
 
+PROVINCE_CHOICES = (
+        (1, 'Eastern Cape'),
+        (2, 'Free State'),
+        (3, 'Gauteng'),
+        (4, 'KwaZulu Natal'),
+        (5, 'Limpopo'),
+        (6, 'Mpumalanga'),
+        (7, 'North West'),
+        (8, 'Northern Cape'),
+        (9, 'Western Cape'),
+        )
 
 class CurriculumVitae(models.Model):
     first_name = models.CharField(max_length=45, null=True, blank=True)
@@ -141,6 +152,7 @@ class CurriculumVitae(models.Model):
     
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=45, null=True, blank=True)
+    province = models.IntegerField(default=0)
     
     school = models.CharField(max_length=45, null=True, blank=True)
     highest_grade = models.CharField(max_length=45, null=True, blank=True)

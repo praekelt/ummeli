@@ -89,10 +89,11 @@ class ContactDetailsForm(PMLModelForm):
     email = CharField(label = 'Email address',  required = False)
     address = CharField(label = 'Address',  required = False)
     city = CharField(label = 'City',  required = True)
+    province = IntegerField(required = True)
 
     class Meta:
         model = CurriculumVitae
-        fields = ('telephone_number', 'email', 'address', 'city')
+        fields = ('telephone_number', 'email', 'address', 'city', 'province')
 
 class PersonalStatementForm(PMLModelForm):
     about_me = CharField(label = 'Personal Statement',  required = True)
@@ -222,3 +223,7 @@ class MyContactPrivacyForm(PMLModelForm):
     class Meta:
         model = CurriculumVitae
         fields = ('show_contact_number', 'show_address')
+        
+class IndustrySearchForm(PMLForm):
+    industry = IntegerField(required = True)
+    province = IntegerField(required = True)

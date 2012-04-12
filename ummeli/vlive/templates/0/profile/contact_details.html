@@ -1,5 +1,6 @@
 {% extends "my_ummeli_base.html" %}
-
+{% load vlive_tags %}
+    
 {% block content %}
     <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; Contact details</div>
     <form class='content-form' method="post">
@@ -20,6 +21,14 @@
         {% include "form_field_errors_snippet.html" with form_field=form.city %}
         <input name="city" type="text" class="txt" value="{% if form.city.value %}{{form.city.value}}{% endif %}"/>
         
+        <label>Province:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.province %}
+        <select name="province">    
+            <option value="">Select</option>
+            {% for key, value in provinces %}
+                <option value="{{key}}" {% if form.province.value == key %}selected="selected"{% endif %}>{{value}}</option>
+            {% endfor %}
+        </select>
         <input type="submit" class="btn" value="Save" name="submit" />
         {% csrf_token %}
     </fieldset>

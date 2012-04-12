@@ -16,6 +16,9 @@ urlpatterns = patterns('',
     url(r'^connections/requests/$', views.connection_requests, name='connection_requests'),
     url(r'^connections/confirm/(?P<user_id>\d+)/$', views.confirm_request, name='confirm_request'),
     url(r'^connections/reject/(?P<user_id>\d+)/$', views.reject_request, name='reject_request'),
+    
+    url(r'^connections/add_by_industry/$', views.add_connection_by_industry, name='add_connection_by_industry'),
+    url(r'^connections/add_by_industry/(?P<pk>\d+)/$', views.add_connection_by_industry, name='add_connection_by_industry'),
 
     url(r'^personal/$', 
         pin_required(login_required(views.PersonalDetailsEditView.as_view())), 
