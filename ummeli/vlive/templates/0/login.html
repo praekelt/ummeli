@@ -11,7 +11,7 @@
                 {% for error in form.non_field_errors %}
                     {% if error == 'This account is inactive.' %}
                         <div class="warning">
-                            Your account has been deactivated for violating our <a href="{% url terms %}">terms and conditions</a>.
+                            Your account has been deactivated for violating our <a href="/terms/">terms and conditions</a>.
                             If you feel you should not have been removed from this community, you may send a query
                             <a href="{% url contactsupport %}">here</a>.
                         </div>

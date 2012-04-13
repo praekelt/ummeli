@@ -82,6 +82,7 @@ class VLiveCVTestCase(VLiveTestCase):
             'telephone_number': '0123456978',
             'address': 'Oak Rd',
             'city': 'Durban',
+            'province': '1',
         }
         resp = self.client.post(reverse('edit_contact'), post_data)
 
@@ -418,8 +419,9 @@ class VLiveCVTestCase(VLiveTestCase):
             'telephone_number': '0123456978',
             'address': 'Oak Rd',
             'city': 'Durban',
+            'province': '1',
         }
         resp = self.client.post(reverse('edit_contact'), post_data)
-
         cv = self.get_user().get_profile()
+        
         self.assertEquals(cv.is_complete,  True)

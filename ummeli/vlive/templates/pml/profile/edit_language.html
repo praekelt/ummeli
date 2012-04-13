@@ -1,0 +1,47 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <TEXT position="ABOVE">Language:*</TEXT>
+        <SELECT name="language">
+            <ITEM value=''>Select</ITEM>
+            <ITEM value="English" {% if form.language.value == 'English' %}checked="true"{% endif %}>English</ITEM>
+            <ITEM value="Zulu" {% if form.language.value == 'Zulu' %}checked="true"{% endif %}>Zulu</ITEM>
+            <ITEM value="Xhosa" {% if form.language.value == 'Xhosa' %}checked="true"{% endif %}>Xhosa</ITEM>
+            <ITEM value="Ndebele" {% if form.language.value == 'Ndebele' %}checked="true"{% endif %}>Ndebele</ITEM>
+            <ITEM value="Sepedi" {% if form.language.value == 'Sepedi' %}checked="true"{% endif %}>Sepedi</ITEM>
+            <ITEM value="Setswana" {% if form.language.value == 'Setswana' %}checked="true"{% endif %}>Setswana</ITEM>
+            <ITEM value="Nothern Sotho" {% if form.language.value == 'Nothern Sotho' %}checked="true"{% endif %}>Nothern Sotho</ITEM>
+            <ITEM value="Venda" {% if form.language.value == 'Venda' %}checked="true"{% endif %}>Venda</ITEM>
+            <ITEM value="Tsonga" {% if form.language.value == 'Tsonga' %}checked="true"{% endif %}>Tsonga</ITEM>
+            <ITEM value="Siswati" {% if form.language.value == 'Siswati' %}checked="true"{% endif %}>Siswati</ITEM>
+        </SELECT>
+        <CHOICE-GROUP type="radio" name="read_write">
+            <TEXT>Can you Read and Write in this language?</TEXT>
+            <CHOICE value="True" {% if form.read_write.value %}checked="true"{% endif %}>Yes</CHOICE>
+            <CHOICE value="False" {% if not form.read_write.value %}checked="true"{% endif %}>No</CHOICE>
+        </CHOICE-GROUP>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{{cancel_url}}">
+        <TEXT>Cancel</TEXT>
+    </LINK>
+    {% if object.id %}
+    <LINK href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">
+        <TEXT>Delete</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+{% endblock %}
