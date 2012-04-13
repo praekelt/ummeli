@@ -1,10 +1,11 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block title %}
     Ummeli
 {% endblock %}
 
 {% block content %}
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_jobs %}">My Jobs</a> &raquo; add</div>
 <div class="h2">Add a job</div>
 <div>Ummeli is unlike any other jobs network. We're a community of young 
         people looking out for each other. You can help by adding jobs you have seen 

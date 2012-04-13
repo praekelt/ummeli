@@ -408,7 +408,7 @@ def jobs_create(request):
                 
                 cat.user_submitted_job_articles.add(user_article)
 
-            return redirect(reverse('home'))
+            return redirect(reverse('my_jobs'))
     else:
         form = UserSubmittedJobArticleForm()
 
