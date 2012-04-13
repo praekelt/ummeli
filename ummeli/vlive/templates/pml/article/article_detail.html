@@ -54,6 +54,7 @@
 {% endif %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
+    {% if user.is_active %}
         {% if article.comments_enabled %}
             <CONTAINER type="data">
                 {% if not user.get_full_name %}
@@ -83,6 +84,18 @@
             </TEXT>
             </CONTAINER>
         {% endif %}
+    {% else %}
+        <CONTAINER type="data">
+            <TEXT><color value="red">Your account has been deactivated for violating our 
+                <LINK href="{% url terms %}">
+                    <TEXT>terms and conditions</TEXT>
+                </LINK>. If you feel you should not have been removed from this community, 
+            you may send a query
+                <LINK href="{% url contactsupport %}">
+                    <TEXT>here</TEXT>
+                </LINK>.</color></TEXT>
+        </CONTAINER>
+    {% endif %}
     <CONTAINER type="data">
     {% for comment in comment_list.object_list %}
         <TEXT><b>
