@@ -58,6 +58,23 @@
     {% endif %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Languages</LABEL></HEADER>
+    <CONTAINER type="data">
+        {% for lang in a_user_profile.languages.all %}
+            <TEXT>{{lang}}</TEXT><br/>
+        {% endfor %}
+    </CONTAINER>
+    {% if user_is_self %}
+    <CONTAINER type="data">
+    <TEXT>
+        <LINK href="{% url language_list %}">
+            <TEXT>[edit]</TEXT>
+        </LINK>
+    </TEXT>
+    </CONTAINER>
+    {% endif %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Qualifications</LABEL></HEADER>
     <CONTAINER type="data">
         {% for c in a_user_profile.certificates.all %}
