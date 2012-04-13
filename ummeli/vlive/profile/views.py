@@ -397,7 +397,7 @@ class LanguageEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_language.html'
         return super(LanguageEditView, self).render_to_response(context, **kwargs)
 
 
@@ -421,7 +421,7 @@ class LanguageCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_language.html'
         return super(LanguageCreateView, self).render_to_response(context, **kwargs)
 
 

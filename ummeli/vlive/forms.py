@@ -130,7 +130,7 @@ class WorkExperienceForm(PMLModelForm):
         model = WorkExperience
 
 class LanguageForm(PMLModelForm):
-    language = CharField(label = 'Name of language')
+    language = CharField(label = 'Name of language', required = True)
     read_write = BooleanField(label = 'Can you Read and Write in this language',
                                             required = False)
 
