@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout_view, name = 'logout'),
     url(r'^forgot/$', views.forgot_password_view, name = 'forgot'),
-    url(r'^about/$', views.about, name = 'about'),
-    url(r'^terms/$', views.terms, name = 'terms'),
+    #url(r'^about/$', views.about, name = 'about'),
+    #url(r'^terms/$', views.terms, name = 'terms'),
     url(r'^contactsupport/$', views.contact_support, name = 'contactsupport'),
     
     #Ummeli 2.0

@@ -146,6 +146,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'vlive.auth.middleware.UserAuthorizationMiddleware',
     'jmbovlive.middleware.VodafoneLiveUserMiddleware',
     'jmbovlive.middleware.VodafoneLiveInfoMiddleware',

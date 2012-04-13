@@ -11,7 +11,7 @@
 	<div id="header"><img src="{{ STATIC_URL }}images/zero-logo.jpg" id="logo" alt="Ummeli" width="61" height="30" /></div>
     <a name="top" id="top"></a>
     <div id="topnav">
-        <span><a href="{% url home %}">Home</a></span>/<span><a href="{% url jobs_province %}">Jobs</a></span>/<span><a href="#">Tips</a></span>/<span><a href="{% url my_ummeli %}">My Ummeli</a></span>
+        <span><a href="{% url home %}">Home</a></span>/<span><a href="{% url jobs_province %}">Jobs</a></span>/<span><a href="/tips/">Tips</a></span>/<span><a href="{% url my_ummeli %}">My Ummeli</a></span>
     </div>
     {% if messages %}
     <div class="success">
@@ -36,7 +36,7 @@
     <div class="list"><a href="{% url my_settings %}">My Settings &rarr; </a></div>
     <div class="list"><a href="{% url send %}">Send as CV &rarr; </a></div>
     <div id="footer">
-        &copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a> . <a href="{% url about %}">About</a> . <a href="{% url terms %}">Terms</a>
+        &copy; {% now "Y" %} Praekelt Foundation<br /><a href="{% url home %}">Home</a> . <a href="/about/">About</a> . <a href="/terms/">Terms</a>
         . <a href="{% url logout %}">Sign Out</a>
     </div>
 
