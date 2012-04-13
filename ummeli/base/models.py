@@ -173,6 +173,7 @@ class CurriculumVitae(models.Model):
     
     show_contact_number = models.BooleanField(default=False)
     show_address = models.BooleanField(default=False)
+    comment_as_anon = models.BooleanField(default=True)
     
     def is_connection_requested(self, user_id):
         return self.connection_requests.filter(pk=user_id).exists()

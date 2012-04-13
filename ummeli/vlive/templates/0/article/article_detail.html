@@ -73,15 +73,18 @@
             <div class="comment-item">
                 <!-- link to user profile -->
                 <span class="byline">
-                <a href="{% url profile_view comment.user.pk %}">
                     <strong>
-                        {% if comment.user.get_profile.fullname %}
-                            {{ comment.user.get_profile.fullname }}
-                        {% else %}
+                        {% if comment.user.get_profile.comment_as_anon %}
                             Anon.
+                        {% else %}
+                            {% if comment.user.get_profile.fullname %}
+                                <a href="{% url profile_view comment.user.pk %}">{{ comment.user.get_profile.fullname }}</a>
+                            {% else %}
+                                Anon.
+                            {% endif %}
                         {% endif %}
                     </strong>
-                </a> -
+                 -
 
                 {{ comment.submit_date|date:"D, j M Y, H:i" }}
                 </span>

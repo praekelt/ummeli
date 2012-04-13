@@ -224,6 +224,11 @@ class MyContactPrivacyForm(PMLModelForm):
         model = CurriculumVitae
         fields = ('show_contact_number', 'show_address')
         
+class MyCommentSettingsForm(PMLModelForm):
+    class Meta:
+        model = CurriculumVitae
+        fields = ('comment_as_anon', )
+        
 class IndustrySearchForm(PMLForm):
     industry = IntegerField(required = True)
     province = IntegerField(required = True)

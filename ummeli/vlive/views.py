@@ -15,7 +15,8 @@ from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
 from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
                                 UserSubmittedJobArticleForm, ForgotPasswordForm,
-                                ConcactSupportForm, MyContactPrivacyForm)
+                                ConcactSupportForm, MyContactPrivacyForm,
+                                MyCommentSettingsForm)
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -172,6 +173,17 @@ class MyContactPrivacyEditView(UpdateView):
     model = CurriculumVitae
     form_class = MyContactPrivacyForm
     template_name = 'my_contact_privacy.html'
+    
+    def get_success_url(self):
+        return reverse("my_settings")
+    
+    def get_object(self, queryset=None):
+        return self.request.user.get_profile()
+    
+class MyCommentSettingsEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = MyCommentSettingsForm
+    template_name = 'my_comment_settings.html'
     
     def get_success_url(self):
         return reverse("my_settings")
