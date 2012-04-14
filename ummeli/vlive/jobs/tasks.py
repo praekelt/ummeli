@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from ummeli.base.models import Article,  Province,  Category
 from django.utils.hashcompat import md5_constructor
 
-@task
+@task(ignore_result=True)
 def process_jobs(cat_id,  link,  jobs_parser):    
     category = Category.objects.get(hash_key = cat_id)
     
@@ -32,7 +32,7 @@ def process_jobs(cat_id,  link,  jobs_parser):
 def create_category_id_hash(search_id,  title):
     return md5_constructor('%s:%s' % (title,  search_id)).hexdigest()
 
-@task
+@task(ignore_result=True)
 def queue_categories(search_id,  category_parser,  jobs_parser):
     parser = category_parser(search_id,  url = 'http://www.wegotads.co.za/Employment/listings/22001%(path)s?umb=1&search_source=%(id)s')
     urls = parser.parse()
@@ -55,7 +55,7 @@ def queue_categories(search_id,  category_parser,  jobs_parser):
     
     return province
 
-@task
+@task(ignore_result=True)
 def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser):    # allow mocking of parsers
     Province(search_id = 1,  name = 'All').save()
     Province(search_id = 2,  name = 'Gauteng').save()
