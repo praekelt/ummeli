@@ -1,8 +1,8 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url profile %}">Industry</a> &raquo; new</div>
-Do you have any experience as a <strong>{{skill}}</strong>?
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url profile %}">My Work</a> &raquo; new</div>
+Rate your experience in <strong>{{skill}}</strong>.
 <br/>
 <br/>
 <form action='{{request.path}}' method='POST'>

@@ -1,8 +1,8 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; <a href="{% url profile %}">Industry</a> &raquo; new</div>
-What type of job are you looking for?
+<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url profile %}">My Work</a> &raquo; new</div>
+Select your field of work or interest.
 <br/>
 <br/>
 {% for skill in skills %}

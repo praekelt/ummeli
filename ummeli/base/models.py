@@ -128,6 +128,10 @@ class Skill (models.Model):
     def __unicode__(self):  # pragma: no cover
         choices = dict(SKILL_LEVEL_CHOICES)
         return '%s (%s)' % (self.skill, choices[self.level])
+    
+    def get_level(self):
+        choices = dict(SKILL_LEVEL_CHOICES)
+        return choices[self.level]
 
 PROVINCE_CHOICES = (
         (1, 'Eastern Cape'),
