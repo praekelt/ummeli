@@ -104,7 +104,8 @@ class PersonalStatementForm(PMLModelForm):
 
 class EducationDetailsForm(PMLModelForm):
     highest_grade = IntegerField(label = 'Highest grade passed',  required = False)
-    highest_grade_year = IntegerField(label = 'Year passed',  required = False)
+    highest_grade_year = IntegerField(label = 'Year passed',  required = False, 
+                                      error_messages = {'invalid': 'Please enter a valid Year'})
     school = CharField(label = 'Name of school', required = False)
 
     class Meta:
@@ -114,7 +115,8 @@ class EducationDetailsForm(PMLModelForm):
 class CertificateForm(PMLModelForm):
     name = CharField(label = 'Name of certificate')
     institution = CharField(label = 'Name of institution', required = False)
-    year = IntegerField(label = 'Year completed', required = False)
+    year = IntegerField(label = 'Year completed', required = False,
+                        error_messages = {'invalid': 'Please enter a valid Year'})
     duration = IntegerField(label = 'Duration', required = False)
 
     class Meta:
@@ -123,8 +125,10 @@ class CertificateForm(PMLModelForm):
 class WorkExperienceForm(PMLModelForm):
     title = CharField(label = 'Job title')
     company = CharField(label = 'Name of company')
-    start_year = IntegerField(label = 'Year started')
-    end_year = IntegerField(label = 'Year ended')
+    start_year = IntegerField(label = 'Year started',
+                              error_messages = {'invalid': 'Please enter a valid Year'})
+    end_year = IntegerField(label = 'Year ended',
+                            error_messages = {'invalid': 'Please enter a valid Year'})
 
     class Meta:
         model = WorkExperience

@@ -11,7 +11,7 @@
         
         <label>Year:</label>
         {% include "form_field_errors_snippet.html" with form_field=form.highest_grade_year %}
-        <input name="highest_grade_year" type="text" class="txt" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
+        <input name="highest_grade_year" maxlength="4" type="text" class="txt" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
         
         <label>School:</label>
         {% include "form_field_errors_snippet.html" with form_field=form.school %}
