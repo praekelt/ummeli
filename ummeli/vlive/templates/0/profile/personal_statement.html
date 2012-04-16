@@ -15,7 +15,7 @@
         <br/>
         <label>About me:*</label>
         {% include "form_field_errors_snippet.html" with form_field=form.about_me %}
-        <input name="about_me" type="text" class="txt" value="{{form.about_me.value}}"/>
+        <input name="about_me" type="text" class="txt" value="{% if form.about_me.value %}{{form.about_me.value}}{%endif%}"/>
         
         <input type="submit" class="btn" value="Save" name="submit" />
         {% csrf_token %}
