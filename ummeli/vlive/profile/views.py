@@ -324,7 +324,7 @@ class WorkExperienceEditView(UpdateView):
         return context
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_work_experience.html'
         return super(WorkExperienceEditView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceCreateView(CreateView):
@@ -347,7 +347,7 @@ class WorkExperienceCreateView(CreateView):
         return redirect(self.get_success_url())
 
     def render_to_response(self, context, **kwargs):
-        self.template_name = 'profile/edit_object.html'
+        self.template_name = 'profile/edit_work_experience.html'
         return super(WorkExperienceCreateView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceDeleteView(DeleteView):

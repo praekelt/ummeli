@@ -1,0 +1,30 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</div>
+    <form class='content-form' method="post">
+    <fieldset>
+        <div class="form-fields">
+            <label>Job title:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.title %}
+            <input type="text" name="title" value="{% if form.title.value %}{{form.title.value}}{% endif %}">
+            <label>Name of company:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.company %}
+            <input type="text" name="company" value="{% if form.company.value %}{{form.company.value}}{% endif %}">
+            <label>Year started:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.start_year %}
+            <input type="text" name="start_year" maxlength="4" value="{% if form.start_year.value %}{{form.start_year.value}}{% endif %}">
+            <label>Year ended:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.end_year %}
+            <input type="text" name="end_year" maxlength="4" value="{% if form.end_year.value %}{{form.end_year.value}}{% endif %}">
+        </div>
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% if object.id %}
+            <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
+        {% endif %}
+        <br/><br/>
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
+{% endblock %}

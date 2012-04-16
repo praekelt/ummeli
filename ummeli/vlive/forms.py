@@ -96,7 +96,7 @@ class ContactDetailsForm(PMLModelForm):
         fields = ('telephone_number', 'email', 'address', 'city', 'province')
 
 class PersonalStatementForm(PMLModelForm):
-    about_me = CharField(label = 'Personal Statement',  required = True)
+    about_me = CharField(label = 'Personal Statement', required = True)
 
     class Meta:
         model = CurriculumVitae
@@ -123,11 +123,11 @@ class CertificateForm(PMLModelForm):
         model = Certificate
 
 class WorkExperienceForm(PMLModelForm):
-    title = CharField(label = 'Job title')
-    company = CharField(label = 'Name of company')
-    start_year = IntegerField(label = 'Year started',
+    title = CharField(label = 'Job title', required = True)
+    company = CharField(label = 'Name of company', required = True)
+    start_year = IntegerField(label = 'Year started', required = True,
                               error_messages = {'invalid': 'Please enter a valid Year'})
-    end_year = IntegerField(label = 'Year ended',
+    end_year = IntegerField(label = 'Year ended', required = True,
                             error_messages = {'invalid': 'Please enter a valid Year'})
 
     class Meta:
