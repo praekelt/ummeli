@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; View Profile</div>
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; View Work Profile</div>
     <div class="h2">
         {{other_user_profile.fullname}} {% if is_self %}<a href="{% url profile %}">[edit]</a>{% endif %}
     </div>

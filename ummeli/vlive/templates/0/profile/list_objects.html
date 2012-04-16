@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">My Profile</a> &raquo; {{page_title}}</div>
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; {{page_title}}</div>
         {% if object_list %}
         {% for item in object_list %}
             <div class="list"><a href='{% url profile %}{{list_name}}/{{ item.pk }}'>&rarr; {{ item }}</a></div>

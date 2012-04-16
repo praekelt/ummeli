@@ -1,4 +1,4 @@
-<div class="h2">Contact details</div>
+<div class="h2">My Contact Info</div>
         <div class="list">
         {% if a_user_profile.show_address and a_user_profile.address %}{{a_user_profile.address}}, {% endif %}
         {% if a_user_profile.city %}{{a_user_profile.city}}{% endif %}
@@ -21,7 +21,7 @@
 {% endif %}
 
 {% if a_user_profile.certificates.all %}
-<div class="h2">Qualifications</div>
+<div class="h2">Education</div>
 {% for c in a_user_profile.certificates.all %}
 <div class="list">{{c}}</div>
 {% endfor %}

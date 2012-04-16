@@ -4,7 +4,7 @@
 {% load poll_tags %}
     
 {% block content %}
-    <div id="promotxt">Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="#">connect with people</a> you know. <a href="/about/">Learn more...</a></div>
+    <div id="promotxt">Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="#">connect with others</a>. <a href="/about/">Learn more...</a></div>
     <div class="h2">Latest</div>
     {% get_articles 3 "article_list" %}
     {% for article in article_list %}
@@ -20,7 +20,7 @@
         <div class="h2">Poll</div>
         {% show_poll featured_poll %}
     {% endif %}
-    <div class="h2">Community</div>
+    <div class="h2">Community Noticeboard</div>
     {% for article in community_list %}
         <div class="list">
             <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
@@ -35,10 +35,10 @@
     <div class="list"><a href="{% url community_jobs %}">more...</a></div>
     <br/>
     <div class="h5">Have somthing to share?</a></div>
-    <div class="list"><a href="{% url jobs_create %}">Add job</a></div>
+    <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
     {% if user.is_authenticated %}
         <div class="h2">My Ummeli</div>
-        <div class="list"><a href="{% url profile %}">My profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
+        <div class="list"><a href="{% url profile %}">My Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
         <div class="list"><a href="{% url my_connections %}">My Connections</a>
             {% if user_profile.connection_requests.any %}
             <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
