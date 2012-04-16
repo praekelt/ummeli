@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Profile</div>
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Work Profile</div>
     <div class="h2">
         {{user_profile.fullname}}
     </div>
@@ -23,12 +23,12 @@
     <p><em>"{{user_profile.about_me}}"</em></p>
     
     <div class="h2">Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></div>
-    <div class="list"><a href="{% url edit_personal %}">Personal details</a></div>
-    <div class="list"><a href="{% url edit_contact %}">Contact details</a></div>
-    <div class="list"><a href="{% url edit_about_me %}">Personal Statement</a></div>
-    <div class="list"><a href="{% url skills %}">Industry</a></div>
-    <!-- <div class="list"><a href="{% url skills %}">Attributes</a></div> -->
+    <div class="list"><a href="{% url edit_personal %}">Personal Details</a></div>
+    <div class="list"><a href="{% url edit_contact %}">My Contact Info</a></div>
     <div class="list"><a href="{% url language_list %}">Languages</a></div>
+    <div class="list"><a href="{% url edit_about_me %}">About Me</a></div>
+    <div class="list"><a href="{% url skills %}">My Work</a></div>
+    <!-- <div class="list"><a href="{% url skills %}">Attributes</a></div> -->
     <div class="list"><a href="{% url work_experience_list %}">Work Experience</a></div>
-    <div class="list"><a href="{% url certificate_list %}">Education</a></div>
+    <div class="list"><a href="{% url certificate_list %}">My Education</a></div>
 {% endblock %}
