@@ -10,4 +10,7 @@
     {% for province in provinces %}
     <div class="list"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
     {% endfor %}
+    <br/>
+    <div class="h5">Have a job to share?</a></div>
+    <div class="list"><a href="{% url jobs_create %}">Add job</a></div>
 {% endblock %}
