@@ -7,9 +7,7 @@
     </div>
     <div>
         <div style="float: left">
-            {% if other_user_profile.primary_skill.level >= 0 %}
             <img src="{{STATIC_URL}}media/avatar_{{other_user_profile.primary_skill.level}}.jpg"/>
-            {% endif %}
         </div>
         <div style="float: left">
             {% if other_user_profile.primary_skill %}<div class="h3">{{other_user_profile.primary_skill}}</div>{% endif %}
