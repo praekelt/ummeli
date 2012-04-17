@@ -113,7 +113,7 @@ class Reference (models.Model):
         return self.fullname
     
 SKILL_LEVEL_CHOICES = (
-        (0, 'Laaitjie'),
+        (0, 'Laaitie'),
         (2, 'Junior'),
         (5, 'Middleweight'),
         (10, 'Pro'),
