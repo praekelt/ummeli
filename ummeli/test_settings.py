@@ -30,3 +30,5 @@ NEO4J_DATABASES = {
         'ENDPOINT':'/db/data'
     }
 }
+
+CELERY_ALWAYS_EAGER = True
