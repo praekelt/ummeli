@@ -1,0 +1,13 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>{{skill}} already added.</LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <strong>{{skill}}</strong> is already add to your profile.
+    </TEXT>
+    </CONTAINER>
+    <CONTAINER type="list">
+        <LINK href="{% url skills %}"><TEXT>Back</TEXT></LINK>
+    </CONTAINER>
+{% endblock %}
