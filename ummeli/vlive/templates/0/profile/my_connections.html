@@ -4,7 +4,7 @@
     <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</div>
     <div class="h2">Add Connections</div>
     <!-- <div class="list"><a href="#">Add connection by Name</a></div> -->
-    <div class="list"><a href="{% url add_connection_by_industry %}">Add connection by Industry</a></div>
+    <div class="list"><a href="{% url add_connection_by_industry %}">Add connection by type of work</a></div>
     {% if user_profile.connection_requests.exists %}
         <div class="h2">Connection Requests <span class="subtext">({{user_profile.connection_requests.count}})</span></div>
         {% for user in user_profile.connection_requests.all %}

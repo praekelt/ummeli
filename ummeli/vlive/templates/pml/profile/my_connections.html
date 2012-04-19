@@ -1,0 +1,60 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>My Connections</LABEL></HEADER>
+    </MODULE>
+
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Add Connections</LABEL></HEADER>
+    <CONTAINER type="list">
+        <LINK href="{% url add_connection_by_industry %}">
+            <TEXT>Add connection by type of work</TEXT>
+        </LINK>
+    </CONTAINER>
+    </MODULE>
+
+    {% if user_profile.connection_requests.exists %}
+        <MODULE backgroundColor="false" palette="MiDove">
+        <HEADER><LABEL>Connection Requests ({{user_profile.connection_requests.count}})</LABEL></HEADER>
+        <CONTAINER type="data">
+            <TEXT>
+            {% for user in user_profile.connection_requests.all %}
+            <LINK href="{% url profile_view user.pk %}">
+                <TEXT>{{user.get_profile.fullname}}</TEXT>
+            </LINK><br/>
+            <LINK href="{% url confirm_request user.pk %}?next={{request.path}}">
+                <TEXT>[+ Accept]</TEXT>
+            </LINK>
+            <LINK href="{% url reject_request user.pk %}?next={{request.path}}">
+                <TEXT>[- Reject]</TEXT>
+            </LINK>
+            <br/>-<br/>
+            {% endfor %}
+            <TEXT>
+        </CONTAINER>
+        </MODULE>
+    {% endif %}
+
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>My Connections ({{user_profile.get_connnections_count}})</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TEXT>
+        {% for node in request.user.get_profile.get_connections %}
+            <LINK href="{% url profile_view node.user_id %}">
+                <TEXT>{{ node.name }}</TEXT>
+            </LINK>
+            {% if node.primary_skill %}<br/>{{node.primary_skill}}{% endif %}
+            <br/>-<br/>
+        {% empty %}
+            0 connections.
+        {% endfor %}
+        </TEXT>
+    </CONTAINER>
+    </MODULE>
+    <MODULE backgroundColor="false" palette="MiDove">
+    <CONTAINER type="list">
+        <LINK href="{% url my_ummeli %}">
+            <TEXT>Back</TEXT>
+        </LINK>
+    </CONTAINER>
+{% endblock %}
