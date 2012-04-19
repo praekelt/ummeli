@@ -8,8 +8,8 @@
     Adding someone to your connections means giving access to your full profile. 
     <br/><br/>To change your privacy settings click <a href="{% url my_contact_privacy %}">here</a>. [My Settings > Contact Details Privacy]
         
-    <form action='{% url confirm_request other_user_pk %}' method='POST'>
-        <input class="btn" type="submit" value="+ connect"/>
+    <form action='{% url reject_request other_user_pk %}' method='POST'>
+        <input class="btn" type="submit" value="+ reject"/>
         <input type="hidden" name="next" value="{{next}}"/>
         {% csrf_token %}
         <br/>
