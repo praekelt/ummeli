@@ -1,0 +1,22 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Add work</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+Select your field of work or interest.
+</TEXT>
+</CONTAINER>
+<CONTAINER  type="list">
+    {% for skill in skills %}
+        <LINK href="{% url skills_new skill.pk %}">
+            <TEXT>{{skill.word}}</TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url skills %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
