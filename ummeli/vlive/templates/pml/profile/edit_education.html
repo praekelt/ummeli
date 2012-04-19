@@ -19,7 +19,7 @@
             <FIELD name="institution" type="text" default="{% if form.institution.value %}{{form.institution.value}}{% endif %}"/><br/>
             
             <TEXT position="ABOVE">Year completed:</TEXT>
-            <FIELD name="year" type="text" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
+            <FIELD name="year" maxentry="4" type="number" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
             
             <label>Duration:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.duration %}
