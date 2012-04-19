@@ -1,0 +1,10 @@
+{% extends "base.xml" %}
+	
+{% load vlive_tags %}
+	
+{% block content %}
+<HEADER><LABEL>{{ flatpage.title }}</LABEL></HEADER>
+<CONTAINER type="data">
+	{{ flatpage.content|sanitize_html|safe }}
+</CONTAINER>
+{% endblock %}
