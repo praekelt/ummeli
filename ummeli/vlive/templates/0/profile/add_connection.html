@@ -2,11 +2,12 @@
 
 {% block content %}
     <div class="h2">Connect with <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a></div>
-    <p>
+    Are you sure you want to connect with <strong>{{other_user_profile.fullname}}</strong>?
+    <br/>
+    <br/>
     Adding <strong>{{other_user_profile.fullname}}</strong> to your connections means giving access to your full profile. 
     <br/><strong>Are you sure you want to? </strong>
     <br/><br/>To change your privacy settings click <a href="{% url my_contact_privacy %}">here</a>. [My Settings > Contact Details Privacy]
-    </p>
         
     <form action='{% url add_connection other_user_pk%}' method='POST'>
         <input class="btn" type="submit" value="+ connect"/>

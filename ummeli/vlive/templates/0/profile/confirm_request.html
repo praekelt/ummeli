@@ -2,15 +2,11 @@
 
 {% block content %}
     <div class="h2">Accept connection request for <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a></div>
-    <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
-    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
-    occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-    mollit anim id est laborum.
-    </p>
+    Are you sure you want to connect with <strong>{{other_user_profile.fullname}}</strong>?
+    <br/>
+    <br/>
+    Adding <strong>{{other_user_profile.fullname}}</strong> to your connections means giving access to your full profile. 
+    <br/><br/>To change your privacy settings click <a href="{% url my_contact_privacy %}">here</a>. [My Settings > Contact Details Privacy]
         
     <form action='{% url confirm_request other_user_pk %}' method='POST'>
         <input class="btn" type="submit" value="+ connect"/>
