@@ -141,6 +141,22 @@
         </tr>
     </table>
     </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>Jmbo Word Suggest</caption>
+        <tr>
+            <th scope="row"><a href="/admin/jmbowordsuggest/acceptedwordcategory/">Accepted Word Categories</a></th>
+            <td><a href="/admin/jmbowordsuggest/acceptedwordcategory/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbowordsuggest/acceptedwordcategory/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbowordsuggest/acceptedword/">Accepted Words</a></th>
+            <td><a href="/admin/jmbowordsuggest/acceptedword/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbowordsuggest/acceptedword/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
     {% else %}
     {% for app in app_list %}
         <div class="module">
