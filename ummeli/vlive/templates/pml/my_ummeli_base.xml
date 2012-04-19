@@ -43,22 +43,29 @@
 {% block footer_links %}
 
 <MODULE backgroundColor="false" palette="MiOrange">
-    <HEADER><LABEL>Menu</LABEL></HEADER>
+    <HEADER><LABEL>My Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
-        <LINK href="{% url home %}?{{uuid}}">
-            <TEXT>Home</TEXT>
+        <LINK href="{% url profile %}?{{uuid}}">
+            <TEXT>Work Profile</TEXT>
         </LINK>
-        <LINK href="{% url article_list %}?{{uuid}}">
-            <TEXT>Latest</TEXT>
+        <LINK href="{% url my_connections %}?{{uuid}}">
+            <TEXT>
+            My Connections
+            {% if user_profile.connection_requests.exists %}
+            ({{user_profile.connection_requests.count}} requests)
+            {% else %}
+            ({{user_profile.get_connnections_count}})
+            {% endif %}
+            </TEXT>
         </LINK>
-        <LINK href="{% url jobs_province %}?{{uuid}}">
-            <TEXT>Work</TEXT>
+        <LINK href="{% url my_jobs %}?{{uuid}}">
+            <TEXT>My Jobs ({{request.user.user_submitted_job_article_user.count}})</TEXT>
         </LINK>
-        <LINK href="{% url community_jobs %}?{{uuid}}">
-            <TEXT>Community Board</TEXT>
+        <LINK href="{% url my_settings %}?{{uuid}}">
+            <TEXT>My Settings</TEXT>
         </LINK>
-        <LINK href="{% url tips %}?{{uuid}}">
-            <TEXT>Tips</TEXT>
+        <LINK href="{% url send %}?{{uuid}}">
+            <TEXT>Send as CV</TEXT>
         </LINK>
         <LINK href="{% url my_ummeli %}?{{uuid}}">
             <TEXT>My Ummeli</TEXT>

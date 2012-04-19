@@ -360,6 +360,9 @@ def about(request):
 def terms(request):
     return render(request, 'terms.html')
 
+def tips(request):
+    return render(request, 'tips.html')
+
 def contact_support(request):
     if request.method == 'POST':
         form = ConcactSupportForm(request.POST)
