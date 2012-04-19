@@ -3,11 +3,6 @@
 {% block content %}
 <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</div>
 <div class="h2">Search: "{{industry}}" | "{{province}}"</div>
-{% for skill in skills %}
-    <div class="list">
-        <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
-    </div>
-{% endfor %}
 {% for profile in user_profiles %}
     <div class="list">
         <a href='{% url profile_view profile.user.pk %}'>{{ profile.fullname }}</a><br/>

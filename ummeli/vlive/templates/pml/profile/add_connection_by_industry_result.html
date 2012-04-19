@@ -1,0 +1,36 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Add Connection</LABEL></HEADER>
+<CONTAINER type="data">
+Search: "{{industry}}" | "{{province}}"
+</CONTAINER>
+{% for profile in user_profiles %}
+    <CONTAINER type="list">
+    <LINK href="{% url profile_view profile.user.pk %}">
+        <TEXT>{{ profile.fullname }}</TEXT>
+    </LINK>
+    </CONTAINER>
+    <CONTAINER type="data">
+    <TEXT>
+        {% if profile.primary_skill or profile.province %}
+        {{profile.primary_skill.skill}}
+        {% if profile.province %}
+            {% for key, value in provinces %}
+            {% if profile.province == key %}({{value}}){%endif%}
+            {% endfor %}
+        {%endif%}
+        {% endif %}
+    </TEXT>
+    </CONTAINER>
+{% empty %}
+    <CONTAINER type="data">
+    <TEXT>0 users found.</TEXT>
+    </CONTAINER>
+{% endfor %}
+<CONTAINER  type="list">
+    <LINK href="{% url add_connection_by_industry %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
