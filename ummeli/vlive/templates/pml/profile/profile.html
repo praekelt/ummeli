@@ -32,16 +32,16 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Full Profile</LABEL></HEADER>
     <CONTAINER type="list">
-        <LINK href="{% url edit_personal %}"><TEXT>Personal Details</TEXT></LINK>
-        <LINK href="{% url language_list %}"><TEXT>Languages</TEXT></LINK>
-        <LINK href="{% url edit_contact %}"><TEXT>My Contact Info</TEXT></LINK>
-        <LINK href="{% url edit_about_me %}"><TEXT>About Me</TEXT></LINK>
-        <LINK href="{% url skills %}"><TEXT>My Work</TEXT></LINK>
-        <LINK href="{% url work_experience_list %}"><TEXT>Work Experience</TEXT></LINK>
-        <LINK href="{% url certificate_list %}"><TEXT>My Education</TEXT></LINK>
+        <LINK href="{% url edit_personal %}?{{uuid}}"><TEXT>Personal Details</TEXT></LINK>
+        <LINK href="{% url language_list %}?{{uuid}}"><TEXT>Languages</TEXT></LINK>
+        <LINK href="{% url edit_contact %}?{{uuid}}"><TEXT>My Contact Info</TEXT></LINK>
+        <LINK href="{% url edit_about_me %}?{{uuid}}"><TEXT>About Me</TEXT></LINK>
+        <LINK href="{% url skills %}?{{uuid}}"><TEXT>My Work</TEXT></LINK>
+        <LINK href="{% url work_experience_list %}?{{uuid}}"><TEXT>Work Experience</TEXT></LINK>
+        <LINK href="{% url certificate_list %}?{{uuid}}"><TEXT>My Education</TEXT></LINK>
     </CONTAINER>
     <CONTAINER type="list">
-        <LINK href="{% url profile_view request.user.pk %}"><TEXT>View My Profile</TEXT></LINK>
+        <LINK href="{% url profile_view request.user.pk %}?{{uuid}}"><TEXT>View My Profile</TEXT></LINK>
         <LINK href="{% url my_ummeli %}"><TEXT>Back</TEXT></LINK>
     </CONTAINER>        
 {% endblock %}
