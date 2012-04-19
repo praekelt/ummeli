@@ -1,0 +1,33 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Add work</LABEL></HEADER>
+<CONTAINER  type="data">
+<TEXT>
+Rate your experience in <strong>{{skill}}</strong>.
+</TEXT>
+</CONTAINER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Add">
+        <CHOICE-GROUP type="radio" name="level">
+            <TEXT>Experience Level:*</TEXT>
+            <CHOICE value="0"/><span>0 - 6 months</span><br/>
+            <CHOICE value="2"/><span>6 months - 2yrs</span><br/>
+            <CHOICE value="5"/><span>2 - 5 yrs</span><br/>
+            <CHOICE value="10"/><span>5 - 10 yrs</span><br/>
+            <CHOICE value="20"/><span>10+ yrs</span><br/>
+        </CHOICE-GROUP>
+    
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='skill' value='{{skill}}' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>        
+{% endblock %}
