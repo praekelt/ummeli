@@ -1,17 +1,36 @@
-{% extends "base.xml" %}
+{% extends "my_ummeli_base.xml" %}
 
 {% block title %}
     Ummeli
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit contact details</LABEL></HEADER>
+<HEADER><LABEL>My Contact Info</LABEL></HEADER>
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
 <CONTAINER  type="form">
-    <FORM method="POST" href="{{request.path}}" submit_text="Submit">
-        {{ form.as_pml }}
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <TEXT position="ABOVE">Phone number: *</TEXT>
+        <FIELD name="telephone_number" type="text" default="{{form.telephone_number.value}}"/><br/>
+        
+        <TEXT position="ABOVE">Email: </TEXT>
+        <FIELD name="email" type="text" default="{{form.email.value}}"/><br/>
+        
+        <TEXT position="ABOVE">Address: </TEXT>
+        <FIELD name="address" type="text" default="{{form.address.value}}"/><br/>
+        
+        <TEXT position="ABOVE">City: *</TEXT>
+        <FIELD name="city" type="text" default="{{form.city.value}}"/><br/>
+        
+        <TEXT position="ABOVE">Province: *</TEXT>
+        <SELECT name="province">
+            <ITEM value=''>Select</ITEM>
+            {% for key, value in provinces %}
+                <ITEM value='{{key}}' {% if form.province.value == key %}checked="true"{% endif %}>{{value}}</ITEM>
+            {% endfor %}
+        </SELECT>
+        
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
