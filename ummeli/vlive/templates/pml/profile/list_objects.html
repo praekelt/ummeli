@@ -1,11 +1,11 @@
-{% extends "base.xml" %}
+{% extends "my_ummeli_base.xml" %}
 
 {% block title %}
     Ummeli
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+<HEADER><LABEL>{{page_title}}</LABEL></HEADER>
 <CONTAINER  type="list">
     {% for item in object_list %}
         <LINK href="{% url profile %}{{list_name}}/{{ item.pk }}/">

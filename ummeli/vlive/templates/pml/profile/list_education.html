@@ -1,11 +1,11 @@
-{% extends "base.xml" %}
+{% extends "my_ummeli_base.xml" %}
 
 {% block title %}
     Ummeli
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit {{page_title}}</LABEL></HEADER>
+<HEADER><LABEL>{{page_title}}</LABEL></HEADER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>School Details</LABEL></HEADER>
@@ -15,7 +15,7 @@
         <TEXT position="ABOVE">Highest grade:</TEXT>
         <FIELD name="highest_grade" type="number" value="{% if user_profile.highest_grade %}{{user_profile.highest_grade}}{% endif %}"/>
         <TEXT position="ABOVE">Year:</TEXT>
-        <FIELD name="highest_grade_year" type="number" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
+        <FIELD name="highest_grade_year" maxentry="4" type="number" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
         <TEXT position="ABOVE">School:</TEXT>
         <FIELD name="school" type="number" value="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
         

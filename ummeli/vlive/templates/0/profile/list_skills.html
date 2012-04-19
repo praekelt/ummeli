@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; My Work</div>
+        <div class="list">What is your field of work or interest?</div>
         {% for item in object_list %}
             <div class="list">
             {% if item.primary %}
@@ -9,7 +10,8 @@
             <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span>
             </strong>
             {% else %}
-            <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span> <a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a>
+            <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span>
+            <br/><a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a>
             {% endif %}
             </div>
         {% endfor %}
