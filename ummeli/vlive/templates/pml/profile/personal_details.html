@@ -5,13 +5,32 @@
 {% endblock %}
 
 {% block content %}
-<HEADER><LABEL>Edit personal details</LABEL></HEADER>
+<HEADER><LABEL>Personal Details</LABEL></HEADER>
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Submit">
-        {{ form.as_pml }}
+        <TEXT position="ABOVE">First name: </TEXT>
+        <FIELD name="first_name" type="text" default="{{form.first_name.value}}"/><br/>
+        
+        <TEXT position="ABOVE">Surname: </TEXT>
+        <FIELD name="surname" type="text" default="{{form.surname.value}}"/><br/>
+        
+        <TEXT position="ABOVE">Date of birth: </TEXT>
+        <FIELD name="date_of_birth" type="text" default="{% if form.date_of_birth.value %}{{form.date_of_birth.value}}{% endif %}"/><br/>
+        
+        <CHOICE-GROUP type="radio" name="gender">
+            <TEXT>Gender: </TEXT>
+            {% if not form.gender.value or form.gender.value.lower == 'male' or form.gender.value.lower == 'm' %}
+                <CHOICE value="Male" checked="true">Male</CHOICE>
+                <CHOICE value="Female">Female</CHOICE>
+            {% else %}
+                <CHOICE value="Male">Male</CHOICE>
+                <CHOICE value="Female" checked="true">Female</CHOICE>
+            {% endif %}
+        </CHOICE-GROUP>
+        
         <FIELD type='hidden' name='form_name' value='{{form_name}}' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
@@ -19,7 +38,7 @@
 </CONTAINER>
 <CONTAINER  type="list">
     <LINK href="{% url profile %}?{{uuid}}">
-        <TEXT>Cancel</TEXT>
+        <TEXT>Back</TEXT>
     </LINK>
 </CONTAINER>
 {% endblock %}

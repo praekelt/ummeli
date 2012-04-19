@@ -4,19 +4,19 @@
     <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; Personal Details</div>
     <form class='content-form' method="post">
     <fieldset>
-        <label for="form-first_name">First name</label>
+        <label for="form-first_name">First name: *</label>
         {% include "form_field_errors_snippet.html" with form_field=form.first_name %}
         <input name="first_name" type="text" class="txt" value="{{form.first_name.value}}"/>
         
-        <label for="form-surname">Surname</label>
+        <label for="form-surname">Surname: </label>
         {% include "form_field_errors_snippet.html" with form_field=form.surname %}
         <input name="surname" type="text" class="txt" value="{{form.surname.value}}"/>
         
-        <label for="form-date_of_birth">Date of birth</label>
+        <label for="form-date_of_birth">Date of birth: </label>
         {% include "form_field_errors_snippet.html" with form_field=form.date_of_birth %}
         <input name="date_of_birth" type="text" class="txt" value="{% if form.date_of_birth.value %}{{form.date_of_birth.value}}{% endif %}"/>
         
-        <label for="form-gender">Gender</label>
+        <label for="form-gender">Gender: </label>
         {% include "form_field_errors_snippet.html" with form_field=form.gender %}
             
         {% if not form.gender.value or form.gender.value.lower == 'male' or form.gender.value.lower == 'm' %}
