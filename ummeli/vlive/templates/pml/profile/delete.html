@@ -11,7 +11,6 @@
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Delete">
-        {{ form.as_pml }}
         <FIELD type='hidden' name='submit' value='Delete' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
