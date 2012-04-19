@@ -13,14 +13,21 @@
     {% endif %}
 </div>
 
-{% if a_user_profile.work_experiences.all %}
+{% if a_user_profile.languages.exists %}
+<div class="h2">Languages</div>
+{% for lang in a_user_profile.languages.all %}
+<div class="list">{{lang}}</div>
+{% endfor %}
+{% endif %}
+    
+{% if a_user_profile.work_experiences.exists %}
 <div class="h2">Work experience</div>
 {% for exp in a_user_profile.work_experiences.all %}
 <div class="list">{{exp}}</div>
-{% endfor %}            
+{% endfor %}
 {% endif %}
 
-{% if a_user_profile.certificates.all %}
+{% if a_user_profile.certificates.exists %}
 <div class="h2">Education</div>
 {% for c in a_user_profile.certificates.all %}
 <div class="list">{{c}}</div>
