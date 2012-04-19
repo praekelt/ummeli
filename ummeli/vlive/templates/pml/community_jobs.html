@@ -16,7 +16,7 @@
         {{ article.text|truncatewords:10 }}<br/>
         {% if article.province %}{{article.province}}<br/>{% endif %}
         {{ article.date|date:"D, j M Y, H:i" }} <br/>
-        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}<TEXT></LINK>
+        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -35,3 +35,5 @@
     </LINK>
     {% endif %}
 </CONTAINER>
+{% endblock %}
+

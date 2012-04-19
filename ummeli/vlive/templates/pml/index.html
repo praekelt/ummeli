@@ -11,30 +11,34 @@
 <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
 <CONTAINER type="data">        
     <TEXT>
-        Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find jobs</TEXT></LINK>, 
-            <LINK href="{% url profile %}?{{uuid}}"><TEXT>build your profile</TEXT></LINK> &amp; 
-        create your own employment opportunities. <LINK href="/vlive/about/"><TEXT>Learn more...</TEXT></LINK>
+        Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find work</TEXT></LINK>, 
+        <LINK href="{% url profile %}?{{uuid}}"><TEXT>build a work profile</TEXT></LINK> &amp; 
+        <LINK href="{% url my_connections %}?{{uuid}}"><TEXT>connect with others</TEXT></LINK>. 
+        <LINK href="/vlive/about/"><TEXT>Learn more...</TEXT></LINK>
     </TEXT>
 </CONTAINER>
 </MODULE>
-{% get_articles 4 "article_list" %}
+{% get_articles 3 "article_list" %}
 {% if article_list %}
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER><LABEL>Featured</LABEL></HEADER>
+    <HEADER><LABEL>Latest</LABEL></HEADER>
 </MODULE>
-    {% for article in article_list %}
-    <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-        <CONTAINER type="image">
-        <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
-        <TITLE>
-            <LINK href="{% url article_detail article.pk %}?{{uuid}}">
-                {{ article.title }}
-            </LINK>
-        </TITLE>
-        <TEXT>{{ article.description }}</TEXT>
-        </CONTAINER>
-    </MODULE>
-    {% endfor %}
+{% for article in article_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+            {{ article.title }}
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ article.description }}<br/>
+        {{ article.updated|date:"D, j M Y" }}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
 <TEXT>
@@ -54,42 +58,74 @@
     {% show_poll featured_poll %}
 </MODULE>
 {% endif %}
+    
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Community Board</LABEL></HEADER>
+</MODULE>
+{% for article in community_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+            {{ article.title|truncatewords:10 }}
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ article.text|truncatewords:10 }}<br/>
+        {{ article.date|date:"D, j M Y, H:i" }}<br/>
+        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endfor %}    
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="data">
+<TEXT>
+<LINK href="{% url community_jobs %}?{{uuid}}">
+    <TEXT>more...</TEXT>
+</LINK>
+</TEXT>
+</CONTAINER>
+</MODULE>
+
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER>
-        <LABEL>
-        {% if request.is_authorized %}
-            <TITLE>Quick links</TITLE>
-        {% else %}
-            <TITLE>Browse jobs</TITLE>
-        {% endif %}
-        </LABEL>
+        <LABEL>Have something to share?</LABEL>
     </HEADER>
     <CONTAINER type="list">
-{% if request.is_authorized %}
-    <LINK href="{% url jobs_province %}?{{uuid}}">
-        <TEXT>Browse jobs</TEXT>
+    <LINK href="{% url jobs_create %}?{{uuid}}">
+        <TEXT>Add a job</TEXT>
     </LINK>
-    <LINK href="{% url send %}?{{uuid}}">
-        <TEXT>Send my profile</TEXT>
-    </LINK>
-    <LINK href="{% url profile %}?{{uuid}}">
-        <TEXT>Update my profile ({{user_profile.fields_complete|floatformat:0}}% Complete)</TEXT>
-    </LINK>
-{% else %} 
-    {% for province in provinces %}
-        <LINK href="{% url jobs_list province.search_id %}?{{uuid}}">
-            <TEXT>{{province.name}} ({{province.articles_count|add:province.userarticles_count}})</TEXT>
-        </LINK><br/>
-    {% endfor %}
-{% endif %}
 </CONTAINER>
-{% if not request.is_authorized %}
-<CONTAINER type="data">        
-    <TEXT>
-        <LINK href="{% url jobs_province %}?{{uuid}}">
-            <TEXT>more...</TEXT>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiOrange">
+    <HEADER><LABEL>My Ummeli</LABEL></HEADER>
+    <CONTAINER  type="list">
+        <LINK href="{% url profile %}?{{uuid}}">
+            <TEXT>Work Profile</TEXT>
         </LINK>
-    </TEXT>
-</CONTAINER>
-{% endif %}
+        <LINK href="{% url my_connections %}?{{uuid}}">
+            <TEXT>
+            My Connections
+            {% if user_profile.connection_requests.exists %}
+            ({{user_profile.connection_requests.count}} requests)
+            {% else %}
+            ({{user_profile.get_connnections_count}})
+            {% endif %}
+            </TEXT>
+        </LINK>
+        <LINK href="{% url my_jobs %}?{{uuid}}">
+            <TEXT>My Jobs ({{request.user.user_submitted_job_article_user.count}})</TEXT>
+        </LINK>
+        <LINK href="{% url my_settings %}?{{uuid}}">
+            <TEXT>My Settings</TEXT>
+        </LINK>
+        <LINK href="{% url send %}?{{uuid}}">
+            <TEXT>Send as CV</TEXT>
+        </LINK>
+        <LINK href="{% url my_ummeli %}?{{uuid}}">
+            <TEXT>My Ummeli</TEXT>
+        </LINK>
+    </CONTAINER>
 {% endblock %}
