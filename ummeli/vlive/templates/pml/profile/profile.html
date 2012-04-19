@@ -1,27 +1,47 @@
-{% extends "base.xml" %}
-
-{% block title %}
-    Ummeli
-{% endblock %}
+{% extends "my_ummeli_base.xml" %}
 
 {% block content %}
-    <HEADER><LABEL>My Profile</LABEL></HEADER>
+    <HEADER><LABEL>Work Profile</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>{{user_profile.fullname}}</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<CONTAINER type="image">
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>{{user_profile.primary_skill}}</TITLE>
+    <TEXT>
+        {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
+        {% if user_profile.date_of_birth %}DOB: {{user_profile.date_of_birth}} <br/>{% endif %}
+    </TEXT>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
     <CONTAINER type="data">
     <TEXT>
-        {{user_profile.fullname}}
-        <LINK href="{% url edit_personal %}?{{uuid}}">
-            <TEXT>[edit]</TEXT>
-        </LINK><br/>
-        <LINK href="{% url connections user.pk %}?{{uuid}}">
-            <TEXT>Connections ({{num_connections}})</TEXT>
-        </LINK><br/>
-        <LINK href="{% url connection_requests %}?{{uuid}}">
-            <TEXT>Requests ({{user_profile.connection_requests.count}})</TEXT>
-        </LINK><br/>
+    {% if user_profile.skills.all %}
+        <strong>Other areas of interest:</strong><br/>
+        {% for skill in user_profile.other_skills.all %}
+        {{skill}}<br/>
+        {% endfor %}
+    {% endif %}
+    <p><em>"{{user_profile.about_me}}"</em></p>
     </TEXT>
     </CONTAINER>
 </MODULE>
-
-    {% include "profile/user_profile_detailed.html" with a_user_profile=user_profile user_is_self="True" %}
-        
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Full Profile</LABEL></HEADER>
+    <CONTAINER type="list">
+        <LINK href="{% url edit_personal %}"><TEXT>Personal Details</TEXT></LINK>
+        <LINK href="{% url language_list %}"><TEXT>Languages</TEXT></LINK>
+        <LINK href="{% url edit_contact %}"><TEXT>My Contact Info</TEXT></LINK>
+        <LINK href="{% url edit_about_me %}"><TEXT>About Me</TEXT></LINK>
+        <LINK href="{% url skills %}"><TEXT>My Work</TEXT></LINK>
+        <LINK href="{% url work_experience_list %}"><TEXT>Work Experience</TEXT></LINK>
+        <LINK href="{% url certificate_list %}"><TEXT>My Education</TEXT></LINK>
+    </CONTAINER>
+    <CONTAINER type="list">
+        <LINK href="{% url profile_view request.user.pk %}"><TEXT>View My Profile</TEXT></LINK>
+        <LINK href="{% url my_ummeli %}"><TEXT>Back</TEXT></LINK>
+    </CONTAINER>        
 {% endblock %}
