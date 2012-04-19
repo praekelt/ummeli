@@ -1,0 +1,37 @@
+{% extends "base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>Community Board</LABEL></HEADER>
+</MODULE>
+{% for article in articles.object_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="/ummeli-static/media/write.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url community_jobs article.pk %}?{{uuid}}">
+            {{ article.title|truncatewords:10 }}
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ article.text|truncatewords:10 }}<br/>
+        {% if article.province %}{{article.province}}<br/>{% endif %}
+        {{ article.date|date:"D, j M Y, H:i" }} <br/>
+        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}<TEXT></LINK>
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endfor %}
+    
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="list">
+    {% if articles.has_previous %}
+    <LINK href="{% url article_list articles.previous_page_number %}?{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if articles.has_next %}
+    <LINK href="{% url article_list articles.next_page_number %}?{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
