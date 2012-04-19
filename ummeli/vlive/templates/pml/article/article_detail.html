@@ -125,12 +125,12 @@
         </LINK>
         </TEXT>
     {% endfor %}
-    <TEXT><br/>
-        {% if comment_list.has_next %}
-        <LINK href="{% url article_detail article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT><< Newer comments</TEXT></LINK>
-        {% endif %}
+    <TEXT><br/>        
         {% if comment_list.has_previous %}
-        <LINK href="{% url article_detail article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>Older Comments >></TEXT></LINK>
+        <LINK href="{% url article_detail_redo article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
+        {% endif %}
+        {% if comment_list.has_next %}
+        <LINK href="{% url article_detail_redo article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
         {% endif %}
     </TEXT>
     </CONTAINER>
