@@ -89,8 +89,11 @@
                 </LINK>.</color></TEXT>
         </CONTAINER>
     {% endif %}
-    <CONTAINER type="data">
+    </MODULE>
     {% for comment in comment_list.object_list %}
+        <MODULE backgroundColor="false" palette="MiDove">
+        <HEADER></HEADER>
+        <CONTAINER type="data">
         <TEXT><b>
             {% if comment.user.get_profile.comment_as_anon %}
                 Anon.
@@ -124,7 +127,12 @@
             <TEXT>Report</TEXT>
         </LINK>
         </TEXT>
+        </CONTAINER>
+        </MODULE>
     {% endfor %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
+    <CONTAINER type="data">
     <TEXT><br/>        
         {% if comment_list.has_previous %}
         <LINK href="{% url article_detail_redo article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>

@@ -11,11 +11,14 @@
         <LINK href="{% url profile_view job.user.pk %}"><TEXT>{{job.user.get_profile.fullname}}</TEXT></LINK>
     </TEXT>
     </CONTAINER>
-    <CONTAINER  type="list">
-        <LINK href="{% url community_jobs %}">
-            <TEXT>Back</TEXT>
-        </LINK>
-    </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url community_jobs %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 </MODULE>
 
 <MODULE backgroundColor="MiGreen">
