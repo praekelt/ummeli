@@ -5,35 +5,36 @@
     <CONTAINER type="data">
     <TEXT>What is your field of work or interest?</TEXT>
     </CONTAINER>
-    <CONTAINER type="data">
-    <TEXT>
-        {% for item in object_list %}
-            {% if item.primary %}
-            <LINK href="{% url skills item.pk %}">
-                <TEXT><strong>{{ item.skill }}</strong></TEXT>
-            </LINK> <strong>({{ item.get_level }})</strong>
-            <br/>-<br/>
-            {% else %}
-            <LINK href="{% url skills item.pk %}">
-                <TEXT>{{ item.skill }}</TEXT>
-            </LINK>({{ item.get_level }})
-            <br/>
-            <LINK href="{% url skills_primary item.pk %}">
-                <TEXT>[Mark as Primary Role]</TEXT>
-            </LINK>
-            <br/>-<br/>
-            {% endif %}
-        {% endfor %}
-    </TEXT>
-    </CONTAINER>
+</MODULE>
+{% for item in object_list %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="list">
-        {% if object_list.count < 3 %} 
-        <LINK href="{% url skills_new %}">
-            <TEXT>+ Add another</TEXT>
+        {% if item.primary %}
+        <LINK href="{% url skills item.pk %}">
+            <TEXT>*{{ item.skill }} <TEASER>({{ item.get_level }})</TEASER></TEXT>
+        </LINK>
+        {% else %}
+        <LINK href="{% url skills item.pk %}">
+            <TEXT>{{ item.skill }} <TEASER>({{ item.get_level }})</TEASER></TEXT>
+        </LINK>
+        <LINK href="{% url skills_primary item.pk %}">
+            <TEXT>[Mark as Primary Role]</TEXT>
         </LINK>
         {% endif %}
-        <LINK href="{% url profile %}">
-            <TEXT>Back</TEXT>
-        </LINK>
     </CONTAINER>
+    </MODULE>
+{% endfor %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER type="list">
+    {% if object_list.count < 3 %} 
+    <LINK href="{% url skills_new %}">
+        <TEXT>+ Add another</TEXT>
+    </LINK>
+    {% endif %}
+    <LINK href="{% url profile %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}
