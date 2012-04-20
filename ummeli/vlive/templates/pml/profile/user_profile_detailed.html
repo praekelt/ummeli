@@ -29,9 +29,9 @@
 {% if a_user_profile.work_experiences.exists %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Work experience</LABEL></HEADER>
-    <CONTAINER type="list">
+    <CONTAINER type="data">
         {% for exp in a_user_profile.work_experiences.all %}
-        <TEXT>{{exp}}</TEXT>
+        <TEXT>{{exp}}</TEXT><br/>
         {% endfor %}
     </CONTAINER>
 </MODULE>
@@ -40,9 +40,9 @@
 {% if a_user_profile.certificates.exists %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Education</LABEL></HEADER>
-    <CONTAINER type="list">
+    <CONTAINER type="data">
     {% for c in a_user_profile.certificates.all %}
-    <TEXT>{{c}}</TEXT>
+    <TEXT>{{c}}</TEXT><br/>
     {% endfor %}
     </CONTAINER>
 </MODULE>
