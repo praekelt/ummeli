@@ -1,0 +1,47 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Comment Settings</LABEL></HEADER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER type="data">
+<TEXT>
+Please choose the information you want your connections to see when viewing your Full Profile.
+</TEXT>
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <CHOICE-GROUP type="radio" name="comment_as_anon">
+            <TEXT>Telephone Number</TEXT>
+            {% if form.show_contact_number.value %}
+            <ITEM value="True" checked="true"/>Yes<ITEM/>
+            <ITEM value="False"/>No<ITEM/>
+            {% else %}
+            <ITEM value="True"/>Yes<ITEM/>
+            <ITEM value="False" checked="true"/>No<ITEM/>
+            {% endif %}
+            
+            <TEXT>Address</TEXT>
+            {% if form.show_address.value %}
+            <ITEM value="True" checked="true"/>Yes<ITEM/>
+            <ITEM value="False"/>No<ITEM/>
+            {% else %}
+            <ITEM value="True"/>Yes<ITEM/>
+            <ITEM value="False" checked="true"/>No<ITEM/>
+            {% endif %}
+        </CHOICE-GROUP>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url my_settings %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
