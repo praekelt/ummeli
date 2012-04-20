@@ -18,11 +18,11 @@ Rate your experience in <strong>{{skill}}</strong>.
     <FORM method="POST" href="{{request.path}}" submit_text="Add">
         <CHOICE-GROUP type="radio" name="level">
             <TEXT>Experience Level:*</TEXT>
-            <CHOICE value="0"/><span>0 - 6 months</span><br/>
-            <CHOICE value="2"/><span>6 months - 2yrs</span><br/>
-            <CHOICE value="5"/><span>2 - 5 yrs</span><br/>
-            <CHOICE value="10"/><span>5 - 10 yrs</span><br/>
-            <CHOICE value="20"/><span>10+ yrs</span><br/>
+            <CHOICE value="0"/>0 - 6 months</CHOICE>
+            <CHOICE value="2"/>6 months - 2yrs</CHOICE>
+            <CHOICE value="5"/>2 - 5 yrs</CHOICE>
+            <CHOICE value="10"/>5 - 10 yrs</CHOICE>
+            <CHOICE value="20"/>10+ yrs</CHOICE>
         </CHOICE-GROUP>
     
         <FIELD type='hidden' name='_action' value='POST' />
