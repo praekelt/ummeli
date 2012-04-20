@@ -51,14 +51,9 @@
     {% endif %}
     <CONTAINER  type="form">
         <FORM method="POST" href="{{request.path}}" submit_text="Apply">
-            <CHOICE-GROUP type="radio" name="send_via">
-                <TEXT>Send via</TEXT>
-                <CHOICE value="email" checked="True">Email</CHOICE>
-                {% if False %}
-                <CHOICE value="fax">Fax</CHOICE>
-                {% endif %}
-            </CHOICE-GROUP>
+            <TEXT position="ABOVE">Email CV to:*</TEXT>
             <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='send_via' value='email' />
             <FIELD type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
