@@ -1,0 +1,39 @@
+{% extends "my_ummeli_base.xml" %}
+    
+{% block content %}
+<HEADER><LABEL>Add work</LABEL></HEADER>
+<CONTAINER  type="data">
+<TEXT>
+Rate your experience in <strong>{{object.skill}}</strong>.
+</TEXT>
+</CONTAINER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Add">
+        <CHOICE-GROUP type="radio" name="level">
+            <TEXT>Experience Level:*</TEXT>
+            <CHOICE value="0" {% if object.level == 0 %}checked="true"{% endif %}>0 - 6 months</CHOICE>
+            <CHOICE value="2" {% if object.level == 2 %}checked="true"{% endif %}>6 months - 2yrs</CHOICE>
+            <CHOICE value="5" {% if object.level == 5 %}checked="true"{% endif %}>2 - 5 yrs</CHOICE>
+            <CHOICE value="10" {% if object.level == 10 %}checked="true"{% endif %}>5 - 10 yrs</CHOICE>
+            <CHOICE value="20" {% if object.level == 20 %}checked="true"{% endif %}>10+ yrs</CHOICE>
+        </CHOICE-GROUP>
+    
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='skill' value='{{object.skill}}' />
+        <FIELD type='hidden' name='primary' value='{{object.primary}}' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
+    <CONTAINER  type="list">
+    {% if object.id %}
+    <LINK href="{% url skills_delete object.pk %}"><TEXT>Delete</TEXT></LINK>
+    {% endif %}
+    <LINK href="{{cancel_url}}"><TEXT>Back</TEXT></LINK>
+</CONTAINER>
+{% endblock %}
