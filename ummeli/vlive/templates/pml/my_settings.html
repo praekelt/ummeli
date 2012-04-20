@@ -1,0 +1,13 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>My Settings</LABEL></HEADER>
+    <CONTAINER type="list">
+    <LINK href="{% url password_change %}?{{uuid}}"><TEXT>Change PIN</TEXT></LINK>
+    <LINK href="{% url my_contact_privacy %}?{{uuid}}"><TEXT>Contact Details Privacy</TEXT></LINK>
+    <LINK href="{% url my_comment_settings %}?{{uuid}}"><TEXT>Comment Settings</TEXT></LINK>
+    </CONTAINER>
+    <CONTAINER type="list">
+    <LINK href="{% url my_ummeli %}?{{uuid}}"><TEXT>Change PIN</TEXT></LINK>
+    </CONTAINER>
+{% endblock %}
