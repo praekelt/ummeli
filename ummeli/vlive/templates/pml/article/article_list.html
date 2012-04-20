@@ -17,6 +17,7 @@
 </MODULE>
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
 <CONTAINER type="list">
     {% if page_obj.has_previous %}
     <LINK href="{% url article_list page_obj.previous_page_number %}?{{uuid}}">

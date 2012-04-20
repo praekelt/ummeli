@@ -6,22 +6,37 @@
 
 {% block content %}
     <HEADER><LABEL>Connection Requests</LABEL></HEADER>
+</MODULE>
+{% for other_user in requests %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    {% for other_user in requests %}
-        <LINK href="{% url profile_view other_user.pk %}?{{uuid}}">
-            <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
-        </LINK><br/>
-        <LINK href="{% url confirm_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
-            <TEXT>[+ accept]</TEXT>
-        </LINK><br/>
-        <LINK href="{% url reject_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
-            <TEXT>[- reject]</TEXT>
-        </LINK><br/>
-        -------
-    {% empty %}
-        0 connection requests.
-    {% endfor %}
+    <LINK href="{% url profile_view other_user.pk %}?{{uuid}}">
+        <TEXT>{{ other_user.get_profile.fullname }}</TEXT>
+    </LINK><br/>
+    <LINK href="{% url confirm_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
+        <TEXT>[+ accept]</TEXT>
+    </LINK><br/>
+    <LINK href="{% url reject_request other_user.pk %}?next={{request.path}}&amp;{{uuid}}">
+        <TEXT>[- reject]</TEXT>
+    </LINK>
     </TEXT>
     </CONTAINER>
+</MODULE>
+{% empty %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER type="data">
+    <TEXT>0 connection requests.</TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url my_connections %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}

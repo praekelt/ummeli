@@ -40,6 +40,9 @@
         <LINK href="{% url work_experience_list %}?{{uuid}}"><TEXT>Work Experience</TEXT></LINK>
         <LINK href="{% url certificate_list %}?{{uuid}}"><TEXT>My Education</TEXT></LINK>
     </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="list">
         <LINK href="{% url profile_view request.user.pk %}?{{uuid}}"><TEXT>View My Profile</TEXT></LINK>
         <LINK href="{% url my_ummeli %}"><TEXT>Back</TEXT></LINK>

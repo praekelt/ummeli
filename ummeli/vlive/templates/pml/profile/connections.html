@@ -15,29 +15,39 @@
         </LINK><br/>
     </TEXT>
     </CONTAINER>
+</MODULE>
+{% for node, is_connected, is_already_requested, is_request_received in connections %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="data">
     <TEXT>
-        {% for node, is_connected, is_already_requested, is_request_received in connections %}
-            {% if node.user_id == user.pk %}
-                <LINK href="{% url profile %}?{{uuid}}">
-                    <TEXT>{{ node.name }}</TEXT>
-                </LINK> <strong>(me)</strong>
-                <br/>-<br/>
-            {% else %}
-                <LINK href="{% url profile_view node.user_id %}?{{uuid}}">
-                    <TEXT>{{ node.name }}</TEXT>
-                </LINK>
-                {% if node.primary_skill %} {{node.primary_skill}}{% endif %}
-                <br/>-<br/>
-            {% endif %}
-        {% empty %}
-            0 connections.
-        {% endfor %}
+    {% if node.user_id == user.pk %}
+        <LINK href="{% url profile %}?{{uuid}}">
+            <TEXT>{{ node.name }}</TEXT>
+        </LINK> <strong>(me)</strong>
+        <br/>-<br/>
+    {% else %}
+        <LINK href="{% url profile_view node.user_id %}?{{uuid}}">
+            <TEXT>{{ node.name }}</TEXT>
+        </LINK>
+        {% if node.primary_skill %} {{node.primary_skill}}{% endif %}
+    {% endif %}
     </TEXT>
     </CONTAINER>
-    <CONTAINER  type="list">
-        <LINK href="{% url profile_view user_node.user_id %}">
-            <TEXT>Back</TEXT>
-        </LINK>
-    </CONTAINER>
+</MODULE>
+{% empty %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER type="data">
+    <TEXT>0 connections.</TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url profile_view user_node.user_id %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}
