@@ -1,0 +1,33 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<HEADER><LABEL>Comment Settings</LABEL></HEADER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <CHOICE-GROUP type="radio" name="comment_as_anon">
+            <TEXT>What name do you want shown on your comments?</TEXT>
+            {% if form.comment_as_anon.value %}
+            <ITEM value="True" checked="true"/> Anon.<br/>
+            <ITEM value="False" /> {{object.fullname}}<br/>
+            {% else %}
+            <ITEM value="True"/> Anon.<br/>
+            <ITEM value="False" checked="true"/> {{object.fullname}}<br/>
+            {% endif %}
+        </CHOICE-GROUP>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url my_settings %}?{{uuid}}">
+        <TEXT>Cancel</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
