@@ -69,6 +69,9 @@
 <MODULE backgroundColor="false" palette="MiMarine">
     <HEADER><LABEL>Ummeli</LABEL></HEADER>
     <CONTAINER  type="list">
+        <LINK href="{% url index %}">
+            <TEXT>Home</TEXT>
+        </LINK>
         <LINK href="/vlive/about/">
             <TEXT>About</TEXT>
         </LINK>
