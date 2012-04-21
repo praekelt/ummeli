@@ -11,25 +11,24 @@
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
-            <TEXT position="ABOVE">What course did you take? *</TEXT>
-            <FIELD name="name" type="text" default="{% if form.name.value %}{{form.name.value}}{% endif %}"/><br/>
+        <TEXT position="ABOVE">What course did you take? *</TEXT>
+        <FIELD name="name" type="text" default="{% if form.name.value %}{{form.name.value}}{% endif %}"/><br/>
+    
+        <TEXT position="ABOVE">College or Institution:</TEXT>
+        <FIELD name="institution" type="text" default="{% if form.institution.value %}{{form.institution.value}}{% endif %}"/><br/>
         
-            <label>College or Institution:</label>
-            <TEXT position="ABOVE">College or Institution:</TEXT>
-            <FIELD name="institution" type="text" default="{% if form.institution.value %}{{form.institution.value}}{% endif %}"/><br/>
-            
-            <TEXT position="ABOVE">Year completed:</TEXT>
-            <FIELD name="year" maxentry="4" type="number" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
-            
-            <label>Duration:</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.duration %}
-            <SELECT name="duration">
-                <ITEM value="0" {% if form.duration.value == 0 %}checked="true"{% endif %}>0 - 6 months</ITEM>
-                <ITEM value="1" {% if form.duration.value == 1 %}checked="true"{% endif %}>1 Year</ITEM>
-                <ITEM value="2" {% if form.duration.value == 2 %}checked="true"{% endif %}>2 Years</ITEM>
-                <ITEM value="3" {% if form.duration.value == 3 %}checked="true"{% endif %}>3 Years</ITEM>
-                <ITEM value="4" {% if form.duration.value == 4 %}checked="true"{% endif %}>4+ Years</ITEM>
-            </SELECT>
+        <TEXT position="ABOVE">Year completed:</TEXT>
+        <FIELD name="year" maxentry="4" type="number" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
+        
+        <TEXT position="ABOVE">Duration:</TEXT>
+        {% include "form_field_errors_snippet.html" with form_field=form.duration %}
+        <SELECT name="duration">
+            <ITEM value="0" {% if form.duration.value == 0 %}checked="true"{% endif %}>0 - 6 months</ITEM>
+            <ITEM value="1" {% if form.duration.value == 1 %}checked="true"{% endif %}>1 Year</ITEM>
+            <ITEM value="2" {% if form.duration.value == 2 %}checked="true"{% endif %}>2 Years</ITEM>
+            <ITEM value="3" {% if form.duration.value == 3 %}checked="true"{% endif %}>3 Years</ITEM>
+            <ITEM value="4" {% if form.duration.value == 4 %}checked="true"{% endif %}>4+ Years</ITEM>
+        </SELECT>
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
