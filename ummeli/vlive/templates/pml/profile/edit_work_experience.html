@@ -11,15 +11,18 @@
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
-            <TEXT position="ABOVE">What course did you take? *</TEXT>
-            <FIELD name="name" type="text" default="{% if form.name.value %}{{form.name.value}}{% endif %}"/><br/>
+            <TEXT position="ABOVE">Job title:</TEXT>
+            <FIELD name="title" type="text" default="{% if form.title.value %}{{form.title.value}}{% endif %}"/><br/>
         
-            <label>College or Institution:</label>
+            <label>Name of company:*</label>
             <TEXT position="ABOVE">College or Institution:</TEXT>
-            <FIELD name="institution" type="text" default="{% if form.institution.value %}{{form.institution.value}}{% endif %}"/><br/>
+            <FIELD name="company" type="text" default="{% if form.company.value %}{{form.company.value}}{% endif %}"/><br/>
             
-            <TEXT position="ABOVE">Year completed:</TEXT>
-            <FIELD name="year" maxentry="4" type="number" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
+            <TEXT position="ABOVE">Year started:*</TEXT>
+            <FIELD name="start_year" maxentry="4" type="number" default="{% if form.start_year.value %}{{form.start_year.value}}{% endif %}"/><br/>
+            
+            <TEXT position="ABOVE">Year ended:*</TEXT>
+            <FIELD name="end_year" maxentry="4" type="number" default="{% if form.end_year.value %}{{form.end_year.value}}{% endif %}"/><br/>
             
             <label>Duration:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.duration %}
