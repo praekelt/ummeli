@@ -15,3 +15,12 @@ def deploy():
         run('git pull')
         run('kill -HUP `cat tmp/pids/gunicorn*.pid`')
         run('supervisorctl -c config/%(supervisord_file)s restart celery' % env)
+
+def reload():
+    with cd(env.path):
+        run('source ve/bin/activate && kill -HUP `cat tmp/pids/*gunicorn*.pid`')
+
+def restart(app='all'):
+    env.app = app
+    with cd(env.path):
+        run('supervisorctl -c config/%(supervisord_file)s restart %(app)s' % env)
