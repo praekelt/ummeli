@@ -1,7 +1,7 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL>Featured</LABEL></HEADER>
+<HEADER><LABEL>Latest</LABEL></HEADER>
 </MODULE>
 {% for article in article_list %}
 <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
@@ -21,12 +21,12 @@
 <CONTAINER type="list">
     {% if page_obj.has_previous %}
     <LINK href="{% url article_list page_obj.previous_page_number %}?{{uuid}}">
-        <TEXT>&lt; Newer articles</TEXT>
+        <TEXT>&lt; Previous</TEXT>
     </LINK>
     {% endif %}
     {% if page_obj.has_next %}
     <LINK href="{% url article_list page_obj.next_page_number %}?{{uuid}}">
-        <TEXT>Older articles &gt;</TEXT>
+        <TEXT>Next &gt;</TEXT>
     </LINK>
     {% endif %}
 </CONTAINER>

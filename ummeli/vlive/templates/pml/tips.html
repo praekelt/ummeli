@@ -6,8 +6,19 @@
 
 {% block content %}
 <HEADER><LABEL>Tips</LABEL></HEADER>
-<CONTAINER  type="data">
-    <TEXT>Tips go here...
-    </TEXT>
+<CONTAINER  type="list">
+    {% for article in articles %}
+    <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url article_detail article.pk %}?{{uuid}}">
+            {{ article.title }}
+        </LINK>
+    </TITLE>
+    <TEXT>{{ article.description }}</TEXT>
+    </CONTAINER>
+</MODULE>
+    {% endfor %}
 </CONTAINER>
 {% endblock %}

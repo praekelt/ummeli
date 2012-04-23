@@ -33,6 +33,8 @@ from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
     PasswordChangeForm, SetPasswordForm)
+    
+from jmboarticles.models import Article as EditorialArticle
 
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -361,7 +363,8 @@ def terms(request):
     return render(request, 'terms.html')
 
 def tips(request):
-    return render(request, 'tips.html')
+    articles = EditorialArticle.objects.filter(published=True, categories__slug="tips")
+    return render(request, 'tips.html', {'articles': articles})
 
 def contact_support(request):
     if request.method == 'POST':

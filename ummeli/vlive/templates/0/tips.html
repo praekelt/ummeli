@@ -3,6 +3,15 @@
 {% block content %}
 <div class="h2">Tips</div>
 <div class="content-area">
-    Tips go here...
+    {% for article in articles %}
+    <div class="article">
+    <div>
+        <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}
+    </div>
+    <span class="byline news">
+        <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+    </span>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
