@@ -5,6 +5,8 @@
 {% block content %}
 <HEADER><LABEL>{{ flatpage.title }}</LABEL></HEADER>
 <CONTAINER type="data">
-	{{ flatpage.content|sanitize_html|safe }}
+<TEXT>
+{{ flatpage.content|sanitize_html|safe }}
+</TEXT>
 </CONTAINER>
 {% endblock %}
