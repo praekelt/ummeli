@@ -18,3 +18,8 @@ def send_email(username, message):
                                             settings.SEND_FROM_EMAIL_ADDRESS,
                                             [settings.UMMELI_SUPPORT])
     email.send(fail_silently=False)
+    
+
+def send_sms(msisdn, message):
+    client = Client(settings.VUMI_USERNAME, settings.VUMI_PASSWORD)
+    client.send_sms(to_msisdn = msisdn, from_msisdn = '1', message = message)
