@@ -4,7 +4,7 @@
 {% load poll_tags %}
     
 {% block content %}
-    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know to create your own employment opportunities. <a href="{% url about %}">Learn more...</a></p>
+    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know to create your own employment opportunities. <a href="/about/">Learn more...</a></p>
     <h4><a href="{% url article_list %}">News</a></h4>
     {% get_articles 4 "article_list" %}
     <div class="list">

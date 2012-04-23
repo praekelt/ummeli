@@ -42,8 +42,8 @@
     <div class="wrapper">
         <div class="nav">
     <a href="{% url home %}?{{uuid}}">Home</a> | 
-    <a href="{% url about %}">About</a> | 
-    <a href="{% url terms %}">Terms</a> | 
+    <a href="/about/">About</a> | 
+    <a href="/terms/">Terms</a> | 
     {% if user.is_authenticated %}
     <a href="{% url logout %}">Sign Out</a>
     {% else %}
