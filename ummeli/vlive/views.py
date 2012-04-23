@@ -363,7 +363,10 @@ def terms(request):
     return render(request, 'terms.html')
 
 def tips(request):
-    articles = EditorialArticle.objects.filter(published=True, categories__slug="tips")
+    articles = EditorialArticle.objects.filter(published=True)\
+                                       .filter(categories__slug="tips")\
+                                       .order_by('-published_on')
+                                       
     return render(request, 'tips.html', {'articles': articles})
 
 def contact_support(request):
