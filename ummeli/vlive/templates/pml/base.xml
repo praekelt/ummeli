@@ -72,10 +72,10 @@
         <LINK href="{% url index %}">
             <TEXT>Home</TEXT>
         </LINK>
-        <LINK href="/vlive/about/">
+        <LINK href="/vlive/pages/about/">
             <TEXT>About</TEXT>
         </LINK>
-        <LINK href="/vlive/terms/">
+        <LINK href="/vlive/pages/terms/">
             <TEXT>Terms</TEXT>
         </LINK>
         {% if request.is_authorized %}

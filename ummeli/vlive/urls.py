@@ -23,11 +23,10 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.logout_view, name = 'logout'),
     url(r'^forgot/$', views.forgot_password_view, name = 'forgot'),
     url(r'^tips/$', views.tips, name = 'tips'),
-    #url(r'^about/$', views.about, name = 'about'),
-    #url(r'^terms/$', views.terms, name = 'terms'),
     url(r'^contactsupport/$', views.contact_support, name = 'contactsupport'),
     
     #Ummeli 2.0
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^article/', include('jmboarticles.urls')),
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^ummeli/comments/', include('jmbocomments.urls')),
