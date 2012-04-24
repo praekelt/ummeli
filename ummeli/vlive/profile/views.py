@@ -630,7 +630,7 @@ def add_connection_by_industry_result(request, industry, province, page=1):
     else:
         selected_province = 'All'
         
-    paginator = Paginator(profiles_qs, 2) # Show 25 contacts per page
+    paginator = Paginator(profiles_qs, 10) # Show 25 contacts per page
     
     try:
         paged_profiles = paginator.page(page)
