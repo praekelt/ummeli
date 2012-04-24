@@ -19,21 +19,21 @@ Please choose the information you want your connections to see when viewing your
         <CHOICE-GROUP type="radio" name="show_contact_number">
             <TEXT>Telephone Number</TEXT>
             {% if form.show_contact_number.value %}
-            <ITEM value="True" checked="true"/>Yes<ITEM/>
-            <ITEM value="False"/>No<ITEM/>
+            <CHOICE value="True" checked="true"/>Yes<CHOICE/>
+            <CHOICE value="False"/>No<CHOICE/>
             {% else %}
-            <ITEM value="True"/>Yes<ITEM/>
-            <ITEM value="False" checked="true"/>No<ITEM/>
+            <CHOICE value="True"/>Yes<CHOICE/>
+            <CHOICE value="False" checked="true"/>No<CHOICE/>
             {% endif %}
         </CHOICE-GROUP>
         <CHOICE-GROUP type="radio" name="show_address">
             <TEXT>Address</TEXT>
             {% if form.show_address.value %}
-            <ITEM value="True" checked="true"/>Yes<ITEM/>
-            <ITEM value="False"/>No<ITEM/>
+            <CHOICE value="True" checked="true"/>Yes<CHOICE/>
+            <CHOICE value="False"/>No<CHOICE/>
             {% else %}
-            <ITEM value="True"/>Yes<ITEM/>
-            <ITEM value="False" checked="true"/>No<ITEM/>
+            <CHOICE value="True"/>Yes<CHOICE/>
+            <CHOICE value="False" checked="true"/>No<CHOICE/>
             {% endif %}
         </CHOICE-GROUP>
         <FIELD type='hidden' name='_action' value='POST' />
