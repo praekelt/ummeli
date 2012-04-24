@@ -36,6 +36,11 @@
     <FORM method="POST" href="{{request.path}}" submit_text="Send">
         <TEXT position="ABOVE">Email CV to:*</TEXT>
         <FIELD name="send_to" type="text"/><br/>
+        <label>Personal Message:</label>
+        <TEXT position="ABOVE">Personal Message:<br/>
+        (example) I am sending you my CV in connection with the position available for a clerk at 53 Some Street, Johannesburg.
+        </TEXT>
+        <FIELD name="send_message" type="text"/><br/>
         <FIELD type='hidden' name='send_via' value='email' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
