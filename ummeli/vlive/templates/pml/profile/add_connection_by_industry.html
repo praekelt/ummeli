@@ -1,13 +1,13 @@
 {% extends "my_ummeli_base.xml" %}
 
 {% block content %}
-<HEADER><LABEL>Add Connection</LABEL></HEADER>
+<HEADER><LABEL>Find other users</LABEL></HEADER>
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Search">
-        <TEXT position="ABOVE">Industry:</TEXT>
+        <TEXT position="ABOVE">Type of work:</TEXT>
         <SELECT name="industry">
             <ITEM value='0'>All</ITEM>
             {% for skill in skills %}
