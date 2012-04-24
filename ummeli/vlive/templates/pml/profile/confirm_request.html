@@ -8,10 +8,10 @@
     <HEADER><LABEL>Accept connection request</LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    Are you sure you want to connect with <strong>{{other_user_profile.fullname}}</strong>?
+    Are you sure you want to connect with <b>{{other_user_profile.fullname}}</b>?
     <br/>
     <br/>
-    Adding <strong>{{other_user_profile.fullname}}</strong> to your connections means giving access to your full profile. 
+    Adding <b>{{other_user_profile.fullname}}</b> to your connections means giving access to your full profile. 
     <br/><br/>To change your privacy settings click 
     <LINK href="{% url my_contact_privacy %}">
         <TEXT>here</TEXT>
@@ -22,6 +22,7 @@
 
     <CONTAINER type="form">
     <FORM method="POST" href="{% url confirm_request other_user_pk %}" submit_text="+ connect">
+        <TEXT position="ABOVE">.</TEXT>
         <FIELD type='hidden' name='next' value='{{next}}' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
