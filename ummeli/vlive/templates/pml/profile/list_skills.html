@@ -18,11 +18,17 @@
         <LINK href="{% url skills item.pk %}">
             <TEXT>{{ item.skill }} <TEASER>({{ item.get_level }})</TEASER></TEXT>
         </LINK>
+        {% endif %}
+    </CONTAINER>
+    {% if item.primary %}
+    <CONTAINER type="data">
+        <TEXT>
         <LINK href="{% url skills_primary item.pk %}">
             <TEXT>[Mark as Primary Role]</TEXT>
         </LINK>
-        {% endif %}
+        </TEXT>
     </CONTAINER>
+    {% endif %}
     </MODULE>
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
