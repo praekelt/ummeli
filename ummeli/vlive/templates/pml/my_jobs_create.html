@@ -22,7 +22,7 @@
         <SELECT name="job_category">
             <ITEM value="">Please select category</ITEM>
             {% for category in categories %}
-            <ITEM value="{{category.title}}" {% if category.title == form.job_category.value %}checked="true"{%endif%}">{{category.title}}</ITEM>
+            <ITEM value="{{category.title}}" {% if category.title == form.job_category.value %}checked="true"{%endif%}>{{category.title}}</ITEM>
             {% endfor %}
         </SELECT>
 
