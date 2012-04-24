@@ -109,10 +109,14 @@
         <TEXT>
             {% spaceless %}
             {% if comment.is_community_moderated %}
+                <color value="blue">
                 <b>Moderated:</b> {{ comment.community_moderation_flags.latest.reason }}
+                </color>
             {% else %}
                 {% if comment.is_moderated %}
+                    <color value="red">
                     <b>Moderated:</b> {{ comment.moderation_flags.latest.reason }}
+                    </color>
                 {% else %}
                     {{ comment.comment }}
                 {% endif %}
