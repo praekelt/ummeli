@@ -19,10 +19,11 @@
     . [My Settings > Contact Details Privacy]
     </TEXT>
     </CONTAINER>
-        
+    <CONTAINER type="form">
     <FORM method="POST" href="{% url add_connection other_user_pk%}" submit_text="+ connect">
         <FIELD type='hidden' name='next' value='{{next}}' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
+    </CONTAINER>
 {% endblock %}

@@ -22,7 +22,6 @@
 
     <CONTAINER type="form">
     <FORM method="POST" href="{% url confirm_request other_user_pk %}" submit_text="+ connect">
-        <TEXT position="ABOVE">.</TEXT>
         <FIELD type='hidden' name='next' value='{{next}}' />
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
