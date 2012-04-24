@@ -42,7 +42,7 @@
         {% if not already_requested %}
             {% if connection_requested %}
                 <MODULE backgroundColor="false" palette="MiDove">
-                <HEADER>Connect</HEADER>
+                <HEADER><LABEL>Connect</LABEL></HEADER>
                 <CONTAINER type="list">
                     <LINK href="{% url confirm_request other_user_pk %}?next={{request.path}}&amp;{{uuid}}">
                         <TEXT>[+ accept]</TEXT>
@@ -64,7 +64,7 @@
             {% endif %}
         {% else %}
             <MODULE backgroundColor="false" palette="MiDove">
-            <HEADER>Connect</HEADER>
+            <HEADER><LABEL>Connect</LABEL></HEADER>
             <CONTAINER type="data">
                 <TEXT>[request pending]</TEXT>
             </CONTAINER>
