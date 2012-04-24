@@ -15,11 +15,11 @@
         <SELECT name="province">
             <ITEM value="">Please select province</ITEM>
             {% for p in provinces %}
-            <ITEM value="{{p.pk}}" {% if p.name == form.province.value %}checked="true"{%endif%}>{{p.name}}</ITEM>
+            <ITEM value="{{p.name}}" {% if p.name == form.province.value %}checked="true"{%endif%}>{{p.name}}</ITEM>
             {% endfor %}
         </SELECT>
         <TEXT position="ABOVE">Category:*</TEXT>
-        <SELECT name="category">
+        <SELECT name="job_category">
             <ITEM value="">Please select category</ITEM>
             {% for category in categories %}
             <ITEM value="{{category.title}} {% if category.title == form.job_category.value %}checked="true"{%endif%}">{{category.title}}</ITEM>
@@ -37,6 +37,9 @@
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
 <CONTAINER  type="list">
     <LINK href="{% url my_jobs %}?{{uuid}}">
         <TEXT>Back</TEXT>
