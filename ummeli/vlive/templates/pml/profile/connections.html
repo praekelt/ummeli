@@ -25,7 +25,6 @@
         <LINK href="{% url profile %}?{{uuid}}">
             <TEXT>{{ node.name }}</TEXT>
         </LINK> <strong>(me)</strong>
-        <br/>-<br/>
     {% else %}
         <LINK href="{% url profile_view node.user_id %}?{{uuid}}">
             <TEXT>{{ node.name }}</TEXT>
