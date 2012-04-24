@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
@@ -610,8 +611,46 @@ def add_skill(request):
     return render(request, 'profile/skills_0.html',
                             {'skills': skills})
                             
+
 @login_required
-@pin_required
+def add_connection_by_industry_result(request, industry, province, page=1):
+    profiles_qs = CurriculumVitae.objects.exclude(first_name='')
+    industry_pk = int(industry)
+    province_pk = int(province)
+    
+    if industry_pk > 0:
+        profiles_qs = profiles_qs.filter(skills__pk = industry_pk)
+        selected_industry = AcceptedWord.objects.get(pk=industry_pk).word
+    else:
+        selected_industry = 'All'
+        
+    if province_pk > 0:
+        profiles_qs = profiles_qs.filter(province = province_pk)
+        selected_province = dict(PROVINCE_CHOICES)[province_pk]
+    else:
+        selected_province = 'All'
+        
+    paginator = Paginator(profiles_qs, 2) # Show 25 contacts per page
+    
+    try:
+        paged_profiles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paged_profiles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paged_profiles = paginator.page(paginator.num_pages)
+        
+    return render(request, 'profile/add_connection_by_industry_result.html',
+                                  {'user_profiles': paged_profiles,
+                                   'provinces': PROVINCE_CHOICES,
+                                   'industry': selected_industry,
+                                   'province': selected_province,
+                                   'industry_pk': industry_pk,
+                                   'province_pk': province_pk,
+                                   })
+
+@login_required
 def add_connection_by_industry(request):
     form = IndustrySearchForm()
     if request.method == 'POST':
@@ -620,25 +659,8 @@ def add_connection_by_industry(request):
             industry = int(form.cleaned_data['industry'])
             province = int(form.cleaned_data['province'])
             
-            profiles_qs = CurriculumVitae.objects.exclude(first_name='')
-            if industry > 0:
-                profiles_qs = CurriculumVitae.objects.filter(skills__pk = industry)
-                selected_industry = AcceptedWord.objects.get(pk=industry).word
-            else:
-                selected_industry = 'All'
-                
-            if province > 0:
-                profiles_qs = CurriculumVitae.objects.filter(province = province)
-                selected_province = dict(PROVINCE_CHOICES)[province]
-            else:
-                selected_province = 'All'
-                
-            return render(request, 'profile/add_connection_by_industry_result.html',
-                                  {'user_profiles': profiles_qs,
-                                   'provinces': PROVINCE_CHOICES,
-                                   'industry': selected_industry,
-                                   'province': selected_province,
-                                   'form': form})
+            return redirect(reverse('add_connection_by_industry_result', \
+                            args=[industry,province]))
     
     skills = AcceptedWordCategory.objects.get(name='skills')\
             .words.order_by('word')

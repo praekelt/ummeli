@@ -5,7 +5,7 @@
 <CONTAINER type="data">
 Search: "{{industry}}" | "{{province}}"
 </CONTAINER>
-{% for profile in user_profiles %}
+{% for profile in user_profiles.object_list %}
     <CONTAINER type="list">
     <LINK href="{% url profile_view profile.user.pk %}">
         <TEXT>{{ profile.fullname }}</TEXT>
@@ -28,6 +28,21 @@ Search: "{{industry}}" | "{{province}}"
     <TEXT>0 users found.</TEXT>
     </CONTAINER>
 {% endfor %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
+<CONTAINER type="list">
+    {% if user_profiles.has_previous %}
+    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk user_profiles.previous_page_number %}?{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if user_profiles.has_next %}
+    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk  user_profiles.next_page_number %}?{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER></HEADER>

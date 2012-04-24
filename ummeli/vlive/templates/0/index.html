@@ -36,6 +36,8 @@
     <br/>
     <div class="h5">Have something to share?</a></div>
     <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
+    <div class="h5">Connect with others?</a></div>
+    <div class="list"><a href="{% url add_connection_by_industry %}">Find other users</a></div>
     {% if user.is_authenticated %}
         <div class="h2">My Ummeli</div>
         <div class="list"><a href="{% url profile %}">My Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
