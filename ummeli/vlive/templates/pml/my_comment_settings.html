@@ -14,17 +14,20 @@
         <CHOICE-GROUP type="radio" name="comment_as_anon">
             <TEXT>What name do you want shown on your comments?</TEXT>
             {% if form.comment_as_anon.value %}
-            <ITEM value="True" checked="true"/>Anon.<ITEM/>
-            <ITEM value="False" />{{object.fullname}}<ITEM/>
+            <CHOICE value="True" checked="true">Anon.</CHOICE>
+            <CHOICE value="False" >{{object.fullname}}</CHOICE>
             {% else %}
-            <ITEM value="True"/>Anon.<ITEM/>
-            <ITEM value="False" checked="true"/>{{object.fullname}}<ITEM/>
+            <CHOICE value="True">Anon.</CHOICE>
+            <CHOICE value="False" checked="true">{{object.fullname}}</CHOICE>
             {% endif %}
         </CHOICE-GROUP>
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER></HEADER>
 <CONTAINER  type="list">
     <LINK href="{% url my_settings %}?{{uuid}}">
         <TEXT>Back</TEXT>
