@@ -17,6 +17,7 @@
 </CONTAINER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="data">
     <TEXT>
     {% if other_user_profile.skills.all %}
@@ -25,7 +26,9 @@
         {{skill}}<br/>
         {% endfor %}
     {% endif %}
-    <p><em>"{{other_user_profile.about_me}}"</em></p>
+    </TEXT>
+    <TEXT>
+    <p><i>"{{other_user_profile.about_me}}"</i></p>
     </TEXT>
     </CONTAINER>
 </MODULE>
