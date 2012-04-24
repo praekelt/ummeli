@@ -21,7 +21,7 @@
     <CONTAINER type="data">
     <TEXT>
     {% if user_profile.skills.all %}
-        <strong>Other areas of interest:</strong><br/>
+        <b>Other areas of interest:</b><br/>
         {% for skill in user_profile.other_skills.all %}
         {{skill}}<br/>
         {% endfor %}
