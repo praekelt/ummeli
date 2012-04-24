@@ -13,46 +13,56 @@
     </CONTAINER>
     </MODULE>
 
-    {% if user_profile.connection_requests.exists %}
-        <MODULE backgroundColor="false" palette="MiDove">
-        <HEADER><LABEL>Connection Requests ({{user_profile.connection_requests.count}})</LABEL></HEADER>
-        <CONTAINER type="data">
-            <TEXT>
-            {% for user in user_profile.connection_requests.all %}
-            <LINK href="{% url profile_view user.pk %}">
-                <TEXT>{{user.get_profile.fullname}}</TEXT>
-            </LINK><br/>
-            <LINK href="{% url confirm_request user.pk %}?next={{request.path}}">
-                <TEXT>[+ Accept]</TEXT>
-            </LINK>
-            <LINK href="{% url reject_request user.pk %}?next={{request.path}}">
-                <TEXT>[- Reject]</TEXT>
-            </LINK>
-            <br/>-<br/>
-            {% endfor %}
-            </TEXT>
-        </CONTAINER>
-        </MODULE>
-    {% endif %}
+{% if user_profile.connection_requests.exists %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Connection Requests ({{user_profile.connection_requests.count}})</LABEL></HEADER>
+    </MODULE>
+    {% for user in user_profile.connection_requests.all %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+        <LINK href="{% url profile_view user.pk %}">
+            <TEXT>{{user.get_profile.fullname}}</TEXT>
+        </LINK><br/>
+        <LINK href="{% url confirm_request user.pk %}?next={{request.path}}">
+            <TEXT>[+ Accept]</TEXT>
+        </LINK>
+        <LINK href="{% url reject_request user.pk %}?next={{request.path}}">
+            <TEXT>[- Reject]</TEXT>
+        </LINK>
+    <TEXT>
+    </CONTAINER>
+    </MODULE>
+    {% endfor %}
+{% endif %}
 
     <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>My Connections ({{user_profile.get_connnections_count}})</LABEL></HEADER>
+    </MODULE>
+    {% for node in request.user.get_profile.get_connections %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="data">
-        <TEXT>
-        {% for node in request.user.get_profile.get_connections %}
-            <LINK href="{% url profile_view node.user_id %}">
-                <TEXT>{{ node.name }}</TEXT>
-            </LINK>
-            {% if node.primary_skill %}<br/>{{node.primary_skill}}{% endif %}
-            <br/>-<br/>
-        {% empty %}
-            0 connections.
-        {% endfor %}
-        </TEXT>
+    <TEXT>
+        <LINK href="{% url profile_view node.user_id %}">
+            <TEXT>{{ node.name }}</TEXT>
+        </LINK>
+        {% if node.primary_skill %}<br/>{{node.primary_skill}}{% endif %}
+        <br/>-<br/>
+    <TEXT>
     </CONTAINER>
     </MODULE>
+    {% empty %}
+    <MODULE backgroundColor="false" palette="MiDove">
+    <CONTAINER type="data">
+    <TEXT>0 connections.<TEXT>
+    </CONTAINER>
+    </MODULE>
+    {% endfor %}
 
     <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER></HEADER>
     <CONTAINER type="list">
         <LINK href="{% url my_ummeli %}">
             <TEXT>Back</TEXT>
