@@ -16,7 +16,7 @@ Please choose the information you want your connections to see when viewing your
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
-        <CHOICE-GROUP type="radio" name="comment_as_anon">
+        <CHOICE-GROUP type="radio" name="show_contact_number">
             <TEXT>Telephone Number</TEXT>
             {% if form.show_contact_number.value %}
             <ITEM value="True" checked="true"/>Yes<ITEM/>
@@ -25,7 +25,8 @@ Please choose the information you want your connections to see when viewing your
             <ITEM value="True"/>Yes<ITEM/>
             <ITEM value="False" checked="true"/>No<ITEM/>
             {% endif %}
-            
+        </CHOICE-GROUP>
+        <CHOICE-GROUP type="radio" name="show_address">
             <TEXT>Address</TEXT>
             {% if form.show_address.value %}
             <ITEM value="True" checked="true"/>Yes<ITEM/>
