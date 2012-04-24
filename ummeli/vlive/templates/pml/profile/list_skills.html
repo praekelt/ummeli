@@ -20,7 +20,7 @@
         </LINK>
         {% endif %}
     </CONTAINER>
-    {% if item.primary %}
+    {% if not item.primary %}
     <CONTAINER type="data">
         <TEXT>
         <LINK href="{% url skills_primary item.pk %}">
