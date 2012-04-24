@@ -12,7 +12,7 @@
     <TITLE>{{other_user_profile.primary_skill}}</TITLE>
     <TEXT>
         {% if other_user_profile.city %}{{other_user_profile.city}} <br/>{% endif %}
-        {% if other_user_profile.date_of_birth %}DOB: {{other_user_profile.date_of_birth}} <br/>{% endif %}
+        {% if other_user_profile.gender %} -- {{other_user_profile.gender}} <br/>{% endif %}
     </TEXT>
 </CONTAINER>
 </MODULE>
