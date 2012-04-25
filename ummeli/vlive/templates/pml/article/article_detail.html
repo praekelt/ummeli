@@ -58,7 +58,7 @@
     {% if user.is_active %}
         {% if article.comments_enabled %}
             <CONTAINER type="data">
-                    <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Change comment Name</TEXT></LINK></TEXT>
+                    <TEXT><LINK href="{% url my_comment_settings %}"><TEXT>Change comment Name</TEXT></LINK></TEXT>
             </CONTAINER>
             <CONTAINER type="form">
             {% get_comment_form for article as form %}
