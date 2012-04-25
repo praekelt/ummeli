@@ -9,17 +9,15 @@
 <MODULE backgroundColor="false" palette="MiDove" role="MOD17">
 <CONTAINER type="image">
     <IMAGE href="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
-    <TITLE> {{user_profile.primary_skill}} </TITLE>
+    <TITLE>{{user_profile.primary_skill}}</TITLE>
     <TEXT>
         {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
         {% if user_profile.gender %}-- {{user_profile.gender}} <br/>{% endif %}
     </TEXT>
 </CONTAINER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove" role="MOD13">
-    <HEADER/>
-</MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
     {% if user_profile.skills.all %}
@@ -46,10 +44,8 @@
         <LINK href="{% url certificate_list %}?{{uuid}}"><TEXT>My Education</TEXT></LINK>
     </CONTAINER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove" role="MOD13">
-    <HEADER/>
-</MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="list">
         <LINK href="{% url profile_view request.user.pk %}?{{uuid}}"><TEXT>View My Profile</TEXT></LINK>
         <LINK href="{% url my_ummeli %}"><TEXT>Back</TEXT></LINK>
