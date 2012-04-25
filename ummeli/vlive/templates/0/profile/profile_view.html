@@ -27,10 +27,10 @@
     {% endif %}
     <p>
     <div class="list">
-        <a href="{% url connections other_user_pk %}">{{other_user_profile.get_connnections_count}} Connection{{ other_user_profile.get_connnections_count|pluralize }}</a>
+        <a href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</a>
     </div>
     <div class="list">
-        <a href="{% url connection_jobs other_user_pk %}">Jobs Posted</a>
+        <a href="{% url connection_jobs other_user_pk %}">Jobs Posted ({{other_user_jobs}})</a>
     </div>
     
     

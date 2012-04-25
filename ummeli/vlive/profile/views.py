@@ -47,7 +47,7 @@ def profile_view(request, user_id):
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
     return render(request, 'profile/profile_view.html', 
                 {'other_user_profile': other_user.get_profile(),
-                'other_user_jobs': other_user.user_submitted_job_article_user.all(),
+                'other_user_jobs': other_user.user_submitted_job_article_user.count(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),

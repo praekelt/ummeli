@@ -36,7 +36,7 @@
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="list">
     <LINK href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</LINK>
-    <LINK href="{% url connection_jobs other_user_pk %}">Jobs Posted</LINK>
+    <LINK href="{% url connection_jobs other_user_pk %}">Jobs Posted ({{other_user_jobs}})</LINK>
     </CONTAINER>
 </MODULE>
     {% if not connected_to_user and not is_self %}
