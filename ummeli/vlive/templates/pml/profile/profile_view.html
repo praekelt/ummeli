@@ -35,7 +35,8 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="list">
-    <LINK href="{% url connections other_user_pk %}">{{other_user_profile.get_connnections_count}} Connection{{ other_user_profile.get_connnections_count|pluralize }}</LINK>
+    <LINK href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</LINK>
+    <LINK href="{% url connection_jobs other_user_pk %}">Jobs Posted</LINK>
     </CONTAINER>
 </MODULE>
     {% if not connected_to_user and not is_self %}
