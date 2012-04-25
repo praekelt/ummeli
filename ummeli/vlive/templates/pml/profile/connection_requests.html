@@ -9,7 +9,7 @@
 </MODULE>
 {% for other_user in requests %}
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
     <LINK href="{% url profile_view other_user.pk %}?{{uuid}}">
@@ -26,14 +26,14 @@
 </MODULE>
 {% empty %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
     <TEXT>0 connection requests.</TEXT>
 </CONTAINER>
 </MODULE>
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
     <LINK href="{% url my_connections %}">
         <TEXT>Back</TEXT>

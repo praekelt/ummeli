@@ -11,7 +11,7 @@
 </MODULE>
 {% for node, is_connected, is_already_requested, is_request_received in connections %}
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
     {% if node.user_id == user.pk %}
@@ -29,14 +29,14 @@
 </MODULE>
 {% empty %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
     <TEXT>0 connections.</TEXT>
 </CONTAINER>
 </MODULE>
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url profile_view user_node.user_id %}?{{uuid}}">
         <TEXT>Back</TEXT>

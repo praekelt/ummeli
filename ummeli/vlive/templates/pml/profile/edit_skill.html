@@ -29,7 +29,7 @@ Rate your experience in <strong>{{object.skill}}</strong>.
 </CONTAINER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER  type="list">
     {% if object.id %}
     <LINK href="{% url skills_delete object.pk %}"><TEXT>Delete</TEXT></LINK>

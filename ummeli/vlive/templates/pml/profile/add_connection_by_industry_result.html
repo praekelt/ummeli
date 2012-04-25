@@ -30,7 +30,7 @@ Search: "{{industry}}" | "{{province}}"
 {% endfor %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
     {% if user_profiles.has_previous %}
     <LINK href="{% url add_connection_by_industry_result industry_pk province_pk user_profiles.previous_page_number %}?{{uuid}}">
@@ -45,7 +45,7 @@ Search: "{{industry}}" | "{{province}}"
 </CONTAINER>
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER></HEADER>
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
     <LINK href="{% url add_connection_by_industry %}">
         <TEXT>Back</TEXT>

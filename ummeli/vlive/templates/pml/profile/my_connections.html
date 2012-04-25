@@ -19,7 +19,7 @@
     </MODULE>
     {% for user in user_profile.connection_requests.all %}
     <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
         <LINK href="{% url profile_view user.pk %}">
@@ -42,7 +42,7 @@
     </MODULE>
     {% for node in request.user.get_profile.get_connections %}
     <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
         <LINK href="{% url profile_view node.user_id %}">
@@ -61,7 +61,7 @@
     {% endfor %}
 
     <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="list">
         <LINK href="{% url my_ummeli %}">
             <TEXT>Back</TEXT>
