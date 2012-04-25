@@ -54,7 +54,7 @@
                 </MODULE>
             {% else %}
                 <MODULE backgroundColor="false" palette="MiDove">
-                <HEADER>Connect</HEADER>
+                <HEADER><LABEL>Connect</LABEL></HEADER>
                 <CONTAINER type="list">
                 <LINK href="{% url add_connection other_user_pk %}?next={{request.path}}&amp;{{uuid}}">
                     <TEXT>[+ connect]</TEXT>
