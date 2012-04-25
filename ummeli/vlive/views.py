@@ -26,6 +26,7 @@ from django.utils.hashcompat import md5_constructor
 from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
+from django.shortcuts import get_object_or_404
 
 #imports for login
 from django.http import  HttpResponse
@@ -303,6 +304,29 @@ def job(request,  id,  cat_id,  search_id, user_submitted=0):
                               'province_name':  province.name,
                               'category_title':  category.title,
                               'form':  form,})
+
+def connection_job(request, user_id, pk):
+    article = get_object_or_404(UserSubmittedJobArticle, pk = pk).to_view_model()
+    
+    if request.method == 'POST':
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data = request.POST)
+        else:
+            form = FaxCVForm(data = request.POST)
+            
+        user_profile = request.user.get_profile()
+
+        if form.is_valid() and not user_profile.missing_fields():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+
+            if send_via == 'email':
+                user_profile.email_cv(send_to,  article.text)
+            else:
+                user_profile.fax_cv(send_to, article.text)
+            return redirect(reverse('connection_jobs', args=[user_id]))
+
+    return redirect(reverse('my_connections'))
 
 def community_jobs(request):
     articles = UserSubmittedJobArticle.objects.all().order_by('-date')

@@ -1,0 +1,65 @@
+{% extends "base.xml" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+    <HEADER><LABEL>{{other_user_profile.fullname}}'s Jobs Posted</LABEL></HEADER>
+    <CONTAINER  type="data">
+        <TITLE>{{object.date|date:'d M y'}} ::  {{object.title}}</TITLE>
+        <TEXT>
+            {{ object.text }}
+        </TEXT>
+    </CONTAINER>
+    <CONTAINER  type="list">
+        <LINK href="{% url connection_jobs user_id %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="MiGreen">
+    <HEADER><LABEL>Apply</LABEL></HEADER>
+    {% if request.is_authorized %}
+    {% if form.errors %}
+        <CONTAINER type="data">
+        {% for field in form %}
+        {% for error in field.errors %}
+            <TEXT><color value="red">{{field.label}} - {{error}}</color></TEXT><br/>
+        {% endfor %}
+        {% endfor %}
+        </CONTAINER>
+    {% endif %}
+    {% if user_profile.missing_fields %}
+        <CONTAINER type="data">
+            <TITLE>Missing fields</TITLE>
+            <TEXT><color value="red">
+                Your CV is incomplete. Please make sure that the following information is 
+                completed before you can send your CV.</color></TEXT><br/>
+        {% for field in user_profile.missing_fields %}
+            <TEXT><color value="red">- {{field}}</color></TEXT><br/>
+        {% endfor %}
+        </CONTAINER>
+    {% endif %}
+    <CONTAINER  type="form">
+        <FORM method="POST" href="{% url connection_job_apply user_id object.pk %}" submit_text="Apply">
+            <TEXT position="ABOVE">Email CV to:*</TEXT>
+            <FIELD name="send_to" type="text"/><br/>
+            <FIELD type='hidden' name='send_via' value='email' />
+            <FIELD type='hidden' name='_action' value='POST' />
+            <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        </FORM>
+    </CONTAINER>
+    {% else %}
+    <br/>
+    <CONTAINER type="data">
+    <TEXT><color value="red">You are not logged in. Please log in to be able to 
+    respond to a job advert.</color>
+    <br/>
+        <LINK href="{% url login %}?next={% url connection_jobs user_id %}">
+            <TEXT>Login</TEXT>
+        </LINK>
+    </TEXT>
+    </CONTAINER>
+    {% endif %}
+{% endblock %}

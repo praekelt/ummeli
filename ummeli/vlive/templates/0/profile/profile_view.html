@@ -29,7 +29,10 @@
     <div class="list">
         <a href="{% url connections other_user_pk %}">{{other_user_profile.get_connnections_count}} Connection{{ other_user_profile.get_connnections_count|pluralize }}</a>
     </div>
-    </p>
+    <div class="list">
+        <a href="{% url connection_jobs other_user_pk %}">Jobs Posted</a>
+    </div>
+    
     
     {% if not connected_to_user and not is_self %}
         <div class="h2">Connect</div>

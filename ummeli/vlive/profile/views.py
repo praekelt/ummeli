@@ -12,6 +12,7 @@ from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
+from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -46,6 +47,7 @@ def profile_view(request, user_id):
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
     return render(request, 'profile/profile_view.html', 
                 {'other_user_profile': other_user.get_profile(),
+                'other_user_jobs': other_user.user_submitted_job_article_user.all(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
@@ -523,6 +525,33 @@ class MyJobsListView(ListView):
     
     def get_queryset(self):
         return self.request.user.user_submitted_job_article_user.all().order_by('-date')
+
+class ConnectionJobsListView(ListView):
+    paginate_by = 5
+    template_name = 'connection_jobs_list.html'
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.kwargs['user_id'])
+        return user.user_submitted_job_article_user.all().order_by('-date')
+    
+    def get_context_data(self, **kwargs):
+        context = super(ConnectionJobsListView, self).get_context_data(**kwargs)        
+        user = get_object_or_404(User, pk=self.kwargs['user_id'])
+        context['user_id'] = self.kwargs['user_id']
+        context['other_user_profile'] = user.get_profile()
+        return context    
+
+
+class ConnectionJobsDetailView(DetailView):
+    model = UserSubmittedJobArticle
+    template_name = 'connection_jobs_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ConnectionJobsDetailView, self).get_context_data(**kwargs)        
+        user = get_object_or_404(User, pk=self.kwargs['user_id'])
+        context['user_id'] = self.kwargs['user_id']
+        context['other_user_profile'] = user.get_profile()
+        return context
 
 
 class MyJobsEditView(UpdateView):

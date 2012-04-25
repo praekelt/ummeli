@@ -1,0 +1,54 @@
+{% extends "my_ummeli_base.xml" %}
+
+
+{% block content %}
+    <HEADER><LABEL>{{other_user_profile.fullname}}</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Jobs Posted</LABEL></HEADER>
+</MODULE>
+{% for item in object_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="/ummeli-static/media/hard_work.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url connection_jobs user_id item.pk %}?{{uuid}}">
+            {{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{item.text|truncatewords:10}}<br/>
+        {{ item.date|date:"D, j M Y, H:i" }}
+    </TEXT>
+    </CONTAINER>
+    <CONTAINER type="list">
+        <LINK href="{% url my_jobs_delete item.pk %}?{{uuid}}">
+            <TEXT>Delete</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endfor %}
+    
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% if page_obj.has_previous %}
+    <LINK href="?page={{ page_obj.previous_page_number }}&amp;{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <LINK href="?page={{ page_obj.next_page_number }}&amp;{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="list">
+    <LINK href="{% url profile_view user_id %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

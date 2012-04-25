@@ -1,0 +1,45 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2">
+        <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; 
+        <a href="{% url my_connections %}">My Connections</a> &raquo;
+        <a href="{% url profile_view user_id %}">{{other_user_profile.fullname}}</a>
+    </div>
+
+    <div class="article">
+        <strong>{{object.title}}</strong><br/>        
+        {{ object.text }}
+    </div>
+    <div class="more"><a href="{% url connection_jobs user_id %}">&larr; Back to jobs</a></div>
+    
+    <div class="h2">Apply for this job</div>
+    <form name="pd" method="POST" class="content-form" action="{% url connection_job_apply user_id object.pk %}"> 
+    {% if user.is_authenticated %}
+        {% if user_profile.missing_fields %}
+            <strong>Missing fields</strong>
+            <div class="warning">
+                Your CV is incomplete. Please make sure that the following information is 
+                completed before you can send your CV.
+            </div>
+            {% for field in user_profile.missing_fields %}
+                - {{field}}<br/>
+            {% endfor %}
+        {% else %}
+        <fieldset> 
+        <strong>* = Required</strong><br />
+          <label for="email">Email CV To:*</label>
+          <span class="subtext">(example) someone@email.com</span>
+          {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
+          <input type="text" class="txt" name="send_to"/>
+          <input type="submit" name="signin-btn" value="Send" class="btn" />
+          <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+          <input type="hidden" name="send_via" value="email" />
+        </fieldset>
+        {% endif %}
+    {% else %}
+        <div class="warning">Please <a href="{% url login %}?next={% url connection_jobs user_id %}">sign in</a> 
+        or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
+    {% endif %}
+    </form>
+{% endblock %}

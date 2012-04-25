@@ -21,6 +21,13 @@ urlpatterns = patterns('',
     url(r'^connections/add_by_industry/(?P<industry>\d+)/(?P<province>\d+)/$', views.add_connection_by_industry_result, name='add_connection_by_industry_result'),
     url(r'^connections/add_by_industry/(?P<industry>\d+)/(?P<province>\d+)/page/(?P<page>\d+)/$', views.add_connection_by_industry_result, name='add_connection_by_industry_result'),
 
+    url(r'connections/(?P<user_id>\d+)/jobs/$',
+        pin_required(login_required(views.ConnectionJobsListView.as_view())),
+        name='connection_jobs'),
+    url(r'connections/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
+        pin_required(login_required(views.ConnectionJobsDetailView.as_view())),
+        name='connection_jobs'),
+
     url(r'^personal/$', 
         pin_required(login_required(views.PersonalDetailsEditView.as_view())), 
         name='edit_personal'),
