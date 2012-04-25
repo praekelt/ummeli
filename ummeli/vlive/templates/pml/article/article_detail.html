@@ -57,6 +57,9 @@
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
     {% if user.is_active %}
         {% if article.comments_enabled %}
+            <CONTAINER type="data">
+                    <TEXT><LINK href="{% url accounts_profile %}"><TEXT>Change comment Name</TEXT></LINK></TEXT>
+            </CONTAINER>
             <CONTAINER type="form">
             {% get_comment_form for article as form %}
             <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">

@@ -9,6 +9,20 @@
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
+{% if not object.fullname %}
+<CONTAINER type="data">
+<TEXT>
+Please update your <LINK href="{% url edit_personal %}?{{uuid}}"><TEXT>Personal Details</TEXT></LINK> first.
+<br/>
+The change your comment settings here. [My Settings - Comment Settings]
+</TEXT>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url edit_personal %}?{{uuid}}">
+        <TEXT>Change Personal Details</TEXT>
+    </LINK>
+</CONTAINER>
+{% else %}
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
         <CHOICE-GROUP type="radio" name="comment_as_anon">
@@ -25,6 +39,7 @@
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
 </CONTAINER>
+{% endif %}
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER></HEADER>
