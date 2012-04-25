@@ -93,7 +93,7 @@
     </MODULE>
     {% for comment in comment_list.object_list %}
         <MODULE backgroundColor="false" palette="MiDove">
-        <HEADER></HEADER>
+        <HEADER><LABEL> </LABEL></HEADER>
         <CONTAINER type="data">
         <TEXT><b>
             {% if comment.user.get_profile.comment_as_anon %}
@@ -136,7 +136,7 @@
         </MODULE>
     {% endfor %}
     <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER></HEADER>
+    <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT><br/>        
         {% if comment_list.has_previous %}

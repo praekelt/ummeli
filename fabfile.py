@@ -10,6 +10,10 @@ def production():
     env.supervisord_file = 'supervisord.production.conf'
     env.hosts = ['ubuntu@app1.praekeltfoundation.org']
 
+def push():
+    with cd(env.path):
+        run('git pull')
+
 def deploy():
     with cd(env.path):
         run('git pull')
