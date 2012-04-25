@@ -26,12 +26,12 @@
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
     {% if articles.has_previous %}
-    <LINK href="{% url community_jobs %}?{{uuid}}&page={{ articles.previous_page_number }}">
+    <LINK href="{% url community_jobs %}?{{uuid}}&amp;page={{ articles.previous_page_number }}">
         <TEXT>Previous</TEXT>
     </LINK>
     {% endif %}
     {% if articles.has_next %}
-    <LINK href="{% url community_jobs %}?{{uuid}}&page={{articles.next_page_number}}">
+    <LINK href="{% url community_jobs %}?{{uuid}}&amp;page={{articles.next_page_number}}">
         <TEXT>Next</TEXT>
     </LINK>
     {% endif %}
