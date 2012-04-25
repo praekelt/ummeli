@@ -9,7 +9,7 @@
 <CONTAINER type="data">
 {{ form.errors_as_pml }}
 </CONTAINER>
-{% if object.fullname == '' %}
+{% if object.fullname == ' ' %}
 <CONTAINER type="data">
 <TEXT>
 Please update your <LINK href="{% url edit_personal %}?{{uuid}}"><TEXT>Personal Details</TEXT></LINK> first.
