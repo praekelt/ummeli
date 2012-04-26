@@ -18,7 +18,7 @@
         <FIELD name="highest_grade_year" maxentry="4" type="number" default="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/><br/>
         
         <TEXT position="ABOVE">School:</TEXT>
-        <FIELD name="school" type="number" default="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
+        <FIELD name="school" type="number" default="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/><br/>
         
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
