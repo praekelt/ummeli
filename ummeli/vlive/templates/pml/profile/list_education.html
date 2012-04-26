@@ -12,11 +12,13 @@
 <CONTAINER  type="form">
     <FORM method="POST" href="{% url edit_education %}" submit_text="Save">
         <TEXT position="ABOVE">Highest grade:</TEXT>
-        <FIELD name="highest_grade" type="number" value="{% if user_profile.highest_grade %}{{user_profile.highest_grade}}{% endif %}"/>
+        <FIELD name="highest_grade" type="number" default="{% if user_profile.highest_grade %}{{user_profile.highest_grade}}{% endif %}"/><br/>
+        
         <TEXT position="ABOVE">Year:</TEXT>
-        <FIELD name="highest_grade_year" maxentry="4" type="number" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
+        <FIELD name="highest_grade_year" maxentry="4" type="number" default="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/><br/>
+        
         <TEXT position="ABOVE">School:</TEXT>
-        <FIELD name="school" type="number" value="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
+        <FIELD name="school" type="number" default="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
         
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
