@@ -6,7 +6,7 @@ from django.core import mail
 from django.conf import settings
 
 from ummeli.base.models import (Certificate, Category, Province,
-    CurriculumVitae)
+    CurriculumVitae, UserSubmittedJobArticle)
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 
 import json
@@ -386,6 +386,14 @@ class VLiveCVTestCase(VLiveTestCase):
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
         self.assertEqual(Category.objects.count(), 1)
+        
+        job = UserSubmittedJobArticle.objects.get(pk=1)
+        job_view = job.to_view_model()
+        self.assertEqual(job_view.source, job.title)
+        self.assertEqual(job_view.text, job.text)
+        self.assertEqual(job_view.date, job.date)
+        self.assertEqual(job_view.user, job.user)
+        
         
         #test duplicate submissions
         resp = self.client.post(reverse('jobs_create'), post_data)
