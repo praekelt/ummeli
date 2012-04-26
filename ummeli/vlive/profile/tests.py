@@ -204,6 +204,13 @@ class ProfileTestCase(VLiveTestCase):
         self.assertContains(resp,  'Admin/Clerical')
         self.assertContains(resp,  '(Bozza)')
         
+        resp = self.client.get(reverse('skills_delete', args=[1]))
+        self.assertEquals(resp.status_code, 200)
+        
         resp = self.client.post(reverse('skills_delete', args=[1]), post_data)
         resp = self.client.get(reverse('skills'))
         self.assertNotContains(resp,  'Accounts/Financial')
+        
+        #Test duplicate
+        resp = self.client.post(reverse('skills_new', args=[2]), post_data)
+        self.assertContains(resp,  'already added')
