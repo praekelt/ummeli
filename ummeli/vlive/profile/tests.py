@@ -30,6 +30,7 @@ def cleandb():
 class ProfileTestCase(VLiveTestCase):
     fixtures = [
         'vlive/tests/auth/fixtures/sample.json',
+        'fixtures/skills.json',
     ]
     
     def setUp(self):
@@ -148,3 +149,27 @@ class ProfileTestCase(VLiveTestCase):
         
         resp = self.client.get(reverse('profile_view', args=[user2.pk]))
         self.assertNotContains(resp, 'request pending')
+        
+    def test_skills_views(self):
+        self.login()
+        self.fill_in_basic_info()
+        
+        resp = self.client.get(reverse('skills_new'))
+        self.assertContains(resp, 'Accounts/Financial')
+        
+        resp = self.client.get(reverse('skills_new', args=[1]))
+        self.assertContains(resp, 'Accounts/Financial')
+        
+        post_data = {
+            'skill': 'Accounts/Financial',
+            'level': '0',
+        }
+        
+        resp = self.client.post(reverse('skills_new', args=[1]), post_data)
+        resp = self.client.get(reverse('skills'))
+        self.assertContains(resp,  'Accounts/Financial')
+        self.assertContains(resp,  '(Laaitie)')
+        
+        resp = self.client.get(reverse('skills_primary', args=[1]))
+        resp = self.client.get(reverse('skills'))
+        self.assertContains(resp, '*Accounts/Financial')
