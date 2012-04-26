@@ -387,6 +387,7 @@ class VLiveCVTestCase(VLiveTestCase):
         resp = self.client.post(reverse('jobs_create'), post_data)
         self.assertEqual(Category.objects.count(), 1)
         
+        #test view model method
         job = UserSubmittedJobArticle.objects.get(pk=1)
         job_view = job.to_view_model()
         self.assertEqual(job_view.source, job.title)
@@ -394,6 +395,24 @@ class VLiveCVTestCase(VLiveTestCase):
         self.assertEqual(job_view.date, job.date)
         self.assertEqual(job_view.user, job.user)
         
+        
+        #test shows in my jobs
+        resp = self.client.get(reverse('my_jobs'))
+        self.assertContains(resp,  'Plumber needed')
+        
+        #test can edit job
+        resp = self.client.get(reverse('my_jobs', args=[1]))
+        self.assertEquals(resp.status_code, 200)
+        
+        post_data = {
+            'province': '2',
+            'job_category': 'Engineering',
+            'title': 'Plumber needed 2',
+            'text': 'This is some sample text.',
+        }
+        resp = self.client.post(reverse('my_jobs', args=[1]), post_data)
+        resp = self.client.get(reverse('my_jobs'))
+        self.assertContains(resp,  'Plumber needed 2')
         
         #test duplicate submissions
         resp = self.client.post(reverse('jobs_create'), post_data)
