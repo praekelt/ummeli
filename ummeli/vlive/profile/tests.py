@@ -54,14 +54,13 @@ class ProfileTestCase(VLiveTestCase):
         self.assertEquals(resp.status_code, 200)
         
         self.assertContains(resp, 'Test User')
-        self.assertContains(resp, '[edit]')
+        self.assertContains(resp, 'Full Profile')
         
         user = User.objects.get(username=self.msisdn)
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
         self.assertEquals(resp.status_code, 200)
         
         self.assertContains(resp, 'Test User')
-        self.assertContains(resp, '[edit]')
         
     def test_add_connection(self):
         other_msisdn = '27121111111' 
@@ -78,8 +77,7 @@ class ProfileTestCase(VLiveTestCase):
         
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
         self.assertContains(resp, 'Joe Blog')
-        self.assertContains(resp, 'Skills')
-        self.assertNotContains(resp, 'Contact Details')
+        self.assertNotContains(resp, 'Contact Info')
         
         resp = self.client.get(reverse('add_connection', args=[user.pk]))
         self.assertContains(resp, 'Joe Blog')
@@ -104,8 +102,8 @@ class ProfileTestCase(VLiveTestCase):
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=other_msisdn)
         self.msisdn = other_msisdn
         self.login()
-        resp = self.client.get(reverse('profile'))
-        self.assertContains(resp, 'Requests (1)')
+        resp = self.client.get(reverse('my_connections'))
+        self.assertContains(resp, 'Connection Requests (1)')
         
         user = User.objects.get(username='27123456789')
         
@@ -115,21 +113,19 @@ class ProfileTestCase(VLiveTestCase):
         resp = self.client.post(reverse('confirm_request', args=[user.pk]))
         self.assertVLiveRedirects(resp, reverse('profile'))
         
-        resp = self.client.get(reverse('profile'))
-        self.assertContains(resp, 'Requests (0)')
-        self.assertContains(resp, 'Connections (1)')
+        resp = self.client.get(reverse('my_connections'))
+        self.assertContains(resp, 'My Connections (1)')
         
         self.logout()
         
         #User 1
         self.login()
         
-        resp = self.client.get(reverse('profile'))
-        self.assertContains(resp, 'Requests (0)')
-        self.assertContains(resp, 'Connections (1)')
+        resp = self.client.get(reverse('my_connections'))
+        self.assertContains(resp, 'My Connections (1)')
         
         resp = self.client.get(reverse('profile_view', args=[user.pk]))
-        self.assertNotContains(resp, 'Contact Details')
+        self.assertNotContains(resp, 'Full Profile')
         
         self.logout()
         
@@ -147,9 +143,8 @@ class ProfileTestCase(VLiveTestCase):
         self.msisdn = '27123456789'
         self.login()
         
-        resp = self.client.get(reverse('profile'))
-        self.assertContains(resp, 'Requests (0)')
-        self.assertContains(resp, 'Connections (1)')
+        resp = self.client.get(reverse('my_connections'))
+        self.assertContains(resp, 'My Connections (1)')
         
         resp = self.client.get(reverse('profile_view', args=[user2.pk]))
         self.assertNotContains(resp, 'request pending')

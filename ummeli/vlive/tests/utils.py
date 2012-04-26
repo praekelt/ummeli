@@ -47,7 +47,7 @@ class VLiveTestCase(TestCase):
 
     def assertVLiveRedirects(self, resp, url, text=None):
         if not text:
-            text = 'Please wait while we automatically redirect you.'
+            text = 'Please wait while we automatically redirect you'
         timer_html = '<TIMER href="%s' % url
         self.assertContains(resp, timer_html)
         self.assertContains(resp, text)

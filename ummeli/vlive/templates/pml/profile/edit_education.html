@@ -21,7 +21,6 @@
         <FIELD name="year" maxentry="4" type="number" default="{% if form.year.value %}{{form.year.value}}{% endif %}"/><br/>
         
         <TEXT position="ABOVE">Duration:</TEXT>
-        {% include "form_field_errors_snippet.html" with form_field=form.duration %}
         <SELECT name="duration">
             <ITEM value="0" {% if form.duration.value == 0 %}checked="true"{% endif %}>0 - 6 months</ITEM>
             <ITEM value="1" {% if form.duration.value == 1 %}checked="true"{% endif %}>1 Year</ITEM>
