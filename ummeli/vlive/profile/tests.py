@@ -173,3 +173,16 @@ class ProfileTestCase(VLiveTestCase):
         resp = self.client.get(reverse('skills_primary', args=[1]))
         resp = self.client.get(reverse('skills'))
         self.assertContains(resp, '*Accounts/Financial')
+        
+        resp = self.client.get(reverse('skills', args=[1]))
+        self.assertContains(resp, 'Accounts/Financial')
+        
+        post_data = {
+            'skill': 'Accounts/Financial',
+            'level': '2',
+        }
+        
+        resp = self.client.post(reverse('skills', args=[1]), post_data)
+        resp = self.client.get(reverse('skills'))
+        self.assertContains(resp,  'Accounts/Financial')
+        self.assertContains(resp,  '(Junior)')
