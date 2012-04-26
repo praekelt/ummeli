@@ -157,12 +157,13 @@ class ProfileTestCase(VLiveTestCase):
         resp = self.client.get(reverse('skills_new'))
         self.assertContains(resp, 'Accounts/Financial')
         
+        #Add New
         resp = self.client.get(reverse('skills_new', args=[1]))
         self.assertContains(resp, 'Accounts/Financial')
         
         post_data = {
             'skill': 'Accounts/Financial',
-            'level': '0',
+            'level': 0,
         }
         
         resp = self.client.post(reverse('skills_new', args=[1]), post_data)
@@ -170,19 +171,39 @@ class ProfileTestCase(VLiveTestCase):
         self.assertContains(resp,  'Accounts/Financial')
         self.assertContains(resp,  '(Laaitie)')
         
+        #Mark as primary
         resp = self.client.get(reverse('skills_primary', args=[1]))
         resp = self.client.get(reverse('skills'))
         self.assertContains(resp, '*Accounts/Financial')
         
+        #skills editing
         resp = self.client.get(reverse('skills', args=[1]))
         self.assertContains(resp, 'Accounts/Financial')
         
         post_data = {
+            'level': 2,
             'skill': 'Accounts/Financial',
-            'level': '2',
         }
         
         resp = self.client.post(reverse('skills', args=[1]), post_data)
         resp = self.client.get(reverse('skills'))
         self.assertContains(resp,  'Accounts/Financial')
         self.assertContains(resp,  '(Junior)')
+        
+        #Test Delete
+        resp = self.client.get(reverse('skills_new', args=[2]))
+        self.assertContains(resp,  'Admin/Clerical')
+        
+        post_data = {
+            'level': 20,
+            'skill': 'Admin/Clerical',
+        }
+        
+        resp = self.client.post(reverse('skills_new', args=[2]), post_data)
+        resp = self.client.get(reverse('skills'))
+        self.assertContains(resp,  'Admin/Clerical')
+        self.assertContains(resp,  '(Bozza)')
+        
+        resp = self.client.post(reverse('skills_delete', args=[1]), post_data)
+        resp = self.client.get(reverse('skills'))
+        self.assertNotContains(resp,  'Accounts/Financial')

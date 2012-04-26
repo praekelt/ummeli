@@ -709,9 +709,7 @@ def add_skill_from_list(request, skill_id):
         form = SkillForm(request.POST)
         if form.is_valid():
             if not profile.skills.filter(skill=word.word).exists():
-                skill = Skill(skill=word.word)
-                skill.save()
-                
+                skill = form.save()                
                 profile.skills.add(skill)
                 return redirect(reverse('skills'))
             else:
