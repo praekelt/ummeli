@@ -150,6 +150,14 @@ class ProfileTestCase(VLiveTestCase):
         resp = self.client.get(reverse('profile_view', args=[user2.pk]))
         self.assertNotContains(resp, 'request pending')
         
+        self.logout()
+        
+        #User 3
+        self.login()
+        
+        resp = self.client.get(reverse('connections', args=[4]))
+        self.assertContains(resp, 'Test User')
+        
     def test_skills_views(self):
         self.login()
         self.fill_in_basic_info()
