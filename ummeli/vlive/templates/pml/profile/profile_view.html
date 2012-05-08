@@ -20,7 +20,7 @@
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    {% if other_user_profile.skills.all %}
+    {% if other_user_profile.skills.exists %}
         <b>Other areas of interest:</b><br/>
         {% for skill in other_user_profile.other_skills.all %}
         {{skill}}<br/>
