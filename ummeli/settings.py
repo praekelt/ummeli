@@ -15,7 +15,7 @@ djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# --- Environment Specific Settings --- 
+# --- Environment Specific Settings ---
 ROOT_URLCONF = 'pml_urls'
 #ROOT_URLCONF = 'mobi_urls'
 
@@ -23,6 +23,7 @@ TEMPLATE_DIRS = (
    #"vlive/templates/html",
    "vlive/templates/pml",
 )
+
 
 def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
@@ -44,17 +45,17 @@ DATABASES = {
 }
 
 NEO4J_DATABASES = {
-    'default' : {
-        'HOST':'localhost',
-        'PORT':7474,
-        'ENDPOINT':'/db/data'
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 7474,
+        'ENDPOINT': '/db/data'
     }
 }
 
 _data_path = os.path.join(PROJECT_ROOT, 'graphing_data')
 if not os.path.exists(_data_path):
     os.mkdir(_data_path)
-    
+
 NEO4J_RESOURCE_URI = abspath(_data_path)
 NEO4J_OPTIONS = {}
 NEO4J_DELETE_KEY = 'ummeli-secret-key'
@@ -185,11 +186,11 @@ INSTALLED_APPS = (
     'gunicorn',
     'sentry',
     'raven.contrib.django',
-    
+
     #ummeli 2.0
     'django.contrib.flatpages',
     'django.contrib.comments',
-    
+
     #jmbo
     'jmboarticles',
     'jmbocomments',
@@ -199,7 +200,7 @@ INSTALLED_APPS = (
     'category',
     'jmbodashboard.geckoboard',
     'jmbowordsuggest',
-    
+
     # 3rd party
     'ckeditor',
 )
@@ -260,10 +261,10 @@ BROKER_VHOST = "/ummeli/production"
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
-            [      'Undo', 'Redo',
+            ['Undo', 'Redo',
               '-', 'Bold', 'Italic', 'Underline',
             ],
-            [ '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+            ['-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord',
               '-', 'Source',
             ]
         ],
@@ -273,9 +274,9 @@ CKEDITOR_CONFIGS = {
         'basicEntities': False,
         'forcePasteAsPlainText': True,
         'enterMode': 2,
-        'coreStyles_bold': { 'element': 'b', 'overrides': 'strong' }
+        'coreStyles_bold': {'element': 'b', 'overrides': 'strong'}
     }
 }
 
 COMMENTS_APP = 'jmbocomments'
-COMMENTS_PER_PAGE = 20
+COMMENTS_PER_PAGE = 15
