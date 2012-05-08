@@ -9,7 +9,7 @@
     {% get_articles 3 "article_list" %}
     {% for article in article_list %}
         <div class="list">
-            <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
+            <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}
             <br/>
             <small>{{ article.updated|date:"D, j M Y" }}</small>
         </div>

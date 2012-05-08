@@ -1,0 +1,26 @@
+[{
+    "pk": 1,
+    "model": "jmboarticles.article",
+    "fields": {
+        "view_count": 108,
+        "updated": "2011-11-19 22:53:52",
+        "source_name": "",
+        "description": "Stop YOUR love going bad",
+        "title": "Obsessed woman hires hitmen",
+        "source_link": "",
+        "image": "",
+        "author": 1,
+        "publish_on": "2011-10-27 15:34:36",
+        "created": "2011-10-27 15:35:17",
+        "content": "A 47-year-old woman will appear at the Pretoria Magistrate\u2019s Court for trying to kill her former lover, a 21-year-old rugby player \u2013 who was also her daughter\u2019s boyfriend.\r\n \r\n The woman was arrested by undercover police after she employed two Nigerians to assassinate the Blue Bulls player. Family members said she had become obsessed with him.\r\n \r\n The woman\u2019s daughter \u2013 originally his girlfriend \u2013 ended her relationship with the man after finding out there was something going on between her boyfriend and her mother.\r\n \r\n How to spot obsession before you do something crazy:\r\n - You immediately rush into a relationship even if you\u2019re not compatible\r\n - You become hooked on the way the other person looks\r\n - you try to control the other person and are obsessed with thoughts of him / her\r\n - The smallest sign of attention is enough to convince you that the two of you were made for each other\r\n - Once some kind of commitment has been made, you become suspicious and jealous.\r\n - You may have violent reactions towards your loved one if he or she says \u2018no\u2019 to your obsessive demands.\r\n - If your love interest ends the relationship, you can\u2019t stop thinking about him / her. You send SMS\u2019s and make drive-by's.\r\n - You may then enter a destructive phase - depression, self-hatred, anger and a desire for revenge.\r\n \r\n If these signs of obsession sound like you, take a step back from the relationship and speak to a friend. You can get lost inside your own head and be blinded by your feelings. A friend can help. Talk to someone before you do something crazy! ",
+        "sites": [1, 2],
+        "like_count": 2,
+        "video": null,
+        "last_view_date": "2011-11-19 22:53:52",
+        "comments_enabled": true,
+        "published": true,
+        "poll": 1,
+        "slug": "obsessed-woman-hires-hitmen",
+        "like_users": [1]
+    }
+}]
