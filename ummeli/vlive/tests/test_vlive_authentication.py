@@ -16,7 +16,6 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
-        self.client.login(remote_user=self.msisdn)
         settings.CELERY_ALWAYS_EAGER = True
         
     def tearDown(self):

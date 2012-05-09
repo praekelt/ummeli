@@ -8,8 +8,8 @@ from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 class CommentTestCase(VLiveTestCase):
 
     fixtures = [
+        'vlive/tests/auth/fixtures/sample.json',
         'vlive/tests/article/fixtures/sample.json',
-        'auth/fixtures/sample-data.json',
     ]
 
     def setUp(self):
