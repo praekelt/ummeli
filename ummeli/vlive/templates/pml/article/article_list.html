@@ -12,7 +12,9 @@
             {{ article.title }}
         </LINK>
     </TITLE>
-    <TEXT>{{ article.description }}</TEXT>
+    <TEXT>{{ article.description }}<br/>
+        {{ article.published_on|date:"D, j M Y" }}
+    </TEXT>
     </CONTAINER>
 </MODULE>
 {% endfor %}
