@@ -15,7 +15,9 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
     <TEXT>
+    {% if article.published_on %}
     <b>{{ article.published_on|date:"D, j M Y, H:i" }}</b><br/>
+    {% endif %}
     <b>{{ article.like_count }} Like{{ article.like_count|pluralize }}</b>
          | <LINK href="{% url article_detail article.pk %}like/?{{uuid}}">+Like</LINK>
     <br/>
