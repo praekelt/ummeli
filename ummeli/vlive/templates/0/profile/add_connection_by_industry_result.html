@@ -18,7 +18,7 @@
 {% empty %}
     <div class="list">0 users found.</div>
 {% endfor %}
-<div id="topnav">
+<div id="pagination">
     {% if user_profiles.has_previous %}
         <span><a href="{% url add_connection_by_industry_result industry_pk province_pk user_profiles.previous_page_number %}">Previous</a></span> |
     {% else %}

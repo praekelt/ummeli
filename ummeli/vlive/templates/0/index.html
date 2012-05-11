@@ -14,7 +14,7 @@
             <small>{{ article.updated|date:"D, j M Y" }}</small>
         </div>
     {% endfor %}
-    <div><a href="{% url article_list %}">more...</a></div>
+    <div class="list"><a href="{% url article_list %}">more...</a></div>
     {% get_featured_poll "featured_poll" %}
     {% if featured_poll %}
         <div class="h2">Poll</div>
@@ -33,23 +33,28 @@
         </div>
     {% endfor %}
     <div class="list"><a href="{% url community_jobs %}">more...</a></div>
-    <br/>
-    <div class="h5">Have something to share?</a></div>
+    <div class="h2">Have something to share?</a></div>
     <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
-    <div class="h5">Connect with others?</a></div>
+    <div class="h2">Connect with others?</a></div>
     <div class="list"><a href="{% url add_connection_by_industry %}">Find other users</a></div>
     {% if user.is_authenticated %}
-        <div class="h2">My Ummeli</div>
-        <div class="list"><a href="{% url profile %}">My Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
-        <div class="list"><a href="{% url my_connections %}">My Connections</a>
+    <div class="h2">My Ummeli</div>
+    <div id="list">
+        <div><a href="{% url profile %}">My Profile</a>
+            <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span>
+        </div>
+        <div><a href="{% url my_connections %}">My Connections</a>
             {% if user_profile.connection_requests.exists %}
             <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
             {% else %}
             <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
             {% endif %}
         </div>
-        <div class="list"><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
-        <div class="list"><a href="{% url my_settings %}">My Settings &rarr; </a></div>
+        <div><a href="{% url my_jobs %}">My Jobs</a>
+            <span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span>
+        </div>
+        <div><a href="{% url my_settings %}">My Settings &rarr; </a></div>
+    </div>
     {% endif %}
 
 {% endblock %}

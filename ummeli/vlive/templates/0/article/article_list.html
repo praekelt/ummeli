@@ -13,7 +13,7 @@
     </div>
     {% endfor %}
 
-<div class="pagination">
+<div id="pagination">
     {% if page_obj.has_previous %}
     <a href="{% url article_list page_obj.previous_page_number %}">
         &lt; Newer articles

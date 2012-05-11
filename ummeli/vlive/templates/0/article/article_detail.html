@@ -119,7 +119,7 @@
     {% endfor %}
 </div>
 
-<div id="topnav">
+<div id="pagination">
     {% if comment_list.has_previous %}
         <span><a href="{% url article_detail_redo article.pk comment_list.previous_page_number %}">Previous</a></span> |
     {% else %}
