@@ -1,2 +1,1 @@
 cd neo4j-main && bin/neo4j start
-cd ../neo4j-test && bin/neo4j start
