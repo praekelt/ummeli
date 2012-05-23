@@ -19,17 +19,24 @@
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+        {% if form.errors %}
+            {% for error in form.errors %}
+                <TEXT color="red">{{error}}<TEXT><br/>
+            {% endfor %}
+        {% endif %}
+    </CONTAINER>
     <CONTAINER type="form">
     <FORM method="POST" href="{% url your_story competition.pk %}" submit_text="Submit">
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         <FIELD type="hidden" name="next" value="{% url index %}#comment_list" />
         <TEXT position="ABOVE">Name (required):</TEXT>
-        <FIELD name="name" type="text"/><br/>
+        <FIELD name="name" type="text" default="{{form.name.value}}"/><br/>
         <TEXT position="ABOVE">Email:</TEXT>
-        <FIELD name="email" type="text"/><br/>
+        <FIELD name="email" type="text" default="{{form.email.value}}"/><br/>
         <TEXT position="ABOVE">Your story (required):</TEXT>
-        <FIELD name="text" type="text"/><br/>
+        <FIELD name="text" type="text" default="{{form.text.value}}"/><br/>
         <CHOICE-GROUP type="radio" name="terms">
             <TEXT>I agree to the Your Words Competition Terms &amp; Conditions. </TEXT>
             <CHOICE value="True">Yes</CHOICE>
