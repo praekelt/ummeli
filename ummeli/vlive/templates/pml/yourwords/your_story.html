@@ -21,8 +21,11 @@
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
         {% if form.errors %}
-            {% for error in form.errors %}
-                <TEXT color="red">{{error}}</TEXT><br/>
+            <TEXT color="red">Please correct the following errors: </TEXT><br/>
+            {% for field in form %}
+            {% for error in field.errors %}
+                <TEXT color="red"> - {{field.label}}: {{error}}</TEXT><br/>
+            {% endfor %}
             {% endfor %}
         {% endif %}
     </CONTAINER>
