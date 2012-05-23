@@ -2,6 +2,7 @@
 
 {% load article_tags %}
 {% load poll_tags %}
+{% load your_words_tags %}
 
 {% block title %}
     Welcome
@@ -110,6 +111,28 @@
     </LINK>
 </CONTAINER>
 </MODULE>
+
+{% get_your_words_competitions %}
+{% if your_words_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Your Words Competition</LABEL></HEADER>
+</MODULE>
+{% for competition in your_words_list %}
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+    <IMAGE href="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url your_story competition.pk %}?{{uuid}}">
+            <TEXT>{{ competition.title }}</TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ competition.description }}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endfor %}
+{% endif %}
 
 <MODULE backgroundColor="false" palette="MiOrange">
     <HEADER><LABEL>My Ummeli</LABEL></HEADER>

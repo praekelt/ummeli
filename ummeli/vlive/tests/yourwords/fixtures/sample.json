@@ -1,0 +1,59 @@
+[
+    {
+        "pk": 2,
+        "model": "jmboyourwords.yourstorycompetition",
+        "fields": {
+            "updated": "2012-05-21T08:24:05.852",
+            "description": "This is greate",
+            "title": "Another competition",
+            "image": "",
+            "author": 4,
+            "publish_on": "2012-05-21T08:19:06",
+            "created": "2012-05-21T08:19:20.324",
+            "content": "oh yes to that!",
+            "sites": [
+                1
+            ],
+            "tags": [],
+            "published": false,
+            "slug": "another-competition",
+            "categories": [],
+            "retract_on": "2012-05-25T08:19:09"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "jmboyourwords.yourstorycompetition",
+        "fields": {
+            "updated": "2012-05-21T08:24:17.224",
+            "description": "I'm going to cry",
+            "title": "Where are you",
+            "image": "",
+            "author": 4,
+            "publish_on": "2012-05-18T14:26:19",
+            "created": "2012-05-18T14:31:15.212",
+            "content": "blah blah blah",
+            "sites": [
+                1
+            ],
+            "tags": [],
+            "published": false,
+            "slug": "where-are-you",
+            "categories": [],
+            "retract_on": "2012-05-30T14:26:20"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "jmboyourwords.yourstoryentry",
+        "fields": {
+            "terms": true,
+            "name": "Milton",
+            "created": "2012-05-21T08:17:21.083",
+            "text": "I am here",
+            "user": 5,
+            "your_story_competition": 1,
+            "email": "madandat@gmail.com"
+        }
+    }
+]

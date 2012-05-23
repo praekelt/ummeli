@@ -34,4 +34,5 @@ requests
 django_geckoboard
 -e git+git://github.com/praekelt/jmbo-dashboard.git@develop#egg=jmbo-dashboard
 -e git+git://github.com/praekelt/jmbo-word-suggest.git@develop#egg=jmbo-word-suggest
+-e git+git://github.com/praekelt/jmbo-your-words.git@develop#egg=jmbo-your-words
 BeautifulSoup>=3.0.8.1

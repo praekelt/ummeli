@@ -200,6 +200,7 @@ INSTALLED_APPS = (
     'category',
     'jmbodashboard.geckoboard',
     'jmbowordsuggest',
+    'jmboyourwords',
 
     # 3rd party
     'ckeditor',
