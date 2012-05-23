@@ -41,7 +41,9 @@
         <TEXT position="ABOVE">Your story (required):</TEXT>
         <FIELD name="text" type="text" {% if form.text.value %}default="{{form.text.value}}"{%endif%}/><br/>
         <CHOICE-GROUP type="radio" name="terms">
-            <TEXT>I agree to the Your Words Competition Terms &amp; Conditions. </TEXT>
+            <TEXT>I agree to the 
+                <LINK href="/vlive/pages/your-words-competition-terms/">Your Words Competition Terms &amp; Conditions.</LINK>
+            </TEXT>
             <CHOICE value="True">Yes</CHOICE>
             <CHOICE value="False" checked="true">No</CHOICE>
         </CHOICE-GROUP>
