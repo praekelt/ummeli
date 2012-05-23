@@ -22,7 +22,7 @@
     <CONTAINER type="data">
         {% if form.errors %}
             {% for error in form.errors %}
-                <TEXT color="red">{{error}}<TEXT><br/>
+                <TEXT color="red">{{error}}</TEXT><br/>
             {% endfor %}
         {% endif %}
     </CONTAINER>
@@ -32,11 +32,11 @@
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
         <FIELD type="hidden" name="next" value="{% url index %}#comment_list" />
         <TEXT position="ABOVE">Name (required):</TEXT>
-        <FIELD name="name" type="text" default="{{form.name.value}}"/><br/>
+        <FIELD name="name" type="text" {% if form.name.value %}default="{{form.name.value}}"{%endif%}/><br/>
         <TEXT position="ABOVE">Email:</TEXT>
-        <FIELD name="email" type="text" default="{{form.email.value}}"/><br/>
+        <FIELD name="email" type="text" {% if form.email.value %}default="{{form.email.value}}"{%endif%}/><br/>
         <TEXT position="ABOVE">Your story (required):</TEXT>
-        <FIELD name="text" type="text" default="{{form.text.value}}"/><br/>
+        <FIELD name="text" type="text" {% if form.text.value %}default="{{form.text.value}}"{%endif%}/><br/>
         <CHOICE-GROUP type="radio" name="terms">
             <TEXT>I agree to the Your Words Competition Terms &amp; Conditions. </TEXT>
             <CHOICE value="True">Yes</CHOICE>
