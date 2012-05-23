@@ -1,0 +1,40 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Your Words</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<CONTAINER type="image">
+    <IMAGE href="{% if competition.image %}{{ competition.image.url }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>{{ competition.title }}</TITLE>
+    <TEXT>{{ competition.description }}</TEXT>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="data">
+    <TEXT>
+        {{ competition.content|safe }}
+    </TEXT>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="form">
+    <FORM method="POST" href="{% url your_story competition.pk %}" submit_text="Submit">
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+        <FIELD type="hidden" name="next" value="{% url index %}#comment_list" />
+        <TEXT position="ABOVE">Name (required):</TEXT>
+        <FIELD name="name" type="text"/><br/>
+        <TEXT position="ABOVE">Email:</TEXT>
+        <FIELD name="email" type="text"/><br/>
+        <TEXT position="ABOVE">Your story (required):</TEXT>
+        <FIELD name="text" type="text"/><br/>
+        <CHOICE-GROUP type="radio" name="terms">
+            <TEXT>I agree to the Your Words Competition Terms &amp; Conditions. </TEXT>
+            <CHOICE value="True">Yes</CHOICE>
+            <CHOICE value="False" checked="true">No</CHOICE>
+        </CHOICE-GROUP>
+    </FORM>
+    </CONTAINER>
+{% endblock %}
