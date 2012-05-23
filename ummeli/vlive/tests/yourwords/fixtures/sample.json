@@ -3,13 +3,13 @@
         "pk": 2,
         "model": "jmboyourwords.yourstorycompetition",
         "fields": {
-            "updated": "2012-05-21T08:24:05.852",
+            "updated": "2012-05-21 08:24:05.852",
             "description": "This is greate",
             "title": "Another competition",
             "image": "",
             "author": 4,
-            "publish_on": "2012-05-21T08:19:06",
-            "created": "2012-05-21T08:19:20.324",
+            "publish_on": "2012-05-21 08:19:06",
+            "created": "2012-05-21 08:19:20.324",
             "content": "oh yes to that!",
             "sites": [
                 1
@@ -18,20 +18,20 @@
             "published": false,
             "slug": "another-competition",
             "categories": [],
-            "retract_on": "2012-05-25T08:19:09"
+            "retract_on": "2012-05-25 08:19:09"
         }
     },
     {
         "pk": 1,
         "model": "jmboyourwords.yourstorycompetition",
         "fields": {
-            "updated": "2012-05-21T08:24:17.224",
+            "updated": "2012-05-21 08:24:17.224",
             "description": "I'm going to cry",
             "title": "Where are you",
             "image": "",
             "author": 4,
-            "publish_on": "2012-05-18T14:26:19",
-            "created": "2012-05-18T14:31:15.212",
+            "publish_on": "2012-05-18 14:26:19",
+            "created": "2012-05-18 14:31:15.212",
             "content": "blah blah blah",
             "sites": [
                 1
@@ -40,7 +40,7 @@
             "published": false,
             "slug": "where-are-you",
             "categories": [],
-            "retract_on": "2012-05-30T14:26:20"
+            "retract_on": "2012-05-30 14:26:20"
         }
     },
     {
@@ -49,7 +49,7 @@
         "fields": {
             "terms": true,
             "name": "Milton",
-            "created": "2012-05-21T08:17:21.083",
+            "created": "2012-05-21 08:17:21.083",
             "text": "I am here",
             "user": 5,
             "your_story_competition": 1,
