@@ -120,7 +120,7 @@
 {% for competition in your_words_list %}
 <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <CONTAINER type="image">
-    <IMAGE href="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <IMAGE href="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>
         <LINK href="{% url your_story competition.pk %}?{{uuid}}">
             <TEXT>{{ competition.title }}</TEXT>
