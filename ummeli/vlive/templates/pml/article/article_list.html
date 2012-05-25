@@ -6,7 +6,7 @@
 {% for article in article_list %}
 <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <CONTAINER type="image">
-    <IMAGE href="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/write.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
+    <IMAGE href="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>
         <LINK href="{% url article_detail_redo article.pk %}?{{uuid}}">
             {{ article.title }}
