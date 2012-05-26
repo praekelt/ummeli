@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="h2">Your Words</div>
+<div class="wrap">
+<strong>{{ competition.title }}</strong><br/>
+{{ competition.description }}
+
+<p>{{ competition.content|safe }}</p>
+</div>
+<form name="pd" method="POST" class="content-form"> 
+    <div class="form-fields">
+    <label>Name (required):</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.name %}
+    {{form.name}}
+
+    <label>Email:</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.email %}
+    {{form.email}}
+    
+    <label>Your story (required):</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.text %}
+    {{form.text}}
+    </div>
+    <div>
+    I agree to the 
+    <a href="/vlive/pages/your-words-competition-terms/">Your Words Competition Terms &amp; Conditions.</a>
+    </div>
+    {% include "form_field_errors_snippet.html" with form_field=form.terms %}
+    <input type="radio" name="terms" id="terms_yes" value="True"/> <label style="display:inline" for="terms_yes">Yes</label><br/>
+    <input type="radio" name="terms" id="terms_no" value="False" checked="checked"/> <label style="display:inline" for="terms_no">No</label>
+    <input type="submit" class="btn" value="Submit" name="submit" />
+    {% csrf_token %}
+</form>
+{% endblock %}
