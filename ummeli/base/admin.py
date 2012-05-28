@@ -22,7 +22,7 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
 
     def comment_alias(self, instance):
         return instance.user.get_profile().fullname()\
-                if instance.user.get_profile().comment_as_anon\
+                if not instance.user.get_profile().comment_as_anon\
                 else "Anon."
 
 admin.site.register(CurriculumVitae)
