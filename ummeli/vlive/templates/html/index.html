@@ -5,36 +5,78 @@
     
 {% block content %}
     <p>Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></p>
-    <h1><a href="{% url article_list %}">News</a></h1>
-    {% get_articles 4 "article_list" %}
-    <div class="list">
-       {% for article in article_list %}
-        <div>
-            <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}
+    
+    <h1 class="h2">Latest</h1>
+    {% get_articles 3 "article_list" %}
+    {% for article in article_list %}
+        <div class="img-article list">
+            <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+            <div><a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a></div>
+            <span>{{ article.description }}</span>
             <br/>
-            <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+            <small>{{ article.updated|date:"D, j M Y" }}</small>
         </div>
-        {% endfor %}
-    </div>
-    <p><a href="{% url article_list %}">more...</a></p>
+    {% endfor %}
+    <div class="more"><a href="{% url article_list %}">more...</a></div>
+
     {% get_featured_poll "featured_poll" %}
     {% if featured_poll %}
-        <h4><a href="{% url article_list %}">Poll</a></h4>
+        <h1><a href="{% url article_list %}">Poll</a></h1>
         {% show_poll featured_poll %}
     {% endif %}
+    
+    <h1>Community Board</h1>
+    {% for article in community_list %}
+        <div class="img-article list">
+            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="50" height="50" alt="Title Here" class="left">
+            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
+            <br/>
+            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
+            <small>
+                {{ article.date|date:"D, j M Y, H:i" }}
+                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
+            </small>
+        </div>
+    {% endfor %}
+    <div class="more"><a href="{% url community_jobs %}">more...</a></div>
+
+    <br/>
+    <h2>Have something to share?</h2>
+    <div class="bullet"><a href="{% url jobs_create %}">Add a job</a></div>
+    <h2>Connect with others?</h2>
+    <div class="bullet"><a href="{% url add_connection_by_industry %}">Find other users</a></div>
+
+    {% load your_words_tags %}
+    {% get_your_words_competitions %}
+    {% if your_words_list %}
+    <h1>Your Words Competition</h1>
+    {% for competition in your_words_list %}
+    <div class="img-article">
+        <img src="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+        <div><a href="{% url your_story competition.pk %}">{{ competition.title }}</a></div>
+        <span>{{ competition.description }}</span>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <br/>
     {% if user.is_authenticated %}
-        <h4><em>Quick links</em></h4>
-        <div class="list">
-        <div class="bullet"><a href="{% url jobs_province %}">Browse jobs &rarr;</a></div>
-        <div class="bullet"><a href="{% url profile %}">Update my profile &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
+    <h2>My Ummeli</h2>
+    <div class="menu">
+        <div><a href="{% url profile %}">My Profile</a>
+            <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span>
         </div>
-    {% else %} 
-        <h1><a href="{% url jobs_province %}">Browse Jobs</a></h1>
-        <div class="list">
-        {% for province in provinces %}
-            <div class="bullet"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
-        {% endfor %}
+        <div><a href="{% url my_connections %}">My Connections</a>
+            {% if user_profile.connection_requests.exists %}
+            <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
+            {% else %}
+            <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
+            {% endif %}
         </div>
-        <div><a href="{% url jobs_province %}">more...</a></div>
+        <div><a href="{% url my_jobs %}">My Jobs</a>
+            <span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span>
+        </div>
+        <div><a href="{% url my_settings %}">My Settings &rarr; </a></div>
+    </div>
     {% endif %}
 {% endblock %}

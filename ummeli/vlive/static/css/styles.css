@@ -42,7 +42,7 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 .paging .current{color: #4c6c7e}  
 .paging a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-weight:bold;} 
 
-#menu div{border-bottom: 2px solid #f1f2f3;padding:5pt 0 5pt 10pt;background:url(../images/bullet.gif) 0 8pt no-repeat;}
+#menu div, .menu div{border-bottom: 2px solid #f1f2f3;margin-left:5px;padding:5pt 0 5pt 10pt;background:url(../images/bullet.gif) 0 8pt no-repeat;}
 #menu div:last-child{border-bottom:none}
 /*---------------------------
 4.	Images
@@ -66,13 +66,13 @@ img.banner {width:100%; margin:0 0 10pt;}
 /*---------------------------
 6.	Fonts
 -----------------------------*/
-h1 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; border-top:2px dotted #999; border-bottom:2px dotted #999;}
+h1 { color:#577384; font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; border-top:2px dotted #999; border-bottom:2px dotted #999;}
 h2 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:0; padding:5px; background:#577384; color: #fff;}
 h3 { font:bold 115%/130% "Arial", Helvetica, sans-serif; margin:0 0 10pt;}
 h4 { font:bold 103%/130% "Arial", Helvetica, sans-serif; margin:0;}
 	h4 em {display:block; color:#577384; font-style:italic;}
-p {font-size:100%; line-height:135%; margin:0 0 10pt;}
-	p a {color:#c36e01; font-weight:bold;}
+p {font-size:100%; line-height:135%; margin:0 5px 10pt;}
+	p a, .more a {color:#c36e01; font-weight:bold;}
 em {font-style:normal;font-weight:bold;}
 input, textarea, select {display: block; font:90% "Arial", Helvetica, sans-serif;}
 .form-fields input, input.txt {width: 98%; height: 18px}
@@ -81,12 +81,14 @@ input.radio {margin: 5px 5px 0 0; display:inline; }
 input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; background: #F7F6F6;}
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
-.bullet {padding:2pt 0 2pt 10pt; background:url(../images/bullet.gif) 0 5pt no-repeat;}
+.bullet {margin-left:5px; padding:2pt 0 2pt 10pt; background:url(../images/bullet.gif) 0 5pt no-repeat;}
 .list, .comment_list {clear:both; margin:0; padding-top:5px; width:100%; line-height:20px;overflow: hidden}
 .success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
 .warning{background-color:#c00;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
 .success a,.warning a{color:#fff;text-decoration:underline}
 .more{padding:3px}
+span.subtext,span.subtext a,span.subtext a:link,span.subtext a:visited{color:#666;font-size: 0.9em;}
+h1 span.subtext{color:#aaa;font-size: 0.9em}
 /*---------------------------
 8.	Footer
 -----------------------------*/
@@ -106,6 +108,8 @@ input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; backgro
 10.	Article
 -----------------------------*/
 .article h4 a{color: #C36E01;}
+img.left{float: left;margin: 5px 5px 0 0;}
+.img-article{min-height:50px;padding:3px;}
 
 /*---------------------------
 11.	Poll
