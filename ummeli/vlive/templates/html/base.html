@@ -9,12 +9,11 @@
     <div class="header">
         <a href="{% url index %}"><img src="{{ STATIC_URL }}images/mobi-logo.gif" alt="Ummeli" /></a>
     </div>
-    <div class="nav"><a href="{% url home %}">Home</a> | <a href="{% url article_list %}">News</a> | <a href="{% url jobs_province %}">Jobs</a>
-    {% if user.is_authenticated %}
-        | <a href="{% url profile %}">My Profile</a>
-    {% else %}
-        | <a href="{% url login %}?next={% url home %}">Sign In</a>
-    {% endif %}
+    <div class="nav">
+        <a href="{% url home %}">Home</a>&nbsp;|&nbsp;
+        <a href="{% url jobs_province %}">Work</a>&nbsp;|&nbsp;
+        <a href="{% url tips %}">Tips</a>&nbsp;|&nbsp;
+        <a href="{% url my_ummeli %}">My Ummeli</a>
     </div>
     <div class="ruler"></div>
     {% if messages %}
@@ -28,15 +27,15 @@
     {% block content %}
     {% endblock %}
     <br/>
-    <div class="ruler"></div>
-    <div class="bullet"><a href="{% url home %}">Home</a></div>
-    <div class="bullet"><a href="{% url jobs_province %}">Browse jobs</a></div>
-    <div class="bullet"><a href="{% url jobs_create %}">Add a job</a></div>
-    <div class="bullet"><a href="{% url profile %}">My Profile</a></div>
-    {% if user.is_authenticated %}
-    <div class="bullet"><a href="{% url password_change %}?{{uuid}}">Change PIN</a></div>
-    {% endif %}
-    <br/>
+    <h2>Menu</h2> 
+    <div id="menu">
+        <div><a href="{% url home %}">Home</a></div>
+        <div><a href="{% url article_list %}">Latest</a></div>
+        <div><a href="{% url jobs_province %}">Work</a></div>
+        <div><a href="{% url community_jobs %}">Community Board</a></div>
+        <div><a href="{% url tips %}">Tips</a></div>
+        <div><a href="{% url my_ummeli %}">My Ummeli</a></div>
+    </div>
 </div>
 <div class="footer">
     <div class="wrapper">

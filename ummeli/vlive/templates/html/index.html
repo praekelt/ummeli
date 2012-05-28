@@ -4,8 +4,8 @@
 {% load poll_tags %}
     
 {% block content %}
-    <p>Ummeli lets you <a href="{% url jobs_province %}">find jobs</a>, <a href="{% url profile %}">build your profile</a> &amp; <a href="#">connect with people</a> you know to create your own employment opportunities. <a href="/about/">Learn more...</a></p>
-    <h4><a href="{% url article_list %}">News</a></h4>
+    <p>Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></p>
+    <h1><a href="{% url article_list %}">News</a></h1>
     {% get_articles 4 "article_list" %}
     <div class="list">
        {% for article in article_list %}
@@ -29,7 +29,7 @@
         <div class="bullet"><a href="{% url profile %}">Update my profile &rarr; ({{user_profile.fields_complete|floatformat:0}}% Complete)</a></div>
         </div>
     {% else %} 
-        <h4><a href="{% url jobs_province %}">Browse Jobs</a></h4>
+        <h1><a href="{% url jobs_province %}">Browse Jobs</a></h1>
         <div class="list">
         {% for province in provinces %}
             <div class="bullet"><a href="{% url jobs_list province.search_id %}">{{province.name}} ({{province.articles_count|add:province.userarticles_count}})&rarr;</a></div>
