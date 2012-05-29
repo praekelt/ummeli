@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h4><a href="{% url article_list %}">News</a></h4>
+<h2>Latest</h2>
 <ul class="list">
     {% for article in article_list %}
-    <li>
-        <a href="{% url article_detail article.pk %}">{{ article.title }}</a> {{ article.description }}<br />
-        <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+    <li class="img-article article">
+    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+        <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}<br />
+        <small>{{ article.published_on|date:"D, j M Y" }}</small>
     </li>
     {% endfor %}
 </ul>

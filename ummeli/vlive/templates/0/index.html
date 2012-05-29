@@ -14,7 +14,7 @@
             <div><a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a></div>
             <span>{{ article.description }}</span>
             <br/>
-            <small>{{ article.updated|date:"D, j M Y" }}</small>
+            <small>{{ article.published_on|date:"D, j M Y" }}</small>
         </div>
     {% endfor %}
     <div class="list"><a href="{% url article_list %}">more...</a></div>

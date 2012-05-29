@@ -14,7 +14,7 @@
 
     <span class="byline news">
         <small>
-        {{ article.updated|date:"D, j M Y, H:i" }} //
+        {{ article.published_on|date:"D, j M Y" }} //
         <a href="#comment_list">
         	{{ comment_count.count }} comment{{ comment_count|pluralize }}
         </a><br />

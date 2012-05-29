@@ -24,7 +24,7 @@ a:hover {text-decoration:underline;}
 body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 url(../images/bg.jpg) repeat; margin:0; padding:0; border:0px none;}
 .wrapper {margin:0; padding:0 10px; border:0px none; max-width:500px; min-width:180px; margin:0 auto; text-align:left;}
 *html .wrapper {width:400px;}
-       
+.right{float: right;}       
 
 /*---------------------------
 2.	Header
@@ -68,6 +68,7 @@ img.banner {width:100%; margin:0 0 10pt;}
 -----------------------------*/
 h1 { color:#577384; font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; border-top:2px dotted #999; border-bottom:2px dotted #999;}
 h2 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:0; padding:5px; background:#577384; color: #fff;}
+	h2 a{color:#E9BC00; font-weight:bold;}
 h3 { font:bold 115%/130% "Arial", Helvetica, sans-serif; margin:0 0 10pt;}
 h4 { font:bold 103%/130% "Arial", Helvetica, sans-serif; margin:0;}
 	h4 em {display:block; color:#577384; font-style:italic;}
@@ -98,23 +99,45 @@ h1 span.subtext{color:#aaa;font-size: 0.9em}
 /*---------------------------
 9.	Comments
 -----------------------------*/
-.comment_list .t {clear:both; background:#d9dcde;}
-.comment_list h4 a{color: #C36E01;}
-.comment_list .b {clear:both; background:#eaedef;}
-.comment_list .r {float: right;}
-.comment_list .b a {color: #20bcbe;}
+.comment_list .comment{margin: 5px 0; padding: 5px;}
+.comment_list span a{color: #C36E01;}
+.comment_list .even{background: #eee;}
+.comment_list span.likes, .comment_list span.tag{color: #666;}
 
 /*---------------------------
 10.	Article
 -----------------------------*/
+.article{
+	clear: left;
+	padding: 5px;
+	margin-bottom: 3px;
+	min-height: 72px;
+}
 .article h4 a{color: #C36E01;}
 img.left{float: left;margin: 5px 5px 0 0;}
 .img-article{min-height:50px;padding:3px;}
-
+.item-tools {font-size: small;color: #666;}
+span.likes, span.comments, span.tag { background-color: #ddd; padding: 3px 5px 3px 7px; margin: 3px 3px 3px 0; display: inline-block; min-width: 24px }
+span.comments {
+	background: #DDD url(/ummeli-static/images/comments.png) 5px 4px no-repeat;
+	padding-left: 22px;
+}
+span.likes {
+	background: #DDD url(/ummeli-static/images/likes.png) 5px 4px no-repeat;
+	padding-left: 22px;
+}
+.item-tools {font-size: small;color: #666;}
+.item-tools a{color: #C36E01;}
+span.likes, span.comments, span.tag{ -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px }
 /*---------------------------
 11.	Poll
 -----------------------------*/
 .poll .q {color: #C36E01;}
 
 
-
+/*--------------------------
+12. Pagination
+---------------------------*/
+#pagination {font-weight: bold; font-size: 0.9em; color: black;text-align: center;background: #D9DCDE;padding: 5px;}
+	#pagination span {margin: 0;padding: 2px;}
+		#pagination span a{color:#BC7E12}

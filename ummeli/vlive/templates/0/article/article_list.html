@@ -9,7 +9,7 @@
         <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}
     </div>
     <span class="byline news">
-        <small>{{ article.updated|date:"D, j M Y, H:i" }}</small>
+        <small>{{ article.published_on|date:"D, j M Y" }}</small>
     </span>
     </div>
     {% endfor %}

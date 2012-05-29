@@ -7,21 +7,22 @@
 
 
 {% block content %}
-<h4><a href="{% url article_list %}">News</a></h4>
-<div class="article list">
-    <h4><a href="{% url article_detail article.pk %}">{{ article.title }}</a></h4>
+<h2><a href="{% url article_list %}">Latest</a> &raquo;  {{article.title}}</h2>
+<div class="article">
+    <div class="article">
+    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="56" height="56" alt="Title Here" class="left">
+    <div class="h3">{{ article.description }}</div>
 
     <small>
-        {{ article.updated|date:"D, j M Y, H:i" }} //
-        <a href="#comment_list">
-        	{{ comment_count.count }} comment{{ comment_count|pluralize }}
-        </a><br />
-        {{ article.like_count }} Like{{ article.like_count|pluralize }}
-
-        {% if user.is_authenticated %}
-            <a href="like/">+Like</a>
-        {% endif %}
+        {{ article.published_on|date:"D, j M Y" }}
     </small>
+    <div class="item-tools no-clear">
+        <span class="comments"><a href="#comment_list">{{ comment_count }}</a></span>
+        <span class="likes">{{ article.like_count }}</span>
+        {% if user.is_authenticated %}
+        <span class="tag"><a href="{% url article_detail article.pk %}like/" class="like">+Like</a></span>
+        {% endif %}
+    </div>
 </div>
 
 <div class="wrap">
@@ -68,21 +69,21 @@
     {% endwith %}
     <p></p>
 {% endif %}
-<h4 id="comment_list">{{ comment_count }} comment{{ comment_count|pluralize }}</h4>
+<h2>{{ comment_count }} comment{{ comment_count|pluralize }}</h2>
 
-<div class="comment_list">
+<div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
-        <div id="c{{ comment.id }}">
-            <div class="t">
+        <div class="comment {% cycle 'even' 'odd' %}">
+            <div>
                 <!-- link to user profile -->
-                    <strong>
                         {% if comment.user.get_profile.fullname %}
                             <a href="{% url profile_view comment.user.pk %}">{{ comment.user.get_profile.fullname }}</a>
                         {% else %}
                             Anon.
                         {% endif %}
+                    <span class="subtext">
                     - {{ comment.submit_date|date:"D, j M Y, H:i" }}
-                    </strong>
+                </span>
             </div>
 
             <div>{% spaceless %}
@@ -97,14 +98,16 @@
                 {% endif %}{% endspaceless %}
             </div>
 
-            <div class="b">
-                <span>
+            <div>
+                <span class="likes">
                     {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
-                    {% if user.is_authenticated %}
-                        <a href="{% url comment_like comment.pk %}">+Like</a>
-                    {% endif %}
                 </span>
-                <span class="r">
+                    {% if user.is_authenticated %}
+                    <span class="tag">
+                        <a href="{% url comment_like comment.pk %}">+Like</a>
+                        </span>
+                    {% endif %}
+                <span class="tag right">
                     {% if user.is_authenticated %}
                         <a href="{% url comment_flag comment.pk %}">Report</a>
                     {% endif %}
@@ -116,15 +119,22 @@
 
 <br/>
 
-<div class="wrap pagination">
-    {% if comment_list.has_next %}
-        <a href="{% url article_detail article.pk comment_list.next_page_number %}">&larr; Newer comments</a>
-    {% endif %}
-    <span class="r">
+<div id="pagination">
     {% if comment_list.has_previous %}
-        <a href="{% url article_detail article.pk comment_list.previous_page_number %}">Older Comments &rarr;</a>
+        <span><a href="{% url article_detail_redo article.pk comment_list.previous_page_number %}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
     {% endif %}
+
+    <span class="current">
+        Page {{ comment_list.number }} of {{ comment_list.paginator.num_pages }}
     </span>
+
+    {% if comment_list.has_next %}
+        | <span><a href="{% url article_detail_redo article.pk comment_list.next_page_number %}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
 </div>
 
 
@@ -152,6 +162,8 @@
                 <p>
                     Write your comment:
                     <br/>
+                    <a href="{% url my_comment_settings %}">Change your comment name
+                    </a><br/>
                     <div class="form-fields">
                     {{ form.comment }}
                     </div>

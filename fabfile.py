@@ -14,6 +14,11 @@ def push():
     with cd(env.path):
         run('git pull')
 
+def static():
+    with cd(env.path):
+        run('ve/bin/python %(path)s/ummeli/manage.py collectstatic --noinput' % env)
+
+
 def deploy():
     with cd(env.path):
         run('git pull')

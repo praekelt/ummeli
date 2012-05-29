@@ -11,8 +11,8 @@
     {% for article in article_list %}
         <div class="img-article list">
             <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
-            <div><a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a></div>
-            <span>{{ article.description }}</span>
+            <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a>
+            {{ article.description }}
             <br/>
             <small>{{ article.updated|date:"D, j M Y" }}</small>
         </div>
