@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        Community Board
+    </h2>
+    <strong>Submitted by Ummeli users</strong><br />
+    {% for article in articles.object_list %}
+        <div class="img-article list">
+            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left">
+            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatechars:30 }}</a> {{ article.text|truncatechars:50 }}
+            <br/>
+            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
+            <small>
+                {{ article.date|date:"D, j M Y, H:i" }}
+                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
+            </small>
+        </div>
+    {% endfor %}
+        
+    <div id="pagination">
+        {% if articles.has_previous %}
+            <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |
+        {% else %}
+            <span>Previous</span> |
+        {% endif %}
+
+        <span class="current">
+            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+        </span>
+
+        {% if articles.has_next %}
+            | <span><a href="?page={{ articles.next_page_number }}">Next</a></span>
+        {% else %}
+            | <span>Next</span>
+        {% endif %}
+    </div>
+{% endblock %}
