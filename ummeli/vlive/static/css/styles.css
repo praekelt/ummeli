@@ -67,7 +67,7 @@ img.banner {width:100%; margin:0 0 10pt;}
 6.	Fonts
 -----------------------------*/
 h1 { color:#577384; font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; border-top:2px dotted #999; border-bottom:2px dotted #999;}
-h2 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:0; padding:5px; background:#577384; color: #fff;}
+h2 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:2px 0 0 0; padding:5px; background:#577384; color: #fff;}
 	h2 a{color:#E9BC00; font-weight:bold;}
 h3 { font:bold 115%/130% "Arial", Helvetica, sans-serif; margin:0 0 10pt;}
 h4 { font:bold 103%/130% "Arial", Helvetica, sans-serif; margin:0;}
