@@ -1,5 +1,4 @@
 {% load poll_tags %}
-<div class="poll list">
 <h4><em>{{ poll.question }}</em></h4>
 
 {% if poll|has_user_voted:user or show_results %}
@@ -29,4 +28,3 @@
         </p>
     </form>
 {% endif %}
-</div>
