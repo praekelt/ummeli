@@ -106,6 +106,23 @@ h1 span.subtext{color:#aaa;font-size: 0.9em}
 /*---------------------------
 10.	Article
 -----------------------------*/
+form.content-form {
+	margin: .5em 0;
+	padding: 5px;
+}
+
+form.content-form fieldset label{
+	display: block;
+}
+
+form.content-form fieldset input{
+	display: inline;
+}
+
+input[type="radio"] {
+	margin: 3px 3px 0px 5px;
+}
+
 .article{
 	clear: left;
 	padding: 5px;
