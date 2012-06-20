@@ -1,0 +1,42 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Jobs</h2>
+    <h2>Jobs Posted</h2>
+        {% if object_list %}
+        {% for item in object_list %}
+            <div class="img-article"><a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
+            <br/>
+            {{item.text|truncatewords:10}}
+            <br/>
+            <small>
+                {{ item.date|date:"D, j M Y, H:i" }}
+            </small>
+            <br/>
+            <div class="more"><a href="{% url my_jobs_delete item.pk %}">Delete</a></div>
+            </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div id="pagination">
+        {% if page_obj.has_previous %}
+            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
+        {% else %}
+            <span>Previous</span> |
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+        {% else %}
+            | <span>Next</span>
+        {% endif %}
+        </div>
+    
+        <div class="more"><a href="{% url jobs_create %}">+ Add another</a></div>
+        <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
+    </form>
+{% endblock %}
