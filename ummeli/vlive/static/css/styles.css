@@ -94,6 +94,7 @@ h1 span.subtext{color:#aaa;font-size: 0.9em}
 -----------------------------*/
 .footer {clear:both; padding:10pt 0; background:#d9dcde;}
 .footer p {}
+.footer .nav a{font-size: 0.8em}
 
 /*---------------------------
 9.	Comments
