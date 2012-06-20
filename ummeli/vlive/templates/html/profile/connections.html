@@ -1,41 +1,28 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h4>
-        <a href="{% url profile %}">My Profile</a>
-        {% if not is_self %}
-            &raquo; <a href="{% url connections request.user.pk %}">My Connections</a>
-            &raquo; <a href="{% url profile_view user_node.user_id %}">{{ other_user_node.name }}</a>
-            &raquo; Connections
-        {% endif %}
-        {% if is_self %}
-            &raquo; My Connections
-        {% endif %}
-    </h4>
+    <h2>
+        <a href="{% url my_ummeli %}">My Ummeli</a>
+        &raquo; <a href="{% url my_connections %}">My Connections</a>
+        &raquo; <a href="{% url profile_view user_node.user_id %}">{{ other_user_node.name }}</a>
+        &raquo; Connections
+    </h2>
         {% if connections %}
             {% for node, is_connected, is_already_requested, is_request_received in connections %}
-                <a href='{% url profile_view node.user_id %}'>&rarr; {{ node.name }}</a>
+                <div class="list">
                 {% if node.user_id == user.pk %}
+                    <a href='{% url profile %}'>{{ node.name }}</a>
                     <strong>(me)</strong>
                 {% else %}
-                    {% if not is_connected %}
-                        {% if not is_already_requested %}
-                            {% if not is_request_received %}
-                                <a href="{% url add_connection node.user_id %}?next={{request.path}}">[+ connect]</a>
-                            {% else %}
-                                <a href="{% url confirm_request node.user_id %}?next={{request.path}}">[+ accept]</a>
-                                <a href="{% url reject_request node.user_id %}?next={{request.path}}">[- reject]</a>
-                            {% endif %}
-                        {% else %}
-                            <small>[request pending]</small></a>
-                        {% endif %}
-                    {% endif %}
+                    <a href='{% url profile_view node.user_id %}'>{{ node.name }}</a>
+                    {% if node.primary_skill %} <span class="subtext">{{node.primary_skill}}</span>{% endif %}
                 {% endif %}
-                <br/>
+                </div>
             {% endfor %}
+            <br/>
         {% else %}
-            0 connections.
+            <p>0 connections.</p>
         {% endif %}
-        <br/>
+        
         <div class="more"><a href="{% url profile_view user_node.user_id %}">&larr; Back</a></div>
 {% endblock %}

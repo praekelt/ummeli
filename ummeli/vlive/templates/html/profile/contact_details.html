@@ -1,0 +1,37 @@
+{% extends "my_ummeli_base.html" %}
+{% load vlive_tags %}
+    
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; My Contact Info</h2>
+    <form class='content-form' method="post">
+    <fieldset>
+        <label>Phone number:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.telephone_number %}
+        <input name="telephone_number" type="text" class="txt" value="{{form.telephone_number.value}}"/>
+        
+        <label>Email:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.email %}
+        <input name="email" type="text" class="txt" value="{{form.email.value}}"/>
+        
+        <label>Address:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.address %}
+        <input name="address" type="text" class="txt" value="{% if form.address.value %}{{form.address.value}}{% endif %}"/>
+        
+        <label>City:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.city %}
+        <input name="city" type="text" class="txt" value="{% if form.city.value %}{{form.city.value}}{% endif %}"/>
+        
+        <label>Province:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.province %}
+        <select name="province">    
+            <option value="">Select</option>
+            {% for key, value in provinces %}
+                <option value="{{key}}" {% if form.province.value == key %}selected="selected"{% endif %}>{{value}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+{% endblock %}

@@ -1,18 +1,23 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h4><a href="{% url profile %}">Profile</a> &raquo; Job Roles</h4>
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; My Work</h2>
+        <div class="list">What is your field of work or interest?</div>
         {% for item in object_list %}
+            <div class="list">
             {% if item.primary %}
             <strong>
-            &rarr; <a href='{% url skills item.pk %}'>{{ item }}</a><br/>
+            <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span>
             </strong>
             {% else %}
-            &rarr; <a href='{% url skills item.pk %}'>{{ item }}</a> <a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a><br/>
+            <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span>
+            <br/><a href='{% url skills_primary item.pk %}'>[Mark as Primary Role]</a>
             {% endif %}
+            </div>
         {% endfor %}
         <br/>
+        {% if object_list.count < 3 %} 
         <div class="more"><a href="{% url skills_new %}">+ Add another</a></div>
+        {% endif %}
         <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
-    </form>
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</h2>
+    <form class='content-form' method="post">
+    <fieldset>
+        <div class="form-fields">            
+            <label>Language:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.language %}
+            <select name="language">
+                <option value=''>Select</option>
+                <option value="English" {% if form.language.value == 'English' %}selected="selected"{% endif %}>English</option>
+                <option value="Zulu" {% if form.language.value == 'Zulu' %}selected="selected"{% endif %}>Zulu</option>
+                <option value="Xhosa" {% if form.language.value == 'Xhosa' %}selected="selected"{% endif %}>Xhosa</option>
+                <option value="Afrikaans" {% if form.language.value == 'Afrikaans' %}selected="selected"{% endif %}>Afrikaans</option>
+                <option value="Ndebele" {% if form.language.value == 'Ndebele' %}selected="selected"{% endif %}>Ndebele</option>
+                <option value="Sepedi" {% if form.language.value == 'Sepedi' %}selected="selected"{% endif %}>Sepedi</option>
+                <option value="Setswana" {% if form.language.value == 'Setswana' %}selected="selected"{% endif %}>Setswana</option>
+                <option value="Nothern Sotho" {% if form.language.value == 'Nothern Sotho' %}selected="selected"{% endif %}>Nothern Sotho</option>
+                <option value="Venda" {% if form.language.value == 'Venda' %}selected="selected"{% endif %}>Venda</option>
+                <option value="Tsonga" {% if form.language.value == 'Tsonga' %}selected="selected"{% endif %}>Tsonga</option>
+                <option value="Siswati" {% if form.language.value == 'Siswati' %}selected="selected"{% endif %}>Siswati</option>
+            </select>
+        </div>
+            <label>Can you Read and Write in this language?</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.read_write %}
+            <input type="radio" name="read_write" value="True" {% if form.read_write.value %}checked="checked"{% endif %}/> Yes <br/>
+            <input type="radio" name="read_write" value="False" {% if not form.read_write.value %}checked="checked"{% endif %}/> No <br/>
+        <input type="submit" class="btn" value="Save" name="submit" /><br/>
+        {% if object.id %}
+        <div class="more">
+            <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
+        </div>
+        {% endif %}
+        
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
+{% endblock %}

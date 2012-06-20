@@ -1,0 +1,28 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</h2>
+    <h2>Add Connections</h2>
+    <!-- <div class="list"><a href="#">Add connection by Name</a></div> -->
+    <div class="bullet"><a href="{% url add_connection_by_industry %}">Add connection by type of work</a></div>
+    {% if user_profile.connection_requests.exists %}
+        <h2>Connection Requests <span class="subtext">({{user_profile.connection_requests.count}})</span></h2>
+        {% for user in user_profile.connection_requests.all %}
+            <div class="list">
+                <a href="{% url profile_view user.pk %}">{{user.get_profile.fullname}}</a><br/>
+                <a href="{% url confirm_request user.pk %}?next={{request.path}}">[+ Accept]</a>
+                <a href="{% url reject_request user.pk %}?next={{request.path}}">[- Decline]</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h2>My Connections <span class="subtext">({{user_profile.get_connnections_count}})</span></h2>
+        {% if request.user.get_profile.get_connections %}
+            {% for node in request.user.get_profile.get_connections %}
+                <div class="list"><a href='{% url profile_view node.user_id %}'>{{ node.name }}</a>{% if node.primary_skill %} <span class="subtext">{{node.primary_skill}}</span>{% endif %}</div>
+            {% endfor %}
+            <br/>
+        {% else %}
+            <p>0 connections.</p>
+        {% endif %}
+        <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
+{% endblock %}

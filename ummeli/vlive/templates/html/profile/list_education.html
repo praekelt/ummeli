@@ -1,0 +1,34 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; {{page_title}}</h2>
+    <h2>School Details</h2>
+    <form class='content-form' method="post" action="{% url edit_education %}">
+    <fieldset>
+        <label>Highest grade:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.highest_grade %}
+        <input name="highest_grade" type="text" class="txt" value="{% if user_profile.highest_grade %}{{user_profile.highest_grade}}{% endif %}"/>
+        
+        <label>Year:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.highest_grade_year %}
+        <input name="highest_grade_year" maxlength="4" type="text" class="txt" value="{% if user_profile.highest_grade_year %}{{user_profile.highest_grade_year}}{% endif %}"/>
+        
+        <label>School:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.school %}
+        <input name="school" type="text" class="txt" value="{% if user_profile.school %}{{user_profile.school}}{% endif %}"/>
+        
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <h2>Other education</h2>
+    {% if object_list %}
+    {% for item in object_list %}
+        <div class="list"><a href='{% url profile %}{{list_name}}/{{ item.pk }}'>&rarr; {{ item }}</a></div>
+    {% endfor %}
+    
+    {% endif %}
+    <div class="more"><a href="{% url profile %}{{list_name}}/new">+ Add more eduction</a></div>
+    <br/>
+    <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+{% endblock %}

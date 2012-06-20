@@ -1,24 +1,24 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h4><a href="{% url profile %}">Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; {{object}}</h4>
-    <br/>
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url skills %}">My Work</a> &raquo; {{object}}</h2>
     <form class='content-form' method="post">
     <fieldset>
         <strong>Experience Level</strong><br/>
         {% include "form_field_errors_snippet.html" with form_field=form.level %}
-        <input class="radio" type="radio" name="level" value="0" {% if object.level == 0 %}checked="checked"{% endif %}/><span>0 - 6 months</span><br/>
-        <input class="radio" type="radio" name="level" value="2" {% if object.level == 2 %}checked="checked"{% endif %}/><span>6 months - 2yrs</span><br/>
-        <input class="radio" type="radio" name="level" value="5" {% if object.level == 5 %}checked="checked"{% endif %}/><span>2 - 5 yrs</span><br/>
-        <input class="radio" type="radio" name="level" value="10" {% if object.level == 10 %}checked="checked"{% endif %}/><span>5 - 10 yrs</span><br/>
-        <input class="radio" type="radio" name="level" value="20" {% if object.level == 20 %}checked="checked"{% endif %}/><span>10+ yrs</span><br/>
-        
+        <input class="radio" type="radio" name="level" value="0" {% if object.level == 0 %}checked="checked"{% endif %}/>0 - 6 months<br/>
+        <input class="radio" type="radio" name="level" value="2" {% if object.level == 2 %}checked="checked"{% endif %}/>6 months - 2yrs<br/>
+        <input class="radio" type="radio" name="level" value="5" {% if object.level == 5 %}checked="checked"{% endif %}/>2 - 5 yrs<br/>
+        <input class="radio" type="radio" name="level" value="10" {% if object.level == 10 %}checked="checked"{% endif %}/>5 - 10 yrs<br/>
+        <input class="radio" type="radio" name="level" value="20" {% if object.level == 20 %}checked="checked"{% endif %}/>10+ yrs<br/>
+        <br/>
         <input type="hidden" name="skill" value="{{object.skill}}" />
         <input type="hidden" name="primary" value="{{object.primary}}" />
-        <input type="submit" class="btn" value="Save" name="submit" />
+        <input type="submit" class="btn" value="Save" name="submit" /><br/>
         {% if object.id %}
-            <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
-            <br/>
+        <div class="more">
+            <a href="{% url skills_delete object.pk %}">Delete</a>
+        </div>
         {% endif %}
         <br/>
         <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>

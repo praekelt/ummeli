@@ -1,11 +1,10 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h4>{{skill}} already added.</h4>
+    <h2>{{skill}} already added.</h2>
     <p>
     <strong>{{skill}}</strong> is already add to your profile.
     </p>
-    
     <div class="more"><a href="{% url skills %}">&larr; Back</a></div>
         
 {% endblock %}

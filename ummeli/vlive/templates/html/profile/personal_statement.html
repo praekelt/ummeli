@@ -1,0 +1,25 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; About me</h2>
+    <form class='content-form' method="post">
+    <fieldset>
+        Write anything you'd like about yourself, your skills and 
+        your work goals. (Tip: full words are better than txtspeak 
+        like gud or gr8) <a href="#">Learn more..</a>
+        <br/>
+        <br/>
+        <span class="subtext">
+            I am a young, ambitious designer looking for a part-time position in advertising.
+        </span>
+        <br/>
+        <label>About me:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.about_me %}
+        <input name="about_me" type="text" class="txt" value="{% if form.about_me.value %}{{form.about_me.value}}{%endif%}"/>
+        
+        <input type="submit" class="btn" value="Save" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{% url profile %}">&larr; Back</a></div>
+{% endblock %}

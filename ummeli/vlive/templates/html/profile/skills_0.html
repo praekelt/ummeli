@@ -1,13 +1,15 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h4><a href="{% url skills %}">Roles</a> &raquo; Choose a role</h4>
-<p>Select a role to add to your profile:</p>
+<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url profile %}">My Work</a> &raquo; new</h2>
+<p>
+Select your field of work or interest.
+</p>
 {% for skill in skills %}
-    <div class="list">
-    <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
+    <div class="bullet">
+        <a href="{% url skills_new skill.pk %}">{{skill.word}}</a>
     </div>
 {% endfor %}
-<div class="list"></div>
+<br/>
 <div class="more"><a href="{% url skills %}">&larr; Back</a></div>
 {% endblock %}

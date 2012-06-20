@@ -1,27 +1,34 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<div>
-        <div style="float: left"><img src="{{STATIC_URL}}images/sentry.png"/></div>
-        <div style="float: left; display: block;padding-left: 5px;">
-            <h4>
-                {{user_profile.fullname}}  - {{user_profile.primary_skill}}<a href="{% url edit_personal %}">[edit]</a>&nbsp;
-            </h4>
-            <a href="{% url connections user.pk %}">Connections ({{num_connections}})</a></br/>
-            <a href="{% url connection_requests %}">Requests ({{user_profile.connection_requests.count}})</a></br/>
-            <br/>
-            <h5>Other job roles:</h5>
-            {% if user_profile.skills.all %}
-                {% for skill in other_user_profile.other_skills.all %}
-                {{skill}}<br/>
-                {% endfor %}
-                <br/>
-            {% endif %}
-            <p><a href="{% url skills %}">[edit]</a></p>
-            <p style="text-align: center">"Young, ambitious designer."</p>
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Work Profile</h2>
+    <h2>
+        {{user_profile.fullname}}
+    </h2>
+    <div class="img-article">
+        <img src="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left">
+        <div>
+            <div class="h3">{{user_profile.primary_skill}}</div>
+            {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
+            {% if user_profile.date_of_birth %}DOB: {{user_profile.date_of_birth}} <br/>{% endif %}
         </div>
     </div>
-    <div style="clear: both"></div>
+    <div style="clear: both"></div><br/>
+    {% if user_profile.skills.all %}
+        <strong>Other areas of interest:</strong><br/>
+        {% for skill in user_profile.other_skills.all %}
+        <div class="bullet">{{skill}}</div>
+        {% endfor %}
+    {% endif %}
+    <p><em>"{{user_profile.about_me}}"</em></p>
     
-    {% include "profile/user_profile_detailed.html" with a_user_profile=user_profile user_is_self="True" %}
+    <h2>Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></h2>
+    <div class="bullet"><a href="{% url edit_personal %}">Personal Details</a></div>
+    <div class="bullet"><a href="{% url language_list %}">Languages</a></div>
+    <div class="bullet"><a href="{% url edit_contact %}">My Contact Info</a></div>
+    <div class="bullet"><a href="{% url edit_about_me %}">About Me</a></div>
+    <div class="bullet"><a href="{% url skills %}">My Work</a></div>
+    <!-- <div class="list"><a href="{% url skills %}">Attributes</a></div> -->
+    <div class="bullet"><a href="{% url work_experience_list %}">Work Experience</a></div>
+    <div class="bullet"><a href="{% url certificate_list %}">My Education</a></div>
 {% endblock %}

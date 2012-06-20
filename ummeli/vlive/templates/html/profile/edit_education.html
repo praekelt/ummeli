@@ -1,22 +1,21 @@
-{% extends "base.html" %}
+{% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h4><a href="{% url profile %}">Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</h4>
-    <br/>
+    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{{cancel_url}}">{{page_title}}</a> &raquo; edit</h2>
     <form class='content-form' method="post">
     <fieldset>
         <div class="form-fields">
-            <label>Course name:*</label>
+            <label>What course did you take? *</label>
             {% include "form_field_errors_snippet.html" with form_field=form.name %}
             <input type="text" name="name" id="id_name" value="{% if form.name.value %}{{form.name.value}}{% endif %}">
             
-            <label>Institution:</label>
+            <label>College or Institution:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.institution %}
             <input type="text" name="institution" value="{% if form.institution.value %}{{form.institution.value}}{% endif %}">
             
             <label>Year completed:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.year %}
-            <input type="text" name="year" value="{% if form.year.value %}{{form.year.value}}{% endif %}">
+            <input type="text" name="year" maxlength="4" value="{% if form.year.value %}{{form.year.value}}{% endif %}">
             
             <label>Duration:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.duration %}
@@ -30,12 +29,12 @@
         </div>
         <input type="submit" class="btn" value="Save" name="submit" />
         {% if object.id %}
+        <div class="more">
             <a href="{% url profile %}{{list_name}}/delete/{{ object.id }}/">Delete</a>
-            <br/>
+        </div>
         {% endif %}
-        <br/>
-        <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
         {% csrf_token %}
     </fieldset>
     </form>
+    <div class="more"><a href="{{cancel_url}}">&larr; Back</a></div>
 {% endblock %}
