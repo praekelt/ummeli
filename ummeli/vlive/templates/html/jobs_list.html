@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4><a href="{% url jobs_province %}">Jobs</a> &raquo; {{province_name}}</h4>
+    <h2><a href="{% url jobs_province %}">Jobs</a> &raquo; {{province_name}}</h2>
     <br/>
     {% for category in categories %}
         <div class="list"><a href="{% url jobs search_id category.pk %}">{{category.title}} ({{category.articles_count}})</a></div>

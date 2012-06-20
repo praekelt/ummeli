@@ -1,39 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4>
+    <h2>
         <a href="{% url jobs_province %}">Jobs</a> &raquo; 
         <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
         {{category_title}}
-    </h4>
+    </h2>
     <br/>
     <p><strong>*** = Submitted by Ummeli user</strong></p>
     {% for article in articles.object_list %}
         <div class="list">
-            <span class="date"><strong>{{article.date|date:'d M y'}}</strong></span> 
             <a href="{% url job search_id cat_id article.pk article.user_submitted %}">
                 {% if article.user_submitted %}<color value="blue">***</color>{% endif %}
                 {{ article.text|truncatewords:10 }}
             </a>
+            <br/>
+            <small>
+                {{ article.date|date:"D, j M Y" }}
+            </small>
+
         </div>
     {% endfor %}
     <br/>
-    <div class="paging">
+    <div id="pagination">
+        <span>
         {% if articles.has_previous %}
             <a href="?page={{ articles.previous_page_number }}">Previous</a> |
         {% else %}
             Previous |
         {% endif %}
-
+        </span>
         <span class="current">
             Page {{ articles.number }} of {{ articles.paginator.num_pages }}
         </span>
 
+        <span>
         {% if articles.has_next %}
             | <a href="?page={{ articles.next_page_number }}">Next</a>
         {% else %}
             | Next
         {% endif %}
+        </span>
     </div>
     <div class="more"><a href="{% url jobs_list search_id %}">&larr; Back to categories</a></div>
 {% endblock %}

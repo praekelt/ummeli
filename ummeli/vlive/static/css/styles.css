@@ -42,7 +42,7 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 .paging .current{color: #4c6c7e}  
 .paging a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-weight:bold;} 
 
-#menu div, .menu div{border-bottom: 2px solid #f1f2f3;margin-left:5px;padding:5pt 0 5pt 10pt;background:url(../images/bullet.gif) 0 8pt no-repeat;}
+#menu div, .menu div, .bullet{border-bottom: 2px solid #f1f2f3;margin-left:5px;padding:5pt 0 5pt 10pt;background:url(../images/bullet.gif) 0 8pt no-repeat;}
 #menu div:last-child{border-bottom:none}
 /*---------------------------
 4.	Images
@@ -82,7 +82,6 @@ input.radio {margin: 5px 5px 0 0; display:inline; }
 input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; background: #F7F6F6;}
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
-.bullet {margin-left:5px; padding:2pt 0 2pt 10pt; background:url(../images/bullet.gif) 0 5pt no-repeat;}
 .list, .comment_list {clear:both; margin:0; padding:5px; width:100%; line-height:20px;overflow: hidden}
 .success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
 .warning{background-color:#c00;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
