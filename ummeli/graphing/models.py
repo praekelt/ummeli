@@ -25,7 +25,7 @@ class Person(models.NodeModel):
             
     @classmethod
     def get_and_update(cls, user):
-        person = cls.objects.get_or_create(user_id=user.pk)
+        person, created = cls.objects.get_or_create(user_id=user.pk)
         person.name = user.get_profile().fullname()
         person.primary_skill = user.get_profile().primary_skill()
         person.save()

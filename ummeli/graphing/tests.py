@@ -24,12 +24,12 @@ class BaseTestCase(TestCase):
     def setUp(self):        
         cleandb()
         
-        self.joe = Person.objects.get_or_create(name='Joe', user_id=100)
-        self.bob = Person.objects.get_or_create(name='Bob', user_id=200)
-        self.alice = Person.objects.get_or_create(name='Alice', user_id=300)
-        self.susan = Person.objects.get_or_create(name='Susan', user_id=400)
-        self.will = Person.objects.get_or_create(name='Will', user_id=500)
-        self.pete = Person.objects.get_or_create(name='Pete', user_id=600)
+        self.joe, created = Person.objects.get_or_create(name='Joe', user_id=100)
+        self.bob, created = Person.objects.get_or_create(name='Bob', user_id=200)
+        self.alice, created = Person.objects.get_or_create(name='Alice', user_id=300)
+        self.susan, created = Person.objects.get_or_create(name='Susan', user_id=400)
+        self.will, created = Person.objects.get_or_create(name='Will', user_id=500)
+        self.pete, created = Person.objects.get_or_create(name='Pete', user_id=600)
         
         self.joe.knows.add(self.bob)
         self.joe.knows.add(self.alice)
