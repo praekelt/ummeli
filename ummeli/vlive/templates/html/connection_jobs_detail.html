@@ -10,8 +10,12 @@
     <div class="article">
         <strong>{{object.title}}</strong><br/>        
         {{ object.text }}
+        <br/>
+        <small>{{ object.date|date:"D, j M Y, H:i" }}</small>    
     </div>
     <div class="more"><a href="{% url connection_jobs user_id %}">&larr; Back to jobs</a></div>
+
+    <div class="ruler"></div>
     
     <h2>Apply for this job</h2>
     <form name="pd" method="POST" class="content-form" action="{% url connection_job_apply user_id object.pk %}"> 

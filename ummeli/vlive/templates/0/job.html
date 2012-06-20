@@ -12,7 +12,8 @@
         {% endif %}
             
         {{ job.text }}
-            
+        <br/>
+        <small>{{ job.date|date:"D, j M Y"  }}</small>    
         {% if not job.user_submitted %}
             <br /><br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>

@@ -1,18 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h4>
+    <h2>
         <a href="{% url jobs_province %}">Jobs</a> &raquo; 
         <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
         <a href="{% url jobs search_id cat_id %}">{{category_title}}</a>
-    </h4>
+    </h2>
     <p>
         {% if job.user_submitted %}
         <strong>{{job.source}}</strong><br/>
         {% endif %}
             
         {{ job.text }}
-            
+        <br/>
+        <small>{{ job.date|date:"D, j M Y"  }}</small>    
         {% if not job.user_submitted %}
             <br /><br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
