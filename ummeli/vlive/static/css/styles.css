@@ -86,7 +86,7 @@ input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; backgro
 .success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
 .warning{background-color:#c00;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
 .success a,.warning a{color:#fff;text-decoration:underline}
-.more{padding:3px}
+.more{clear:both;padding:3px}
 span.subtext,span.subtext a,span.subtext a:link,span.subtext a:visited{color:#666;font-size: 0.9em;}
 h1 span.subtext{color:#aaa;font-size: 0.9em}
 /*---------------------------
@@ -132,7 +132,7 @@ input[type="radio"] {
 }
 .article h4 a{color: #C36E01;}
 img.left{float: left;margin: 5px 5px 0 0;}
-.img-article{min-height:50px;padding:3px;}
+.img-article{clear:both;min-height:50px;padding:3px;}
 .item-tools {font-size: small;color: #666;}
 span.likes, span.comments, span.tag { background-color: #ddd; padding: 3px 5px 3px 7px; margin: 3px 3px 3px 0; display: inline-block; min-width: 24px }
 span.comments {
