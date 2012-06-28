@@ -235,13 +235,15 @@ SOUTH_TESTS_MIGRATE = False
 PISTON_DISPLAY_ERRORS = False
 AUTH_PROFILE_MODULE = "base.Curriculumvitae"
 LOGIN_URL = '/vlive/login/'
-LOGIN_REDIRECT_URL = '/vlive/'
+LOGIN_REDIRECT_URL = '/vlivCELERYe/'
 
 # If we're running in DEBUG mode then skip RabbitMQ and execute tasks
 # immediate instead of deferring them to the queue / workers.
 CELERY_ALWAYS_EAGER = False
 CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks")
 CELERY_RESULT_BACKEND = "amqp"
+CELERY_TASK_RESULT_EXPIRES = 3600
+
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
 MAX_LAUNCH_FAXES_COUNT = 2
