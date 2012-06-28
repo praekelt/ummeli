@@ -9,7 +9,9 @@
         <strong>{{job.title}}</strong><br/>
         {% if job.province %}<small><strong>{{job.province}}</strong></small><br/>{% endif %}
         {{ job.text }}
-        <br/><br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
+        <br/><br/>
+        <small>{{ job.date|date:"D, j M Y, H:i" }}</small>    
+        <br/>submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a>
     </div>
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>
