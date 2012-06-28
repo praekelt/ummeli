@@ -7,7 +7,7 @@
     <TEXT>
         {% if job.province %}<strong>{{job.province}}</strong><br/>{% endif %}
         {{ job.text }}
-        <br/>
+        <br/><br/>
         <small>{{ job.date|date:"D, j M Y, H:i" }}</small>    
         <br/><color value="blue">submitted by </color>
         <LINK href="{% url profile_view job.user.pk %}"><TEXT>{{job.user.get_profile.fullname}}</TEXT></LINK>
