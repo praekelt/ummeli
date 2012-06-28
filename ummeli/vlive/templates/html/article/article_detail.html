@@ -7,11 +7,11 @@
 
 
 {% block content %}
-<h2><a href="{% url article_list %}">Latest</a> &raquo;  {{article.title}}</h2>
+<h2><a href="{% url article_list %}">Latest</a></h2>
 <div class="article">
     <div class="article">
     <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="56" height="56" alt="Title Here" class="left">
-    <div class="h3">{{ article.description }}</div>
+    <h4>{{article.title}}</h4>
 
     <small>
         {{ article.published_on|date:"D, j M Y" }}
