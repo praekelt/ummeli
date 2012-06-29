@@ -1,6 +1,47 @@
-{% extends "base.html" %}
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{{title|default:"Ummeli"}}</title>
+        <link rel="stylesheet" type="text/css" href="/ummeli-static/css/styles.css" />
+    </head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <a href="{% url index %}"><img src="/ummeli-static/images/mobi-logo.gif" alt="Ummeli" /></a>
+    </div>
+    <div class="nav">
+        <a href="{% url home %}">Home</a>&nbsp;|&nbsp;
+        <a href="{% url jobs_province %}">Work</a>&nbsp;|&nbsp;
+        <a href="{% url tips %}">Tips</a>&nbsp;|&nbsp;
+        <a href="{% url my_ummeli %}">My Ummeli</a>
+    </div>
+    <div class="ruler"></div>
 
-{% block content %}
     <h4>500! Sorry. The seems to be a problem with the server. 
     Please try again later.</h4>
-{% endblock %}
+
+    <br/>
+    <h2>Menu</h2> 
+    <div id="menu">
+        <div><a href="{% url home %}">Home</a></div>
+        <div><a href="{% url article_list %}">Latest</a></div>
+        <div><a href="{% url jobs_province %}">Work</a></div>
+        <div><a href="{% url community_jobs %}">Community Board</a></div>
+        <div><a href="{% url tips %}">Tips</a></div>
+        <div><a href="{% url my_ummeli %}">My Ummeli</a></div>
+    </div>
+
+</div>
+<div class="footer">
+    <div class="wrapper">
+        <div class="nav">
+    <a href="{% url home %}?{{uuid}}">Home</a> | 
+    <a href="/about/">About</a> | 
+    <a href="/terms/">Terms</a> | 
+    <a href="{% url login %}?next={{request.path}}">Sign In</a>
+        &copy; {% now "Y" %} Ummeli
+        </div>
+    </div>
+</div>
+</body>
+</html>
