@@ -15,6 +15,10 @@
         <a href="{% url tips %}">Tips</a>&nbsp;|&nbsp;
         <a href="{% url my_ummeli %}">My Ummeli</a>
     </div>
+
+    {% block banner %}
+    {% endblock %}
+
     <div class="ruler"></div>
     {% if messages %}
     <div class="success">

@@ -3,9 +3,13 @@
 {% load article_tags %}
 {% load poll_tags %}
     
-{% block content %}
-    <p>Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></p>
-    
+{% block banner %}
+<div class="banner-ruler"></div>
+<img src="{{STATIC_URL}}images/banner1.jpg" class="banner"/>
+<p>Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></p>
+{% endblock %}
+
+{% block content %}    
     <h1 class="h2">Latest</h1>
     {% get_articles 3 "article_list" %}
     {% for article in article_list %}

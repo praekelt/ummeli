@@ -29,14 +29,14 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 /*---------------------------
 2.	Header
 -----------------------------*/
-.header {margin:0 0 8pt; padding:12pt 0 20pt; width:100%; text-align:center; background:url(../images/ruler.gif) 0 bottom repeat-x;}
+.header {margin:0; padding:12pt 0 20pt; width:100%; text-align:center; background:url(../images/ruler.gif) 0 bottom repeat-x;}
       
 
 /*---------------------------
 3.	Navigation
 -----------------------------*/
-.nav, .paging{width:100%; margin:0 0 10pt; clear:both; text-align:center; color:#4c6c7e;}
-	.nav a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-size:115%; font-weight:bold;} 
+.nav, .paging{width:100%; margin:1px 0 0 0; clear:both; text-align:center; color:#fff; padding: 10px 0; background: #577384;}
+	.nav a {margin:0 1pt; clear:both; text-align:center; color:#fff; font-size:115%; font-weight:bold;} 
 
 .paging {color: #999 !important;} 
 .paging .current{color: #4c6c7e}  
@@ -47,7 +47,8 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 /*---------------------------
 4.	Images
 -----------------------------*/
-img.banner {width:100%; margin:0 0 10pt;} 
+.banner-ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0; padding:0; width:100%; height:9px;}
+img.banner {width:100%; margin:0; padding-bottom: 2px; border-bottom: 5px solid #577384;} 
 
 
 /*---------------------------
@@ -66,7 +67,7 @@ img.banner {width:100%; margin:0 0 10pt;}
 /*---------------------------
 6.	Fonts
 -----------------------------*/
-h1 { color:#577384; font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; border-top:2px dotted #999; border-bottom:2px dotted #999;}
+h1 { color:#fff; font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:20px 0 5px 0; padding:5px; background: #577384}
 h2 { font:bold 100%/125% "Arial", Helvetica, sans-serif; letter-spacing:-0.01em; margin:2px 0 0 0; padding:5px; background:#577384; color: #fff;}
 	h2 a{color:#E9BC00; font-weight:bold;}
 h3 { font:bold 115%/130% "Arial", Helvetica, sans-serif; margin:0 0 10pt;}
@@ -83,8 +84,8 @@ input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; backgro
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .list, .comment_list {clear:both; margin:0; padding:5px; width:100%; line-height:20px;overflow: hidden}
-.success {clear: both; height: 18px; margin: -10px 0 5px; padding: 0; width: 100%; color: #fff; background: #393; font-weight: bold;}
-.warning{background-color:#c00;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
+.success {clear: both; height: 18px; margin: -10px 0 5px; padding: 5px; color: #fff; background: #21c0c2; font-weight: bold;}
+.warning{background-color:#ea2415;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
 .success a,.warning a{color:#fff;text-decoration:underline}
 .more{clear:both;padding:3px}
 span.subtext,span.subtext a,span.subtext a:link,span.subtext a:visited{color:#666;font-size: 0.9em;}
