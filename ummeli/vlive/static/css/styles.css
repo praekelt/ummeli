@@ -74,7 +74,7 @@ h3 { font:bold 115%/130% "Arial", Helvetica, sans-serif; margin:0 0 10pt;}
 h4 { font:bold 103%/130% "Arial", Helvetica, sans-serif; margin:0; color: #222;}
 	h4 em {display:block; color:#577384; font-style:italic;}
 p {font-size:100%; line-height:135%; margin:0 5px 10pt;}
-	p a, .more a {color:#c36e01; font-weight:bold;}
+	p a, .more a {color:#e99324; font-weight:bold;}
 em {font-style:normal;font-weight:bold;}
 input, textarea, select {display: block; font:90% "Arial", Helvetica, sans-serif;}
 .form-fields input, input.txt {width: 98%; height: 18px}
@@ -101,7 +101,7 @@ h1 span.subtext{color:#aaa;font-size: 0.9em}
 9.	Comments
 -----------------------------*/
 .comment_list .comment{margin: 5px 0; padding: 5px;}
-.comment_list span a{color: #C36E01;}
+.comment_list span a{color: #e99324;}
 .comment_list .even{background: #eee;}
 .comment_list span.likes, .comment_list span.tag{color: #666;}
 
@@ -131,7 +131,7 @@ input[type="radio"] {
 	margin-bottom: 3px;
 	min-height: 72px;
 }
-.article h4 a{color: #C36E01;}
+.article h4 a{color: #e99324;}
 img.left{float: left;margin: 5px 5px 0 0;}
 .img-article{clear:both;min-height:50px;padding:3px;}
 .item-tools {font-size: small;color: #666;}
@@ -145,12 +145,12 @@ span.likes {
 	padding-left: 22px;
 }
 .item-tools {font-size: small;color: #666;}
-.item-tools a{color: #C36E01;}
+.item-tools a{color: #e99324;}
 span.likes, span.comments, span.tag{ -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px }
 /*---------------------------
 11.	Poll
 -----------------------------*/
-.poll .q {color: #C36E01;}
+.poll .q {color: #e99324;}
 
 
 /*--------------------------

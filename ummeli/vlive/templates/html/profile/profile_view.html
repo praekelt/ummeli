@@ -25,10 +25,10 @@
     {% endif %}
     <p>
     <div class="ruler"></div>
-    <div class="list">
+    <div class="bullet">
         <a href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</a>
     </div>
-    <div class="list">
+    <div class="bullet">
         <a href="{% url connection_jobs other_user_pk %}">Jobs Posted ({{other_user_jobs}})</a>
     </div>
     
