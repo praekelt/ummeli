@@ -8,6 +8,27 @@
     </h2>
     <br/>
     <p><strong>*** = Submitted by Ummeli user</strong></p>
+    <div id="pagination">
+        <span>
+        {% if articles.has_previous %}
+            <a href="?page={{ articles.previous_page_number }}">Previous</a> |
+        {% else %}
+            Previous |
+        {% endif %}
+        </span>
+        <span class="current">
+            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+        </span>
+
+        <span>
+        {% if articles.has_next %}
+            | <a href="?page={{ articles.next_page_number }}">Next</a>
+        {% else %}
+            | Next
+        {% endif %}
+        </span>
+    </div>
+    
     {% for article in articles.object_list %}
         <div class="list-separated">
             <a href="{% url job search_id cat_id article.pk article.user_submitted %}">

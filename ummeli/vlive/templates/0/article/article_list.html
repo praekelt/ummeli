@@ -14,16 +14,22 @@
     </div>
     {% endfor %}
 <br/>
+
 <div id="pagination">
-    {% if page_obj.has_previous %}
-    <a href="{% url article_list page_obj.previous_page_number %}">
-        &lt; Newer articles
-    </a>
-    {% endif %}
-    {% if page_obj.has_next %}
-    <a href="{% url article_list page_obj.next_page_number %}">
-        Older articles &gt;
-    </a>
-    {% endif %}
-</div>
+        {% if page_obj.has_previous %}
+            <span><a href="{% url article_list page_obj.previous_page_number %}">Previous</a></span> |
+        {% else %}
+            <span>Previous</span> |
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            | <span><a href="{% url article_list page_obj.next_page_number %}">Next</a></span>
+        {% else %}
+            | <span>Next</span>
+        {% endif %}
+    </div>
 {% endblock %}
