@@ -16,7 +16,7 @@
     <div style="clear: both"></div>
     {% if other_user_profile.other_skills.all %}
         <strong>Other areas of interest:</strong><br/>
-        {% for skill in user_profile.other_skills.all %}
+        {% for skill in other_user_profile.other_skills.all %}
         {{skill}}<br/>
         {% endfor %}
     {% endif %}
