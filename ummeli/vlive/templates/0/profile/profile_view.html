@@ -6,7 +6,7 @@
         {{other_user_profile.fullname}} {% if is_self %}<a href="{% url profile %}">[edit]</a>{% endif %}
     </div>
     <div class="img-article">
-        <img src="{{STATIC_URL}}media/avatar_{{other_user_profile.primary_skill.level}}.jpg" width="50" height="50" alt="Title Here" class="left">
+        <img src="{{STATIC_URL}}media/avatar_{{other_user_profile.primary_skill.level}}.jpg" width="50" alt="Title Here" class="left">
         <div>
             {% if other_user_profile.primary_skill %}<div class="h3">{{other_user_profile.primary_skill}}</div>{% endif %}
             {% if other_user_profile.city %}{{other_user_profile.city}} <br/>{% endif %}

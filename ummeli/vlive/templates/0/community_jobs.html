@@ -7,7 +7,7 @@
     <strong>Submitted by Ummeli users</strong><br />
     {% for article in articles.object_list %}
         <div class="img-article list">
-            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="50" height="50" alt="Title Here" class="left">
+            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="50" alt="Title Here" class="left">
             <a href="{% url community_jobs article.pk %}">{{ article.title|truncatechars:30 }}</a> {{ article.text|truncatechars:50 }}
             <br/>
             {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}

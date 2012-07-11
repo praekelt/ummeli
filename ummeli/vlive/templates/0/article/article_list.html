@@ -4,7 +4,7 @@
 <div class="h2">Latest</div>
     {% for article in article_list %}
     <div class="img-article article">
-    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" alt="Title Here" class="left">
     <div>
         <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}
     </div>

@@ -9,7 +9,7 @@
 {% block content %}
 <div class="h2"><a href="{% url article_list %}">Latest</a> &raquo;  {{article.title}}</div>
 <div class="img-article article list">
-    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+    <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" alt="Title Here" class="left">
     <div class="h3">{{ article.title }}</div>
 
     <span class="byline news">

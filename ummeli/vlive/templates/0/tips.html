@@ -5,7 +5,7 @@
 <div class="content-area">
     {% for article in articles %}
     <div class="img-article list">
-        <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" height="50" alt="Title Here" class="left">
+        <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" alt="Title Here" class="left">
         <div>
             <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a> {{ article.description }}
         </div>

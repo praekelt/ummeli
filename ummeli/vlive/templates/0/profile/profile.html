@@ -6,7 +6,7 @@
         {{user_profile.fullname}}
     </div>
     <div class="img-article">
-        <img src="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" width="50" height="50" alt="Title Here" class="left">
+        <img src="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" width="50" alt="Title Here" class="left">
         <div>
             <div class="h3">{{user_profile.primary_skill}}</div>
             {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
