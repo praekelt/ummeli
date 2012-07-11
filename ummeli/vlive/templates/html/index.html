@@ -18,7 +18,7 @@
             <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a>
             {{ article.description }}
             <br/>
-            <small>{{ article.updated|date:"D, j M Y" }}</small>
+            <small>{{ article.published_on|date:"D, j M Y" }}</small>
         </div>
     {% endfor %}
     <div class="more"><a href="{% url article_list %}">more...</a></div>
@@ -56,7 +56,7 @@
     <h1>Your Words Competition</h1>
     {% for competition in your_words_list %}
     <div class="img-article">
-        <img src="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" width="56" height="56" alt="Title Here" class="left">
+        <img src="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" width="56" alt="Title Here" class="left">
         <div><a href="{% url your_story competition.pk %}">{{ competition.title }}</a></div>
         <span>{{ competition.description }}</span>
     </div>
