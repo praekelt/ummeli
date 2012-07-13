@@ -3,7 +3,7 @@
 {% load article_tags %}
 {% load poll_tags %}
 {% load your_words_tags %}
-    
+
 {% block content %}
     <div id="promotxt">Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></div>
     <div class="h2">Latest</div>
@@ -11,10 +11,13 @@
     {% for article in article_list %}
         <div class="img-article list">
             <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" alt="Title Here" class="left">
-            <div><a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a></div>
-            <span>{{ article.description }}</span>
-            <br/>
-            <small>{{ article.published_on|date:"D, j M Y" }}</small>
+            <div>
+                <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a><br/>
+                <span>{{ article.description }}</span>
+                <br/>
+                <small>{{ article.published_on|date:"D, j M Y" }}</small>
+            </div>
+            <br style="clear:both"/>
         </div>
     {% endfor %}
     <div class="list"><a href="{% url article_list %}">more...</a></div>
@@ -37,20 +40,23 @@
         </div>
     {% endfor %}
     <div class="list"><a href="{% url community_jobs %}">more...</a></div>
-    
+
     <div class="h2">Have something to share?</div>
     <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
     <div class="h2">Connect with others?</div>
     <div class="list"><a href="{% url add_connection_by_industry %}">Find other users</a></div>
-        
+
     {% get_your_words_competitions %}
     {% if your_words_list %}
     <div class="h2">Your Words Competition</div>
     {% for competition in your_words_list %}
     <div class="img-article">
         <img src="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" width="50" alt="Title Here" class="left">
-        <div><a href="{% url your_story competition.pk %}">{{ competition.title }}</a></div>
-        <span>{{ competition.description }}</span>
+        <div>
+            <a href="{% url your_story competition.pk %}">{{ competition.title }}</a><br/>
+            <span>{{ competition.description }}</span>
+        </div>
+        <br style="clear:both"/>
     </div>
     {% endfor %}
     {% endif %}
