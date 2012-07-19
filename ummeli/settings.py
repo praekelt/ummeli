@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
 
     #jmbo
+    'jmbo',
     'jmboarticles',
     'jmbocomments',
     'jmboarticles.video',
@@ -201,6 +202,12 @@ INSTALLED_APPS = (
     'jmbodashboard.geckoboard',
     'jmbowordsuggest',
     'jmboyourwords',
+
+    'downloads',
+    'sites_groups',
+    'publisher',
+    'photologue',
+    'secretballot',
 
     # 3rd party
     'ckeditor',

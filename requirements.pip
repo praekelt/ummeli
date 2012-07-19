@@ -36,3 +36,4 @@ django_geckoboard
 -e git+git://github.com/praekelt/jmbo-word-suggest.git@develop#egg=jmbo-word-suggest
 -e git+git://github.com/praekelt/jmbo-your-words.git@develop#egg=jmbo-your-words
 BeautifulSoup>=3.0.8.1
+-e git+https://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
