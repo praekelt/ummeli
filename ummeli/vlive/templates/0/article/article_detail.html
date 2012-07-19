@@ -52,20 +52,37 @@
     {% endif %}
 </div>
 
-{% if article.poll and article.poll.published %}
-<div class="h2">Poll</div>
-{% show_poll article.poll %}
+{% for poll in article.polls.all %}
+{% if poll and poll.published %}
+    <div class="h2">Poll</div>
+    {% show_poll poll %}
 {% endif %}
+{% endfor %}
 
 {% if article.video %}
-    <div class="h2" class="black">Video</div>
+    <div class="h2">Video</div>
+    <div class="wrap">
     {% with article.video as video %}
     <a href="{{video.video.url}}">
         <img src="{{video.thumbnail.url}}">
     </a>
     {% endwith %}
-    <p></p>
+    </div>
 {% endif %}
+
+{% if article.downloads.exists %}
+    <div class="h2">Downloads</div>
+    <div class="wrap">
+    {% for download in article.downloads.all %}
+        {% if download.state == 'published' %}
+        <a href="{{ download.get_absolute_url }}">
+            Download: {{download.title}}
+        </a><br/>
+        {% endif %}
+    {% endfor %}
+    </div>
+{% endif %}
+
 <div class="h2" id="comment_list">{{ comment_count }} comment{{ comment_count|pluralize }}</div>
 
 <div class="comment_list">

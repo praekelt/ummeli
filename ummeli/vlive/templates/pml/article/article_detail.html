@@ -48,13 +48,32 @@
     </TEXT>
 </CONTAINER>
 </MODULE>
-{% if article.poll and article.poll.published %}
+
+{% for poll in article.polls.all %}
+{% if poll and poll.published %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Poll</LABEL></HEADER>
 </MODULE>
-    {% show_poll article.poll %}
+    {% show_poll poll %}
 </MODULE>
 {% endif %}
+{% endfor %}
+
+{% if article.downloads.exists %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Downloads</LABEL></HEADER>
+</MODULE>
+<CONTAINER type="list">
+    {% for download in article.downloads.all %}
+        {% if download.state == 'published' %}
+        <LINK href="{{ download.get_absolute_url }}">
+            <TEXT>Download: {{download.title}}</TEXT>
+        </LINK>
+        {% endif %}
+    {% endfor %}
+</CONTAINER>
+{% endif %}
+
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
     {% if user.is_active %}
@@ -85,10 +104,10 @@
         {% endif %}
     {% else %}
         <CONTAINER type="data">
-            <TEXT><color value="red">Your account has been deactivated for violating our 
+            <TEXT><color value="red">Your account has been deactivated for violating our
                 <LINK href="/vlive/pages/terms/">
                     <TEXT>terms and conditions</TEXT>
-                </LINK>. If you feel you should not have been removed from this community, 
+                </LINK>. If you feel you should not have been removed from this community,
             you may send a query
                 <LINK href="{% url contactsupport %}">
                     <TEXT>here</TEXT>
@@ -143,7 +162,7 @@
     <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
-    <TEXT><br/>        
+    <TEXT><br/>
         {% if comment_list.has_previous %}
         <LINK href="{% url article_detail_redo article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
         {% endif %}

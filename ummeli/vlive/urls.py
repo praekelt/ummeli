@@ -12,19 +12,19 @@ urlpatterns = patterns('',
     url(r'^my/$', views.my_ummeli, name='my_ummeli'),
     url(r'^my/settings/$', views.my_settings, name='my_settings'),
     url(r'^my/settings/password_change/$', views.password_change_view, name = 'password_change'),
-    url(r'^my/settings/contact_privacy/$', 
+    url(r'^my/settings/contact_privacy/$',
         pin_required(login_required(views.MyContactPrivacyEditView.as_view())),
         name = 'my_contact_privacy'),
-    url(r'^my/settings/comment_settings/$', 
+    url(r'^my/settings/comment_settings/$',
         pin_required(login_required(views.MyCommentSettingsEditView.as_view())),
         name = 'my_comment_settings'),
-    
+
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout_view, name = 'logout'),
     url(r'^forgot/$', views.forgot_password_view, name = 'forgot'),
     url(r'^tips/$', views.tips, name = 'tips'),
     url(r'^contactsupport/$', views.contact_support, name = 'contactsupport'),
-    
+
     #Ummeli 2.0
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^article/', include('jmboarticles.urls')),
@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^yourwords/', include('jmboyourwords.urls')),
     url(r'^poll/', include('jmboarticles.poll.urls')),
     url(r'^my/profile/', include('ummeli.vlive.profile.urls')),
+    url(r'^downloads/', include('downloads.urls')),
 
     url(r'^send/$', views.send, name='send'),
     url(r'^send/thanks/$', views.send_thanks, name='send_thanks'),
@@ -42,14 +43,14 @@ urlpatterns = patterns('',
     url(r'^jobs/(?P<search_id>-\d+|\d+)/(?P<id>\d+)/$', views.jobs, name='jobs'),
     url(r'^jobs/(?P<search_id>-\d+|\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/$', views.job, name='job'),
     url(r'^jobs/(?P<search_id>-\d+|\d+)/(?P<cat_id>\d+)/(?P<id>\d+)/(?P<user_submitted>\d+)/$', views.job, name='job'),
-    
+
     url(r'jobs/connection/apply/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
         views.connection_job,
         name='connection_job_apply'),
 
     url(r'^community/jobs/$', views.community_jobs, name='community_jobs'),
     url(r'^community/jobs/(?P<id>\d+)/$', views.community_job, name='community_jobs'),
-    
+
     url(r'^jobs/cron/$', views.jobs_cron, name='jobs_cron'),
     url(r'^jobs/create/$', views.jobs_create, name='jobs_create'),
 )
