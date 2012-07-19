@@ -62,16 +62,16 @@
 {% if article.downloads.exists %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Downloads</LABEL></HEADER>
+    <CONTAINER type="list">
+        {% for download in article.downloads.all %}
+            {% if download.state == 'published' %}
+            <LINK href="{{ download.get_absolute_url }}">
+                <TEXT>Download: {{download.title}}</TEXT>
+            </LINK>
+            {% endif %}
+        {% endfor %}
+    </CONTAINER>
 </MODULE>
-<CONTAINER type="list">
-    {% for download in article.downloads.all %}
-        {% if download.state == 'published' %}
-        <LINK href="{{ download.get_absolute_url }}">
-            <TEXT>Download: {{download.title}}</TEXT>
-        </LINK>
-        {% endif %}
-    {% endfor %}
-</CONTAINER>
 {% endif %}
 
 <MODULE backgroundColor="false" palette="MiDove">
