@@ -5,6 +5,7 @@ handlers:
 wurfl:
   # All keys in Memcached are prefixed with this
   cache_prefix: hrb
+  cache_lifetime: 100
 
   # Connect to Memcached with the following parameters
   memcached:
