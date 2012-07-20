@@ -2,14 +2,14 @@
 
 {% load article_tags %}
 {% load poll_tags %}
-    
+
 {% block banner %}
 <div class="banner-ruler"></div>
 <img src="{{STATIC_URL}}images/banner1.jpg" class="banner"/>
 <p>Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></p>
 {% endblock %}
 
-{% block content %}    
+{% block content %}
     <h1 class="h2">Latest</h1>
     {% get_articles 3 "article_list" %}
     {% for article in article_list %}
@@ -25,10 +25,10 @@
 
     {% get_featured_poll "featured_poll" %}
     {% if featured_poll %}
-        <h1><a href="{% url article_list %}">Poll</a></h1>
+        <h2><a href="{% url article_list %}">Poll</a></h2>
         {% show_poll featured_poll %}
     {% endif %}
-    
+
     <h1>Community Board</h1>
     {% for article in community_list %}
         <div class="img-article">
