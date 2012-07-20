@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>{{title|default:"Ummeli"}}</title>
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/styles.css?v=1" />
     </head>
 <body>
 <div class="wrapper">
@@ -34,9 +34,9 @@
 <div class="footer">
     <div class="wrapper">
         <div class="nav">
-    <a href="{% url home %}?{{uuid}}">Home</a> | 
-    <a href="/about/">About</a> | 
-    <a href="/terms/">Terms</a> | 
+    <a href="{% url home %}?{{uuid}}">Home</a> |
+    <a href="/about/">About</a> |
+    <a href="/terms/">Terms</a> |
     {% if user.is_authenticated %}
     <a href="{% url logout %}">Sign Out</a>
     {% else %}

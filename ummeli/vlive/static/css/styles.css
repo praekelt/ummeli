@@ -1,14 +1,14 @@
-/*---------------------------    
-	Site Title website sections: 
+/*---------------------------
+	Site Title website sections:
 
 	0.	CSS Reset & Body
-	1.	Wrapper 
+	1.	Wrapper
 	2.	Header
 	3.	Navigation
 	4.	Images
-	5.	Icons & Copy  
-	6.	Fonts 
-	7.	Partners 
+	5.	Icons & Copy
+	6.	Fonts
+	7.	Partners
 	8.	Footer
 
 -----------------------------*/
@@ -22,25 +22,25 @@ ul, ol, li {list-style-type:none;}
 a {text-decoration:none; color:#465b67; }
 a:hover {text-decoration:underline;}
 body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 url(../images/bg.jpg) repeat; margin:0; padding:0; border:0px none;}
-.wrapper {margin:0; padding:0 10px; border:0px none; max-width:500px; min-width:180px; margin:0 auto; text-align:left;}
+.wrapper {margin:0; padding:0 10px; border:0px none; min-width:180px; margin:0 auto; text-align:left;}
 *html .wrapper {width:400px;}
-.right{float: right;}       
+.right{float: right;}
 
 /*---------------------------
 2.	Header
 -----------------------------*/
 .header {margin:0; padding:12pt 0 20pt; width:100%; text-align:center; background:url(../images/ruler.gif) 0 bottom repeat-x;}
-      
+
 
 /*---------------------------
 3.	Navigation
 -----------------------------*/
 .nav, .paging{width:100%; margin:1px 0 0 0; clear:both; text-align:center; color:#fff; padding: 10px 0; background: #577384;}
-	.nav a {margin:0 1pt; clear:both; text-align:center; color:#fff; font-size:115%; font-weight:bold;} 
+	.nav a {margin:0 1pt; clear:both; text-align:center; color:#fff; font-size:115%; font-weight:bold;}
 
-.paging {color: #999 !important;} 
-.paging .current{color: #4c6c7e}  
-.paging a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-weight:bold;} 
+.paging {color: #999 !important;}
+.paging .current{color: #4c6c7e}
+.paging a {margin:0 1pt; clear:both; text-align:center; color:#4c6c7e; font-weight:bold;}
 
 #menu div, .menu div, .bullet{border-bottom: 2px solid #f1f2f3;margin-left:5px;padding:5pt 0 5pt 10pt;background:url(../images/bullet.gif) 0 8pt no-repeat;}
 #menu div:last-child{border-bottom:none}
@@ -48,7 +48,7 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:black; background:#eceff1 
 4.	Images
 -----------------------------*/
 .banner-ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0; padding:0; width:100%; height:9px;}
-img.banner {width:100%; margin:0; padding-bottom: 2px; border-bottom: 5px solid #577384;} 
+img.banner {width:100%; margin:0; padding-bottom: 2px; border-bottom: 5px solid #577384;}
 
 
 /*---------------------------
@@ -59,10 +59,10 @@ img.banner {width:100%; margin:0; padding-bottom: 2px; border-bottom: 5px solid 
 	.icon-container .icon {float:left; width:75px; text-align:left; }
 		.icon-container .icon img {margin:0 10pt 0 0;}
 	.icon-container .copy {padding-left:75px;}
-		.icon-container .copy .message {display:none; } 
-		.icon-container .copy p {padding:2pt 0; margin:0;} 
-		.icon-container .copy p.controls {font-weight:bold;}			
-             
+		.icon-container .copy .message {display:none; }
+		.icon-container .copy p {padding:2pt 0; margin:0;}
+		.icon-container .copy p.controls {font-weight:bold;}
+
 
 /*---------------------------
 6.	Fonts
