@@ -10,11 +10,11 @@
 
 {% block content %}
 <HEADER><LABEL>Welcome to Ummeli!</LABEL></HEADER>
-<CONTAINER type="data">        
+<CONTAINER type="data">
     <TEXT>
-        Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find work</TEXT></LINK>, 
-        <LINK href="{% url profile %}?{{uuid}}"><TEXT>build a work profile</TEXT></LINK> &amp; 
-        <LINK href="{% url my_connections %}?{{uuid}}"><TEXT>connect with others</TEXT></LINK>. 
+        Ummeli lets you <LINK href="{% url jobs_province %}?{{uuid}}"><TEXT>find work</TEXT></LINK>,
+        <LINK href="{% url profile %}?{{uuid}}"><TEXT>build a work profile</TEXT></LINK> &amp;
+        <LINK href="{% url my_connections %}?{{uuid}}"><TEXT>connect with others</TEXT></LINK>.
         <LINK href="/vlive/pages/about/"><TEXT>Learn more...</TEXT></LINK>
     </TEXT>
 </CONTAINER>
@@ -49,16 +49,15 @@
 </CONTAINER>
 </MODULE>
 {% endif %}
-    
-{% get_featured_poll "featured_poll" %}
-{% if featured_poll %}
+
+{% get_featured_polls "featured_polls" %}
+{% for featured_poll in featured_polls %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Poll</LABEL></HEADER>
 </MODULE>
-    {% show_poll featured_poll %}
-</MODULE>
-{% endif %}
-    
+{% show_poll featured_poll %}
+{% endfor %}
+
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Community Board</LABEL></HEADER>
 </MODULE>
@@ -78,7 +77,7 @@
     </TEXT>
     </CONTAINER>
 </MODULE>
-{% endfor %}    
+{% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
 <TEXT>

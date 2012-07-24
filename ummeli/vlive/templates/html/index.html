@@ -23,11 +23,11 @@
     {% endfor %}
     <div class="more"><a href="{% url article_list %}">more...</a></div>
 
-    {% get_featured_poll "featured_poll" %}
-    {% if featured_poll %}
-        <h2><a href="{% url article_list %}">Poll</a></h2>
+    {% get_featured_polls "featured_polls" %}
+    {% for featured_poll in featured_polls %}
+        <h2>Poll</h2>
         {% show_poll featured_poll %}
-    {% endif %}
+    {% endfor %}
 
     <h1>Community Board</h1>
     {% for article in community_list %}

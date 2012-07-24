@@ -21,11 +21,13 @@
         </div>
     {% endfor %}
     <div class="list"><a href="{% url article_list %}">more...</a></div>
-    {% get_featured_poll "featured_poll" %}
-    {% if featured_poll %}
+
+    {% get_featured_polls "featured_polls" %}
+    {% for featured_poll in featured_polls %}
         <div class="h2">Poll</div>
         {% show_poll featured_poll %}
-    {% endif %}
+    {% endfor %}
+
     <div class="h2">Community Board</div>
     {% for article in community_list %}
         <div class="img-article list">

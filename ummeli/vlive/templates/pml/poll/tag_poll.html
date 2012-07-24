@@ -22,12 +22,12 @@
         <FORM method="post" href="{% url poll_vote poll.pk %}??{{uuid}}" submit_text="Vote">
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-            
+
             <CHOICE-GROUP name="choice_pk" type="radio">
             {% for c in poll.choice_set.all %}
                 <CHOICE value="{{ c.pk }}">{{ c.choice }}</CHOICE>
             {% endfor %}
-            </CHOICE-GROUP>            
+            </CHOICE-GROUP>
         </FORM>
     </CONTAINER>
     {% else %}
@@ -36,6 +36,7 @@
             <TEXT><b>{{ c.choice }}</b></TEXT><br/>
         {% endfor %}
         <TEXT><LINK href="{% url login %}">Sign in</LINK> or <LINK href="{% url register %}">register</LINK> to vote.</TEXT>
-    </CONTAINER>    
+    </CONTAINER>
     {% endif %}
 {% endif %}
+</MODULE>
