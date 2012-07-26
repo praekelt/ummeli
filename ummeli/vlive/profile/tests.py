@@ -180,6 +180,46 @@ class ProfileTestCase(VLiveTestCase):
         self.assertContains(resp, 'Jane Doe')
         self.assertNotContains(resp, 'Joe Blog')
 
+    def test_add_connection_by_name(self):
+        self.login()
+        self.fill_in_basic_info()
+
+        user = User.objects.get(username='27121111111')
+        user2 = User.objects.get(username='27122222222')
+
+        profile = user.get_profile()
+        profile.first_name = 'Joe'
+        profile.surname = 'Blog'
+        profile.province = 2
+        profile.save()
+
+        profile = user2.get_profile()
+        profile.first_name = 'Jane'
+        profile.surname = 'Doe'
+        profile.province = 1
+        profile.save()
+
+        resp = self.client.get(reverse('add_connection_by_first_name'))
+        self.assertContains(resp, 'Gauteng')
+
+        resp = self.client.post(reverse('add_connection_by_first_name'),\
+                                    {'name': 'joe', 'province': 1})
+        self.assertVLiveRedirects(resp,
+                                    reverse('add_connection_by_first_name_result',\
+                                        args=[1]))
+
+        resp = self.client.post(reverse('add_connection_by_first_name_result',
+                                    args=[1]),\
+                                {'name': 'jane', 'province': 1})
+        self.assertContains(resp, 'Jane Doe')
+        self.assertNotContains(resp, 'Joe Blog')
+
+        resp = self.client.post(reverse('add_connection_by_surname_result',
+                                    args=[0]),\
+                                {'name': 'blog'})
+        self.assertNotContains(resp, 'Jane Doe')
+        self.assertContains(resp, 'Joe Blog')
+
     def test_skills_views(self):
         self.login()
         self.fill_in_basic_info()

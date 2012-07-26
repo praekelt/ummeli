@@ -1,8 +1,6 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae,  UserSubmittedJobArticle, Skill, SKILL_LEVEL_CHOICES)
-from django.forms import (ModelForm, CheckboxInput,  Form, EmailField,
-                          RegexField,  CharField,  BooleanField,  IntegerField,
-                          Textarea,  ValidationError, RadioSelect)
+from django.forms import *
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -104,7 +102,7 @@ class PersonalStatementForm(PMLModelForm):
 
 class EducationDetailsForm(PMLModelForm):
     highest_grade = IntegerField(label = 'Highest grade passed',  required = False)
-    highest_grade_year = IntegerField(label = 'Year passed',  required = False, 
+    highest_grade_year = IntegerField(label = 'Year passed',  required = False,
                                       error_messages = {'invalid': 'Please enter a valid Year'})
     school = CharField(label = 'Name of school', required = False)
 
@@ -153,13 +151,13 @@ class ReferenceForm(PMLModelForm):
 class SkillForm(PMLModelForm):
     class Meta:
         model = Skill
-        
+
     skill = CharField(label = 'Skill')
     level = IntegerField(widget=RadioSelect(choices=SKILL_LEVEL_CHOICES))
-        
+
 class SkillWizardForm(PMLForm):
     skill = CharField(label = 'Skill')
-        
+
 class SkillWizardFormPick(PMLForm):
     selected_skill = CharField(label = 'Skill')
 
@@ -184,7 +182,7 @@ class UserSubmittedJobArticleForm(PMLModelForm):
     class Meta:
         model = UserSubmittedJobArticle
         fields = ('title',  'text')
-        
+
 class UserSubmittedJobArticleEditForm(PMLModelForm):
     province = CharField(required = True)
     job_category = CharField(required = True)
@@ -197,9 +195,9 @@ class UserSubmittedJobArticleEditForm(PMLModelForm):
 
 class ForgotPasswordForm(Form):
     username = RegexField('[0-9+]', required = True,
-                          error_message = 'Please enter a valid cellphone number.', 
+                          error_message = 'Please enter a valid cellphone number.',
                           label="Enter the cellphone number to reset the pin for.")
-                          
+
     def clean_username(self):
         """
         Validates that an active user exists with the given e-mail address.
@@ -213,7 +211,7 @@ class ForgotPasswordForm(Form):
 
 class MobiUserCreationForm(UserCreationForm):
     username = RegexField(
-        label='Phone number', 
+        label='Phone number',
         regex=r'^[0-9]+$',
         help_text = 'Required. Valid phone number in the format: 0821234567',
         error_message = 'Please enter a valid phone number without spaces. e.g 0821234567')
@@ -227,12 +225,8 @@ class MyContactPrivacyForm(PMLModelForm):
     class Meta:
         model = CurriculumVitae
         fields = ('show_contact_number', 'show_address')
-        
+
 class MyCommentSettingsForm(PMLModelForm):
     class Meta:
         model = CurriculumVitae
         fields = ('comment_as_anon', )
-        
-class IndustrySearchForm(PMLForm):
-    industry = IntegerField(required = True)
-    province = IntegerField(required = True)

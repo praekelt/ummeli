@@ -1,0 +1,54 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Add Connection</LABEL></HEADER>
+<CONTAINER type="data">
+Search: "{{name}}" | "{{province}}"
+</CONTAINER>
+{% for profile in user_profiles.object_list %}
+    <CONTAINER type="list">
+    <LINK href="{% url profile_view profile.user.pk %}">
+        <TEXT>{{ profile.fullname }}</TEXT>
+    </LINK>
+    </CONTAINER>
+    <CONTAINER type="data">
+    <TEXT>
+        {% if profile.primary_skill or profile.province %}
+        {{profile.primary_skill.skill}}
+        {% if profile.province %}
+            {% for key, value in provinces %}
+            {% if profile.province == key %}({{value}}){%endif%}
+            {% endfor %}
+        {%endif%}
+        {% endif %}
+    </TEXT>
+    </CONTAINER>
+{% empty %}
+    <CONTAINER type="data">
+    <TEXT>0 users found.</TEXT>
+    </CONTAINER>
+{% endfor %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% if user_profiles.has_previous %}
+    <LINK href="{% url add_connection_by_surname_result province_pk user_profiles.previous_page_number %}?name={{name}}&amp;{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if user_profiles.has_next %}
+    <LINK href="{% url add_connection_by_surname_result province_pk user_profiles.next_page_number %}?name={{name}}&amp;{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url add_connection_by_industry %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

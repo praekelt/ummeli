@@ -105,6 +105,12 @@
         <LABEL>Connect with others?</LABEL>
     </HEADER>
     <CONTAINER type="list">
+    <LINK href="{% url add_connection_by_first_name %}">
+        <TEXT>Search by name</TEXT>
+    </LINK>
+    <LINK href="{% url add_connection_by_surname %}">
+        <TEXT>Search by surname</TEXT>
+    </LINK>
     <LINK href="{% url add_connection_by_industry %}">
         <TEXT>Find other users</TEXT>
     </LINK>

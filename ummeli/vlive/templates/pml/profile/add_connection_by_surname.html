@@ -1,0 +1,31 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Find other users</LABEL></HEADER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Search">
+        <TEXT position="ABOVE">Province:</TEXT>
+        <SELECT name="province">
+            <ITEM value='0'>All</ITEM>
+            {% for key, value in provinces %}
+                <ITEM value='{{key}}'>{{value}}</ITEM>
+            {% endfor %}
+        </SELECT>
+        <TEXT position="ABOVE">Surname name:</TEXT>
+        <FIELD name="name" type="text" default="{% if form.name.value %}{{form.name.value}}{% endif %}"/><br/>
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url my_connections %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
-                                WorkExperienceForm, LanguageForm, 
+                                WorkExperienceForm, LanguageForm,
                                 ReferenceForm, SkillForm,
-                                PersonalStatementForm, 
+                                PersonalStatementForm,
                                 UserSubmittedJobArticleForm,
-                                UserSubmittedJobArticleEditForm,
-                                IndustrySearchForm)
+                                UserSubmittedJobArticleEditForm)
+from ummeli.vlive.profile.forms import IndustrySearchForm,\
+                                        ConnectionNameSearchForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -42,10 +43,10 @@ def profile_view(request, user_id):
     other_user = get_object_or_404(User, pk=user_id)
     other_user_node = Person.get_and_update(other_user)
     num_connections = len(other_user_node.connections())
-    
+
     already_requested = other_user.get_profile().is_connection_requested(request.user.pk)
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
-    return render(request, 'profile/profile_view.html', 
+    return render(request, 'profile/profile_view.html',
                 {'other_user_profile': other_user.get_profile(),
                 'other_user_jobs': other_user.user_submitted_job_article_user.count(),
                  'other_user_pk':other_user.pk,
@@ -60,21 +61,21 @@ def profile_view(request, user_id):
 @pin_required
 def my_connections(request):
     return render(request, 'profile/my_connections.html')
-                 
+
 @login_required
 @pin_required
 def connections(request, user_id):
     other_user = get_object_or_404(User, pk = user_id)
     other_user_node = Person.get_and_update(other_user)
-    
+
     user_node = Person.get_and_update(request.user)
     connections = [(node, user_node.is_connected_to(node), \
                     request.user.connection_requests.filter(user__pk=node.user_id).exists(), \
                     request.user.get_profile().is_connection_requested(node.user_id)) \
                    for node in other_user_node.connections()]
-                   
+
     already_requested = other_user.get_profile().connection_requests.filter(pk=request.user.pk).exists()
-    return render(request, 'profile/connections.html', 
+    return render(request, 'profile/connections.html',
                 {'user_node': user_node,
                  'other_user_node': other_user_node,
                  'connections': connections,
@@ -87,16 +88,16 @@ def connections(request, user_id):
 def add_connection(request, user_id):
     if request.user.pk == user_id: #don't allow user to add themself as a connection
         redirect(reverse('profile'))
-    
+
     user = get_object_or_404(User, pk = user_id)
     profile = user.get_profile()
-    
-    if request.method == 'POST':        
+
+    if request.method == 'POST':
         profile.connection_requests.add(request.user)
-        
+
         redirect_to = request.POST.get('next', reverse('profile'))
         return redirect(redirect_to)
-    
+
     next = request.GET.get('next', reverse('profile'))
     return render(request, 'profile/add_connection.html',
                             {'other_user_profile': profile,
@@ -108,16 +109,16 @@ def add_connection(request, user_id):
 def confirm_request(request, user_id):
     user = get_object_or_404(User, pk = user_id)
     profile = user.get_profile()
-    
+
     if not request.user.get_profile().connection_requests.filter(pk=user_id).exists():
         raise Http404
-        
-    if request.method == 'POST':        
+
+    if request.method == 'POST':
         add_connection_for_user(user, request.user)
         request.user.get_profile().connection_requests.remove(user)
         redirect_to = request.POST.get('next', reverse('profile'))
         return redirect(redirect_to)
-    
+
     next = request.GET.get('next', reverse('profile'))
     return render(request, 'profile/confirm_request.html',
                             {'other_user_profile': profile,
@@ -130,22 +131,22 @@ def reject_request(request, user_id):
     user = get_object_or_404(User, pk = user_id)
     profile = user.get_profile()
     profile.connection_requests.remove(request.user)
-    
+
     if not request.user.get_profile().connection_requests.filter(pk=user_id).exists():
         raise Http404
-        
+
     if request.method == 'POST':
         request.user.get_profile().connection_requests.remove(user)
         redirect_to = request.POST.get('next', reverse('profile'))
         return redirect(redirect_to)
-    
+
     next = request.GET.get('next', reverse('profile'))
     return render(request, 'profile/reject_request.html',
                             {'other_user_profile': profile,
                              'other_user_pk':user.pk,
                              'next':next})
-                             
-                             
+
+
 @login_required
 @pin_required
 def connection_requests(request):
@@ -192,7 +193,7 @@ class PersonalDetailsEditView(UpdateView):
 
     def get_success_url(self):
         return reverse("profile")
-        
+
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()
 
@@ -203,15 +204,15 @@ class ContactDetailsEditView(UpdateView):
 
     def get_success_url(self):
         return reverse("profile")
-        
+
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()
-    
+
     def get_context_data(self, **kwargs):
         context = super(ContactDetailsEditView, self).get_context_data(**kwargs)
         context['provinces'] = PROVINCE_CHOICES
         return context
-    
+
 class PersonalStatementEditView(UpdateView):
     model = CurriculumVitae
     form_class = PersonalStatementForm
@@ -219,7 +220,7 @@ class PersonalStatementEditView(UpdateView):
 
     def get_success_url(self):
         return reverse("profile")
-        
+
     def get_object(self,  queryset=None):
         return self.request.user.get_profile()
 
@@ -236,7 +237,7 @@ class CertificateListView(ListView):
 
     def render_to_response(self, context, **kwargs):
         self.template_name = 'profile/list_education.html'
-        
+
         return super(CertificateListView, self).render_to_response(context, **kwargs)
 
 class CertificateEditView(UpdateView):
@@ -294,7 +295,7 @@ class CertificateDeleteView(DeleteView):
 
     def render_to_response(self, context, **kwargs):
         self.template_name = 'profile/delete.html'
-        
+
         return super(CertificateDeleteView, self).render_to_response(context, **kwargs)
 
 class WorkExperienceListView(ListView):
@@ -522,32 +523,32 @@ class ReferenceDeleteView(DeleteView):
 class MyJobsListView(ListView):
     paginate_by = 5
     template_name = 'my_jobs_list.html'
-    
+
     def get_queryset(self):
         return self.request.user.user_submitted_job_article_user.all().order_by('-date')
 
 class ConnectionJobsListView(ListView):
     paginate_by = 5
     template_name = 'connection_jobs_list.html'
-    
+
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
         return user.user_submitted_job_article_user.all().order_by('-date')
-    
+
     def get_context_data(self, **kwargs):
-        context = super(ConnectionJobsListView, self).get_context_data(**kwargs)        
+        context = super(ConnectionJobsListView, self).get_context_data(**kwargs)
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
         context['user_id'] = self.kwargs['user_id']
         context['other_user_profile'] = user.get_profile()
-        return context    
+        return context
 
 
 class ConnectionJobsDetailView(DetailView):
     model = UserSubmittedJobArticle
     template_name = 'connection_jobs_detail.html'
-    
+
     def get_context_data(self, **kwargs):
-        context = super(ConnectionJobsDetailView, self).get_context_data(**kwargs)        
+        context = super(ConnectionJobsDetailView, self).get_context_data(**kwargs)
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
         context['user_id'] = self.kwargs['user_id']
         context['other_user_profile'] = user.get_profile()
@@ -558,13 +559,13 @@ class MyJobsEditView(UpdateView):
     model = UserSubmittedJobArticle
     form_class = UserSubmittedJobArticleEditForm
     template_name = 'my_jobs_create.html'
-    
+
     def get_success_url(self):
         return reverse("my_jobs")
 
     def get_context_data(self, **kwargs):
         context = super(MyJobsEditView, self).get_context_data(**kwargs)
-        
+
         context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
         context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
         return context
@@ -573,7 +574,7 @@ class MyJobsEditView(UpdateView):
 class MyJobsDeleteView(DeleteView):
     model = UserSubmittedJobArticle
     template_name = 'my_jobs_delete.html'
-    
+
     def get_success_url(self):
         return reverse("my_jobs")
 
@@ -611,8 +612,8 @@ class SkillsEditView(UpdateView):
     def render_to_response(self, context, **kwargs):
         self.template_name = 'profile/edit_skill.html'
         return super(SkillsEditView, self).render_to_response(context, **kwargs)
-    
-    
+
+
 class SkillDeleteView(DeleteView):
     model = Skill
 
@@ -639,28 +640,28 @@ def add_skill(request):
             .order_by('word')
     return render(request, 'profile/skills_0.html',
                             {'skills': skills})
-                            
+
 
 @login_required
 def add_connection_by_industry_result(request, industry, province, page=1):
     profiles_qs = CurriculumVitae.objects.exclude(first_name='')
     industry_pk = int(industry)
     province_pk = int(province)
-    
+
     if industry_pk > 0:
         profiles_qs = profiles_qs.filter(skills__pk = industry_pk)
         selected_industry = AcceptedWord.objects.get(pk=industry_pk).word
     else:
         selected_industry = 'All'
-        
+
     if province_pk > 0:
         profiles_qs = profiles_qs.filter(province = province_pk)
         selected_province = dict(PROVINCE_CHOICES)[province_pk]
     else:
         selected_province = 'All'
-        
+
     paginator = Paginator(profiles_qs, 10) # Show 25 contacts per page
-    
+
     try:
         paged_profiles = paginator.page(page)
     except PageNotAnInteger:
@@ -669,7 +670,7 @@ def add_connection_by_industry_result(request, industry, province, page=1):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         paged_profiles = paginator.page(paginator.num_pages)
-        
+
     return render(request, 'profile/add_connection_by_industry_result.html',
                                   {'user_profiles': paged_profiles,
                                    'provinces': PROVINCE_CHOICES,
@@ -687,15 +688,92 @@ def add_connection_by_industry(request):
         if form.is_valid():
             industry = int(form.cleaned_data['industry'])
             province = int(form.cleaned_data['province'])
-            
+
             return redirect(reverse('add_connection_by_industry_result', \
                             args=[industry,province]))
-    
+
     skills = AcceptedWordCategory.objects.get(name='skills')\
             .words.order_by('word')
     return render(request, 'profile/add_connection_by_industry.html',
-                            {'skills': skills, 
-                             'provinces': PROVINCE_CHOICES, 
+                            {'skills': skills,
+                             'provinces': PROVINCE_CHOICES,
+                             'form': form})
+
+@login_required
+def add_connection_by_first_name_result(request, province, page=1):
+    name = request.GET.get('name', 'None')
+    profiles_qs = CurriculumVitae.objects.filter(first_name__icontains=name)
+    return render_connection_by_name_result(request, province, profiles_qs,\
+            'profile/add_connection_by_first_name_result.html', page, name)
+
+@login_required
+def add_connection_by_surname_result(request, province, page=1):
+    name = request.GET.get('name', 'None')
+    profiles_qs = CurriculumVitae.objects.filter(surname__icontains=name)
+    return render_connection_by_name_result(request, province, profiles_qs,\
+            'profile/add_connection_by_surname_result.html', name, page)
+
+def render_connection_by_name_result(request, province, profiles_qs,\
+                                    template_name, name, page=1):
+    province_pk = int(province)
+
+    if province_pk > 0:
+        profiles_qs = profiles_qs.filter(province = province_pk)
+        selected_province = dict(PROVINCE_CHOICES)[province_pk]
+    else:
+        selected_province = 'All'
+
+    paginator = Paginator(profiles_qs, 10) # Show 25 contacts per page
+
+    try:
+        paged_profiles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paged_profiles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paged_profiles = paginator.page(paginator.num_pages)
+
+    return render(request, template_name,
+                                  {'user_profiles': paged_profiles,
+                                   'provinces': PROVINCE_CHOICES,
+                                   'province': selected_province,
+                                   'province_pk': province_pk,
+                                   'name': name
+                                   })
+
+@login_required
+def add_connection_by_first_name(request):
+    form = ConnectionNameSearchForm()
+    if request.method == 'POST':
+        form = ConnectionNameSearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            province = int(form.cleaned_data['province'])
+
+            return redirect("%s?first_name=%s" %\
+                    (reverse('add_connection_by_first_name_result', args=[province]),
+                    name))
+
+    return render(request, 'profile/add_connection_by_first_name.html',
+                            {'provinces': PROVINCE_CHOICES,
+                             'form': form})
+
+@login_required
+def add_connection_by_surname(request):
+    form = ConnectionNameSearchForm()
+    if request.method == 'POST':
+        form = ConnectionNameSearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            province = int(form.cleaned_data['province'])
+
+            return redirect("%s?surname=%s" %\
+                    (reverse('add_connection_by_surname_result', args=[province]),
+                    name))
+
+    return render(request, 'profile/add_connection_by_surname.html',
+                            {'provinces': PROVINCE_CHOICES,
                              'form': form})
 
 @login_required
@@ -704,18 +782,18 @@ def add_skill_from_list(request, skill_id):
     word = get_object_or_404(AcceptedWord, pk = skill_id) #Get word from list of skills
     profile = request.user.get_profile()
     form = SkillForm()
-    
+
     if request.method == 'POST':
         form = SkillForm(request.POST)
         if form.is_valid():
             if not profile.skills.filter(skill=word.word).exists():
-                skill = form.save()                
+                skill = form.save()
                 profile.skills.add(skill)
                 return redirect(reverse('skills'))
             else:
                 return render(request, 'profile/skill_duplicate.html',
                             {'skill': word.word})
-            
+
     return render(request, 'profile/skill_from_list_confirm.html',
                             {'skill': word.word,
                              'form': form})
@@ -726,10 +804,10 @@ def mark_skill_as_primary(request, skill_id):
     user_skills = request.user.get_profile().skills
     if user_skills.filter(pk = skill_id).exists():
         skill = user_skills.get(pk = skill_id) #Get word from list of skills
-        
+
         skill.primary = True;
         skill.save()
-        
+
         user_skills.exclude(pk=skill_id).update(primary=False)
-    
+
     return redirect(reverse('skills'))
