@@ -751,7 +751,7 @@ def add_connection_by_first_name(request):
             name = form.cleaned_data['name']
             province = int(form.cleaned_data['province'])
 
-            return redirect("%s?first_name=%s" %\
+            return redirect("%s?name=%s" %\
                     (reverse('add_connection_by_first_name_result', args=[province]),
                     name))
 
@@ -768,7 +768,7 @@ def add_connection_by_surname(request):
             name = form.cleaned_data['name']
             province = int(form.cleaned_data['province'])
 
-            return redirect("%s?surname=%s" %\
+            return redirect("%s?name=%s" %\
                     (reverse('add_connection_by_surname_result', args=[province]),
                     name))
 
