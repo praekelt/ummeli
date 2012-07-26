@@ -210,7 +210,7 @@ class ProfileTestCase(VLiveTestCase):
 
         resp = self.client.post(reverse('add_connection_by_first_name_result',
                                     args=[1]),\
-                                {'name': 'jane', 'province': 1})
+                                {'name': 'jane'})
         self.assertContains(resp, 'Jane Doe')
         self.assertNotContains(resp, 'Joe Blog')
 

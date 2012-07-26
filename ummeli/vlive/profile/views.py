@@ -704,7 +704,7 @@ def add_connection_by_first_name_result(request, province, page=1):
     name = request.GET.get('name', 'None')
     profiles_qs = CurriculumVitae.objects.filter(first_name__icontains=name)
     return render_connection_by_name_result(request, province, profiles_qs,\
-            'profile/add_connection_by_first_name_result.html', page, name)
+            'profile/add_connection_by_first_name_result.html', name, page)
 
 @login_required
 def add_connection_by_surname_result(request, province, page=1):
