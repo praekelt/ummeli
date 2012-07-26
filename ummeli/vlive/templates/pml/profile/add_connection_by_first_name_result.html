@@ -3,7 +3,7 @@
 {% block content %}
 <HEADER><LABEL>Add Connection</LABEL></HEADER>
 <CONTAINER type="data">
-Search: "{{name}}" | "{{province}}"
+    <TEXT>Search: "{{name}}" | "{{province}}"</TEXT>
 </CONTAINER>
 {% for profile in user_profiles.object_list %}
     <CONTAINER type="list">
@@ -47,7 +47,7 @@ Search: "{{name}}" | "{{province}}"
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
-    <LINK href="{% url add_connection_by_industry %}">
+    <LINK href="{% url add_connection_by_first_name %}">
         <TEXT>Back</TEXT>
     </LINK>
 </CONTAINER>
