@@ -1,0 +1,39 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</h2>
+<h2>Search: "{{name}}" | "{{province}}"</h2>
+{% for profile in user_profiles.object_list %}
+    <div class="list">
+        <a href='{% url profile_view profile.user.pk %}'>{{ profile.fullname }}</a><br/>
+        {% if profile.primary_skill or profile.province %}
+        {{profile.primary_skill.skill}}
+        {% if profile.province %}
+            {% for key, value in provinces %}
+            {% if profile.province == key %}({{value}}){%endif%}
+            {% endfor %}
+        {%endif%}<br/>
+        {% endif %}
+    </div>
+{% empty %}
+    <div class="list">0 users found.</div>
+{% endfor %}
+<div id="pagination">
+    {% if user_profiles.has_previous %}
+        <span><a href="{% url add_connection_by_first_name_result province_pk user_profiles.previous_page_number %}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
+    {% endif %}
+
+    <span class="current">
+        Page {{ user_profiles.number }} of {{ user_profiles.paginator.num_pages }}
+    </span>
+
+    {% if user_profiles.has_next %}
+        | <span><a href="{% url add_connection_by_first_name_result province_pk user_profiles.next_page_number %}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
+</div>
+<div class="more"><a href="{% url add_connection_by_first_name %}">&larr; Back</a></div>
+{% endblock %}

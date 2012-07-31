@@ -3,8 +3,9 @@
 {% block content %}
     <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</h2>
     <h2>Add Connections</h2>
-    <!-- <div class="list"><a href="#">Add connection by Name</a></div> -->
-    <div class="bullet"><a href="{% url add_connection_by_industry %}">Add connection by type of work</a></div>
+    <div class="bullet"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
+    <div class="bullet"><a href="{% url add_connection_by_surname %}">Search by Surname</a></div>
+    <div class="bullet"><a href="{% url add_connection_by_industry %}">Search by type of work</a></div>
     {% if user_profile.connection_requests.exists %}
         <h2>Connection Requests <span class="subtext">({{user_profile.connection_requests.count}})</span></h2>
         {% for user in user_profile.connection_requests.all %}

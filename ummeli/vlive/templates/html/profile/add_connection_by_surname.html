@@ -1,0 +1,25 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</h2>
+    <form class='content-form' method="post">
+    <fieldset>
+        <label>Province:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.province %}
+        <select name="province">
+            <option value="0">All</option>
+            {% for key, value in provinces %}
+                <option value="{{key}}">{{value}}</option>
+            {% endfor %}
+        </select>
+        <label>Surname:</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.name %}
+        <input type="text" name="name" value="{% if form.name.value %}{{form.name.value}}{% endif %}"/>
+        <br/>
+
+        <input type="submit" class="btn" value="Search" name="submit" />
+        {% csrf_token %}
+    </fieldset>
+    </form>
+    <div class="more"><a href="{% url my_connections %}">&larr; Back</a></div>
+{% endblock %}

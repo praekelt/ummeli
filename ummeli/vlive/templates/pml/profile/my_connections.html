@@ -7,8 +7,14 @@
     <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Add Connections</LABEL></HEADER>
     <CONTAINER type="list">
+        <LINK href="{% url add_connection_by_first_name %}">
+            <TEXT>Search by Name</TEXT>
+        </LINK>
+        <LINK href="{% url add_connection_by_surname %}">
+            <TEXT>Search by Surname</TEXT>
+        </LINK>
         <LINK href="{% url add_connection_by_industry %}">
-            <TEXT>Add connection by type of work</TEXT>
+            <TEXT>Search by type of work</TEXT>
         </LINK>
     </CONTAINER>
     </MODULE>

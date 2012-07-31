@@ -46,7 +46,9 @@
     <div class="h2">Have something to share?</div>
     <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
     <div class="h2">Connect with others?</div>
-    <div class="list"><a href="{% url add_connection_by_industry %}">Find other users</a></div>
+    <div class="list"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
+    <div class="list"><a href="{% url add_connection_by_surname %}">Search by Surname</a></div>
+    <div class="list"><a href="{% url add_connection_by_industry %}">Search by type of work</a></div>
 
     {% get_your_words_competitions %}
     {% if your_words_list %}
