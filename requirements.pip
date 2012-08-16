@@ -29,7 +29,7 @@ django-category>=0.1
 django-dirtyfields
 pillow
 http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
--e git+https://github.com/scholrly/neo4django/#egg=neo4django
+-e git://github.com/scholrly/neo4django.git@v0.1.5#egg=neo4django
 requests
 django_geckoboard
 -e git+git://github.com/praekelt/jmbo-dashboard.git@develop#egg=jmbo-dashboard
