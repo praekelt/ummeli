@@ -208,6 +208,7 @@ INSTALLED_APPS = (
     'publisher',
     'photologue',
     'secretballot',
+    'opportunities',
 
     # 3rd party
     'ckeditor',
