@@ -8,4 +8,12 @@
         <HEADER><LABEL>Poll</LABEL></HEADER>
     </MODULE>
         {% show_poll poll %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url home %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}

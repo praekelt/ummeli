@@ -19,7 +19,7 @@
 {% else %}
     {% if user.is_authenticated %}
     <CONTAINER type="form">
-        <FORM method="post" href="{% url poll_vote poll.pk %}??{{uuid}}" submit_text="Vote">
+        <FORM method="post" href="{% url poll_vote poll.pk %}?{{uuid}}" submit_text="Vote">
             <FIELD type='hidden' name='_action' value='POST' />
             <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
 
