@@ -21,6 +21,6 @@ class OpportunitiesTest(VLiveTestCase):
 
         Opportunity.objects.create(title='Test op',
                                     description='This is a test',
-                                    provider=user)
+                                    owner=user)
         self.assertEqual(user.opportunity_set.count(), 1)
         self.assertEqual(user.opportunity_set.all()[0].deadline, None)

@@ -19,7 +19,7 @@ class Article(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s' % (self.date,  self.source,  self.text)
-    
+
     def user_submitted(self):
                 return 0
 
@@ -36,7 +36,7 @@ class UserSubmittedJobArticle(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
-    
+
     def user_submitted(self):
                 return 1
 
@@ -48,7 +48,7 @@ class UserSubmittedJobArticle(models.Model):
                 self.text = user_article.text
                 self.date = user_article.date
                 self.user = user_article.user
-                
+
             def user_submitted(self):
                 return 1
         return UserSubmittedJobArticleViewModel(self)
@@ -71,7 +71,7 @@ class Category(models.Model):
 
     def must_show(self):
         return self.articles.exists() or self.user_submitted_job_articles.exists()
-    
+
     def articles_count(self):
         return self.articles.count() + self.user_submitted_job_articles.count()
 
@@ -111,7 +111,7 @@ class Reference (models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return self.fullname
-    
+
 SKILL_LEVEL_CHOICES = (
         (0, 'Laaitie'),
         (2, 'Junior'),
@@ -119,21 +119,22 @@ SKILL_LEVEL_CHOICES = (
         (10, 'Pro'),
         (20, 'Bozza'),
         )
-            
-class Skill (models.Model):    
+
+class Skill (models.Model):
     skill = models.CharField(max_length=45, null=False, blank=False)
     level = models.PositiveIntegerField(choices=SKILL_LEVEL_CHOICES, null=False, blank=False, default=0)
     primary = models.BooleanField(default=False)
-    
+
     def __unicode__(self):  # pragma: no cover
         choices = dict(SKILL_LEVEL_CHOICES)
         return '%s (%s)' % (self.skill, choices[self.level])
-    
+
     def get_level(self):
         choices = dict(SKILL_LEVEL_CHOICES)
         return choices[self.level]
 
 PROVINCE_CHOICES = (
+        (0, 'All'),
         (1, 'Eastern Cape'),
         (2, 'Free State'),
         (3, 'Gauteng'),
@@ -151,13 +152,13 @@ class CurriculumVitae(models.Model):
     gender = models.CharField(max_length=45, null=True, blank=True)
     email = models.CharField(max_length=45, null=True, blank=True)
     telephone_number = models.CharField(max_length=45, null=True, blank=True)
-    
+
     about_me = models.TextField(null=True, blank=True)
-    
+
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=45, null=True, blank=True)
     province = models.IntegerField(default=0)
-    
+
     school = models.CharField(max_length=45, null=True, blank=True)
     highest_grade = models.CharField(max_length=45, null=True, blank=True)
     highest_grade_year = models.IntegerField(default=0, null=True, blank=True)
@@ -169,41 +170,41 @@ class CurriculumVitae(models.Model):
     user = models.OneToOneField('auth.User')
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     is_complete = models.BooleanField(default=False,  editable=False)
-    
+
     preferred_skill = models.ForeignKey(Skill, blank=True, null=True, related_name='profiles_preferred')
     skills = models.ManyToManyField(Skill, blank=True, null=True, related_name='profiles')
 
     connection_requests = models.ManyToManyField('auth.User', related_name='connection_requests', blank=True)
-    
+
     show_contact_number = models.BooleanField(default=False)
     show_address = models.BooleanField(default=False)
     comment_as_anon = models.BooleanField(default=True)
-    
+
     def is_connection_requested(self, user_id):
         return self.connection_requests.filter(pk=user_id).exists()
-    
+
     def primary_skill(self):
         skills = self.skills.filter(primary = True)
         return skills[0] if skills.exists() else ''
-    
+
     def other_skills(self):
         return self.skills.filter(primary = False)
-    
+
     def get_connection_node(self):
         from ummeli.graphing.models import Person
-        
+
         user_node = Person.get_and_update(self.user)
         return user_node
-    
+
     def get_connections(self):
         return self.get_connection_node().connections()
-    
+
     def get_connnections_count(self):
         return len(self.get_connections())
-    
+
     def __str__(self):
         return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
-    
+
     def fullname(self):
         return '%s %s' % (self.first_name,  self.surname)
 
@@ -224,7 +225,7 @@ class CurriculumVitae(models.Model):
         if not self.languages.exists():
             fields.append('atleast 1 language')
         return fields
-    
+
     def fields_complete(self):
         count = 0.0
         if  self.first_name:
@@ -277,7 +278,7 @@ class CurriculumVitae(models.Model):
             self.nr_of_faxes_sent += 1
             self.save()
             return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),
-                                 article_text, 
+                                 article_text,
                                  settings.SEND_FROM_FAX_EMAIL_ADDRESS,
                                  email_message)
         return None
@@ -286,11 +287,11 @@ class CurriculumVitae(models.Model):
                         from_address = settings.SEND_FROM_EMAIL_ADDRESS,
                         email_message = None):
         email_text = ''
-        copy_context = {'sender': self.fullname(), 
-                                'job_ad': article_text, 
+        copy_context = {'sender': self.fullname(),
+                                'job_ad': article_text,
                                 'phone': self.telephone_number,
                                 'message': email_message}
-        
+
         if article_text:
             email_text = render_to_string('apply_copy.txt', copy_context)
         else:
