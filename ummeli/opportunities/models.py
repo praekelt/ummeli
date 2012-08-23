@@ -7,7 +7,6 @@ from ummeli.base.models import PROVINCE_CHOICES
 class Opportunity(ModelBase):
     province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
     deadline = models.DateTimeField(blank=True, null=True, default=None)
-    provider = models.ForeignKey(User)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title

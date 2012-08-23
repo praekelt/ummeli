@@ -22,10 +22,10 @@ class OpportunitiesTest(VLiveTestCase):
         salary = Salary(amount=50, frequency=1)
         salary.save()
 
-        Internship.objects.create(title='Test op',
+        i = Internship.objects.create(title='Test op',
                                     description='This is a test',
-                                    provider=user,
+                                    owner=user,
                                     salary=salary)
-        self.assertEqual(user.internship_set.count(), 1)
-        self.assertEqual(user.internship_set.all()[0].salary.amount, 50)
-        self.assertEqual(user.internship_set.all()[0].education, 0)
+        self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
+        self.assertEqual(user.modelbase_set.all()[0].internship.salary.amount, 50)
+        self.assertEqual(user.modelbase_set.all()[0].internship.education, 0)
