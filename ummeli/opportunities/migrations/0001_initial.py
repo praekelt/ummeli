@@ -13,6 +13,7 @@ class Migration(SchemaMigration):
             ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
             ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('provider', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
         db.send_create_signal('opportunities', ['Opportunity'])
 
@@ -109,6 +110,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('-created',)", 'object_name': 'Opportunity', '_ormbases': ['jmbo.ModelBase']},
             'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'provider': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },
         'photologue.photoeffect': {
