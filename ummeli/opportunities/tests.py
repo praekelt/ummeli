@@ -1,16 +1,26 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
-from django.test import TestCase
+from django.contrib.auth.models import User
+from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
+from ummeli.opportunities.models import Opportunity
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class OpportunitiesTest(VLiveTestCase):
+    fixtures = [
+        'vlive/tests/auth/fixtures/sample.json',
+    ]
+
+    def setUp(self):
+        self.msisdn = '27123456789'
+        self.pin = '1234'
+        self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
+
+    def test_basic_opportunity(self):
+        self.login()
+        self.fill_in_basic_info()
+
+        user = User.objects.get(username=self.msisdn)
+
+        Opportunity.objects.create(title='Test op',
+                                    description='This is a test',
+                                    provider=user)
+        self.assertEqual(user.opportunity_set.count(), 1)
+        self.assertEqual(user.opportunity_set.all()[0].deadline, None)
