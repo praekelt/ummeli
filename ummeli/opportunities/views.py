@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 
-def detail(request, slug):
-    return render(request, 'opportunity/detail.html')
+def internships(request):
+    return render(request, 'opportunity/internships.html')
 
 
 def internship_detail(request, slug):

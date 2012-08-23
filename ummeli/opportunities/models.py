@@ -9,10 +9,6 @@ class Opportunity(ModelBase):
     deadline = models.DateTimeField(blank=True, null=True, default=None)
     provider = models.ForeignKey(User)
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('ummeli.opportunities.views.detail', (self.slug,))
-
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
 
@@ -53,3 +49,7 @@ class Internship(Opportunity):
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
     salary = models.ForeignKey(Salary)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('ummeli.opportunities.views.internship_detail', (self.slug,))
