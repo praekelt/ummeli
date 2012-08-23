@@ -1,8 +1,10 @@
 from django.conf.urls.defaults import patterns, url
-
-from ummeli.opportunities.views import detail
+from ummeli.opportunities.views import *
 
 
 urlpatterns = patterns('',
-    url(r'^(?P<slug>[\w-]+)/$', detail, name='detail')
+    url(r'internship/$', internship_detail, name='internships'),
+    url(r'internship/^(?P<slug>[\w-]+)/$',
+        internship_detail,
+        name='internship_detail'),
 )
