@@ -38,8 +38,8 @@ class Opportunity(ModelBase):
     education = models.PositiveIntegerField(
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
-    salary = models.ForeignKey(Salary, blank=True, null=True)
-    location = models.TextField(null=True, blank=True)
+    salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
+    location = models.TextField(null=True, blank=True, default=None)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title

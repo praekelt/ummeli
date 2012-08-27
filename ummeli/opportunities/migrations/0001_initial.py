@@ -22,9 +22,67 @@ class Migration(SchemaMigration):
             ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
             ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['opportunities.Salary'])),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
         ))
         db.send_create_signal('opportunities', ['Internship'])
+
+        # Adding model 'Volunteer'
+        db.create_table('opportunities_volunteer', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+        ))
+        db.send_create_signal('opportunities', ['Volunteer'])
+
+        # Adding model 'Bursary'
+        db.create_table('opportunities_bursary', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+        ))
+        db.send_create_signal('opportunities', ['Bursary'])
+
+        # Adding model 'Training'
+        db.create_table('opportunities_training', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+            ('cost', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=12, decimal_places=2)),
+        ))
+        db.send_create_signal('opportunities', ['Training'])
+
+        # Adding model 'Competition'
+        db.create_table('opportunities_competition', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+            ('cost', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=12, decimal_places=2)),
+        ))
+        db.send_create_signal('opportunities', ['Competition'])
+
+        # Adding model 'Event'
+        db.create_table('opportunities_event', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+        ))
+        db.send_create_signal('opportunities', ['Event'])
 
 
     def backwards(self, orm):
@@ -33,6 +91,21 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Internship'
         db.delete_table('opportunities_internship')
+
+        # Deleting model 'Volunteer'
+        db.delete_table('opportunities_volunteer')
+
+        # Deleting model 'Bursary'
+        db.delete_table('opportunities_bursary')
+
+        # Deleting model 'Training'
+        db.delete_table('opportunities_training')
+
+        # Deleting model 'Competition'
+        db.delete_table('opportunities_competition')
+
+        # Deleting model 'Event'
+        db.delete_table('opportunities_event')
 
 
     models = {
@@ -118,19 +191,67 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'view_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },
+        'opportunities.bursary': {
+            'Meta': {'object_name': 'Bursary'},
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
+        },
+        'opportunities.competition': {
+            'Meta': {'object_name': 'Competition'},
+            'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
+        },
+        'opportunities.event': {
+            'Meta': {'object_name': 'Event'},
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
+        },
         'opportunities.internship': {
             'Meta': {'object_name': 'Internship'},
             'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
             'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['opportunities.Salary']"})
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'opportunities.salary': {
             'Meta': {'object_name': 'Salary'},
             'amount': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
             'frequency': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        'opportunities.training': {
+            'Meta': {'object_name': 'Training'},
+            'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
+        },
+        'opportunities.volunteer': {
+            'Meta': {'object_name': 'Volunteer'},
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'photologue.photoeffect': {
             'Meta': {'object_name': 'PhotoEffect'},
