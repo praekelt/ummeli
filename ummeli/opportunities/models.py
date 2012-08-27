@@ -4,17 +4,6 @@ from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 
 
-class Opportunity(ModelBase):
-    province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
-    deadline = models.DateTimeField(blank=True, null=True, default=None)
-
-    def __unicode__(self):  # pragma: no cover
-        return '%s' % self.title
-
-    class Meta:
-        abstract = True
-
-
 EDUCATION_LEVEL_CHOICES = (
         (0, 'Any'),
         (1, 'Matric or higher'),
@@ -43,12 +32,24 @@ class Salary(models.Model):
         return '%s per %s' % (self.amount, self.get_frequency())
 
 
-class Internship(Opportunity):
+class Opportunity(ModelBase):
+    province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
+    deadline = models.DateTimeField(blank=True, null=True, default=None)
     education = models.PositiveIntegerField(
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
     salary = models.ForeignKey(Salary)
 
+    def __unicode__(self):  # pragma: no cover
+        return '%s' % self.title
+
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.internship_detail', (self.slug,))
+        return ('ummeli.opportunities.views.opportunity_detail', (self.slug,))
+
+    class Meta:
+        abstract = True
+
+
+class Internship(Opportunity):
+    pass

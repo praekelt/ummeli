@@ -3,8 +3,8 @@ from ummeli.opportunities.models import *
 from jmbo.admin import ModelBaseAdmin
 
 
-class InternshipAdmin(ModelBaseAdmin):
+class OpportunityAdmin(ModelBaseAdmin):
     pass
 
-admin.site.register(Internship, InternshipAdmin)
+admin.site.register(Internship, OpportunityAdmin)
 admin.site.register(Salary)
