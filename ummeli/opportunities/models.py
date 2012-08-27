@@ -38,7 +38,8 @@ class Opportunity(ModelBase):
     education = models.PositiveIntegerField(
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
-    salary = models.ForeignKey(Salary)
+    salary = models.ForeignKey(Salary, blank=True, null=True)
+    location = models.TextField(null=True, blank=True)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
@@ -52,4 +53,24 @@ class Opportunity(ModelBase):
 
 
 class Internship(Opportunity):
+    pass
+
+
+class Volunteer(Opportunity):
+    pass
+
+
+class Bursary(Opportunity):
+    pass
+
+
+class Training(Opportunity):
+    cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+
+class Competition(Opportunity):
+    cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+
+class Event(Opportunity):
     pass
