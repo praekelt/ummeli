@@ -50,25 +50,25 @@ class Opportunity(ModelBase):
 class Job(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.job_detail', (self.slug,))
+        return ('job_detail', (self.slug,))
 
 
 class Internship(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.internship_detail', (self.slug,))
+        return ('internship_detail', (self.slug,))
 
 
 class Volunteer(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.volunteer_detail', (self.slug,))
+        return ('volunteer_detail', (self.slug,))
 
 
 class Bursary(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.bursary_detail', (self.slug,))
+        return ('bursary_detail', (self.slug,))
 
 
 class Training(Opportunity):
@@ -76,7 +76,7 @@ class Training(Opportunity):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.training_detail', (self.slug,))
+        return ('training_detail', (self.slug,))
 
 
 class Competition(Opportunity):
@@ -84,10 +84,10 @@ class Competition(Opportunity):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.competition_detail', (self.slug,))
+        return ('competition_detail', (self.slug,))
 
 
 class Event(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('ummeli.opportunities.views.event_detail', (self.slug,))
+        return ('event_detail', (self.slug,))
