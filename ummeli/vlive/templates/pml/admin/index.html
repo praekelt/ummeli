@@ -1,89 +1,287 @@
-{% extends "base.html" %}
+{% extends "admin/base_site.html" %}
+{% load i18n %}
 
-{% load article_tags %}
-{% load poll_tags %}
-{% load your_words_tags %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
 
 {% block content %}
-    <div id="promotxt">Ummeli lets you <a href="{% url jobs_province %}">find work</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></div>
-    <div class="h2">Latest</div>
-    {% get_articles 3 "article_list" %}
-    {% for article in article_list %}
-        <div class="img-article list">
-            <img src="{% if article.image %}{{MEDIA_URL}}{{ article.image }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="50" alt="Title Here" class="left">
-            <div>
-                <a href="{% url article_detail_redo article.pk %}">{{ article.title }}</a><br/>
-                <span>{{ article.description }}</span>
-                <br/>
-                <small>{{ article.published_on|date:"D, j M Y" }}</small>
-            </div>
-            <br style="clear:both"/>
-        </div>
-    {% endfor %}
-    <div class="list"><a href="{% url article_list %}">more...</a></div>
-
-    {% get_featured_polls "featured_polls" %}
-    {% for featured_poll in featured_polls %}
-        <div class="h2">Poll</div>
-        {% show_poll featured_poll %}
-    {% endfor %}
-
-    <div class="h2">Community Board</div>
-    {% for article in community_list %}
-        <div class="img-article list">
-            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="50" alt="Title Here" class="left">
-            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
-            <br/>
-            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
-            <small>
-                {{ article.date|date:"D, j M Y, H:i" }}
-                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
-            </small>
-        </div>
-    {% endfor %}
-    <div class="list"><a href="{% url community_jobs %}">more...</a></div>
-
-    <div class="h2">Have something to share?</div>
-    <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
-    <div class="h2">Connect with others?</div>
-    <div class="list"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
-    <div class="list"><a href="{% url add_connection_by_surname %}">Search by Surname</a></div>
-    <div class="list"><a href="{% url add_connection_by_industry %}">Search by type of work</a></div>
-
-    {% get_your_words_competitions %}
-    {% if your_words_list %}
-    <div class="h2">Your Words Competition</div>
-    {% for competition in your_words_list %}
-    <div class="img-article">
-        <img src="{% if competition.image %}{{MEDIA_URL}}{{ competition.image }}{% else %}/ummeli-static/media/star.jpg{% endif %}" width="50" alt="Title Here" class="left">
-        <div>
-            <a href="{% url your_story competition.pk %}">{{ competition.title }}</a><br/>
-            <span>{{ competition.description }}</span>
-        </div>
-        <br style="clear:both"/>
+<div id="content-main">
+{% if app_list %}
+    {% if app_list|length > 1 %}
+    <div class="module">
+    <table summary="Models available in the Auth application.">
+    <caption>Auth</caption>
+        <tr>
+            <th scope="row"><a href="auth/group/">Groups</a></th>
+            <td><a href="/admin/auth/group/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="auth/group/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/auth/user/">Users</a></th>
+            <td><a href="/admin/auth/user/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/auth/user/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="auth/sites/site/">Sites</a></th>
+            <td><a href="/admin/sites/site/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="auth/sites/site/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
     </div>
-    {% endfor %}
-    {% endif %}
 
-    {% if user.is_authenticated %}
-    <div class="h2">My Ummeli</div>
-    <div id="list">
-        <div><a href="{% url profile %}">My Profile</a>
-            <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span>
-        </div>
-        <div><a href="{% url my_connections %}">My Connections</a>
-            {% if user_profile.connection_requests.exists %}
-            <span class="subtext">&rarr; {{user_profile.connection_requests.count}} requests</span>
+    <div class="module">
+    <table summary="Models available in the Editorial stuff application.">
+    <caption>Ummeli Editorial Content</caption>
+        <tr>
+            <th scope="row"><a href="/admin/jmboarticles/article/">Articles</a></th>
+            <td><a href="/admin/jmboarticles/article/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmboarticles/article/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/poll/poll/">Polls</a></th>
+            <td><a href="/admin/poll/poll/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/poll/poll/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/video/video/">Videos</a></th>
+            <td><a href="/admin/video/video/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/video/video/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/featured/item/">Featured Items</a></th>
+            <td><a href="/admin/featured/item/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/featured/item/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbocomments/usercomment/">Comments</a></th>
+            <td><a href="/admin/jmbocomments/usercomment/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbocomments/usercomment/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbocomments/usercommentflag/">Comment moderation flags</a></th>
+            <td><a href="/admin/jmbocomments/usercommentflag/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbocomments/usercommentflag/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/downloads/download/">Downloads</a></th>
+            <td><a href="/admin/downloads/download/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/downloads/download/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/downloads/textoverlaytemporarydownload/">Text Overlay Temporary Downloads</a></th>
+            <td><a href="/admin/downloads/textoverlaytemporarydownload/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/downloads/textoverlaytemporarydownload/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/category/category/">Categories</a></th>
+            <td><a href="/admin/category/category/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/category/category/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/category/tag/">Tags</a></th>
+            <td><a href="/admin/category/tag/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/category/tag/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/flatpages/flatpage/">Flat Pages</a></th>
+            <td><a href="/admin/flatpages/flatpage/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/flatpages/flatpage/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmboyourwords/yourstorycompetition/">Your story competitions</a></th>
+            <td><a href="/admin/jmboyourwords/yourstorycompetition/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmboyourwords/yourstorycompetition/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmboyourwords/yourstoryentry/">Your story entries</a></th>
+            <td><a href="/admin/jmboyourwords/yourstoryentry/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmboyourwords/yourstoryentry/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+        <table summary="Models available in the Opportunities application.">
+        <caption><a href="" class="section">Opportunities</a></caption>
+            <tbody><tr>
+                <th scope="row"><a href="/admin/opportunities/job/">Jobs</a></th>
+                <td><a href="/admin/opportunities/job/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/job/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/bursary/">Bursaries</a></th>
+                <td><a href="/admin/opportunities/bursary/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/bursary/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/internship/">Internships</a></th>
+                <td><a href="/admin/opportunities/internship/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/internship/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/training/">Training</a></th>
+                <td><a href="/admin/opportunities/training/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/training/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/volunteer/">Volunteering</a></th>
+                <td><a href="/admin/opportunities/volunteer/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/volunteer/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/event/">Events</a></th>
+                <td><a href="/admin/opportunities/event/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/event/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/competition/">Competitions</a></th>
+                <td><a href="/admin/opportunities/competition/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/competition/" class="changelink">Change</a></td>
+            </tr>
+        </tbody></table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>Jobs Content</caption>
+        <tr>
+            <th scope="row"><a href="/admin/base/article/">Job Articles</a></th>
+            <td><a href="/admin/base/article/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/article/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/province/">Provinces</a></th>
+            <td><a href="/admin/base/province/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/province/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/category/">Job Categories</a></th>
+            <td><a href="/admin/base/category/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/category/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/usersubmittedjobarticle/">User Submitted Job Articles</a></th>
+            <td><a href="/admin/base/usersubmittedjobarticle/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/usersubmittedjobarticle/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>User Profile Data</caption>
+        <tr>
+            <th scope="row"><a href="/admin/base/curriculumvitae/">User Profiles</a></th>
+            <td><a href="/admin/base/curriculumvitae/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/curriculumvitae/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/certificate/">Certificates</a></th>
+            <td><a href="/admin/base/certificate/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/certificate/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/language/">Languages</a></th>
+            <td><a href="/admin/base/language/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/language/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/reference/">References</a></th>
+            <td><a href="/admin/base/reference/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/reference/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/base/workexperience/">Work Experiences</a></th>
+            <td><a href="/admin/base/workexperience/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/workexperience/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="module">
+    <table summary="Models available in the Django application.">
+    <caption>Jmbo Word Suggest</caption>
+        <tr>
+            <th scope="row"><a href="/admin/jmbowordsuggest/acceptedwordcategory/">Accepted Word Categories</a></th>
+            <td><a href="/admin/jmbowordsuggest/acceptedwordcategory/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbowordsuggest/acceptedwordcategory/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
+            <th scope="row"><a href="/admin/jmbowordsuggest/acceptedword/">Accepted Words</a></th>
+            <td><a href="/admin/jmbowordsuggest/acceptedword/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/jmbowordsuggest/acceptedword/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+    </table>
+    </div>
+    {% else %}
+    {% for app in app_list %}
+        <div class="module">
+        <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}">
+        <caption><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
+        {% for model in app.models %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
             {% else %}
-            <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
+                <th scope="row">{{ model.name }}</th>
             {% endif %}
-        </div>
-        <div><a href="{% url my_jobs %}">My Jobs</a>
-            <span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span>
-        </div>
-        <div><a href="{% url my_settings %}">My Settings &rarr; </a></div>
-        <div><a href="{% url send %}">Send as CV &rarr; </a></div>
-    </div>
-    {% endif %}
 
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+    {% endfor %}
+    {% endif %}
+{% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% trans 'Recent Actions' %}</h2>
+        <h3>{% trans 'My Actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% trans 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br/>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
 {% endblock %}
