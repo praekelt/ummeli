@@ -1,0 +1,18 @@
+{% extends "base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>Opportunities >> Internship</LABEL></HEADER>
+    <CONTAINER  type="data">
+        <TITLE>{{object.title}}</TITLE>
+        <TEXT>
+            Closing date: {{ object.deadline|date:"D, j M Y" }}
+            <br/>
+            {{ object.description }}
+        </TEXT>
+    </CONTAINER>
+    <CONTAINER  type="list">
+        <LINK href="#">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+{% endblock %}

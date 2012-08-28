@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 from ummeli.opportunities.models import Internship, Salary, Training, Event
+from django.core.urlresolvers import reverse
 
 
 class OpportunitiesTest(VLiveTestCase):
@@ -29,6 +30,10 @@ class OpportunitiesTest(VLiveTestCase):
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
         self.assertEqual(user.modelbase_set.all()[0].internship.salary.amount, 50)
         self.assertEqual(user.modelbase_set.all()[0].internship.education, 0)
+
+        resp = self.client.get(reverse('internship_detail', kwargs={'slug': 'test-op'}))
+        self.assertContains(resp, 'Test op')
+        self.assertContains(resp, 'This is a test')
 
     def test_training(self):
         self.login()

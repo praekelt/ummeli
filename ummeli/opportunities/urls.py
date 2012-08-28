@@ -1,4 +1,6 @@
 from django.conf.urls.defaults import patterns, url
+from ummeli.opportunities.models import Internship
+from ummeli.opportunities.views import OpportunityDetailView
 
 
 urlpatterns = patterns('',
@@ -11,7 +13,8 @@ urlpatterns = patterns('',
         name='job_detail'),
 
     url(r'^internship/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.internship_detail',
+        OpportunityDetailView.as_view(model=Internship,\
+            template_name='opportunities/internship_detail.html'),
         name='internship_detail'),
 
     url(r'^bursary/(?P<slug>[\w-]+)/$',
