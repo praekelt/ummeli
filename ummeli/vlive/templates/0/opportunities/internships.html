@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">
+        <a href="#">Opportunities</a> &raquo;
+        Internships
+    </div>
+    {% for object in object_list %}
+        <div class="list">
+            <a href="{{ object.get_absolute_url }}">
+                {{ object.title }}
+            </a>
+            <br/>
+            <small>
+                <strong>Deadline:</strong> {{ object.deadline|date:"D, j M Y" }}
+            </small>
+        </div>
+    {% endfor %}
+    <div class="more"><a href="#">&larr; Back to opportunities</a></div>
+{% endblock %}

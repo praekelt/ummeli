@@ -1,0 +1,12 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Internships</LABEL></HEADER>
+<CONTAINER type="list">
+{% for object in object_list %}
+    <LINK href="{{ object.get_absolute_url }}">
+        <TEXT>{{ object.title }}</TEXT>
+    </LINK>
+{% endfor %}
+</CONTAINER>
+{% endblock %}

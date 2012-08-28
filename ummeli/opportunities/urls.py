@@ -1,39 +1,64 @@
 from django.conf.urls.defaults import patterns, url
-from ummeli.opportunities.models import Internship
-from ummeli.opportunities.views import OpportunityDetailView
+from ummeli.opportunities.models import *
+from ummeli.opportunities.views import OpportunityDetailView, OpportunityListView
 
 
 urlpatterns = patterns('',
-    url(r'^internship/$',
-        'ummeli.opportunities.views.internships',
+    url(r'^internships/$',
+        OpportunityListView.as_view(model=Internship, \
+            template_name='opportunities/internships.html'),
         name='internships'),
+    url(r'^jobs/$',
+        OpportunityListView.as_view(model=Job, \
+            template_name='opportunities/jobs.html'),
+        name='job_opportunities'),
+    url(r'^bursaries/$',
+        OpportunityListView.as_view(model=Bursary, \
+            template_name='opportunities/bursaries.html'),
+        name='bursaries'),
+    url(r'^volunteering/$',
+        OpportunityListView.as_view(model=Volunteer, \
+            template_name='opportunities/volunteering.html'),
+        name='volunteering'),
+    url(r'^training/$',
+        OpportunityListView.as_view(model=Training, \
+            template_name='opportunities/training.html'),
+        name='training'),
+    url(r'^competitions/$',
+        OpportunityListView.as_view(model=Competition, \
+            template_name='opportunities/competitions.html'),
+        name='competitions'),
+    url(r'^events/$',
+        OpportunityListView.as_view(model=Event, \
+            template_name='opportunities/events.html'),
+        name='events'),
 
-    url(r'^job/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.job_detail',
-        name='job_detail'),
-
-    url(r'^internship/(?P<slug>[\w-]+)/$',
+    url(r'^jobs/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Job,\
+            template_name='opportunities/job_detail'),
+        name='job_opportunity'),
+    url(r'^internships/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Internship,\
             template_name='opportunities/internship_detail.html'),
         name='internship_detail'),
-
-    url(r'^bursary/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.bursary_detail',
+    url(r'^bursaries/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Bursary,\
+            template_name='opportunities/bursary_detail'),
         name='bursary_detail'),
-
-    url(r'^volunteer/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.volunteer_detail',
+    url(r'^volunteering/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Volunteer,\
+            template_name='opportunities/volunteer_detail'),
         name='volunteer_detail'),
-
     url(r'^training/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.training_detail',
+        OpportunityDetailView.as_view(model=Training,\
+            template_name='opportunities/training_detail'),
         name='training_detail'),
-
-    url(r'^competition/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.competition_detail',
+    url(r'^competitions/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Competition,\
+            template_name='opportunities/competition_detail'),
         name='competition_detail'),
-
-    url(r'^event/(?P<slug>[\w-]+)/$',
-        'ummeli.opportunities.views.event_detail',
+    url(r'^events/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Event,\
+            template_name='opportunities/event_detail'),
         name='event_detail'),
 )

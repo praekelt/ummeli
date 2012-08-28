@@ -26,10 +26,14 @@ class OpportunitiesTest(VLiveTestCase):
         i = Internship.objects.create(title='Test op',
                                     description='This is a test',
                                     owner=user,
-                                    salary=salary)
+                                    salary=salary,
+                                    state='published')
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
         self.assertEqual(user.modelbase_set.all()[0].internship.salary.amount, 50)
         self.assertEqual(user.modelbase_set.all()[0].internship.education, 0)
+
+        resp = self.client.get(reverse('internships'))
+        self.assertContains(resp, 'Test op')
 
         resp = self.client.get(reverse('internship_detail', kwargs={'slug': 'test-op'}))
         self.assertContains(resp, 'Test op')
