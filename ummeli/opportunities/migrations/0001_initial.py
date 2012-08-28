@@ -16,6 +16,17 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('opportunities', ['Salary'])
 
+        # Adding model 'Job'
+        db.create_table('opportunities_job', (
+            ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
+            ('province', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('deadline', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True, blank=True)),
+            ('education', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('salary', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['opportunities.Salary'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
+        ))
+        db.send_create_signal('opportunities', ['Job'])
+
         # Adding model 'Internship'
         db.create_table('opportunities_internship', (
             ('modelbase_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['jmbo.ModelBase'], unique=True, primary_key=True)),
@@ -88,6 +99,9 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Deleting model 'Salary'
         db.delete_table('opportunities_salary')
+
+        # Deleting model 'Job'
+        db.delete_table('opportunities_job')
 
         # Deleting model 'Internship'
         db.delete_table('opportunities_internship')
@@ -221,6 +235,15 @@ class Migration(SchemaMigration):
         },
         'opportunities.internship': {
             'Meta': {'object_name': 'Internship'},
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
+            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'province': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
+        },
+        'opportunities.job': {
+            'Meta': {'object_name': 'Job'},
             'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'location': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),

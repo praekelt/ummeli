@@ -6,6 +6,7 @@ from jmbo.admin import ModelBaseAdmin
 class OpportunityAdmin(ModelBaseAdmin):
     pass
 
+admin.site.register(Job, OpportunityAdmin)
 admin.site.register(Internship, OpportunityAdmin)
 admin.site.register(Volunteer, OpportunityAdmin)
 admin.site.register(Bursary, OpportunityAdmin)
