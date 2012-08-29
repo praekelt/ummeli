@@ -21,7 +21,6 @@ Fabric==1.2.2
 lxml
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
 -e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
-django-sentry
 -e git+git://github.com/praekelt/jmbo-articles.git@develop#egg=jmbo-articles
 -e git+git://github.com/praekelt/jmbo-comments.git@develop#egg=jmbo-comments
 django-category>=0.1
@@ -37,3 +36,4 @@ django_geckoboard
 -e git+git://github.com/praekelt/jmbo-your-words.git@develop#egg=jmbo-your-words
 BeautifulSoup>=3.0.8.1
 -e git+https://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
+raven
