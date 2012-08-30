@@ -15,7 +15,7 @@ def user_profile_processor(request):
 def province_session_processor(request):
     province = request.session.get('province', None)
 
-    if province:
+    if not province == None:
         return {'province_id': province,
                 'province': dict(PROVINCE_CHOICES)[province]}
 

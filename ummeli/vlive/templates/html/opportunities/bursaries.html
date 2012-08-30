@@ -3,7 +3,7 @@
 {% block content %}
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Bursaries</h2>
     <p>
-        Province: <strong><a href="#">{{province}}</a></strong>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}}</a></strong>
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
@@ -11,9 +11,10 @@
             <small>Deadline: <strong>20 Aug 2012</strong></small><br/>
         </div>
         {% empty %}
-        <p>0 bursaries in this province.</p>
+        <p>0 bursaries in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
     </p>
+    {% if object_list %}
     <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
@@ -31,5 +32,6 @@
             | <span>Next</span>
         {% endif %}
     </div>
-    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+    {% endif %}
+    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
 {% endblock %}

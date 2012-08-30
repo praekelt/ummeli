@@ -3,6 +3,8 @@
 {% block content %}
     <h2>Opportunities</h2>
     <p>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}}</a></strong>
+
         <div class="bullet">
             <a href="{% url jobs_province %}">Jobs</a>
         </div>

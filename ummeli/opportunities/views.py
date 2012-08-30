@@ -1,7 +1,9 @@
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from ummeli.base.models import PROVINCE_CHOICES
 
 
 class OpportunityDetailView(DetailView):
@@ -24,3 +26,16 @@ class OpportunityListView(ListView):
 
 def opportunities(request):
     return render(request, 'opportunities/opportunities.html')
+
+
+def change_province(request, province=None):
+    next = request.GET.get('next', reverse('opportunities'))
+
+    if province and int(province) in range(0, 10):
+        request.session['province'] = int(province)
+        print request.session['province']
+        return redirect(next)
+
+    return render(request, 'opportunities/change_province.html',
+                {'provinces': PROVINCE_CHOICES,
+                'next': next})
