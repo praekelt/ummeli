@@ -7,8 +7,8 @@
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            Min: <strong>{{object.get_education}}</strong><br/>
-            <small>Deadline: <strong>20 Aug 2012</strong></small><br/>
+            <small>{{object.get_education}}</small><br/>
+            <small>Deadline: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
         </div>
         {% empty %}
         <p>0 bursaries in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
