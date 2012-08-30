@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.template import RequestContext
 
 
 class OpportunityDetailView(DetailView):
@@ -9,9 +10,16 @@ class OpportunityDetailView(DetailView):
 
 
 class OpportunityListView(ListView):
+    paginate_by = 10
+
     def get_queryset(self):
-        return self.model.objects.filter(state='published')\
-                                    .order_by('-created')
+        province = int(RequestContext(self.request)['province_id'])
+        province_qs = self.model.objects.filter(state='published')
+
+        if province > 0:
+            province_qs = province_qs.filter(province__province__in=[province, 0])
+
+        return province_qs.order_by('-created')
 
 
 def opportunities(request):
