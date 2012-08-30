@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     url(r'^my/profile/', include('ummeli.vlive.profile.urls')),
     url(r'^downloads/', include('downloads.urls')),
     url(r'^jmbo/', include('jmbo.urls')),
+    url(r'^opportunities/', include('ummeli.opportunities.urls')),
 
     url(r'^send/$', views.send, name='send'),
     url(r'^send/thanks/$', views.send_thanks, name='send_thanks'),
