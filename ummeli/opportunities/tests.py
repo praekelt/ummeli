@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 class OpportunitiesTest(VLiveTestCase):
     fixtures = [
         'vlive/tests/auth/fixtures/sample.json',
+        'fixtures/opportunities.provinces.json',
     ]
 
     def setUp(self):
@@ -28,9 +29,14 @@ class OpportunitiesTest(VLiveTestCase):
                                     owner=user,
                                     salary=salary,
                                     state='published')
+        i.province.add(2)
+        i.province.add(3)
+        i.save()
+
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
         self.assertEqual(user.modelbase_set.all()[0].internship.salary.amount, 50)
         self.assertEqual(user.modelbase_set.all()[0].internship.education, 0)
+        self.assertEqual(user.modelbase_set.all()[0].internship.province.count(), 2)
 
         resp = self.client.get(reverse('internships'))
         self.assertContains(resp, 'Test op')
