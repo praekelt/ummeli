@@ -26,27 +26,29 @@
         {{ article.content|sanitize_html|safe }}
         <br/>
         <br/>
-        {% if article.linked_article or article.linked_page %}
-            <b>See also:</b>
-            {% if article.linked_article %}
-                <CONTAINER type="list">
-                    <LINK href="{% url article_detail article.linked_article.pk %}?{{uuid}}">
-                        <TEXT>{{ article.linked_article.title }}</TEXT>
-                    </LINK>
-                </CONTAINER>
-            {% endif %}
-
-            {% if article.linked_page %}
-                <CONTAINER type="list">
-                    <LINK href="{{ article.linked_page.url }}?{{uuid}}">
-                        <TEXT>{{ article.linked_page.title }}</TEXT>
-                    </LINK>
-                </CONTAINER>
-            {% endif %}
-            <br/>
-        {% endif %}
     </TEXT>
 </CONTAINER>
+{% if article.linked_article or article.linked_page %}
+    <CONTAINER type="data">
+        <TEXT>
+            <b>See also:</b>
+        </TEXT>
+    </CONTAINER>
+    {% if article.linked_article %}
+    <CONTAINER type="list">
+        <LINK href="{% url article_detail article.linked_article.pk %}?{{uuid}}">
+            <TEXT>{{ article.linked_article.title }}</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}
+    {% if article.linked_page %}
+    <CONTAINER type="list">
+        <LINK href="{{ article.linked_page.url }}?{{uuid}}">
+            <TEXT>{{ article.linked_page.title }}</TEXT>
+        </LINK>
+    </CONTAINER>
+    {% endif %}
+{% endif %}
 </MODULE>
 
 {% for poll in article.polls.all %}
