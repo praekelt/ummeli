@@ -54,6 +54,13 @@ class Opportunity(ModelBase):
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
 
+    def get_education(self):
+        return dict(EDUCATION_LEVEL_CHOICES)[self.education]
+
+    def get_provinces(self):
+        print self.province.all()
+        return ', '.join(['%s' % a for a in self.province.all()])
+
     class Meta:
         abstract = True
 

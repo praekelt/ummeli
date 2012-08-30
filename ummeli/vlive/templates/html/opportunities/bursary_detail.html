@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url bursaries %}">Bursaries</a> &raquo;
+        {{object.title}}
+    </h2>
+    <p>
+        <strong>{{object.title}}</strong>
+        <br/><small>{{ object.deadline|date:"D, j M Y"  }}</small>
+        <br/><small>Province: {{ object.get_provinces }}</small>
+        <br/><small>Min. education required: <b>{{ object.get_education}}</b></small>
+        <br/>
+        <br/>
+        {{ object.description }}
+    </p>
+    <div class="more"><a href="#">&larr; Back to internships</a></div>
+{% endblock %}
