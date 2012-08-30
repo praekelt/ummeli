@@ -18,6 +18,13 @@ SALARY_FREQUENCY_CHOICES = (
         )
 
 
+class Province(models.Model):
+    province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s' % dict(PROVINCE_CHOICES)[self.province]
+
+
 class Salary(models.Model):
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     frequency = models.PositiveIntegerField(
@@ -32,7 +39,11 @@ class Salary(models.Model):
 
 
 class Opportunity(ModelBase):
-    province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
+    province = models.ManyToManyField(
+                    Province,
+                    blank=True,
+                    null=True,
+                    default=None)
     deadline = models.DateTimeField(blank=True, null=True, default=None)
     education = models.PositiveIntegerField(
                     choices=EDUCATION_LEVEL_CHOICES,

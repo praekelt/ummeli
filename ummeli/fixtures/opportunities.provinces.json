@@ -1,0 +1,72 @@
+[
+    {
+        "pk": 1,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 0
+        }
+    },
+    {
+        "pk": 2,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 2
+        }
+    },
+    {
+        "pk": 4,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 3
+        }
+    },
+    {
+        "pk": 5,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 4
+        }
+    },
+    {
+        "pk": 6,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 5
+        }
+    },
+    {
+        "pk": 7,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 6
+        }
+    },
+    {
+        "pk": 8,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 7
+        }
+    },
+    {
+        "pk": 9,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 8
+        }
+    },
+    {
+        "pk": 10,
+        "model": "opportunities.province",
+        "fields": {
+            "province": 9
+        }
+    }
+]
