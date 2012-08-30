@@ -7,7 +7,7 @@
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>{{object.get_education}}</small><br/>
+            <small>Education: {{object.get_education}}</small><br/>
             <small>Deadline: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
         </div>
         {% empty %}
