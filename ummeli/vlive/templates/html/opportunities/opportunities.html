@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Opportunities</h2>
+    <p>
+        <strong>{{object.title}}</strong>
+        <br/><small>{{ object.deadline|date:"D, j M Y"  }}</small>
+        <br/>
+        <br/>
+        {{ object.description }}
+    </p>
+    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+{% endblock %}
