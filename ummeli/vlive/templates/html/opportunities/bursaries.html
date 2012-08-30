@@ -10,6 +10,8 @@
             Min: <strong>{{object.get_education}}</strong><br/>
             <small>Deadline: <strong>20 Aug 2012</strong></small><br/>
         </div>
+        {% empty %}
+        <p>0 bursaries in this province.</p>
         {% endfor %}
     </p>
     <div id="pagination">
