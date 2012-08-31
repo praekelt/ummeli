@@ -3,7 +3,7 @@
 {% block content %}
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Bursaries</h2>
     <p>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}}</a></strong>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>

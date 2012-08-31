@@ -1,20 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
-        <a href="{% url jobs_province %}">Jobs</a> &raquo; 
-        <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
-        <a href="{% url jobs search_id cat_id %}">{{category_title}}</a>
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url jobs_list %}">Jobs</a> &raquo;
+        <a href="{% url jobs cat_id %}">{{category_title}}</a>
     </h2>
     <p>
         {% if job.user_submitted %}
         <strong>{{job.source}}</strong><br/>
         {% endif %}
-            
+
         {{ job.text }}
         <br/>
         <br/>
-        <small>{{ job.date|date:"D, j M Y"  }}</small>    
+        <small>{{ job.date|date:"D, j M Y"  }}</small>
         {% if not job.user_submitted %}
             <br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
@@ -22,24 +21,24 @@
             <br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
         {% endif %}
     </p>
-    <div class="more"><a href="{% url jobs search_id cat_id %}">&larr; Back to jobs</a></div>
-    
+    <div class="more"><a href="{% url jobs cat_id %}">&larr; Back to jobs</a></div>
+
     <div class="ruler"></div>
     <h2>Apply for this job</h2>
-    <form name="pd" method="POST" class="content-form"> 
+    <form name="pd" method="POST" class="content-form">
     {% if user.is_authenticated %}
         {% if user_profile.missing_fields %}
             <br/>
             <strong>Missing fields</strong>
             <div class="warning">
-                Your CV is incomplete. Please make sure that the following information is 
+                Your CV is incomplete. Please make sure that the following information is
                 completed before you can send your CV.
             </div>
             {% for field in user_profile.missing_fields %}
                 - {{field}}<br/>
             {% endfor %}
         {% else %}
-        <fieldset> 
+        <fieldset>
         <p><strong>* = Required</strong></p>
           <label for="email">Email CV To:*</label>
           {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
@@ -51,7 +50,7 @@
         </fieldset>
         {% endif %}
     {% else %}
-        <div class="warning">Please <a href="{% url login %}?next={% url jobs search_id cat_id %}">sign in</a> 
+        <div class="warning">Please <a href="{% url login %}?next={% url jobs search_id cat_id %}">sign in</a>
         or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
     {% endif %}
     </form>

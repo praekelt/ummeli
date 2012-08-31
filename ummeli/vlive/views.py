@@ -27,6 +27,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
+from django.template import RequestContext
 
 #imports for login
 from django.http import  HttpResponse
@@ -226,18 +227,29 @@ def send(request):
 def send_thanks(request):
     return redirect(reverse('my_ummeli'))
 
-def jobs_province(request):
-    provinces = [province for province in Province.objects.all().order_by('name').annotate(articles_count=Count('category__articles', distinct=True), userarticles_count=Count('category__user_submitted_job_articles', distinct=True)) if province.category_set.exists()]
-    return render(request, 'opportunities/jobs/jobs_province.html', {'provinces': provinces})
+def get_search_id(request):
+    search_ids = ((0,1),
+                    (1,-5),
+                    (2,-3),
+                    (3,2),
+                    (4,6),
+                    (5,-1),
+                    (6,-2),
+                    (7,-6),
+                    (8,-4),
+                    (9,5))
+    province = int(RequestContext(request)['province_id'])
+    return dict(search_ids)[province]
 
-def jobs_list(request,  id):
+def jobs_list(request):
+    id = get_search_id(request)
     categories = [category for category in Province.objects.get(search_id=id).category_set.all().order_by('title') if category.must_show()]
     return render(request, 'opportunities/jobs/jobs_list.html',
-                              {'categories': categories,
-                              'search_id': id,
-                              'province_name': Province.objects.get(search_id=id).name})
+                              {'categories': categories})
 
-def jobs(request,  id,  search_id):
+def jobs(request, id):
+    search_id = get_search_id(request)
+
     province = Province.objects.get(search_id=search_id)
     category = province.category_set.get(pk=id)
 
@@ -261,12 +273,13 @@ def jobs(request,  id,  search_id):
 
     return render(request, 'opportunities/jobs/jobs.html',
                               {'articles': paged_jobs,
-                              'search_id': search_id,
                               'cat_id': id,
                               'province_name': province.name,
                               'category_title': category.title})
 
-def job(request,  id,  cat_id,  search_id, user_submitted=0):
+def job(request,  cat_id,  id, user_submitted=0):
+    search_id = get_search_id(request)
+
     form = None
     if int(user_submitted) == 1:
         if not UserSubmittedJobArticle.objects.filter(pk = id):
@@ -289,17 +302,16 @@ def job(request,  id,  cat_id,  search_id, user_submitted=0):
 
             if send_via == 'email':
                 user_profile.email_cv(send_to,  article.text)
-                return send_thanks_job_apply(request,  cat_id,  search_id)
+                return send_thanks_job_apply(request,  cat_id)
             else:
                 user_profile.fax_cv(send_to, article.text)
-                return send_thanks_job_apply(request,  cat_id,  search_id)
+                return send_thanks_job_apply(request,  cat_id)
 
     province = Province.objects.get(search_id=search_id)
     category = Category.objects.get(pk = cat_id)
 
     return render(request, 'opportunities/jobs/job.html',
                               {'job': article,
-                              'search_id': search_id,
                               'cat_id': cat_id,
                               'province_name':  province.name,
                               'category_title':  category.title,
@@ -373,8 +385,8 @@ def community_job(request, id):
                               {'job': article,
                               'form':  form,})
 
-def send_thanks_job_apply(request,  cat_id,  search_id):
-    return redirect(reverse('jobs',  args=[search_id,  cat_id]))
+def send_thanks_job_apply(request,  cat_id):
+    return redirect(reverse('jobs',  args=[cat_id]))
 
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
