@@ -22,7 +22,7 @@
             <br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
         {% endif %}
     </div>
-    <div class="more"><a href="{% url jobs cat_id %}">&larr; Back to jobs</a></div>
+    <div class="more"><a href="{% url jobs cat_id %}">&larr; Back</a></div>
 
     <div class="h2">Apply for this job</div>
     <form name="pd" method="POST" class="content-form">
