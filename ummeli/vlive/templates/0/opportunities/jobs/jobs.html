@@ -2,11 +2,13 @@
 
 {% block content %}
     <div class="h2">
-        <a href="{% url jobs_province %}">Jobs</a> &raquo; 
-        <a href="{% url jobs_list search_id %}">{{province_name}}</a> &raquo; 
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url jobs_list %}">Jobs</a> &raquo;
         {{category_title}}
     </div>
-    <strong>*** = Submitted by Ummeli user</strong><br />
+    <div class="list">
+        Province: <strong><a href="{% url change_province %}?next={% url jobs_list %}">{{province}} (change)</a></strong>
+    </div>
     <div id="pagination">
         {% if articles.has_previous %}
             <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |
@@ -24,10 +26,11 @@
             | <span>Next</span>
         {% endif %}
     </div>
+    <strong>*** = Submitted by Ummeli user</strong><br />
     {% for article in articles.object_list %}
         <div class="list">
             {% if article.user_submitted %}<color value="blue">***</color>{% endif %}
-            <a href="{% url job search_id cat_id article.pk article.user_submitted %}">
+            <a href="{% url job cat_id article.pk article.user_submitted %}">
                 {% if article.user_submitted %}{{ article.source|truncatewords:10 }} - {% endif %}
                 {{ article.text|truncatewords:10 }}
             </a>
@@ -54,5 +57,5 @@
             | <span>Next</span>
         {% endif %}
     </div>
-    <div class="more"><a href="{% url jobs_list search_id %}">&larr; Back to categories</a></div>
+    <div class="more"><a href="{% url jobs_list %}">&larr; Back to categories</a></div>
 {% endblock %}

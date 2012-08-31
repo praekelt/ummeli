@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">Opportunities</div>
+    <div>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+
+        <div class="list">
+            <a href="{% url jobs_list %}">Jobs</a>
+        </div>
+        <div class="list">
+            <a href="{% url bursaries %}">Bursaries</a>
+        </div>
+        <div class="list">
+            <a href="{% url internships %}">Internships</a>
+        </div>
+        <div class="list">
+            <a href="{% url training %}">Training</a>
+        </div>
+        <div class="list">
+            <a href="{% url volunteering %}">Volunteering</a>
+        </div>
+        <div class="list">
+            <a href="{% url competitions %}">Competitions</a>
+        </div>
+        <div class="list">
+            <a href="{% url events %}">Events</a>
+        </div>
+    </div>
+    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+{% endblock %}
