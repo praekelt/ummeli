@@ -50,7 +50,7 @@
         </fieldset>
         {% endif %}
     {% else %}
-        <div class="warning">Please <a href="{% url login %}?next={% url jobs search_id cat_id %}">sign in</a>
+        <div class="warning">Please <a href="{% url login %}?next={% url jobs cat_id %}">sign in</a>
         or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
     {% endif %}
     </form>
