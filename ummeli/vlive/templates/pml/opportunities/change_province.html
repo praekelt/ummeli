@@ -1,0 +1,23 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Opportunities >> Province</LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>Current: <strong>{{province}}</strong></TEXT>
+</CONTAINER>
+<CONTAINER type="list">
+    {% for id, province in provinces %}
+    <LINK href="{% url change_province id %}?next={{next}}">
+        <TEXT>{{province}}</TEXT>
+    </LINK>
+    {% endfor %}
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{{next}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
