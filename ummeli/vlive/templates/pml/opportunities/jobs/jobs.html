@@ -1,7 +1,7 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+<HEADER><LABEL>{{category_title}}</LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={% url jobs_list %}">
         <TEXT>{{province}} (change)</TEXT>
