@@ -1,9 +1,9 @@
 {% extends "base.xml" %}
 
 {% block content %}
-    <HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+    <HEADER><LABEL>{{category_title}}</LABEL></HEADER>
     <CONTAINER type="data">
-        <TITLE>{{job.date|date:'d M y'}} ::  {{job.source}}</TITLE>
+        <TITLE>{{job.date|date:'d M y'}} ::  {{province}}</TITLE>
         {% if job.user_submitted %}
         <TEXT><color value="blue">submitted by Ummeli user</color></TEXT><br/>
         {% endif %}

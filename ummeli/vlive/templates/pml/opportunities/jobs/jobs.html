@@ -17,7 +17,7 @@
             {% if article.user_submitted %}
             <color value="blue">***</color>
             {% endif %}
-            {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+            {{article.date|date:'d M y'}} :: {{ article.text|truncatewords:10 }}
             </TEXT>
         </LINK>
     {% endfor %}
@@ -38,7 +38,7 @@
             </LINK>
         {% endif %}
         <LINK href="{% url jobs_list %}">
-            <TEXT>&lt;&lt; Back to {{province_name}}</TEXT>
+            <TEXT>&lt;&lt; Back</TEXT>
         </LINK>
     </CONTAINER>
 {% endblock %}
