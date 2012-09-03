@@ -1,16 +1,16 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL> </LABEL></HEADER>
+<HEADER><LABEL>Opportunities</LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={{request.path}}">
         <TEXT>{{province}} (change)</TEXT>
     </LINK>
 </CONTAINER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-<HEADER><LABEL>Opportunities</LABEL></HEADER>
-<CONTAINER  type="list">
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
     <LINK href="{% url jobs_list %}">
         <TEXT>Jobs</TEXT>
     </LINK>
@@ -33,6 +33,9 @@
         <TEXT>Events</TEXT>
     </LINK>
 </CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
     <LINK href="{% url index %}">
         <TEXT>&lt;&lt; Back</TEXT>

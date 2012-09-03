@@ -1,15 +1,15 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL> </LABEL></HEADER>
+<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={% url jobs_list %}">
         <TEXT>{{province}} (change)</TEXT>
     </LINK>
 </CONTAINER>
 </MODULE>
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
     {% for article in articles.object_list %}
         <LINK href="{% url job cat_id article.pk article.user_submitted %}">
