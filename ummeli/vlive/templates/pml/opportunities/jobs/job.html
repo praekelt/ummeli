@@ -1,9 +1,5 @@
 {% extends "base.xml" %}
 
-{% block title %}
-    Ummeli
-{% endblock %}
-
 {% block content %}
     <HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
     <CONTAINER  type="data">
@@ -21,7 +17,7 @@
     </CONTAINER>
     <br/>
     <CONTAINER  type="list">
-        <LINK href="{% url jobs search_id cat_id %}">
+        <LINK href="{% url jobs cat_id %}">
             <TEXT>&lt;&lt; Back</TEXT>
         </LINK>
     </CONTAINER>
@@ -42,7 +38,7 @@
         <CONTAINER type="data">
             <TITLE>Missing fields</TITLE>
             <TEXT><color value="red">
-                Your CV is incomplete. Please make sure that the following information is 
+                Your CV is incomplete. Please make sure that the following information is
                 completed before you can send your CV.</color></TEXT><br/>
         {% for field in user_profile.missing_fields %}
             <TEXT><color value="red">- {{field}}</color></TEXT><br/>
@@ -62,10 +58,10 @@
     {% else %}
     <br/>
     <CONTAINER type="data">
-    <TEXT><color value="red">You are not logged in. Please log in to be able to 
+    <TEXT><color value="red">You are not logged in. Please log in to be able to
     respond to a job advert.</color>
     <br/>
-        <LINK href="{% url login %}?next={% url jobs search_id cat_id %}">
+        <LINK href="{% url login %}?next={% url jobs cat_id %}">
             <TEXT>Login</TEXT>
         </LINK>
     </TEXT>
