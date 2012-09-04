@@ -8,7 +8,7 @@
     </div>
     <div class="wrap">
         <strong>{{object.title}}</strong>
-        <br/><small>Deadline: {{ object.deadline|date:"D, j M Y"  }}</small>
+        <br/><small>Deadline: <b>{{ object.deadline|date:"D, j M Y"  }}</b></small>
         <br/><small>Province: {{ object.get_provinces }}</small>
         <br/><small>Cost: R {{ object.cost }}</small>
         <br/>

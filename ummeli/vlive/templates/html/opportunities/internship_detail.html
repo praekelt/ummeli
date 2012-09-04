@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">
+    <h2>
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url volunteering %}">Volunteering</a> &raquo;
+        <a href="{% url internships %}">Internships</a> &raquo;
         {{object.title}}
-    </div>
-    <div class="wrap">
+    </h2>
+    <p>
         <strong>{{object.title}}</strong>
-        <br/><small>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b></small>
+        <br/><small>Salary: R {{ object.salary }}</small>
+        <br/><small>Deadline: <b>{{ object.deadline|date:"D, j M Y"  }}</b></small>
         <br/><small>Province: {{ object.get_provinces }}</small>
         <br/><small>Min. education required: {{ object.get_education}}</small>
         <br/>
         <br/>
         {{ object.description }}
-    </div>
-    <div class="more"><a href="{% url volunteering %}">&larr; Back</a></div>
+    </p>
+    <div class="more"><a href="{% url internships %}">&larr; Back</a></div>
 {% endblock %}
