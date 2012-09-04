@@ -13,7 +13,7 @@
         <br/><small>When: {{ object.retract_on|date:"D, j M Y"  }}</small>
         <br/>
         <br/>
-        {{ object.description }}
+        {{ object.description|safe }}
     </p>
     <div class="more"><a href="{% url events %}">&larr; Back</a></div>
 {% endblock %}

@@ -13,7 +13,7 @@
         <br/><small>Cost: R {{ object.cost }}</small>
         <br/>
         <br/>
-        {{ object.description }}
+        {{ object.description|safe }}
     </p>
     <div class="more"><a href="{% url competitions %}">&larr; Back</a></div>
 {% endblock %}

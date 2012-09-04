@@ -1,7 +1,7 @@
 from django.db import models
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
-
+from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 
 EDUCATION_LEVEL_CHOICES = (
         (0, 'Any'),
@@ -62,6 +62,11 @@ class Opportunity(ModelBase):
     def get_provinces(self):
         print self.province.all()
         return ', '.join(['%s' % a for a in self.province.all()])
+
+    def save(self, *args, **kwargs):
+        self.description = sanitize_html(self.description or '')
+        self.location = sanitize_html(self.location or '')
+        super(Opportunity, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True

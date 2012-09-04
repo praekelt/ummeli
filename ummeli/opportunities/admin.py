@@ -1,10 +1,13 @@
 from django.contrib import admin
 from ummeli.opportunities.models import *
 from jmbo.admin import ModelBaseAdmin
+from ckeditor.widgets import AdminCKEditor
 
 
 class OpportunityAdmin(ModelBaseAdmin):
-    pass
+    formfield_overrides = {
+        models.TextField: {'widget': AdminCKEditor},
+    }
 
 admin.site.register(Job, OpportunityAdmin)
 admin.site.register(Internship, OpportunityAdmin)

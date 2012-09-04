@@ -19,7 +19,7 @@
     <br/>When: {{ object.retract_on|date:"D, j M Y" }}
     <br/>
     <br/>
-    {{ object.description }}
+    {{ object.description|safe }}
     </TEXT>
     </CONTAINER>
 </MODULE>

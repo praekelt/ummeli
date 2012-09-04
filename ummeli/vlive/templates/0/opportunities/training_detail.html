@@ -14,7 +14,7 @@
         <br/><small>Min. education required: {{ object.get_education}}</small>
         <br/>
         <br/>
-        {{ object.description }}
+        {{ object.description|safe }}
     </div>
     <div class="more"><a href="{% url training %}">&larr; Back</a></div>
 {% endblock %}
