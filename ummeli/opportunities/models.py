@@ -44,7 +44,6 @@ class Opportunity(ModelBase):
                     blank=True,
                     null=True,
                     default=None)
-    deadline = models.DateTimeField(blank=True, null=True, default=None)
     education = models.PositiveIntegerField(
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
