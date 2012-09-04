@@ -3,17 +3,17 @@
 {% block content %}
     <div class="h2">
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url bursaries %}">Bursaries</a> &raquo;
+        <a href="{% url events %}">Events</a> &raquo;
         {{object.title}}
     </div>
-    <div>
+    <div class="wrap">
         <strong>{{object.title}}</strong>
-        <br/><small>{{ object.deadline|date:"D, j M Y"  }}</small>
         <br/><small>Province: {{ object.get_provinces }}</small>
-        <br/><small>Min. education required: <b>{{ object.get_education}}</b></small>
+        <br/><small>Location: {{ object.location }}</small>
+        <br/><small>When: {{ object.deadline|date:"D, j M Y"  }}</small>
         <br/>
         <br/>
         {{ object.description }}
     </div>
-    <div class="more"><a href="{% url bursaries %}">&larr; Back</a></div>
+    <div class="more"><a href="{% url events %}">&larr; Back</a></div>
 {% endblock %}
