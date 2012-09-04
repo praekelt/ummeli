@@ -3,7 +3,7 @@
 {% block content %}
     <div class="h2">Opportunities</div>
     <div>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+        <div class="list">Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></div>
 
         <div class="list">
             <a href="{% url jobs_list %}">Jobs</a>

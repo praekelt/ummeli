@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2"><a href="{% url opportunities %}">Opportunities</a> &raquo; Internships</div>
+    <div class="h2"><a href="{% url opportunities %}">Opportunities</a> &raquo; Volunteering</div>
     <div class="list">Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></div>
     <div>
         {% for object in object_list %}
         <div class="img-article article">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Salary: R {{object.salary}}</small><br/>
+            <small>Education: {{object.get_education}}</small><br/>
             <small>Deadline: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
         </div>
         {% empty %}
-        <p>0 internships in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 volunteering opportunities in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
     </div>
     {% if object_list %}
