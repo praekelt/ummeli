@@ -1,0 +1,35 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Training</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={% url training %}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <b>{{object.title}}</b>
+    <br/>Cost: R {{ object.cost }}</b>
+    <br/>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b>
+    <br/>Province: {{ object.get_provinces }}
+    <br/>Min. education required: {{ object.get_education}}
+    <br/>
+    <br/>
+    {{ object.description }}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url training %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
