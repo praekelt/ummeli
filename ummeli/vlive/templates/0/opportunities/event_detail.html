@@ -10,7 +10,7 @@
         <strong>{{object.title}}</strong>
         <br/><small>Province: {{ object.get_provinces }}</small>
         <br/><small>Location: {{ object.location }}</small>
-        <br/><small>When: {{ object.deadline|date:"D, j M Y"  }}</small>
+        <br/><small>When: {{ object.retract_on|date:"D, j M Y"  }}</small>
         <br/>
         <br/>
         {{ object.description }}

@@ -7,7 +7,7 @@
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Deadline: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
+            {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
         </div>
         {% empty %}
         <p>0 competitions in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>

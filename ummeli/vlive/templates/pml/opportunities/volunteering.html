@@ -17,7 +17,7 @@
         <TEXT>{{object.title}}</TEXT>
     </LINK>
     <br/>Education: {{object.get_education}}
-    <br/>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b>
+    {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
     </TEXT>
     </CONTAINER>
 </MODULE>

@@ -8,7 +8,7 @@
         <div class="img-article article">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
             <small>Location: {{object.location}}</small><br/>
-            <small>When: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
+            <small>When: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>
         </div>
         {% empty %}
         <p>0 events in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>

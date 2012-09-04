@@ -8,7 +8,7 @@
     </h2>
     <p>
         <strong>{{object.title}}</strong>
-        <br/><small>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b></small>
+        {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
         <br/><small>Province: {{ object.get_provinces }}</small>
         <br/><small>Min. education required: {{ object.get_education}}</small>
         <br/>
