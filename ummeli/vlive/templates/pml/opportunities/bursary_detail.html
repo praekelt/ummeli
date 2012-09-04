@@ -14,9 +14,9 @@
     <CONTAINER type="data">
     <TEXT>
     <b>{{object.title}}</b>
-    <br/>{{ object.deadline|date:"D, j M Y"  }}
+    <br/>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b>
     <br/>Province: {{ object.get_provinces }}
-    <br/>Min. education required: <b>{{ object.get_education}}</b>
+    <br/>Min. education required: {{ object.get_education}}
     <br/>
     <br/>
     {{ object.description }}

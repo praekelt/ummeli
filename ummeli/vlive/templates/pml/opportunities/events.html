@@ -1,7 +1,7 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL>Internships</LABEL></HEADER>
+<HEADER><LABEL>Events</LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={{request.path}}">
         <TEXT>{{province}} (change)</TEXT>
@@ -16,8 +16,8 @@
     <LINK href="{{object.get_absolute_url}}">
         <TEXT>{{object.title}}</TEXT>
     </LINK>
-    <br/>Salary: R {{object.salary}}
-    <br/>Deadline: <b>{{ object.deadline|date:"D, j M Y" }}</b>
+    <br/>Location: {{object.location}}
+    <br/>When: <b>{{ object.deadline|date:"D, j M Y" }}</b>
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -25,7 +25,7 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
-    <TEXT>0 internships in {{province}}.</TEXT>
+    <TEXT>0 events in {{province}}.</TEXT>
 </CONTAINER>
 </MODULE>
 {% endfor %}
