@@ -37,6 +37,9 @@ class Salary(models.Model):
     def __unicode__(self):  # pragma: no cover
         return '%s per %s' % (self.amount, self.get_frequency())
 
+    class Meta:
+        verbose_name_plural = "salaries"
+
 
 class Opportunity(ModelBase):
     province = models.ManyToManyField(
@@ -83,11 +86,16 @@ class Volunteer(Opportunity):
     def get_absolute_url(self):
         return ('volunteer_detail', (self.slug,))
 
+    class Meta:
+        verbose_name_plural = "volunteering"
 
 class Bursary(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('bursary_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "bursaries"
 
 
 class Training(Opportunity):
@@ -96,6 +104,9 @@ class Training(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('training_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "training"
 
 
 class Competition(Opportunity):
