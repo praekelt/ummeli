@@ -126,3 +126,20 @@ class Event(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('event_detail', (self.slug,))
+
+
+class MicroTask(Opportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('micro_task_detail', (self.slug,))
+
+
+class Campaign(Opportunity):
+    tasks = models.ManyToManyField(MicroTask,
+                    blank=True,
+                    null=True,
+                    default=None)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('campaign_detail', (self.slug,))
