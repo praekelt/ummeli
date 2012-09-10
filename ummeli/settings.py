@@ -33,7 +33,8 @@ ADMINS = ()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ummeli',    # Or path to database file if using sqlite3.
         'USER': 'ummeli',
         'PASSWORD': 'ummeli',
@@ -168,6 +169,9 @@ INSTALLED_APPS = (
 
     # 3rd party
     'ckeditor',
+    'atlas',
+    'django.contrib.gis',
+    'tastypie',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
