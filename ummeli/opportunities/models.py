@@ -51,7 +51,7 @@ class Opportunity(ModelBase):
                     choices=EDUCATION_LEVEL_CHOICES,
                     default=0)
     salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
-    location = models.TextField(null=True, blank=True, default=None)
+    place = models.TextField(null=True, blank=True, default=None)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
@@ -65,7 +65,7 @@ class Opportunity(ModelBase):
 
     def save(self, *args, **kwargs):
         self.description = sanitize_html(self.description or '')
-        self.location = sanitize_html(self.location or '')
+        self.place = sanitize_html(self.place or '')
         super(Opportunity, self).save(*args, **kwargs)
 
     class Meta:
