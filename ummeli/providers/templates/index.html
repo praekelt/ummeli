@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Submitted Tasks</h2>
+{% for task in submitted_tasks %}
+
+{% empty %}
+<p>0 tasks submited.</p>
+{% endfor %}
+
+<h2>Rejected Tasks</h2>
+{% for task in rejected_tasks %}
+
+{% empty %}
+<p>0 tasks rejected.</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,143 @@
+/*---------------------------
+	Site Title website sections:
+
+	0.	CSS Reset & Body
+	1.	Wrapper
+	2.	Header & Navigation
+	3.	Main Content Area
+	4.	Fonts
+	5.	Images
+	6.	Tables
+	7.	Footer
+
+-----------------------------*/
+
+
+/*---------------------------
+0.	CSS Reset & Body
+-----------------------------*/
+* { margin:0;padding:0;border:0px none;}
+ul, ol, li { list-style-type:none; }
+a { text-decoration:none; color:#e68b16; outline:none;}
+a:hover {text-decoration:underline; color:#4c6c7e;}
+body {font:13px/18px "Arial", Helvetica, sans-serif; background:white; color:black;}
+input:focus {outline: none; outline-offset: 0;}
+
+/*---------------------------
+1.	Wrapper
+-----------------------------*/
+.wrapper {width:930px; margin:0 auto;}
+
+
+/*---------------------------
+2.	Header & Navigation
+-----------------------------*/
+header { width:100%; height:145px; float:left; background:#e2e5e7 url(../img/bg.jpg) 0 0 repeat;}
+	header img {float:left; margin:25px 0 0; color:#000; font: bold 50px/50px Arial, Helvetica, sans-serif;}
+	nav { height:40px; float:right;}
+		nav a { height:40px; float:left; padding:88px 10px 0; margin:0 10px; color:#39444a; font: normal 35px/40px "Univers", Arial, Helvetica, sans-serif;}
+		nav a.current {background:url(../img/nav-current.gif) center 0 no-repeat; }
+		nav a:hover { color:#4c6c7e; text-decoration:none;}
+
+
+/*---------------------------
+2.	Banners (incl. slideshow)
+-----------------------------*/
+.banner { width:100%; float:left; padding:0; clear:both; background:#ec9525 url(../img/bg-orange.jpg) 0 0 repeat;}
+#slider { position:relative; height:430px; width:930px; background: url(../img/loading.gif) no-repeat 50% 50%;}
+	#slider img { position:absolute; top:0; left:0; display:none; color:#000; font: bold 50px/50px Arial, Helvetica, sans-serif;}
+	#slider a { border:0; display:block; }
+	.nivo-controlNav { position:absolute; left:15px; bottom:25px; }
+		.nivo-controlNav a {position:relative; z-index:99; cursor:pointer; display:block; width:13px; height:13px; background:#754a12; text-indent:-9999px; border:0; margin-right:8px; float:left; font-size:0; line-height:0; -webkit-border-radius:6px; -moz-border-radius:6px; border-radius:6px;}
+			.nivo-controlNav a.active {background:black; }
+	 .nivoSlider { position:relative; }
+		.nivoSlider img { position:absolute; top:0; left:0; }
+		.nivoSlider a.nivo-imageLink { position:absolute; top:0; left:0; width:100%; height:100%; z-index:60; display:none; }
+		.nivo-slice { display:block; position:absolute; z-index:50; height:100%; }
+.teamBanner {width:100%; padding:30px 0 0; float:left; clear:both; background:#e2e5e7 url(../img/bg.jpg) 0 0 repeat;}
+	.teamBanner img {float:left; font: normal 50px/55px "Univers", Arial, Helvetica, sans-serif; color:#e79224; margin:0 0 30px;}
+    .teamBanner h1 {float:right; width:25%; font: 400 28px/32px "Omnes", Arial, Helvetica, sans-serif; padding:0; margin:0 0 5px; background:none;}
+    .teamBanner p {float:right; width:25%; padding:0; margin:0 0 30px;}
+.learnMore {padding:40px 0 25px; text-align:center;}
+ 	.learnMore img.mainImage {float:left; margin-left:20px;}
+	.learnMore .features {float:left; width:190px; text-align:left;}
+		.learnMore .right {float:right; text-align:right;}
+	.learnMore h2 {margin: 0 0 5px;}
+	.learnMore .features img {margin: 0 0 2px;}
+	.learnMore p {margin: 0 0 15px;}
+
+
+/*---------------------------
+3.	Strapline (under banner)
+-----------------------------*/
+.strapline {width:100%; float:left; padding:15px 0; clear:both; background:white; font: 400 17px/18px "Omnes", Arial, Helvetica, sans-serif;}
+
+
+/*---------------------------
+3.	Main Content Area
+-----------------------------*/
+.content {clear:both; width:100%; float:left; background:#e2e5e7 url(../img/bg.jpg) 0 0 repeat; padding:25px 0;}
+	.four-columns, .two-columns, .providers {clear:both; width:100%; float:left;}
+		.four-columns .column {width:25%; float:left; padding-bottom:10px;}
+			.four-columns .column img {margin:0 0 15px 0;}
+			.four-columns .column p {margin:0 20px 20px 0;}
+			.four-columns p.learnMoreBtn {clear:both; float:left; width:929px; height:29px; background:url(../img/wide-arrow-btn.gif) 0 0 no-repeat;}
+            	.four-columns p.learnMoreBtn a {text-indent:-9999px; float:left; width:929px; height:29px; background:url(../img/wide-arrow-btn.gif) 0 0 no-repeat;}
+				.four-columns p.learnMoreBtn a:hover {background-position:0 bottom;}
+		.providers .copy {float:left; width:21%; padding:25px 0 0;}
+			.providers .copy h1 {background:none; padding:0; margin:0 0 15px;}
+		.providers .logos {float:right; width:75%; padding:35px 0 0;}
+    	.two-columns .column {width:48%; float:left; padding-bottom:10px;}
+			.two-columns .right {float:right;}
+			.two-columns .right p.lineUp {padding-top:10px;}
+
+
+/*---------------------------
+4.	Font Styles
+-----------------------------*/
+h1 {color:#000; font: 400 30px/32px "Omnes", Arial, Helvetica, sans-serif; padding:0 0 10px; margin:0 0 10px; background:url(../img/white-line.gif) 0 bottom repeat-x;}
+h2 {color:#000; font: 500 italic 20px/24px "Omnes", Arial, Helvetica, sans-serif; margin:0 0 20px;}
+h3 {color:#39444a; font: normal 35px/35px "Univers", Arial, Helvetica, sans-serif; margin:0 0 20px;}
+	h3.large {font: normal 85px/85px "Univers", Arial, Helvetica, sans-serif; margin:0;}
+h4 {font: bold italic 13px/18px "Arial", Helvetica, sans-serif; margin:0 0 5px;}
+.content p {margin-bottom:15px;}
+em {font-style:normal;font-weight:bold;}
+hr {height:9px; width:100%; clear:both; float:left; font-size:0; margin:0 0 25px; background:url(../img/white-line.gif) 0 bottom repeat-x; }
+hr.dark {background:url(../img/dark-line.gif) 0 bottom repeat-x; }
+
+
+/*---------------------------
+4.	Fading images
+-----------------------------*/
+.imgFade {position:relative; width:210px; height:230px;}
+img.a {position:absolute; left:0; top:0; z-index:10; cursor:pointer;}
+img.b {position:absolute; left:0; top:0;}
+div.fadehover {position:relative; float:left; margin:0 10px; height:62px;}
+img.c, img.d {position:absolute; left:0; bottom:0; }
+img.c {z-index:10;}
+
+
+/*---------------------------
+7.	Footer
+-----------------------------*/
+footer { padding:20px 0 80px; float:left; clear:both; width:100%;}
+	footer p {float:left}
+		footer p a {color:black; padding:0 2px;}
+	footer img {float:right;}
+
+#id_username,
+#id_username:focus,
+#id_password,
+#id_password:focus{
+	border-radius: 5px;
+	padding: 5px 15px 5px 40px;
+	margin: 2px;
+}
+
+#id_username, #id_username:focus{
+	background: #fff url(../img/username.png) 0px 0px no-repeat !important;
+}
+
+#id_password, #id_password:focus{
+	background: #fff url(../img/password.png) 0px 0px no-repeat !important;
+}

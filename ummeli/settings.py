@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     'atlas',
     'django.contrib.gis',
     'tastypie',
+    'simple_autocomplete',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
@@ -250,3 +251,15 @@ COMMENTS_PER_PAGE = 15
 PML_IGNORE_PATH = ['/vlive/downloads/', ]
 
 DJANGO_ATLAS = {}
+
+SIMPLE_AUTOCOMPLETE = {
+    'auth.user': {'threshold': 20},
+    'category.category': {'threshold':20},
+    'atlas.location': {'threshold':20},
+    'atlas.city': {'threshold':20},
+    'atlas.region': {'threshold':20},
+    'jmbo.modelbase': {
+        'threshold': 50,
+        'duplicate_format_function': lambda item, model, content_type: item.as_leaf_class().content_type.name
+    }
+}

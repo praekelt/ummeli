@@ -84,6 +84,10 @@ urlpatterns = patterns('',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtask_detail.html'),
         name='microtask_detail'),
+    url(r'^campagins/task/tomtom/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=MicroTask,\
+            template_name='opportunities/tom_tom_micro_task_detail.html'),
+        name='tom_tom_micro_task_detail'),
 
     #Jobs from Ummeli 1.0
     url(r'^jobs/$',

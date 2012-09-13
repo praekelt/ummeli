@@ -135,6 +135,38 @@ class MicroTask(Opportunity):
         return ('micro_task_detail', (self.slug,))
 
 
+class TomTomMicroTask(MicroTask):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('tom_tom_micro_task_detail', (self.slug,))
+
+    category = models.TextField(blank=True, null=True)
+    poi_id = models.TextField(blank=True, null=True)
+    city = models.TextField(blank=True, null=True)
+    suburb = models.TextField(blank=True, null=True)
+    tel_1 = models.TextField(blank=True, null=True)
+    tel_2 = models.TextField(blank=True, null=True)
+    fax = models.TextField(blank=True, null=True)
+    email = models.TextField(blank=True, null=True)
+    website = models.TextField(blank=True, null=True)
+
+    def to_dto(self):
+        return {'title': self.title,
+                'description': self.description,
+                'published': self.published,
+                'x_coordinate': '%s' % self.location.latitude,
+                'y_coordinate': '%s' % self.location.longitude,
+                'category': self.category,
+                'tel_1': self.tel_1,
+                'tel_2': self.tel_2,
+                'fax': self.fax,
+                'email': self.email,
+                'website': self.website,
+                'poi_id': self.poi_id,
+                'id': self.id,
+                }
+
+
 class Campaign(Opportunity):
     tasks = models.ManyToManyField(MicroTask,
                     blank=True,

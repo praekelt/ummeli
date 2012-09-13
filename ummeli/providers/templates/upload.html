@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Upload Tasks</h2>
+<form method='POST' enctype="multipart/form-data">
+    <fieldset>
+        {{form.file}}
+        
+        <input type='submit' value='Upload'/>
+        {% csrf_token %}
+    </fieldset>
+</form>
+
+{% endblock %}

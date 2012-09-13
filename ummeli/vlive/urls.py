@@ -34,7 +34,6 @@ urlpatterns = patterns('',
     url(r'^poll/', include('jmboarticles.poll.urls')),
     url(r'^my/profile/', include('ummeli.vlive.profile.urls')),
     url(r'^downloads/', include('downloads.urls')),
-    url(r'^jmbo/', include('jmbo.urls')),
     url(r'^opportunities/', include('ummeli.opportunities.urls')),
 
     url(r'^send/$', views.send, name='send'),
@@ -42,6 +41,10 @@ urlpatterns = patterns('',
 
     url(r'^community/jobs/$', views.community_jobs, name='community_jobs'),
     url(r'^community/jobs/(?P<id>\d+)/$', views.community_job, name='community_jobs'),
+
+    #Jmbo
+    url(r'^jmbo/', include('jmbo.urls')),
+    url(r'^simple-autocomplete/', include('simple_autocomplete.urls'))
 )
 
 

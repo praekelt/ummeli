@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p id="loading-cont">Please wait..</p>
+<div id="tasks-cont" style="display:none">
+    <div id="duplicate-tasks" style="display:none">
+        <h1>Duplicate Tasks</h1>
+        <div id="duplicate-tasks-cont"></div>
+        <br/>
+    </div>
+
+    <h1>New Tasks</h1>
+    <form method="POST" action="/upload/confirm/">
+    <fieldset>
+    <div id="new-tasks" style="display:none">
+        <input type="checkbox" name="publish-all" id="publish-all" value="true" checked="checked"/><label for="publish-all"><strong>Publish All Tasks (<span id="new-tasks-count"></span>)</strong></label>
+    </div>
+    <div id="new-tasks-cont" style="display:none"></div>
+    <br/>
+    <input type="submit" value="Submit"/>
+    {% csrf_token %}
+    </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.get('/upload/process/', function(data) {
+        $('#loading-cont').hide();
+        $('#tasks-cont').show();
+
+        var duplicate_target = $('#duplicate-tasks-cont').html('');
+        if(data.duplicate_tasks.length == 0) 
+            duplicate_target.append('<p>0 duplicates found.</p>');
+        else
+            $('#duplicate-tasks').show();
+
+        $.each(data.duplicate_tasks, function(i, value){
+            duplicate_target.append("<div class='task'><span>"+value.title+" ("+value.poi_id+")</span></div>");
+            if(i == 5) return false;
+        });
+
+        duplicate_target.append("<div>...</div><div class='task'>("+data.duplicate_tasks.length+" duplicate tasks found.)</div>");
+
+        var new_target = $('#new-tasks-cont').html('');
+        if(data.new_tasks.length == 0){
+            new_target.append('<p>0 new tasks.</p>').show();
+            $("form fieldset input[type='submit']").hide()
+        }else{
+            $('#publish-all').click(function () {
+                $('#new-tasks-cont').find(':checkbox').attr('checked', this.checked);
+                $('#new-tasks-cont').toggle(!this.checked);
+            });
+            $('#new-tasks-count').html(data.new_tasks.length);
+            $('#new-tasks').show();
+        }
+
+        $.each(data.new_tasks, function(i, value){
+            new_target.append("<div class='task'><input checked='checked' type='checkbox' name='new_task' id='new_"+value.id+"' value='"+value.id+"'/><label for='new_"+value.id+"'>"+value.title+" ("+value.poi_id+")</label></div>");
+        });
+    });
+});
+</script>
+{% endblock %}
