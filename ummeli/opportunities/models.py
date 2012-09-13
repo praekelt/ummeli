@@ -94,6 +94,7 @@ class Volunteer(Opportunity):
     class Meta:
         verbose_name_plural = "volunteering"
 
+
 class Bursary(Opportunity):
     @models.permalink
     def get_absolute_url(self):

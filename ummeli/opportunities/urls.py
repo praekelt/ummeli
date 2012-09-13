@@ -39,6 +39,14 @@ urlpatterns = patterns('',
         OpportunityListView.as_view(model=Event, \
             template_name='opportunities/events.html'),
         name='events'),
+    url(r'^campaigns/$',
+        OpportunityListView.as_view(model=Campaign, \
+            template_name='opportunities/campaigns.html'),
+        name='campaigns'),
+    url(r'^tasks/$',
+        OpportunityListView.as_view(model=MicroTask, \
+            template_name='opportunities/microtasks.html'),
+        name='microtasks'),
 
     #url(r'^jobs/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=Job,\
@@ -50,24 +58,32 @@ urlpatterns = patterns('',
         name='internship_detail'),
     url(r'^bursaries/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Bursary,\
-            template_name='opportunities/bursary_detail'),
+            template_name='opportunities/bursary_detail.html'),
         name='bursary_detail'),
     url(r'^volunteering/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Volunteer,\
-            template_name='opportunities/volunteer_detail'),
+            template_name='opportunities/volunteer_detail.html'),
         name='volunteer_detail'),
     url(r'^training/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Training,\
-            template_name='opportunities/training_detail'),
+            template_name='opportunities/training_detail.html'),
         name='training_detail'),
     url(r'^competitions/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Competition,\
-            template_name='opportunities/competition_detail'),
+            template_name='opportunities/competition_detail.html'),
         name='competition_detail'),
     url(r'^events/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Event,\
-            template_name='opportunities/event_detail'),
+            template_name='opportunities/event_detail.html'),
         name='event_detail'),
+    url(r'^campaigns/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Campaign,\
+            template_name='opportunities/campaign_detail.html'),
+        name='campaign_detail'),
+    url(r'^campagins/task/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=MicroTask,\
+            template_name='opportunities/microtask_detail.html'),
+        name='microtask_detail'),
 
     #Jobs from Ummeli 1.0
     url(r'^jobs/$',
