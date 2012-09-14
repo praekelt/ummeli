@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url index %}">Home</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url providers.campaigns %}">Micro Tasks</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="#">{{object.title}}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="sortable row-fluid">
+    <a data-rel="tooltip" title="0 recently published" class="well span3 top-block" href="#">
+        <span class="icon32 icon-blue icon-basket"></span>
+        <div>Published</div>
+        <div>{{object.tasks.count}}</div>
+        <span class="notification">0</span>
+    </a>
+
+    <a data-rel="tooltip" title="4 new responses" class="well span3 top-block" href="#">
+        <span class="icon32 icon-orange icon-compose"></span>
+        <div>Responses</div>
+        <div>NA</div>
+        <span class="notification yellow">NA</span>
+    </a>
+
+    <a data-rel="tooltip" title="7 recently rejected" class="well span3 top-block" href="#">
+        <span class="icon32 icon-color icon-close"></span>
+        <div>Rejected</div>
+        <div>NA</div>
+        <span class="notification red">NA</span>
+    </a>
+
+    <a data-rel="tooltip" title="12 accepted" class="well span3 top-block" href="#">
+        <span class="icon32 icon-color icon-check"></span>
+        <div>Accepted</div>
+        <div>NA</div>
+        <span class="notification green">NA</span>
+    </a>
+</div>
+
+<div class="row-fluid">
+    <div class="box span12">
+        <div class="box-header well">
+            <h2><i class="icon-folder-open"></i> Tasks</h2>
+            <div class="box-icon">
+                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+            {% for t in object.tasks.all|slice:":10" %}
+                <li>
+                    <a href="{% url providers.micro_task_detail object.slug t.slug %}">
+                        <i class="icon-edit"></i>
+                        <span class="{% cycle 'green' 'blue' 'orange' 'white' %}">{{t.tasks.count}}</span>
+                        {{t.title}}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

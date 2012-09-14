@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^tasks/$',
         OpportunityListView.as_view(model=MicroTask, \
             template_name='opportunities/microtasks.html'),
-        name='microtasks'),
+        name='micro_tasks'),
 
     #url(r'^jobs/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=Job,\
@@ -83,7 +83,7 @@ urlpatterns = patterns('',
     url(r'^campagins/task/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtask_detail.html'),
-        name='microtask_detail'),
+        name='micro_task_detail'),
     url(r'^campagins/task/tomtom/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/tom_tom_micro_task_detail.html'),

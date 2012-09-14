@@ -4,8 +4,13 @@ from django.core.urlresolvers import reverse
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse, HttpResponseBadRequest
 
-from ummeli.opportunities.models import TomTomMicroTask
+from ummeli.opportunities.models import MicroTask, Campaign
 from ummeli.providers.forms import UploadTaskForm
+
+from django.views.generic import DetailView, ListView
+from django.shortcuts import get_object_or_404
+from django.template import RequestContext
+from ummeli.base.models import PROVINCE_CHOICES
 
 import os.path
 import json
@@ -117,3 +122,36 @@ def handle_uploaded_file(request, f):
     newfile.flush()
 
     request.session['uploaded_csv_path'] = newfile.name
+
+
+class OpportunityDetailView(DetailView):
+    def get_object(self):
+        return get_object_or_404(self.model, slug=self.kwargs['slug'])
+
+
+class OpportunityListView(ListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        return self.model.objects.filter(state='published').order_by('-created')
+
+
+class MicroTaskDetailView(DetailView):
+    def get_object(self):
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        return get_object_or_404(self.model, campaign=campaign,\
+                                    slug=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
+        context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        context['campaign'] = campaign
+        return context
+
+
+class MicroTaskListView(ListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        campaign = get_object_or_404(MicroTask, slug=self.kwargs['slug'])
+        return campaign.tasks.filter(state='published').order_by('-created')
