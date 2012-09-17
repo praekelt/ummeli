@@ -15,6 +15,7 @@ from ummeli.base.models import PROVINCE_CHOICES
 import os.path
 import json
 import csv
+from datetime import date
 
 from django.contrib.gis.geos import fromstr
 from atlas.models import Location
@@ -94,6 +95,17 @@ class OpportunityListView(ListView):
 
     def get_queryset(self):
         return self.model.objects.filter(state='published').order_by('-created')
+
+
+class CampaignDetailView(OpportunityDetailView):
+    def get_context_data(self, **kwargs):
+        context = super(CampaignDetailView, self).get_context_data(**kwargs)
+        context['published_count'] = self.get_object().tasks.filter(state='published').count()
+        context['new_count'] = self.get_object()\
+                                    .tasks\
+                                    .filter(created__gte=date.today())\
+                                    .count()
+        return context
 
 
 class MicroTaskDetailView(DetailView):

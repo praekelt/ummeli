@@ -3,8 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from ummeli.providers import views
 from ummeli.opportunities.models import Campaign, MicroTask
-from ummeli.providers.views import OpportunityListView, OpportunityDetailView,\
-                                MicroTaskDetailView
+from ummeli.providers.views import *
 
 admin.autodiscover()
 
@@ -34,7 +33,7 @@ urlpatterns = patterns('',
         name='providers.campaigns'),
 
     url(r'^campaigns/(?P<slug>[\w-]+)/$',
-        OpportunityDetailView.as_view(model=Campaign,\
+        CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html'),
         name='providers.campaign_detail'),
     url(r'^campagins/(?P<campaign>[\w-]+)/task/(?P<slug>[\w-]+)/$',
