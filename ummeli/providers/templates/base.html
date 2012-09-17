@@ -234,5 +234,13 @@
     <script src="{{STATIC_URL}}charisma/js/jquery.autogrow-textarea.js"></script>
     <!-- history.js for cross-browser state change on ajax -->
     <script src="{{STATIC_URL}}charisma/js/jquery.history.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        //uniform - styler for checkbox, radio and file input
+        $("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
+    });
+    </script>
+    {% block script %}
+    {% endblock %}
 </body>
 </html>

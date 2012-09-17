@@ -153,9 +153,9 @@ class TomTomMicroTask(MicroTask):
     def to_dto(self):
         return {'title': self.title,
                 'description': self.description,
-                'published': self.published,
-                'x_coordinate': '%s' % self.location.latitude,
-                'y_coordinate': '%s' % self.location.longitude,
+                'published': self.state == 'published',
+                'x_coordinate': '%s' % self.location.coordinates[0],
+                'y_coordinate': '%s' % self.location.coordinates[1],
                 'category': self.category,
                 'tel_1': self.tel_1,
                 'tel_2': self.tel_2,

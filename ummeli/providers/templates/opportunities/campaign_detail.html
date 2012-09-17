@@ -21,8 +21,8 @@
     <a data-rel="tooltip" title="0 recently published" class="well span3 top-block" href="#">
         <span class="icon32 icon-blue icon-basket"></span>
         <div>Published</div>
-        <div>{{object.tasks.count}}</div>
-        <span class="notification">0</span>
+        <div>{{published_count}}</div>
+        <span class="notification">{{new_count}}</span>
     </a>
 
     <a data-rel="tooltip" title="4 new responses" class="well span3 top-block" href="#">
@@ -51,10 +51,8 @@
     <div class="box span12">
         <div class="box-header well">
             <h2><i class="icon-folder-open"></i> Tasks</h2>
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+            <div class="pull-right">
+                <a href="{% url upload object.slug %}" class="btn btn-close btn-round"><i class="icon-upload"></i>Upload</a>
             </div>
         </div>
         <div class="box-content">
@@ -62,7 +60,11 @@
             {% for t in object.tasks.all|slice:":10" %}
                 <li>
                     <a href="{% url providers.micro_task_detail object.slug t.slug %}">
+                        {% if t.tomtommicrotask %}
+                        <i class="icon-map-marker"></i>
+                        {% else %}
                         <i class="icon-edit"></i>
+                        {% endif %}
                         <span class="{% cycle 'green' 'blue' 'orange' 'white' %}">{{t.tasks.count}}</span>
                         {{t.title}}
                     </a>

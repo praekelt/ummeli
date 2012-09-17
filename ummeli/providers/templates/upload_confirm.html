@@ -23,6 +23,9 @@
     </form>
 </div>
 
+{% endblock %}
+
+{% block script %}
 <script type="text/javascript">
 $(document).ready(function(){
     $.get('/upload/process/', function(data) {
@@ -30,7 +33,7 @@ $(document).ready(function(){
         $('#tasks-cont').show();
 
         var duplicate_target = $('#duplicate-tasks-cont').html('');
-        if(data.duplicate_tasks.length == 0) 
+        if(data.duplicate_tasks.length == 0)
             duplicate_target.append('<p>0 duplicates found.</p>');
         else
             $('#duplicate-tasks').show();

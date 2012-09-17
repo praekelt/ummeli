@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse, HttpResponseBadRequest
 
-from ummeli.opportunities.models import MicroTask, Campaign
+from ummeli.opportunities.models import MicroTask, TomTomMicroTask, Campaign
 from ummeli.providers.forms import UploadTaskForm
 
 from django.views.generic import DetailView, ListView
@@ -15,6 +15,10 @@ from ummeli.base.models import PROVINCE_CHOICES
 import os.path
 import json
 import csv
+
+from django.contrib.gis.geos import fromstr
+from atlas.models import Location
+from atlas.utils import get_city
 
 
 def health(request):
@@ -28,68 +32,40 @@ def index(request):
 
 
 @staff_member_required
-def upload(request):
+def upload(request, campaign):
     if request.method == 'POST':
         form = UploadTaskForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data['file']
-            handle_uploaded_file(request, file)
-            return redirect(reverse('upload_confirm'))
+            process_upload(file, campaign)
+            return redirect(reverse('providers.campaign_detail',\
+                                args=[campaign, ]))
     else:
         form = UploadTaskForm()
 
     return render(request, 'upload.html', {'form': form})
 
 
-@staff_member_required
-def upload_confirm(request):
-    if request.method == 'POST':
-        new_tasks = request.POST.getlist('new_task')
-        if new_tasks:
-            # publish selected tasks
-            TomTomMicroTask.objects.filter(id__in=new_tasks).update(published=True)
-            return redirect(reverse('index'))
-    else:
-        # check if file exists
-        if request.session.get('uploaded_csv_path', None):
-            if not os.path.exists(request.session['uploaded_csv_path']):
-                del request.session['uploaded_csv_path']
-                return redirect(reverse('upload'))
-        else:
-            return redirect(reverse('upload'))
-
-    return render(request, 'upload_confirm.html')
-
-
-@staff_member_required
-def process_upload(request):
-    uploaded_csv_path = request.session.get('uploaded_csv_path')
-
-    if not uploaded_csv_path:
-        return HttpResponseBadRequest()
-
-    csv_file = open(uploaded_csv_path, 'rU')
-    rows = prepare_csv_data(request, read_data_from_csv_file(csv_file))
-
-    data = json.dumps(rows)
-    return HttpResponse(data, mimetype='application/json')
-
-
-def prepare_csv_data(request, rows):
-    new_tasks = []
-    duplicate_tasks = []
+def process_upload(csv_file, campaign):
+    #csv_file = open(file, 'rU')
+    rows = read_data_from_csv_file(csv_file)
 
     for r in rows:
-        t, created = TomTomMicroTask.objects.get_or_create(poi_id=r['POI_ID'],
-                                                    x_coordinate=r['X'],
-                                                    y_coordinate=r['Y'],
-                                                    title=r['NAME'])
-        if created:
+        try:
+            t = TomTomMicroTask.objects.get(poi_id=r['POI_ID'])
+        except TomTomMicroTask.DoesNotExist:
+            t = TomTomMicroTask(poi_id=r['POI_ID'])
+            loc = Location()
+            # srid is the ID for the coordinate system, 4326 specifies longitude/latitude coordinates
+            loc.coordinates = fromstr("POINT (%s %s)" % (r['X'], r['Y']), srid=4326)
+            loc.city = get_city(position=loc.coordinates)
+            loc.country = loc.city.country
+            loc.save()
+
+            t.title = r['NAME']
             t.description = '%s %s' % (r['NAME_ALT'], r['ADDRESS'])
             t.category = r['CAT_NAME']
-            #t.province = r['PROVINCE']
-            #t.city = r['CITY']
-            #t.suburb = r['SUBURB']
+            t.location = loc
             t.tel_1 = r['TEL_NR']
             t.tel_2 = r['TEL_NR2']
             t.fax = r['FAX_NR']
@@ -97,15 +73,7 @@ def prepare_csv_data(request, rows):
             t.website = r['WEBSITE']
             t.save()
 
-            new_tasks.append(t.to_dto())
-        else:
-            duplicate_tasks.append(t.to_dto())
-
-    # clean session and temp file
-    os.remove(request.session['uploaded_csv_path'])
-    del request.session['uploaded_csv_path']
-
-    return {'new_tasks': new_tasks, 'duplicate_tasks': duplicate_tasks}
+            Campaign.objects.get(slug=campaign).tasks.add(t)
 
 
 def read_data_from_csv_file(csvfile):
@@ -114,14 +82,6 @@ def read_data_from_csv_file(csvfile):
         # Only process rows that actually have data
         if any([column for column in row]):
             yield row
-
-
-def handle_uploaded_file(request, f):
-    newfile = NamedTemporaryFile(suffix='.csv', delete=False)
-    newfile.write(f.read())
-    newfile.flush()
-
-    request.session['uploaded_csv_path'] = newfile.name
 
 
 class OpportunityDetailView(DetailView):

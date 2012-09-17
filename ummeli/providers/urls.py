@@ -25,9 +25,8 @@ urlpatterns = patterns('',
         name="logout"),
     #url(r'^forgot/$', views.forgot_password_view, name='forgot'),
 
-    url(r'^upload/$', views.upload, name='upload'),
-    url(r'^upload/confirm/$', views.upload_confirm, name='upload_confirm'),
-    url(r'^upload/process/$', views.process_upload, name='process_upload'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/upload/$', views.upload, name='upload'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/upload/process/$', views.process_upload, name='process_upload'),
 
     url(r'^campaigns/$',
         OpportunityListView.as_view(model=Campaign, \

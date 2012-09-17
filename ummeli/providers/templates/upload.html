@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Upload Tasks</h2>
-<form method='POST' enctype="multipart/form-data">
-    <fieldset>
-        {{form.file}}
-        
-        <input type='submit' value='Upload'/>
-        {% csrf_token %}
-    </fieldset>
-</form>
-
+<div class="box span12">
+    <div class="box-header well" data-original-title="">
+        <h2><i class="icon-edit"></i> Upload CSV</h2>
+    </div>
+    <div class="box-content">
+        <form class="form-horizontal" method='post' enctype="multipart/form-data">
+          <fieldset>
+            <div class="control-group {% if form.file.errors %}error{%endif%}">
+                <label class="control-label" for="id_file">CSV File</label>
+                {{form.file}}
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <button class="btn">Cancel</button>
+            </div>
+            {% csrf_token %}
+          </fieldset>
+        </form>
+    </div>
+</div>
 {% endblock %}
