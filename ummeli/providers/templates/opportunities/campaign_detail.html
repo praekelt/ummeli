@@ -10,11 +10,13 @@
             <a href="{% url providers.campaigns %}">Micro Tasks</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="#">{{object.title}}</a>
+            {{object.title}}
         </li>
     </ul>
 </div>
-
+<div class="page-header">
+  <h2>{{object.title}}</h2>
+</div>
 <div class="sortable row-fluid">
     <a data-rel="tooltip" title="0 recently published" class="well span3 top-block" href="#">
         <span class="icon32 icon-blue icon-basket"></span>
