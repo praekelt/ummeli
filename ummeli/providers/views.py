@@ -74,6 +74,8 @@ def process_upload(csv_file, campaign):
             t.website = r['WEBSITE']
             t.save()
 
+            t.publish()
+
             Campaign.objects.get(slug=campaign).tasks.add(t)
 
 
@@ -87,14 +89,17 @@ def read_data_from_csv_file(csvfile):
 
 class OpportunityDetailView(DetailView):
     def get_object(self):
-        return get_object_or_404(self.model, slug=self.kwargs['slug'])
+        return get_object_or_404(self.model,\
+                    owner=self.request.user,\
+                    slug=self.kwargs['slug'])
 
 
 class OpportunityListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return self.model.objects.filter(state='published').order_by('-created')
+        return self.model.objects.filter(owner=self.request.user)\
+                                    .order_by('-created')
 
 
 class CampaignDetailView(OpportunityDetailView):
@@ -110,20 +115,24 @@ class CampaignDetailView(OpportunityDetailView):
 
 class MicroTaskDetailView(DetailView):
     def get_object(self):
-        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
         return get_object_or_404(self.model, campaign=campaign,\
                                     slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
-        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
         context['campaign'] = campaign
         return context
 
 
-class MicroTaskListView(ListView):
-    paginate_by = 10
-
+class MicroTaskListView(OpportunityListView):
     def get_queryset(self):
-        campaign = get_object_or_404(MicroTask, slug=self.kwargs['slug'])
-        return campaign.tasks.filter(state='published').order_by('-created')
+        campaign = get_object_or_404(MicroTask,\
+                        owner=self.request.user,\
+                        slug=self.kwargs['slug'])
+        return campaign.tasks.order_by('-created')
