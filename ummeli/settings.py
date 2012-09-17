@@ -4,6 +4,8 @@ import djcelery
 
 DEBUG = False
 
+DJANGO_ATLAS = {}
+
 try:
     from local_settings import *
 except ImportError:
@@ -249,8 +251,6 @@ COMMENTS_APP = 'jmbocomments'
 COMMENTS_PER_PAGE = 15
 
 PML_IGNORE_PATH = ['/vlive/downloads/', ]
-
-DJANGO_ATLAS = {}
 
 SIMPLE_AUTOCOMPLETE = {
     'auth.user': {'threshold': 20},
