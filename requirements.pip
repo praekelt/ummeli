@@ -39,3 +39,4 @@ BeautifulSoup>=3.0.8.1
 raven
 -e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
 -e git+git://github.com/praekelt/jmbo.git@feature/add_location_to_modelbase#egg=jmbo
+django-simple-autocomplete
