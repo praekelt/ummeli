@@ -37,5 +37,5 @@ django_geckoboard
 BeautifulSoup>=3.0.8.1
 -e git+git://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
 raven
--e git+git://github.com/praekelt/django-atlas.git@develop#egg=atlas
+-e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
 -e git+git://github.com/praekelt/jmbo.git@feature/add_location_to_modelbase#egg=jmbo
