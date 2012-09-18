@@ -42,9 +42,13 @@ def upload(request, campaign):
             return redirect(reverse('providers.campaign_detail',\
                                 args=[campaign, ]))
     else:
+        campaign_obj = get_object_or_404(Campaign,\
+                        owner=request.user,
+                        slug=campaign)
         form = UploadTaskForm()
 
-    return render(request, 'upload.html', {'form': form, 'campaign': campaign})
+    return render(request, 'upload.html',\
+                {'form': form, 'campaign': campaign_obj})
 
 
 def process_upload(csv_file, campaign):
