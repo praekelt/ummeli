@@ -44,7 +44,7 @@ def upload(request, campaign):
     else:
         form = UploadTaskForm()
 
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form, 'campaign': campaign})
 
 
 def process_upload(csv_file, campaign):

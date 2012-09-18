@@ -13,8 +13,8 @@
                 {{form.file}}
             </div>
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Upload</button>
-                <button class="btn">Cancel</button>
+                <input type="submit" class="btn btn-primary" value="Upload"/>
+                <input type="button" class="btn" onClick="parent.location='{%url providers.campaign_detail campaign%}'" value="Cancel"/>
             </div>
             {% csrf_token %}
           </fieldset>
