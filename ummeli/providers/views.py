@@ -51,9 +51,10 @@ def upload(request, campaign):
                 {'form': form, 'campaign': campaign_obj})
 
 
-def process_upload(csv_file, campaign):
+def process_upload(csv_file, campaign_slug):
     #csv_file = open(file, 'rU')
     rows = read_data_from_csv_file(csv_file)
+    campaign = Campaign.objects.get(slug=campaign_slug)
 
     for r in rows:
         try:
@@ -81,7 +82,7 @@ def process_upload(csv_file, campaign):
 
             t.publish()
 
-            Campaign.objects.get(slug=campaign).tasks.add(t)
+            campaign.tasks.add(t)
 
 
 def read_data_from_csv_file(csvfile):
