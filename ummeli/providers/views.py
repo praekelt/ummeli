@@ -1,19 +1,15 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.core.files.temp import NamedTemporaryFile
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 
 from ummeli.opportunities.models import MicroTask, TomTomMicroTask, Campaign
 from ummeli.providers.forms import UploadTaskForm
 
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
-from ummeli.base.models import PROVINCE_CHOICES
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-import os.path
-import json
 import csv
 from datetime import date
 
@@ -30,6 +26,29 @@ def health(request):
 def index(request):
     context = {}
     return render(request, 'index.html', context)
+
+
+@staff_member_required
+def campaign_view(request, slug):
+    campaign = get_object_or_404(Campaign, slug=slug, owner=request.user)
+
+    paginator = Paginator(campaign.tasks.all(), 25)
+
+    page = request.GET.get('page', 1)
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
+
+    context = {
+        'object': campaign,
+        'published_count': campaign.tasks.filter(state='published').count(),
+        'new_count': campaign.tasks.filter(created__gte=date.today()).count(),
+        'tasks': tasks,
+    }
+    return render(request, 'opportunities/campaign_detail.html', context)
 
 
 @staff_member_required
@@ -106,17 +125,6 @@ class OpportunityListView(ListView):
     def get_queryset(self):
         return self.model.objects.filter(owner=self.request.user)\
                                     .order_by('-created')
-
-
-class CampaignDetailView(OpportunityDetailView):
-    def get_context_data(self, **kwargs):
-        context = super(CampaignDetailView, self).get_context_data(**kwargs)
-        context['published_count'] = self.get_object().tasks.filter(state='published').count()
-        context['new_count'] = self.get_object()\
-                                    .tasks\
-                                    .filter(created__gte=date.today())\
-                                    .count()
-        return context
 
 
 class MicroTaskDetailView(DetailView):

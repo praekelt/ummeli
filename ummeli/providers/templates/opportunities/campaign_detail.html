@@ -57,7 +57,7 @@
         </div>
         <div class="box-content">
             <ul class="dashboard-list">
-            {% for t in object.tasks.all|slice:":10" %}
+            {% for t in tasks %}
                 <li>
                     <a href="{% url providers.micro_task_detail object.slug t.slug %}">
                         {% if t.tomtommicrotask %}
@@ -71,6 +71,31 @@
                 </li>
             {% endfor %}
             </ul>
+            <div class="row-fluid">
+                <div class="span12">
+                    <br/>
+                    <span class="clearfix">
+                        Showing {{tasks.start_index}} to {{tasks.end_index}} of {{tasks.paginator.count}} entries
+                    </span>
+                </div>
+                <div class="span12 center">
+                    <div class="dataTables_paginate paging_bootstrap pagination">
+                        <ul>
+                            <li class="prev {% if not tasks.has_previous %}disabled{% endif %}">
+                                <a href="{{request.path}}?page={{tasks.previous_page_number}}">← Previous</a>
+                            </li>
+                            {% for p in tasks.paginator.page_range %}
+                            <li {% if p == tasks.number %}class="active"{% endif %}>
+                                <a href="{{request.path}}?page={{p}}">{{p}}</a>
+                            </li>
+                            {% endfor %}
+                            <li class="next {% if not tasks.has_next %}disabled{% endif %}">
+                                <a href="{{request.path}}?page={{tasks.next_page_number}}">Next → </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="clearfix"></div>
         </div>
     </div>
