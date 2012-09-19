@@ -76,6 +76,7 @@ def process_upload(csv_file, campaign):
             t.fax = r['FAX_NR']
             t.email = r['E_MAIL']
             t.website = r['WEBSITE']
+            t.owner = campaign.owner
             t.save()
 
             t.publish()
