@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2">
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
+        {{object.title}}
+    </div>
+    <div class="wrap">
+        <strong>{{object.title}}</strong>
+        <br/>
+        <br/>
+        {{ object.description|safe }}
+    </div>
+    <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
+{% endblock %}

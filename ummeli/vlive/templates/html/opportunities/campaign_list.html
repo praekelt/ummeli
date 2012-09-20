@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Bursaries</h2>
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Micro Tasks</h2>
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% for object in object_list %}
         <div class="img-article list-separated">
-            <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Education: {{object.get_education}}</small><br/>
-            {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
+            <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.tasks.count}})</a><br/>
+            <small>{{object.subtitle|truncatewords:20}}</small><br/>
         </div>
         {% empty %}
-        <p>0 tasks in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 bursaries in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
     </p>
     {% if object_list %}
