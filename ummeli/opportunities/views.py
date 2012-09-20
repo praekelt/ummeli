@@ -6,6 +6,7 @@ from django.template import RequestContext
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import Campaign
 from ummeli.providers.forms import UploadTaskForm
+from ummeli.vlive.utils import get_lat_lon
 
 
 class OpportunityDetailView(DetailView):
@@ -60,8 +61,9 @@ def campaign_qualify(request, slug):
         form = UploadTaskForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data['file']
-            result = check_file_for_gps(file)
-            context['result'] = result
+            lat, lon = check_file_for_gps(file)
+            context['lat'] = lat
+            context['lon'] = lon
             #return redirect(reverse('providers.campaign_detail',\
             #                    args=[campaign, ]))
     else:
@@ -71,4 +73,4 @@ def campaign_qualify(request, slug):
 
 
 def check_file_for_gps(file):
-    return True
+    return get_lat_lon(file)
