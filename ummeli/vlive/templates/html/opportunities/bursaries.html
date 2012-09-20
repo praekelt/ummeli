@@ -11,7 +11,7 @@
             {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
         </div>
         {% empty %}
-        <p>0 tasks in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 tasks available.</p>
         {% endfor %}
     </p>
     {% if object_list %}

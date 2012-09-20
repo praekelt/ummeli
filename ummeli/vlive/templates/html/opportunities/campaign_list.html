@@ -10,7 +10,7 @@
             <small>{{object.subtitle|truncatewords:20}}</small><br/>
         </div>
         {% empty %}
-        <p>0 bursaries in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 tasks in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
     </p>
     {% if object_list %}

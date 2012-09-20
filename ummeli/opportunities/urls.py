@@ -89,6 +89,10 @@ urlpatterns = patterns('',
             template_name='opportunities/tom_tom_micro_task_detail.html'),
         name='tom_tom_micro_task_detail'),
 
+    url(r'^campagins/(?P<slug>[\w-]+)/qualify/$',\
+        'ummeli.opportunities.views.campaign_qualify',\
+        name='campaign_qualify'),
+
     #Jobs from Ummeli 1.0
     url(r'^jobs/$',
         'ummeli.vlive.views.jobs_list',

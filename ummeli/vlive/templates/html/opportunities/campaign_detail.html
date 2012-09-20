@@ -1,16 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="h2">
+    <h2>
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url campaigns %}">Campaigns</a> &raquo;
         {{object.title}}
-    </div>
+    </h2>
     <div class="wrap">
         <strong>{{object.title}}</strong>
         <br/>
         <br/>
         {{ object.description|safe }}
     </div>
+    {% if object.must_qualify %}
+    <h2>
+        You need to qualify
+    </h2>
+    <div class="wrap">
+        In order to participate in these tasks you have to complete this task.
+        <br/>
+        <a href="{% url campaign_qualify object.slug %}">
+            Qualification Task
+        </a>
+    </div>
+    {% endif %}
+    <br/>
     <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
 {% endblock %}

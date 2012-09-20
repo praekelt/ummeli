@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
@@ -172,6 +173,12 @@ class Campaign(Opportunity):
                     blank=True,
                     null=True,
                     default=None)
+    must_qualify = models.BooleanField(default=False)
+    qualifiers = models.ManyToManyField(User, blank=True, null=True)
+    qualification_instructions = models.TextField(blank=True, null=True)
+
+    def has_qualified(self, user):
+        return self.qualifiers.filter(user=user)
 
     @models.permalink
     def get_absolute_url(self):

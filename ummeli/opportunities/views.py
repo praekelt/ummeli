@@ -4,11 +4,21 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.opportunities.models import Campaign
+from ummeli.providers.forms import UploadTaskForm
 
 
 class OpportunityDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(self.model, slug=self.kwargs['slug'])
+
+
+class CampaignDetailView(OpportunityDetailView):
+    def get_context_data(self, **kwargs):
+        context = super(CampaignDetailView, self).get_context_data(**kwargs)
+        context['has_qualified'] = self.get_object()\
+                                        .has_qualified(self.request.user)
+        return context
 
 
 class OpportunityListView(ListView):
@@ -39,3 +49,26 @@ def change_province(request, province=None):
     return render(request, 'opportunities/change_province.html',
                 {'provinces': PROVINCE_CHOICES,
                 'next': next})
+
+
+def campaign_qualify(request, slug):
+    context = {
+        'object': get_object_or_404(Campaign, slug=slug),
+    }
+
+    if request.method == 'POST':
+        form = UploadTaskForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            result = check_file_for_gps(file)
+            context['result'] = result
+            #return redirect(reverse('providers.campaign_detail',\
+            #                    args=[campaign, ]))
+    else:
+        form = UploadTaskForm()
+
+    return render(request, 'opportunities/campaign_qualify.html', context)
+
+
+def check_file_for_gps(file):
+    return True

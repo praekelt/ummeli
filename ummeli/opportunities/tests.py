@@ -9,6 +9,7 @@ class OpportunitiesTest(VLiveTestCase):
     fixtures = [
         'vlive/tests/auth/fixtures/sample.json',
         'fixtures/opportunities.provinces.json',
+        'opportunities/fixtures/test.opportunities.json',
     ]
 
     def setUp(self):

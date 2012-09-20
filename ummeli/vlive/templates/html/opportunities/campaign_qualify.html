@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
+        <a href="{% url campaign_detail object.slug %}">{{object.title}}</a>
+    </h2>
+    <h2>Qualification Task</h2>
+    <div class="wrap">
+        {% if result %}<br/><div class="success">{{result}}</div>{% endif %}
+        <strong>{{object.title}}</strong>
+        <br/><br/>
+        {{object.qualification_instructions|safe}}
+        <br/><br/>
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <input type="file" name="file"/>
+                <input type="submit" value="Send" class="btn"/>
+                {% csrf_token %}
+            </fieldset>
+        </form>
+    </div>
+    <br/>
+    <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
+{% endblock %}
