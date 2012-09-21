@@ -37,6 +37,24 @@ class OpportunityListView(ListView):
         return province_qs.order_by('-created')
 
 
+class MicroTaskListView(ListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+
+        if not campaign.has_qualified(self.request.user):
+            return None
+
+        return campaign.tasks.all().order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        context = super(MicroTaskListView, self).get_context_data(**kwargs)
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        context['campaign'] = campaign
+        return context
+
+
 def opportunities(request):
     return render(request, 'opportunities/opportunities.html')
 

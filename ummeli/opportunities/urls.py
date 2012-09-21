@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
 from ummeli.opportunities.views import (OpportunityDetailView,\
-    OpportunityListView, CampaignDetailView)
+    OpportunityListView, CampaignDetailView, MicroTaskListView)
 
 
 urlpatterns = patterns('',
@@ -45,9 +45,8 @@ urlpatterns = patterns('',
         OpportunityListView.as_view(model=Campaign, \
             template_name='opportunities/campaigns.html'),
         name='campaigns'),
-    url(r'^tasks/$',
-        OpportunityListView.as_view(model=MicroTask, \
-            template_name='opportunities/microtasks.html'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
+        MicroTaskListView.as_view(model=MicroTask), \
         name='micro_tasks'),
 
     #url(r'^jobs/(?P<slug>[\w-]+)/$',
@@ -82,7 +81,7 @@ urlpatterns = patterns('',
         login_required(CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html')),
         name='campaign_detail'),
-    url(r'^campagins/task/(?P<slug>[\w-]+)/$',
+    url(r'^campagins/(?P<campaign>[\w-]+)/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtask_detail.html'),
         name='micro_task_detail'),
