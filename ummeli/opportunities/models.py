@@ -178,7 +178,7 @@ class Campaign(Opportunity):
     qualification_instructions = models.TextField(blank=True, null=True)
 
     def has_qualified(self, user):
-        return self.qualifiers.filter(user=user)
+        return self.qualifiers.filter(pk=user.pk)
 
     @models.permalink
     def get_absolute_url(self):

@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import Campaign
 from ummeli.providers.forms import UploadTaskForm
@@ -52,25 +54,24 @@ def change_province(request, province=None):
                 'next': next})
 
 
+@login_required
 def campaign_qualify(request, slug):
+    campaign = get_object_or_404(Campaign, slug=slug)
     context = {
-        'object': get_object_or_404(Campaign, slug=slug),
+        'object': campaign,
     }
 
     if request.method == 'POST':
         form = UploadTaskForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data['file']
-            lat, lon = check_file_for_gps(file)
-            context['lat'] = lat
-            context['lon'] = lon
-            #return redirect(reverse('providers.campaign_detail',\
-            #                    args=[campaign, ]))
+            lat, lon = get_lat_lon(file)
+            if lat and lon:
+                campaign.qualifiers.add(request.user)
+                return redirect(reverse('campaign_detail', args=[slug, ]))
+            else:
+                context['error'] = True
     else:
         form = UploadTaskForm()
 
     return render(request, 'opportunities/campaign_qualify.html', context)
-
-
-def check_file_for_gps(file):
-    return get_lat_lon(file)

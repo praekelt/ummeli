@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import patterns, url
+from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
-from ummeli.opportunities.views import OpportunityDetailView, OpportunityListView
+from ummeli.opportunities.views import (OpportunityDetailView,\
+    OpportunityListView, CampaignDetailView)
 
 
 urlpatterns = patterns('',
@@ -77,8 +79,8 @@ urlpatterns = patterns('',
             template_name='opportunities/event_detail.html'),
         name='event_detail'),
     url(r'^campaigns/(?P<slug>[\w-]+)/$',
-        OpportunityDetailView.as_view(model=Campaign,\
-            template_name='opportunities/campaign_detail.html'),
+        login_required(CampaignDetailView.as_view(model=Campaign,\
+            template_name='opportunities/campaign_detail.html')),
         name='campaign_detail'),
     url(r'^campagins/task/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\

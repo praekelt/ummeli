@@ -8,9 +8,7 @@
     </h2>
     <h2>Qualification Task</h2>
     <div class="wrap">
-        {% if lat and lon %}
-            <br/><div class="success">GPS: {{lat}}, {{lon}}</div>
-        {% else %}
+        {% if error %}
             <div class="warning">
                 Your image did not contain GPS info. Please check your camera settings and re-take the picture.
             </div>

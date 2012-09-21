@@ -12,7 +12,7 @@
         <br/>
         {{ object.description|safe }}
     </div>
-    {% if object.must_qualify %}
+    {% if object.must_qualify and not has_qualified %}
     <h2>
         You need to qualify
     </h2>
@@ -21,6 +21,13 @@
         <br/>
         <a href="{% url campaign_qualify object.slug %}">
             Qualification Task
+        </a>
+    </div>
+    {% else %}
+    <div class="wrap">
+        <br/>
+        <a href="{% url campaign_qualify object.slug %}">
+            Availabe Tasks ({{object.tasks.count}})
         </a>
     </div>
     {% endif %}
