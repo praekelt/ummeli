@@ -6,9 +6,12 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 from ummeli.base.models import PROVINCE_CHOICES
-from ummeli.opportunities.models import Campaign
+from ummeli.opportunities.models import Campaign, MicroTask
 from ummeli.providers.forms import UploadTaskForm
 from ummeli.vlive.utils import get_lat_lon
+
+from django.contrib.gis.geos import Point
+from atlas.views import location_required
 
 
 class OpportunityDetailView(DetailView):
@@ -44,9 +47,15 @@ class MicroTaskListView(ListView):
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
 
         if not campaign.has_qualified(self.request.user):
-            return None
+            return MicroTask.objects.none()
 
-        return campaign.tasks.all().order_by('-created')
+        position = self.request.session['location']['position']
+
+        if not isinstance(position, Point):
+            position = request.session['location']['city'].coordinates
+        print position
+        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
+        return tasks.distance(position).order_by('distance')
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)

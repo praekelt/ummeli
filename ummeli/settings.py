@@ -263,3 +263,7 @@ SIMPLE_AUTOCOMPLETE = {
         'duplicate_format_function': lambda item, model, content_type: item.as_leaf_class().content_type.name
     }
 }
+
+GEOIP_PATH = abspath('../ve/src/django-atlas/atlas/datasets/MaxMind/')
+GEOIP_CITY = 'GeoLiteCity.dat'
+GEOIP_COUNTRY = 'GeoIPv6.dat'

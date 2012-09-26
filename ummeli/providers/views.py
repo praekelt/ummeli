@@ -2,6 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.contrib.sites.models import Site
 
 from ummeli.opportunities.models import MicroTask, TomTomMicroTask, Campaign
 from ummeli.providers.forms import UploadTaskForm
@@ -98,6 +99,8 @@ def process_upload(csv_file, campaign_slug):
             t.website = r['WEBSITE']
             t.owner = campaign.owner
             t.save()
+
+            t.sites.add(Site.objects.get_current())
 
             t.publish()
 

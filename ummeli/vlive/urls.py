@@ -44,7 +44,8 @@ urlpatterns = patterns('',
 
     #Jmbo
     url(r'^jmbo/', include('jmbo.urls')),
-    url(r'^simple-autocomplete/', include('simple_autocomplete.urls'))
+    url(r'^simple-autocomplete/', include('simple_autocomplete.urls')),
+    url(r'^', include('atlas.urls')),
 )
 
 

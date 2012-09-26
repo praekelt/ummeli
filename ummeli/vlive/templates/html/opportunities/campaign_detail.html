@@ -33,4 +33,15 @@
     {% endif %}
     <br/>
     <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        /* Geolocate the client */
+        console.log(atlas.isLocationSet());
+        if (typeof atlas !== 'undefined' && !atlas.isLocationSet()){
+            atlas.getLocation();
+        }
+    });
+    </script>
 {% endblock %}

@@ -46,7 +46,7 @@ urlpatterns = patterns('',
             template_name='opportunities/campaigns.html'),
         name='campaigns'),
     url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
-        MicroTaskListView.as_view(model=MicroTask), \
+        login_required(MicroTaskListView.as_view()),
         name='micro_tasks'),
 
     #url(r'^jobs/(?P<slug>[\w-]+)/$',
