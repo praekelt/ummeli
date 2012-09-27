@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.opportunities.models import *
 
 
 class OpportunityDetailView(DetailView):
@@ -25,7 +26,15 @@ class OpportunityListView(ListView):
 
 
 def opportunities(request):
-    return render(request, 'opportunities/opportunities.html')
+    context = {
+        'bursaries': Bursary.objects.all().exists(),
+        'internships': Internship.objects.all().exists(),
+        'volunteering': Volunteer.objects.all().exists(),
+        'training': Training.objects.all().exists(),
+        'competitions': Competition.objects.all().exists(),
+        'events': Event.objects.all().exists(),
+    }
+    return render(request, 'opportunities/opportunities.html', context)
 
 
 def change_province(request, province=None):
