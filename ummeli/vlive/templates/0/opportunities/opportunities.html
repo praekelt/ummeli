@@ -8,24 +8,42 @@
         <div class="list">
             <a href="{% url jobs_list %}">Jobs</a>
         </div>
+
+        {% if bursaries %}
         <div class="list">
             <a href="{% url bursaries %}">Bursaries</a>
         </div>
+        {% endif %}
+
+        {% if internships %}
         <div class="list">
             <a href="{% url internships %}">Internships</a>
         </div>
+        {% endif %}
+
+        {% if training %}
         <div class="list">
             <a href="{% url training %}">Training</a>
         </div>
+        {% endif %}
+
+        {% if volunteering %}
         <div class="list">
             <a href="{% url volunteering %}">Volunteering</a>
         </div>
+        {% endif %}
+
+        {% if competitions %}
         <div class="list">
             <a href="{% url competitions %}">Competitions</a>
         </div>
+        {% endif %}
+
+        {% if events %}
         <div class="list">
             <a href="{% url events %}">Events</a>
         </div>
+        {% endif %}
     </div>
     <div class="more"><a href="{% url index %}">&larr; Back</a></div>
 {% endblock %}
