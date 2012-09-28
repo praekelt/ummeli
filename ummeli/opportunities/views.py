@@ -66,6 +66,7 @@ class MicroTaskListView(ListView):
 
 def opportunities(request):
     context = {
+        'campaigns': Campaign.permitted.exists(),
         'bursaries': Bursary.permitted.exists(),
         'internships': Internship.permitted.exists(),
         'volunteering': Volunteer.permitted.exists(),
