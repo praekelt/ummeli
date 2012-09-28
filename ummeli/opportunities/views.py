@@ -66,12 +66,12 @@ class MicroTaskListView(ListView):
 
 def opportunities(request):
     context = {
-        'bursaries': Bursary.objects.all().exists(),
-        'internships': Internship.objects.all().exists(),
-        'volunteering': Volunteer.objects.all().exists(),
-        'training': Training.objects.all().exists(),
-        'competitions': Competition.objects.all().exists(),
-        'events': Event.objects.all().exists(),
+        'bursaries': Bursary.permitted.exists(),
+        'internships': Internship.permitted.exists(),
+        'volunteering': Volunteer.permitted.exists(),
+        'training': Training.permitted.exists(),
+        'competitions': Competition.permitted.exists(),
+        'events': Event.permitted.exists(),
     }
     return render(request, 'opportunities/opportunities.html', context)
 
