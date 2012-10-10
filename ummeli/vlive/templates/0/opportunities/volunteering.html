@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url opportunities %}">Opportunities</a> &raquo; Volunteering</div>
+    <div class="list">Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></div>
+    <div>
+        {% for object in object_list %}
+        <div class="img-article article">
+            <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
+            <small>Education: {{object.get_education}}</small><br/>
+            <small>Deadline: <strong>{{ object.deadline|date:"D, j M Y" }}</strong></small><br/>
+            {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
+        </div>
+        {% empty %}
+        <p>0 volunteering opportunities in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        {% endfor %}
+    </div>
+    {% if object_list %}
+    <div id="pagination">
+        {% if page_obj.has_previous %}
+            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
+        {% else %}
+            <span>Previous</span> |
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+        {% else %}
+            | <span>Next</span>
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+{% endblock %}

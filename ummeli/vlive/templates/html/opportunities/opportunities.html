@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Opportunities</h2>
+    <p>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+
+        <div class="bullet">
+            <a href="{% url jobs_list %}">Jobs</a>
+        </div>
+
+        {% if bursaries %}
+        <div class="bullet">
+            <a href="{% url bursaries %}">Bursaries</a>
+        </div>
+        {% endif %}
+        
+        {% if internships %}
+        <div class="bullet">
+            <a href="{% url internships %}">Internships</a>
+        </div>
+        {% endif %}
+
+        {% if training %}
+        <div class="bullet">
+            <a href="{% url training %}">Training</a>
+        </div>
+        {% endif %}
+
+        {% if volunteering %}
+        <div class="bullet">
+            <a href="{% url volunteering %}">Volunteering</a>
+        </div>
+        {% endif %}
+
+        {% if competitions %}
+        <div class="bullet">
+            <a href="{% url competitions %}">Competitions</a>
+        </div>
+        {% endif %}
+
+        {% if events %}
+        <div class="bullet">
+            <a href="{% url events %}">Events</a>
+        </div>
+        {% endif %}
+    </p>
+    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+{% endblock %}

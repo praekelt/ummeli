@@ -1,0 +1,28 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Jobs</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={{request.path}}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% for category in categories %}
+        <LINK href="{% url jobs category.pk %}">
+            <TEXT>{{category.title}} ({{category.articles_count}})</TEXT>
+        </LINK>
+    {% endfor %}
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url jobs_list %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

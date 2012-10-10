@@ -1,5 +1,6 @@
 #!/bin/bash
-source ve/bin/activate && 
+source ve/bin/activate &&
 python ummeli/manage.py article_content_scheduler &&
 python ummeli/manage.py your_words_content_scheduler &&
+python ummeli/manage.py jmbo_publish &&
 deactivate

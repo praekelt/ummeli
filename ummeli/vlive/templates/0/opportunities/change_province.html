@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url opportunities %}">Opportunities</a> &raquo; Province</div>
+    <div>
+        Current: <strong><a href="#">{{province}}</a></strong>
+        {% for id, province in provinces %}
+        <div class="list">
+            <a href="{% url change_province id %}?next={{next}}">{{province}}</a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+{% endblock %}

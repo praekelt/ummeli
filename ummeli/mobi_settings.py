@@ -31,17 +31,5 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'vlive.middleware.AddMessageToResponseMiddleware', #Mobi Only
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",
-    "vlive.custom_context_processors.unique_id_processor",
-    "vlive.custom_context_processors.user_profile_processor",
+    'vlive.middleware.AddMessageToResponseMiddleware',  # Mobi Only
 )

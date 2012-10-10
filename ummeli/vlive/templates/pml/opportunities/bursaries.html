@@ -1,0 +1,58 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Bursaries</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={{request.path}}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+{% for object in object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <LINK href="{{object.get_absolute_url}}">
+        <TEXT>{{object.title}}</TEXT>
+    </LINK>
+    <br/>Education: {{object.get_education}}
+    {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% empty %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>0 bursaries in {{province}}.</TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+
+{% if object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% if page_obj.has_previous %}
+    <LINK href="?page={{ page_obj.previous_page_number }}?{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <LINK href="?page={{ page_obj.next_page_number }}?{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+{% endif %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url opportunities %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

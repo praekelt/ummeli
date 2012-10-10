@@ -1,19 +1,23 @@
 {% extends "base.xml" %}
 
-{% block title %}
-    Ummeli
-{% endblock %}
-
 {% block content %}
-<HEADER><LABEL>{{province_name}}>>{{category_title}}</LABEL></HEADER>
+<HEADER><LABEL>{{category_title}}</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={% url jobs_list %}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER  type="list">
     {% for article in articles.object_list %}
-        <LINK href="{% url job search_id cat_id article.pk article.user_submitted %}">
+        <LINK href="{% url job cat_id article.pk article.user_submitted %}">
             <TEXT>
             {% if article.user_submitted %}
             <color value="blue">***</color>
             {% endif %}
-            {{article.date|date:'d M y'}} ::  {{article.source}} :: {{ article.text|truncatewords:10 }}
+            {{article.date|date:'d M y'}} :: {{ article.text|truncatewords:10 }}
             </TEXT>
         </LINK>
     {% endfor %}
@@ -22,7 +26,7 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</LABEL></HEADER>
     <CONTAINER  type="list">
-        {% if articles.has_previous %}            
+        {% if articles.has_previous %}
             <LINK href="{{request.path}}?page={{ articles.previous_page_number }}">
                 <TEXT>Previous</TEXT>
             </LINK>
@@ -33,8 +37,8 @@
                 <TEXT>Next</TEXT>
             </LINK>
         {% endif %}
-        <LINK href="{% url jobs_list search_id %}">
-            <TEXT>&lt;&lt; Back to {{province_name}}</TEXT>
+        <LINK href="{% url jobs_list %}">
+            <TEXT>&lt;&lt; Back</TEXT>
         </LINK>
     </CONTAINER>
 {% endblock %}

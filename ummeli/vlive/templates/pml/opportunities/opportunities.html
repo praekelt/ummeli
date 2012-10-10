@@ -1,0 +1,62 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Opportunities</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={{request.path}}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url jobs_list %}">
+        <TEXT>Jobs</TEXT>
+    </LINK>
+
+    {% if bursaries %}
+    <LINK href="{% url bursaries %}">
+        <TEXT>Bursaries</TEXT>
+    </LINK>
+    {% endif %}
+    
+    {% if internships %}
+    <LINK href="{% url internships %}">
+        <TEXT>Internships</TEXT>
+    </LINK>
+    {% endif %}
+
+    {% if training %}
+    <LINK href="{% url training %}">
+        <TEXT>Training</TEXT>
+    </LINK>
+    {% endif %}
+
+    {% if volunteering %}
+    <LINK href="{% url volunteering %}">
+        <TEXT>Volunteering</TEXT>
+    </LINK>
+    {% endif %}
+
+    {% if competitions %}
+    <LINK href="{% url competitions %}">
+        <TEXT>Competitions</TEXT>
+    </LINK>
+    {% endif %}
+
+    {% if events %}
+    <LINK href="{% url events %}">
+        <TEXT>Events</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER  type="list">
+    <LINK href="{% url index %}">
+        <TEXT>&lt;&lt; Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

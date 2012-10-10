@@ -122,6 +122,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "vlive.custom_context_processors.unique_id_processor",
     "vlive.custom_context_processors.user_profile_processor",
+    "vlive.custom_context_processors.province_session_processor",
 )
 
 INSTALLED_APPS = (
@@ -163,6 +164,7 @@ INSTALLED_APPS = (
     'publisher',
     'photologue',
     'secretballot',
+    'ummeli.opportunities',
 
     # 3rd party
     'ckeditor',

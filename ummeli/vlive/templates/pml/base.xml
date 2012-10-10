@@ -51,8 +51,8 @@
         <LINK href="{% url article_list %}?{{uuid}}">
             <TEXT>Latest</TEXT>
         </LINK>
-        <LINK href="{% url jobs_province %}?{{uuid}}">
-            <TEXT>Work</TEXT>
+        <LINK href="{% url opportunities %}?{{uuid}}">
+            <TEXT>Opportunities</TEXT>
         </LINK>
         <LINK href="{% url community_jobs %}?{{uuid}}">
             <TEXT>Community Board</TEXT>

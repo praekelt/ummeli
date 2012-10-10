@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url competitions %}">Competitions</a> &raquo;
+        {{object.title}}
+    </h2>
+    <p>
+        <strong>{{object.title}}</strong>
+        {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
+        <br/><small>Province: {{ object.get_provinces }}</small>
+        <br/><small>Cost: R {{ object.cost }}</small>
+        <br/>
+        <br/>
+        {{ object.description|safe }}
+    </p>
+    <div class="more"><a href="{% url competitions %}">&larr; Back</a></div>
+{% endblock %}

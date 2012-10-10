@@ -1,0 +1,34 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Volunteering</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={% url volunteering %}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <b>{{object.title}}</b>
+    {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
+    <br/>Province: {{ object.get_provinces }}
+    <br/>Min. education required: {{ object.get_education}}
+    <br/>
+    <br/>
+    {{ object.description|safe }}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url volunteering %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
