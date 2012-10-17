@@ -251,6 +251,10 @@ def jobs(request, id):
     search_id = get_search_id(request)
 
     province = Province.objects.get(search_id=search_id)
+
+    if not province.category_set.filter(pk=id).exists():
+        return redirect(reverse('jobs_list'))
+
     category = province.category_set.get(pk=id)
 
     all_jobs = []
