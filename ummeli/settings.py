@@ -165,6 +165,7 @@ INSTALLED_APPS = (
     'photologue',
     'secretballot',
     'ummeli.opportunities',
+    'livechat',
 
     # 3rd party
     'ckeditor',
