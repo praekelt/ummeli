@@ -39,7 +39,7 @@
         {{ comment.submit_date|date:"D, j M Y, H:i" }}
         </span>
 
-        <div>{% spaceless %}
+        <p class="comment">{% spaceless %}
             {% if comment.is_community_moderated %}
                 <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
             {% else %}
@@ -49,19 +49,20 @@
                     {{ comment.comment }}
                 {% endif %}
             {% endif %}{% endspaceless %}
-        </div>
-        <div class="b">
-            <span>
+        </p>
+
+        <div class="article-tools">
+            <div class="likes">
                 {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
-                {% if user.is_authenticated %}
-                    <a href="{% url comment_like comment.pk %}">+Like</a>
-                {% endif %}
-            </span>
-            <span class="r">
+            </div>
+            {% if user.is_authenticated %}
+                <div class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></div>
+            {% endif %}
+            <div class="tag">
                 {% if user.is_authenticated %}
                     <a href="{% url comment_flag comment.pk %}">Report</a>
                 {% endif %}
-            </span>
+            </div>
         </div>
         {% if comment.livechatresponse_set.exists %}
         <div class="livechatresponses">
@@ -117,9 +118,13 @@
                 </div>
 
                 <p>
-                    Write your question:
+                    Write your comment:
                     <br/>
+                    <a href="{% url my_comment_settings %}">Change your comment name
+                    </a><br/>
+                    <div class="form-fields">
                     {{ form.comment }}
+                    </div>
                 </p>
                 <p>
                     <input type="submit" name="post" value="Comment" />
