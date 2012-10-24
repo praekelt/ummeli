@@ -1,0 +1,112 @@
+{% load comments%}
+<h2>{{ comment_count }} comment{{ comment_count|pluralize }}</h2>
+
+<div id="comment_list" class="comment_list">
+    {% for comment in comment_list.object_list %}
+        <div class="comment {% cycle 'even' 'odd' %}">
+            <div>
+                <!-- link to user profile -->
+                        {% if comment.user.get_profile.fullname %}
+                            <a href="{% url profile_view comment.user.pk %}">{{ comment.user.get_profile.fullname }}</a>
+                        {% else %}
+                            Anon.
+                        {% endif %}
+                    <span class="subtext">
+                    - {{ comment.submit_date|date:"D, j M Y, H:i" }}
+                </span>
+            </div>
+
+            <div>{% spaceless %}
+                {% if comment.is_community_moderated %}
+                    <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
+                {% else %}
+                    {% if comment.is_moderated %}
+                        <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
+                    {% else %}
+                        {{ comment.comment }}
+                    {% endif %}
+                {% endif %}{% endspaceless %}
+            </div>
+
+            <div>
+                <span class="likes">
+                    {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
+                </span>
+                    {% if user.is_authenticated %}
+                    <span class="tag">
+                        <a href="{% url comment_like comment.pk %}">+Like</a>
+                        </span>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <span class="tag right">
+                        <a href="{% url comment_flag comment.pk %}">Report</a>
+                    </span>
+                    {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<br/>
+
+<div id="pagination">
+    {% if comment_list.has_previous %}
+        <span><a href="{% url article_detail_redo article.pk comment_list.previous_page_number %}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
+    {% endif %}
+
+    <span class="current">
+        Page {{ comment_list.number }} of {{ comment_list.paginator.num_pages }}
+    </span>
+
+    {% if comment_list.has_next %}
+        | <span><a href="{% url article_detail_redo article.pk comment_list.next_page_number %}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
+</div>
+
+
+<br/>
+
+
+
+<div class="wrap" id="comment_form">
+    {% if article.comments_enabled %}
+        {% if user.is_authenticated %}
+
+            {% get_comment_form for article as form %}
+
+            <form action="{% comment_form_target %}" method="post">
+                {% csrf_token %}
+                <div style="display:none;">
+                    {{ form.content_type }}
+                    {{ form.object_pk }}
+                    {{ form.timestamp }}
+                    {{ form.security_hash }}
+                    {{ form.honeypot }}
+                    <input type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+                </div>
+
+                <p>
+                    Write your comment:
+                    <br/>
+                    <a href="{% url my_comment_settings %}">Change your comment name
+                    </a><br/>
+                    <div class="form-fields">
+                    {{ form.comment }}
+                    </div>
+                </p>
+                <p>
+                    <input type="submit" name="post" value="Comment" class="btn"/>
+                </p>
+            </form>
+
+        {% else %}
+            <p><a href="{% url login %}">Sign in</a> or <a href="{% url register %}">register</a> to comment.</p>
+        {% endif %}
+    {% else %}
+        <p><em>Comments are closed.</em></p>
+    {% endif %}
+</div>
