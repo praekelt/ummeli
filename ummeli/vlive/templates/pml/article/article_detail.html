@@ -1,6 +1,6 @@
 {% extends "base.xml" %}
 
-{% load poll_tags comments vlive_tags %}
+{% load poll_tags comments vlive_tags livechat_tags %}
 
 {% block content %}
 <HEADER><LABEL>Ummeli</LABEL></HEADER>
@@ -75,101 +75,13 @@
 </MODULE>
 {% endif %}
 
+{% get_livechat_for_article article "livechat" %}
+{% if livechat %}
+    {% include "livechat/embed.html" %}
+{% else %}
+    {% include "article/comments.html" %}
+{% endif %}
+
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
-    {% if user.is_active %}
-        {% if article.comments_enabled %}
-            <CONTAINER type="data">
-                    <TEXT><LINK href="{% url my_comment_settings %}"><TEXT>Change your comment name</TEXT></LINK></TEXT>
-            </CONTAINER>
-            <CONTAINER type="form">
-            {% get_comment_form for article as form %}
-            <FORM method="POST" href="{% comment_form_target %}" submit_text="Comment">
-                <FIELD type='hidden' name='_action' value='POST' />
-                <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
-                <FIELD type='hidden' name='content_type' value='{{ form.content_type.value }}' />
-                <FIELD type='hidden' name='object_pk' value='{{ form.object_pk.value }}' />
-                <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
-                <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
-                <FIELD type='hidden' name='honepot' id='id_honeypod'/>
-                <FIELD type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
-                <FIELD name="comment" type="text"/><br/>
-            </FORM>
-            </CONTAINER>
-        {% else %}
-            <CONTAINER type="data">
-            <TEXT>
-            <b><i>Comments are closed.</i></b>
-            </TEXT>
-            </CONTAINER>
-        {% endif %}
-    {% else %}
-        <CONTAINER type="data">
-            <TEXT><color value="red">Your account has been deactivated for violating our
-                <LINK href="/vlive/pages/terms/">
-                    <TEXT>terms and conditions</TEXT>
-                </LINK>. If you feel you should not have been removed from this community,
-            you may send a query
-                <LINK href="{% url contactsupport %}">
-                    <TEXT>here</TEXT>
-                </LINK>.</color></TEXT>
-        </CONTAINER>
-    {% endif %}
-    </MODULE>
-    {% for comment in comment_list.object_list %}
-        <MODULE backgroundColor="false" palette="MiDove">
-        <HEADER><LABEL> </LABEL></HEADER>
-        <CONTAINER type="data">
-        <TEXT><b>
-            {% if comment.user.get_profile.comment_as_anon %}
-                Anon.
-            {% else %}
-                {% if comment.user.get_profile.fullname %}
-                    <LINK href="{% url profile_view comment.user.pk %}"><TEXT>{{ comment.user.get_profile.fullname }}</TEXT></LINK>
-                {% else %}
-                    Anon.
-                {% endif %}
-            {% endif %}
-         - {{ comment.submit_date|date:"D, j M Y, H:i" }} </b><br/>
-        </TEXT>
-        <TEXT>
-            {% spaceless %}
-            {% if comment.is_community_moderated %}
-                <color value="blue">
-                <b>Moderated:</b> {{ comment.community_moderation_flags.latest.reason }}
-                </color>
-            {% else %}
-                {% if comment.is_moderated %}
-                    <color value="red">
-                    <b>Moderated:</b> {{ comment.moderation_flags.latest.reason }}
-                    </color>
-                {% else %}
-                    {{ comment.comment }}
-                {% endif %}
-            {% endif %}
-            {% endspaceless %}
-        </TEXT>
-        <TEXT>
-        <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
-            <TEXT>+Like ({{ comment.like_count }})</TEXT>
-        </LINK>
-        <LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
-            <TEXT>Report</TEXT>
-        </LINK>
-        </TEXT>
-        </CONTAINER>
-        </MODULE>
-    {% endfor %}
-    <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER><LABEL> </LABEL></HEADER>
-    <CONTAINER type="data">
-    <TEXT><br/>
-        {% if comment_list.has_previous %}
-        <LINK href="{% url article_detail_redo article.pk comment_list.previous_page_number %}?{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
-        {% endif %}
-        {% if comment_list.has_next %}
-        <LINK href="{% url article_detail_redo article.pk comment_list.next_page_number %}?{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
-        {% endif %}
-    </TEXT>
-    </CONTAINER>
+<HEADER><LABEL> </LABEL></HEADER>
 {% endblock %}
