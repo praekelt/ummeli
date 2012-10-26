@@ -103,7 +103,7 @@
             </form>
 
         {% else %}
-            <p><a href="{% url login %}">Sign in</a> or <a href="{% url register %}">register</a> to comment.</p>
+            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to comment.</p>
         {% endif %}
     {% else %}
         <p><em>Comments are closed.</em></p>
