@@ -16,13 +16,13 @@
     <LINK href="{{ request.path }}">
         <TEXT>all questions</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&amp;answered=true">
+    <LINK href="{{ request.path }}?&answered=true">
         <TEXT>questions with answers</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&amp;answered=false">
+    <LINK href="{{ request.path }}?&answered=false">
         <TEXT>questions without answers</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&amp;popular=true">
+    <LINK href="{{ request.path }}?&popular=true">
         <TEXT>most popular questions first</TEXT>
     </LINK>
 </CONTAINER>
@@ -45,7 +45,7 @@
             <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
             <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
             <FIELD type='hidden' name='honepot' id='id_honeypod'/>
-            <FIELD type="hidden" name="next" value="{{ current_url }}?&amp;answered={{answered}}&amp;popular={{popular}}" />
+            <FIELD type="hidden" name="next" value="{{ current_url }}?&answered={{answered}}&popular={{popular}}" />
             <FIELD name="comment" type="text"/><br/>
         </FORM>
         </CONTAINER>
@@ -114,20 +114,23 @@
 </CONTAINER>
 </MODULE>
 
+{% if comment.livechatresponse_set.exists %}
+{% for response in comment.livechatresponse_set.all %}
 <MODULE backgroundColor="false" palette="MiOrange">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
     <TEXT>
-    {% if comment.livechatresponse_set.exists %}
-    {% for response in comment.livechatresponse_set.all %}
+    <color value="orange">
         <b>{{response.author}}</b>
         <br/>{{ response.updated_at|date:"D, j M Y, H:i" }}
         <br/>{{response.response}}
-    {% endfor %}
-    {% endif %}
+    </color>
     </TEXT>
 </CONTAINER>
 </MODULE>
+{% endfor %}
+{% endif %}
+
 {% endfor %}
 
 <MODULE backgroundColor="false" palette="MiDove">
@@ -135,10 +138,10 @@
 <CONTAINER type="data">
 <TEXT><br/>
     {% if comment_list.has_previous %}
-    <LINK href="{{request.path}}?p={{page.previous_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
+    <LINK href="{{request.path}}?p={{page.previous_page_number}}&answered={{answered}}&popular={{popular}}&{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
     {% endif %}
     {% if comment_list.has_next %}
-    <LINK href="{{request.path}}?p={{page.next_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
+    <LINK href="{{request.path}}?p={{page.next_page_number}}&answered={{answered}}&popular={{popular}}&{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
     {% endif %}
 </TEXT>
 </CONTAINER>
