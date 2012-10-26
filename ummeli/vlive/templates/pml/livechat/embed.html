@@ -16,13 +16,13 @@
     <LINK href="{{ request.path }}">
         <TEXT>all questions</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&answered=true">
+    <LINK href="{{ request.path }}?&amp;answered=true">
         <TEXT>questions with answers</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&answered=false">
+    <LINK href="{{ request.path }}?&amp;answered=false">
         <TEXT>questions without answers</TEXT>
     </LINK>
-    <LINK href="{{ request.path }}?&popular=true">
+    <LINK href="{{ request.path }}?&amp;popular=true">
         <TEXT>most popular questions first</TEXT>
     </LINK>
 </CONTAINER>
@@ -45,7 +45,7 @@
             <FIELD type='hidden' name='timestamp' value='{{ form.timestamp.value }}' />
             <FIELD type='hidden' name='security_hash' value='{{ form.security_hash.value }}' />
             <FIELD type='hidden' name='honepot' id='id_honeypod'/>
-            <FIELD type="hidden" name="next" value="{{ current_url }}?&answered={{answered}}&popular={{popular}}" />
+            <FIELD type="hidden" name="next" value="{{ current_url }}?&amp;answered={{answered}}&amp;popular={{popular}}" />
             <FIELD name="comment" type="text"/><br/>
         </FORM>
         </CONTAINER>
@@ -138,10 +138,10 @@
 <CONTAINER type="data">
 <TEXT><br/>
     {% if comment_list.has_previous %}
-    <LINK href="{{request.path}}?p={{page.previous_page_number}}&answered={{answered}}&popular={{popular}}&{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
+    <LINK href="{{request.path}}?p={{page.previous_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
     {% endif %}
     {% if comment_list.has_next %}
-    <LINK href="{{request.path}}?p={{page.next_page_number}}&answered={{answered}}&popular={{popular}}&{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
+    <LINK href="{{request.path}}?p={{page.next_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
     {% endif %}
 </TEXT>
 </CONTAINER>
