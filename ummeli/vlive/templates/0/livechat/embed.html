@@ -12,10 +12,10 @@
 
 <p>
     <strong>Display: </strong>
-    <a href="?&amp;answered=true">all questions</a>,
-    <a href="?&amp;answered=true">questions with answers</a>,
-    <a href="?&amp;answered=false">questions without answers</a> or
-    <a href="?&amp;popular=true">most popular questions first</a>.
+    <a href="?answered=true">all questions</a>,
+    <a href="?answered=true">questions with answers</a>,
+    <a href="?answered=false">questions without answers</a> or
+    <a href="?popular=true">most popular questions first</a>.
 </p>
 
 <div class="comment_list">
@@ -114,7 +114,7 @@
                     {{ form.timestamp }}
                     {{ form.security_hash }}
                     {{ form.honeypot }}
-                    <input type="hidden" name="next" value="{{ current_url }}?&amp;answered={{answered}}&amp;popular={{popular}}" />
+                    <input type="hidden" name="next" value="{{ current_url }}?answered={{answered}}&amp;popular={{popular}}" />
                 </div>
 
                 <p>
@@ -132,7 +132,7 @@
             </form>
 
         {% else %}
-            <p><a href="{% url login %}">Sign in</a> or <a href="{% url register %}">register</a> to chat.</p>
+            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to chat.</p>
         {% endif %}
     </div>
 
