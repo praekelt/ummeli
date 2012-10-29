@@ -26,13 +26,17 @@ class MockJobsParser(JobsParser):
         return self.tidy_html(jobs_test_data.articles_html2)
 
 class JobsTestCase(VLiveTestCase):
+    fixtures = [
+        'fixtures/opportunities.provinces.json',
+    ]
+
     def setUp(self):
         self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         self.client.login(remote_user=self.msisdn)
         settings.CELERY_ALWAYS_EAGER = True
-        
+
     def tearDown(self):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
@@ -48,21 +52,18 @@ class JobsTestCase(VLiveTestCase):
         self.assertEquals(data[0].category_set.all()[0].articles.count(),  5)
         self.assertEquals(data[1].category_set.all()[0].articles.count(),  4)
 
-        resp = self.client.get(reverse('jobs_province'))
-        self.assertContains(resp, 'Gauteng (4)')
-
-        resp = self.client.get(reverse('jobs_list', args=[1]))
+        resp = self.client.get(reverse('jobs_list'))
         self.assertContains(resp, 'Accounts/Financial')
 
-        resp = self.client.get(reverse('jobs', args=[1, 1]))
+        resp = self.client.get(reverse('jobs', args=[1]))
         self.assertContains(resp, '1')
 
-        resp = self.client.get(reverse('job', args=[1, 1, 3]))
+        resp = self.client.get(reverse('job', args=[1, 3]))
         self.assertContains(resp, 'Accounts Administrator West')
-        
-        resp = self.client.get(reverse('job', args=[1, 1, 2100, 1]))
-        self.assertVLiveRedirects(resp, reverse('jobs', args=[1, 1]))
-        
+
+        resp = self.client.get(reverse('job', args=[1, 2100, 1]))
+        self.assertVLiveRedirects(resp, reverse('jobs', args=[1]))
+
         self.assertEquals(Category.objects.all()[0].must_show(),  True)
 
     def test_category_parser(self):
@@ -75,14 +76,14 @@ class JobsTestCase(VLiveTestCase):
         self.register()
         self.login()
         self.fill_in_basic_info()
-        
+
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
         result.successful()
 
         # apply via email
-        resp = self.client.post(reverse('job', args=[1, 1, 1]),
+        resp = self.client.post(reverse('job', args=[1, 1]),
                                         {'send_via':'email',  'send_to':'me@home.com'})
 
         self.assertEqual(len(mail.outbox), 1)
@@ -93,18 +94,18 @@ class JobsTestCase(VLiveTestCase):
         self.register()
         self.login()
         self.fill_in_basic_info()
-        
+
         # setup test data
         result = run_jobs_update.delay(MockCategoryParser,  MockJobsParser).result
         result.ready()
         result.successful()
 
         # apply via fax
-        
-        resp = self.client.get(reverse('jobs', args=[1, 1]))
+
+        resp = self.client.get(reverse('jobs', args=[1]))
         print resp
-        
-        resp = self.client.post(reverse('job', args=[1, 1, 3, 0]),
+
+        resp = self.client.post(reverse('job', args=[1, 3, 0]),
                                         {'send_via':'fax',  'send_to':'+27123456789'})
 
         self.assertEqual(len(mail.outbox), 1)
@@ -116,7 +117,7 @@ class JobsTestCase(VLiveTestCase):
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.post(reverse('job', args=[1, 1, 3, 0]),
+        resp = self.client.post(reverse('job', args=[1, 3, 0]),
                                         {'send_via':'fax',  'send_to':''})
 
         self.assertContains(resp,  'This field is required')
