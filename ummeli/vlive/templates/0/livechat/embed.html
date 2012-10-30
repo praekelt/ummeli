@@ -68,7 +68,7 @@
         <div class="livechatresponses">
             {% for response in comment.livechatresponse_set.all %}
                 <div class="t">
-                    <strong>{{response.author}}</strong>
+                    <strong>{{response.author.first_name}}</strong>
                     -
                     {{ response.updated_at|date:"D, j M Y, H:i" }}
                 </div>
