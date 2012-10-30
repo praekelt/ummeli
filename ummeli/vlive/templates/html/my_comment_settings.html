@@ -5,15 +5,23 @@
     <form class='content-form' method="post">
     <fieldset>
         <label>What name do you want shown on your comments?</label>
-        
+
         {% if form.comment_as_anon.value %}
         <input type="radio" name="comment_as_anon" value="True" checked="checked"/> Anon.<br/>
-        <input type="radio" name="comment_as_anon" value="False" /> {{object.fullname}}<br/>
+            {% if not object.fullname.strip %}
+            <p>Please <a href="{% url edit_personal %}">update your profile</a> to use a different name.</p>
+            {% else %}
+            <input type="radio" name="comment_as_anon" value="False" /> {{object.fullname}}<br/>
+            {% endif %}
         {% else %}
         <input type="radio" name="comment_as_anon" value="True"/> Anon.<br/>
-        <input type="radio" name="comment_as_anon" value="False" checked="checked"/> {{object.fullname}}<br/>
+            {% if not object.fullname.strip %}
+            <p>Please <a href="{% url edit_personal %}">update your profile</a> to use a different name.</p>
+            {% else %}
+            <input type="radio" name="comment_as_anon" value="False" checked="checked"/> {{object.fullname}}<br/>
+            {% endif %}
         {% endif %}
-        
+
         <input type="submit" class="btn" value="Save" name="submit" />
         {% csrf_token %}
     </fieldset>

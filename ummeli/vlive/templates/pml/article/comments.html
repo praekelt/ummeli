@@ -4,7 +4,19 @@
 {% if user.is_active %}
     {% if article.comments_enabled %}
         <CONTAINER type="data">
-                <TEXT><LINK href="{% url my_comment_settings %}"><TEXT>Change your comment name</TEXT></LINK></TEXT>
+            <TEXT>
+                Name: <b>
+                {% if user.get_profile.comment_as_anon %}
+                    Anon.
+                {% else %}
+                    {% if user.get_profile.fullname %}
+                        {{ user.get_profile.fullname }}
+                    {% else %}
+                        Anon.
+                    {% endif %}
+                {% endif %}</b><br/>
+                <LINK href="{% url my_comment_settings %}?{{uuid}}"><TEXT>Change your comment name</TEXT></LINK>
+            </TEXT>
         </CONTAINER>
         <CONTAINER type="form">
         {% get_comment_form for article as form %}
