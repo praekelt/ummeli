@@ -5,6 +5,7 @@
 {% load your_words_tags %}
 
 {% block content %}
+    <div class="info">Vodacom Users: <a href="http://live.vodafone.com/ummeli">Click here to Access Ummeli for FREE!</a></div>
     <div id="promotxt">Ummeli lets you <a href="{% url opportunities %}">find opportunities</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a></div>
     <div class="h2">Latest</div>
     {% get_articles 3 "article_list" %}
