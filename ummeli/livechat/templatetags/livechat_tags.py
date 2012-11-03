@@ -34,7 +34,7 @@ def get_livechat_page(context, livechat, var_name):
     if popular == 'true':
         comments_qs = comments_qs.order_by('-like_count')
 
-    paginator = Paginator(comments_qs, per_page=25)
+    paginator = Paginator(comments_qs, per_page=10)
     page = paginator.page(request.GET.get('p', 1))
     context['page'] = page
     return ''
