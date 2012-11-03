@@ -146,13 +146,13 @@
 {% endfor %}
 
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL>Page {{ comment_list.number }} of {{ comment_list.paginator.num_pages }}</LABEL></HEADER>
+<HEADER><LABEL>Page {{ page.number }} of {{ page.paginator.num_pages }}</LABEL></HEADER>
 <CONTAINER type="data">
 <TEXT><br/>
-    {% if comment_list.has_previous %}
+    {% if page.has_previous %}
     <LINK href="{{request.path}}?p={{page.previous_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>&lt;&lt; Previous</TEXT></LINK>
     {% endif %}
-    {% if comment_list.has_next %}
+    {% if page.has_next %}
     <LINK href="{{request.path}}?p={{page.next_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}&amp;{{uuid}}"><TEXT>Next &gt;&gt;</TEXT></LINK>
     {% endif %}
 </TEXT>
