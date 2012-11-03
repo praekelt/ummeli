@@ -82,17 +82,17 @@
 </div>
 
 <div id="pagination">
-    {% if comment_list.has_previous %}
+    {% if page.has_previous %}
         <span><a href="?p={{page.previous_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}">Previous</a></span> |
     {% else %}
         <span>Previous</span> |
     {% endif %}
 
     <span class="current">
-        Page {{ comment_list.number }} of {{ comment_list.paginator.num_pages }}
+        Page {{ page.number }} of {{ page.paginator.num_pages }}
     </span>
 
-    {% if comment_list.has_next %}
+    {% if page.has_next %}
         | <span><a href="?p={{page.next_page_number}}&amp;answered={{answered}}&amp;popular={{popular}}">Next</a></span>
     {% else %}
         | <span>Next</span>

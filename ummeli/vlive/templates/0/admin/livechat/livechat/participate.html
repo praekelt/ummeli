@@ -106,12 +106,14 @@
         {% endif %}
 
         <span>
-            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+            Page {{ comments.number }} of {{ comments.paginator.num_pages }}
         </span>
 
         {% if comments.has_next %}
             <a href="{% url admin:livechat pk=livechat.pk %}?page={{comments.next_page_number}}">next page</a>
         {% endif %}
+        <br/>
+        Total questions: {{comments.object_list.count}}
     </p>
 </div>
 {% endblock %}
