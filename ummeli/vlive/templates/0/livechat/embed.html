@@ -10,6 +10,57 @@
     {{livechat.description|safe}}
 </p>
 
+{% if livechat.active %}
+
+    <div class="wrap" id="comment_form">
+        {% if user.is_authenticated %}
+
+            {% get_comment_form for livechat as form %}
+
+            <form action="{% comment_form_target %}" method="post">
+                {% csrf_token %}
+                <div style="display:none;">
+                    {{ form.content_type }}
+                    {{ form.object_pk }}
+                    {{ form.timestamp }}
+                    {{ form.security_hash }}
+                    {{ form.honeypot }}
+                    <input type="hidden" name="next" value="{{ current_url }}?answered={{answered}}&amp;popular={{popular}}" />
+                </div>
+
+                <p>
+                    Write your comment:
+                    <br/>Name:
+                    <strong>
+                        {% if user.get_profile.comment_as_anon %}
+                            Anon.
+                        {% else %}
+                            {% if user.get_profile.fullname %}
+                                {{ user.get_profile.fullname }}</a>
+                            {% else %}
+                                Anon.
+                            {% endif %}
+                        {% endif %}
+                    </strong>
+                    <br/>
+                    <a href="{% url my_comment_settings %}">Change your comment name
+                    </a><br/>
+                    <div class="form-fields">
+                    {{ form.comment }}
+                    </div>
+                </p>
+                <p>
+                    <input type="submit" name="post" value="Comment" />
+                </p>
+            </form>
+
+        {% else %}
+            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to chat.</p>
+        {% endif %}
+    </div>
+
+{% endif %}
+
 {% if user.is_authenticated %}
 {% get_mylivechat livechat %}
 <div class="h2">My Questions</div>
@@ -144,54 +195,3 @@
         | <span>Next</span>
     {% endif %}
 </div>
-
-{% if livechat.active %}
-
-    <div class="wrap" id="comment_form">
-        {% if user.is_authenticated %}
-
-            {% get_comment_form for livechat as form %}
-
-            <form action="{% comment_form_target %}" method="post">
-                {% csrf_token %}
-                <div style="display:none;">
-                    {{ form.content_type }}
-                    {{ form.object_pk }}
-                    {{ form.timestamp }}
-                    {{ form.security_hash }}
-                    {{ form.honeypot }}
-                    <input type="hidden" name="next" value="{{ current_url }}?answered={{answered}}&amp;popular={{popular}}" />
-                </div>
-
-                <p>
-                    Write your comment:
-                    <br/>Name:
-                    <strong>
-                        {% if user.get_profile.comment_as_anon %}
-                            Anon.
-                        {% else %}
-                            {% if user.get_profile.fullname %}
-                                {{ user.get_profile.fullname }}</a>
-                            {% else %}
-                                Anon.
-                            {% endif %}
-                        {% endif %}
-                    </strong>
-                    <br/>
-                    <a href="{% url my_comment_settings %}">Change your comment name
-                    </a><br/>
-                    <div class="form-fields">
-                    {{ form.comment }}
-                    </div>
-                </p>
-                <p>
-                    <input type="submit" name="post" value="Comment" />
-                </p>
-            </form>
-
-        {% else %}
-            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to chat.</p>
-        {% endif %}
-    </div>
-
-{% endif %}
