@@ -474,7 +474,7 @@ def jobs_create(request):
         form = UserSubmittedJobArticleForm()
 
     provinces = Province.objects.all().order_by('name').exclude(pk=1)
-    categories = Category.objects.all().values('title').distinct().order_by('title')
+    categories = Category.objects.filter(is_allowed=True).values('title').distinct().order_by('title')
 
     return render(request, 'opportunities/jobs/jobs_create.html',
                                 {'form': form,  'provinces': provinces,

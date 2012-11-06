@@ -68,9 +68,12 @@ class Category(models.Model):
     province = models.ForeignKey(Province)
     articles = models.ManyToManyField(Article, blank=True,  null=True)
     user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
+    is_allowed = models.BooleanField(default=True)
 
     def must_show(self):
-        return self.articles.exists() or self.user_submitted_job_articles.exists()
+        return (self.articles.exists() or\
+            self.user_submitted_job_articles.exists()) and\
+            self.is_allowed
 
     def articles_count(self):
         return self.articles.count() + self.user_submitted_job_articles.count()

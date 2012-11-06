@@ -32,6 +32,12 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = ('-date',)
     date_hierarchy = 'date'
 
+class JobCategoryAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_display = ('title', 'province')
+    list_filter = ('is_allowed','province')
+    ordering = ('title',)
+
 admin.site.register(CurriculumVitae)
 admin.site.register(Certificate)
 admin.site.register(Language)
@@ -39,7 +45,7 @@ admin.site.register(WorkExperience)
 admin.site.register(Reference)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Province)
-admin.site.register(Category)
+admin.site.register(Category, JobCategoryAdmin)
 admin.site.register(UserSubmittedJobArticle, UserSubmittedJobArticleAdmin)
 
 if UserComment in admin.site._registry:
