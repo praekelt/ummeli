@@ -1,6 +1,58 @@
 {% load comments%}
 <h2>{{ comment_count }} comment{{ comment_count|pluralize }}</h2>
 
+<div class="wrap" id="comment_form">
+    {% if article.comments_enabled %}
+        {% if user.is_authenticated %}
+
+            {% get_comment_form for article as form %}
+
+            <form action="{% comment_form_target %}" method="post">
+                {% csrf_token %}
+                <div style="display:none;">
+                    {{ form.content_type }}
+                    {{ form.object_pk }}
+                    {{ form.timestamp }}
+                    {{ form.security_hash }}
+                    {{ form.honeypot }}
+                    <input type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
+                </div>
+
+                <p>
+                    Write your comment:
+                    <br/>Name:
+                    <strong>
+                        {% if user.get_profile.comment_as_anon %}
+                            Anon.
+                        {% else %}
+                            {% if user.get_profile.fullname %}
+                                {{ user.get_profile.fullname }}</a>
+                            {% else %}
+                                Anon.
+                            {% endif %}
+                        {% endif %}
+                    </strong>
+                    <br/>
+                    <a href="{% url my_comment_settings %}">Change your comment name
+                    </a><br/>
+                    <div class="form-fields">
+                    {{ form.comment }}
+                    </div>
+                </p>
+                <p>
+                    <input type="submit" name="post" value="Comment" class="btn"/>
+                </p>
+            </form>
+
+        {% else %}
+            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to comment.</p>
+        {% endif %}
+    {% else %}
+        <p><em>Comments are closed.</em></p>
+    {% endif %}
+</div>
+
+
 <div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
         <div class="comment {% cycle 'even' 'odd' %}">
@@ -64,61 +116,5 @@
         | <span><a href="{% url article_detail_redo article.pk comment_list.next_page_number %}">Next</a></span>
     {% else %}
         | <span>Next</span>
-    {% endif %}
-</div>
-
-
-<br/>
-
-
-
-<div class="wrap" id="comment_form">
-    {% if article.comments_enabled %}
-        {% if user.is_authenticated %}
-
-            {% get_comment_form for article as form %}
-
-            <form action="{% comment_form_target %}" method="post">
-                {% csrf_token %}
-                <div style="display:none;">
-                    {{ form.content_type }}
-                    {{ form.object_pk }}
-                    {{ form.timestamp }}
-                    {{ form.security_hash }}
-                    {{ form.honeypot }}
-                    <input type="hidden" name="next" value="{{ article.get_absolute_url }}#comment_list" />
-                </div>
-
-                <p>
-                    Write your comment:
-                    <br/>Name:
-                    <strong>
-                        {% if user.get_profile.comment_as_anon %}
-                            Anon.
-                        {% else %}
-                            {% if user.get_profile.fullname %}
-                                {{ user.get_profile.fullname }}</a>
-                            {% else %}
-                                Anon.
-                            {% endif %}
-                        {% endif %}
-                    </strong>
-                    <br/>
-                    <a href="{% url my_comment_settings %}">Change your comment name
-                    </a><br/>
-                    <div class="form-fields">
-                    {{ form.comment }}
-                    </div>
-                </p>
-                <p>
-                    <input type="submit" name="post" value="Comment" class="btn"/>
-                </p>
-            </form>
-
-        {% else %}
-            <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to comment.</p>
-        {% endif %}
-    {% else %}
-        <p><em>Comments are closed.</em></p>
     {% endif %}
 </div>
