@@ -10,6 +10,52 @@
     {{livechat.description|safe}}
 </p>
 
+{% if user.is_authenticated %}
+{% get_mylivechat livechat %}
+<h2 id="comment_list">My Questions</h2>
+<div class="comment_list">
+{% for comment in my_comments %}
+    <div class="comment {% cycle 'even' 'odd' %}">
+    <div>{{ comment.submit_date|date:"D, j M Y, H:i" }}</div>
+    <div>{% spaceless %}
+        {% if comment.is_community_moderated %}
+            <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
+        {% else %}
+            {% if comment.is_moderated %}
+                <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
+            {% else %}
+                {{ comment.comment }}
+            {% endif %}
+        {% endif %}{% endspaceless %}
+    </div>
+
+    <div>
+        <span class="likes">
+            {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
+        </span>
+    </div>
+    {% if comment.livechatresponse_set.exists %}
+    <div class="livechatresponses">
+        {% for response in comment.livechatresponse_set.all %}
+            <div class="t {% cycle 'even' 'odd' %}">
+            <span>
+                <strong>{{response.author.first_name}}</strong>
+                -
+                {{ response.updated_at|date:"D, j M Y, H:i" }}
+            </span><br/>
+            <span>{{response.response}}</span>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+{% empty %}
+You haven't asked any questions.
+{% endfor %}
+</div>
+{% endif %}
+
+<h2 id="comment_list">Questions</h2>
 <p>
     <strong>Display: </strong>
     <a href="{{request.path}}">all questions</a>,
@@ -17,7 +63,6 @@
     <a href="?answered=false">questions without answers</a> or
     <a href="?popular=true">most popular questions first</a>.
 </p>
-
 <div class="comment_list">
     {% for comment in page.object_list %}
     <div class="comment {% cycle 'even' 'odd' %}">
@@ -57,11 +102,10 @@
             {% if user.is_authenticated %}
                 <span class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></span>
             {% endif %}
-            <span class="tag">
-                {% if user.is_authenticated %}
-                    <a href="{% url comment_flag comment.pk %}">Report</a>
-                {% endif %}
-            </span>
+
+            {% if user.is_authenticated %}
+            <span class="tag"><a href="{% url comment_flag comment.pk %}">Report</a></span>
+            {% endif %}
         </div>
         {% if comment.livechatresponse_set.exists %}
         <div class="livechatresponses">
