@@ -38,3 +38,22 @@ def get_livechat_page(context, livechat, var_name):
     page = paginator.page(request.GET.get('p', 1))
     context['page'] = page
     return ''
+
+@register.simple_tag(takes_context=True)
+def get_mylivechat(context, livechat, var_name='my_comments'):
+    """
+    Fetches user's comments for the given livechat
+
+    Usage:
+    {% get_livechat_page `livechat` `var_name` %}
+    """
+    request = context['request']
+
+    if not request.user.is_authenticated():
+        return None
+
+    comments_qs = livechat.comment_set().distinct() \
+                    .filter(user=request.user)\
+                    .select_related('user').order_by('-submit_date')
+    context[var_name] = comments_qs
+    return ''

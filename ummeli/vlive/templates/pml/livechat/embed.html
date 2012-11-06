@@ -11,24 +11,6 @@
 </MODULE>
 
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL>Show:</LABEL></HEADER>
-<CONTAINER type="list">
-    <LINK href="{{ request.path }}">
-        <TEXT>all questions</TEXT>
-    </LINK>
-    <LINK href="{{ request.path }}?&amp;answered=true">
-        <TEXT>questions with answers</TEXT>
-    </LINK>
-    <LINK href="{{ request.path }}?&amp;answered=false">
-        <TEXT>questions without answers</TEXT>
-    </LINK>
-    <LINK href="{{ request.path }}?&amp;popular=true">
-        <TEXT>most popular questions first</TEXT>
-    </LINK>
-</CONTAINER>
-</MODULE>
-
-<MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 {% if user.is_active %}
     {% if livechat.active %}
@@ -80,6 +62,83 @@
             </LINK>.</color></TEXT>
     </CONTAINER>
 {% endif %}
+</MODULE>
+
+{% get_mylivechat livechat %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>My Questions</LABEL></HEADER>
+</MODULE>
+{% for comment in my_comments %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT><b>{{ comment.submit_date|date:"D, j M Y, H:i" }}</b></TEXT>
+<TEXT>
+    {% spaceless %}
+    {% if comment.is_community_moderated %}
+        <color value="blue">
+        <b>Moderated:</b> {{ comment.community_moderation_flags.latest.reason }}
+        </color>
+    {% else %}
+        {% if comment.is_moderated %}
+            <color value="red">
+            <b>Moderated:</b> {{ comment.moderation_flags.latest.reason }}
+            </color>
+        {% else %}
+            {{ comment.comment }}
+        {% endif %}
+    {% endif %}
+    {% endspaceless %}
+</TEXT>
+<TEXT>{{ comment.like_count }} Likes</TEXT>
+</CONTAINER>
+</MODULE>
+
+{% if comment.livechatresponse_set.exists %}
+{% for response in comment.livechatresponse_set.all %}
+<MODULE backgroundColor="false" palette="MiOrange">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>
+    <color value="orange">
+        <b>{{response.author.first_name}}</b>
+        <br/>{{ response.updated_at|date:"D, j M Y, H:i" }}
+        <br/>{{response.response}}
+    </color>
+    </TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+{% endif %}
+
+{% empty %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>My Questions</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>You haven't asked any questions.</TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>Questions</LABEL></HEADER>
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>Show:</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{{ request.path }}">
+        <TEXT>all questions</TEXT>
+    </LINK>
+    <LINK href="{{ request.path }}?&amp;answered=true">
+        <TEXT>questions with answers</TEXT>
+    </LINK>
+    <LINK href="{{ request.path }}?&amp;answered=false">
+        <TEXT>questions without answers</TEXT>
+    </LINK>
+    <LINK href="{{ request.path }}?&amp;popular=true">
+        <TEXT>most popular questions first</TEXT>
+    </LINK>
+</CONTAINER>
 </MODULE>
 
 {% for comment in page.object_list %}
