@@ -2,21 +2,19 @@
 import os.path
 import djcelery
 
-#****************** Cab be overwritten by local_settings********************
-
 DEBUG = False
+
+# vumi credentials for password reset
+VUMI_USERNAME = ''
+VUMI_PASSWORD = ''
+
 JMBO_ANALYTICS = {
     'google_analytics_id': 'xxx',
 }
 
-
-try:
-    from local_settings import *
-except ImportError:
-    raise RuntimeError,  "you need a local_settings.py file"
-
-
-#****************** The rest of the settings ********************
+DJANGO_ATLAS = {
+    'google_maps_api_key': 'xxx',
+}
 
 TEMPLATE_DEBUG = DEBUG
 
