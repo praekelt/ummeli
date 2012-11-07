@@ -101,13 +101,6 @@
 
 {% endblock %}
 
-{% load jmbo_analytics_tags %}
-<MODULE backgroundColor="true">
-    <CONTAINER type="image">
-        <IMAGE href="{% google_analytics %}" align="left" mime-type="image/gif"/>
-    </CONTAINER>
-</MODULE>
-
 </VZV-DEFAULT>
 </PARTNER-BODY>
 </VZV-PARTNER>
