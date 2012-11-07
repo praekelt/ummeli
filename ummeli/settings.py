@@ -252,4 +252,4 @@ CKEDITOR_CONFIGS = {
 COMMENTS_APP = 'jmbocomments'
 COMMENTS_PER_PAGE = 15
 
-PML_IGNORE_PATH = ['/vlive/downloads/', ]
+PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
