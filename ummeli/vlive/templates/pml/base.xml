@@ -101,6 +101,12 @@
 
 {% endblock %}
 
+{% load jmbo_analytics_tags %}
+<MODULE role="MOD17">
+    <CONTAINER type="image">
+        <IMAGE href="{% google_analytics %}" float="true" align="left" mime-type="image/gif"/>
+    </CONTAINER>
+</MODULE>
 
 </VZV-DEFAULT>
 </PARTNER-BODY>

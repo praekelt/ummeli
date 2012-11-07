@@ -37,3 +37,5 @@ django_geckoboard
 BeautifulSoup>=3.0.8.1
 -e git+https://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
 raven
+-e git://github.com/smn/device-proxy.git@develop#egg=device-proxy
+-e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics

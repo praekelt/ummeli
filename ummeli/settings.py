@@ -2,12 +2,21 @@
 import os.path
 import djcelery
 
+#****************** Cab be overwritten by local_settings********************
+
 DEBUG = False
+JMBO_ANALYTICS = {
+    'google_analytics_id': 'xxx',
+}
+
 
 try:
     from local_settings import *
 except ImportError:
     raise RuntimeError,  "you need a local_settings.py file"
+
+
+#****************** The rest of the settings ********************
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -158,6 +167,7 @@ INSTALLED_APPS = (
     'jmbodashboard.geckoboard',
     'jmbowordsuggest',
     'jmboyourwords',
+    'jmbo_analytics',
 
     'downloads',
     'sites_groups',
