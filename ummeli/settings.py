@@ -4,12 +4,17 @@ import djcelery
 
 DEBUG = False
 
-DJANGO_ATLAS = {}
+# vumi credentials for password reset
+VUMI_USERNAME = ''
+VUMI_PASSWORD = ''
 
-try:
-    from local_settings import *
-except ImportError:
-    raise RuntimeError,  "you need a local_settings.py file"
+JMBO_ANALYTICS = {
+    'google_analytics_id': 'xxx',
+}
+
+DJANGO_ATLAS = {
+    'google_maps_api_key': 'xxx',
+}
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -161,6 +166,7 @@ INSTALLED_APPS = (
     'jmbodashboard.geckoboard',
     'jmbowordsuggest',
     'jmboyourwords',
+    'jmbo_analytics',
 
     'downloads',
     'sites_groups',

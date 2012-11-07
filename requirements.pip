@@ -40,3 +40,5 @@ raven
 -e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
 -e git+git://github.com/praekelt/jmbo.git@feature/add_location_to_modelbase#egg=jmbo
 django-simple-autocomplete
+-e git://github.com/smn/device-proxy.git@develop#egg=device-proxy
+-e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics
