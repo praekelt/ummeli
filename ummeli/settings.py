@@ -117,6 +117,7 @@ MIDDLEWARE_CLASSES = (
     'jmbovlive.middleware.VodafoneLiveInfoMiddleware',
     'jmbovlive.middleware.PMLFormActionMiddleware',
     'jmbovlive.middleware.ModifyPMLResponseMiddleware',
+    'jmbo_analytics.middleware.GoogleAnalyticsMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -208,7 +209,8 @@ LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 
 CELERY_ALWAYS_EAGER = False
-CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks")
+CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks",
+                'jmbo_analytics.tasks')
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_TASK_RESULT_EXPIRES = 3600
 
