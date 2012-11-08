@@ -255,3 +255,4 @@ COMMENTS_APP = 'jmbocomments'
 COMMENTS_PER_PAGE = 15
 
 PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
+GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
