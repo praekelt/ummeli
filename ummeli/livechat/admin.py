@@ -17,6 +17,7 @@ class LiveChatAdminForm(forms.ModelForm):
 
 
 class LiveChatAdmin(admin.ModelAdmin):
+    form = LiveChatAdminForm
 
     list_filter = ['published', 'active', 'sites', 'created_at']
     fields = (
