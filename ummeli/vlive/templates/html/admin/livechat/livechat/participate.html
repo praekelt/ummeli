@@ -35,9 +35,9 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-    <a href="../../../">{% trans 'Home' %}</a> &rsaquo;
-    <a href="../../">{{ app_label|capfirst }}</a> &rsaquo;
-    <a href="../">{{ module_name|capfirst }}</a> &rsaquo;
+    <a href="/admin/">{% trans 'Home' %}</a> &rsaquo;
+    <a href="../../../">{{ app_label|capfirst }}</a> &rsaquo;
+    <a href="../../">{{ module_name|capfirst }}</a> &rsaquo;
     {{livechat.title}}
 </div>
 {% endblock %}

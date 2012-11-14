@@ -260,19 +260,4 @@ COMMENTS_APP = 'jmbocomments'
 COMMENTS_PER_PAGE = 15
 
 PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
-
-SIMPLE_AUTOCOMPLETE = {
-    'auth.user': {'threshold': 20},
-    'category.category': {'threshold': 20},
-    'atlas.location': {'threshold': 20},
-    'atlas.city': {'threshold': 20},
-    'atlas.region': {'threshold': 20},
-    'jmbo.modelbase': {
-        'threshold': 50,
-        'duplicate_format_function': lambda item, model, content_type: item.as_leaf_class().content_type.name
-    }
-}
-
-GEOIP_PATH = abspath('../ve/src/django-atlas/atlas/datasets/MaxMind/')
-GEOIP_CITY = 'GeoLiteCity.dat'
-GEOIP_COUNTRY = 'GeoIPv6.dat'
+GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]

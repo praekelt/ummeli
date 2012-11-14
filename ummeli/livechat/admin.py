@@ -1,9 +1,19 @@
 from django.shortcuts import render
 from django.contrib import admin
 from django.core.paginator import Paginator
+from django import forms
 
 from jmboarticles.models import Article
 from ummeli.livechat.models import LiveChat, LiveChatResponse
+
+
+class LiveChatAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LiveChatAdminForm, self).__init__(*args, **kwargs)
+        self.fields['article'].queryset = Article.objects.order_by('title')
+
+    class Meta:
+        model = LiveChat
 
 
 class LiveChatAdmin(admin.ModelAdmin):
