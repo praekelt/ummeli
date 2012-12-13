@@ -9,7 +9,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^sentry/', include('sentry.web.urls')),
     url(r'^health/$', views.health, name="health"),
     url(r'^geckoboard/', include('jmbodashboard.geckoboard.urls')),
 
