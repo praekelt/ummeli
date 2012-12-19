@@ -16,6 +16,11 @@ def static():
     with cd(env.path):
         run('ve/bin/python %(path)s/ummeli/manage.py collectstatic --noinput' % env)
 
+def migrate(app='ummeli.base'):
+    with cd(env.path):
+        env.app = app
+        run('ve/bin/python %(path)s/ummeli/manage.py migrate %(app)s' % env)
+
 
 def deploy():
     with cd(env.path):
