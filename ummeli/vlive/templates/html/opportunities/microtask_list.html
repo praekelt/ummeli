@@ -3,6 +3,7 @@
 {% block content %}
     <h2>
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
         <a href="{% url campaign_detail campaign.slug %}">{{campaign.title}}</a> &raquo;
         Tasks
     </h2>
@@ -37,8 +38,9 @@
     {% endif %}
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
 
+    <script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
+    domready(function(){
         /* Geolocate the client */
         if (typeof atlas !== 'undefined' && !atlas.isLocationSet()){
             atlas.getLocation();

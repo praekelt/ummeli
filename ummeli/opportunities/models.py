@@ -178,6 +178,9 @@ class Campaign(Opportunity):
     qualification_instructions = models.TextField(blank=True, null=True)
 
     def has_qualified(self, user):
+        if not self.must_qualify:
+            return True
+
         return self.qualifiers.filter(id=user.id)
 
     @models.permalink

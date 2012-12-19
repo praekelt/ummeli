@@ -261,3 +261,7 @@ COMMENTS_PER_PAGE = 15
 
 PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
 GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
+
+GEOIP_PATH = abspath('../ve/src/django-atlas/atlas/datasets/MaxMind/')
+GEOIP_CITY = 'GeoLiteCity.dat'
+GEOIP_COUNTRY = 'GeoIPv6.dat'

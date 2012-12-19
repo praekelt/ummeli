@@ -11,7 +11,6 @@ from ummeli.providers.forms import UploadTaskForm
 from ummeli.vlive.utils import get_lat_lon
 
 from django.contrib.gis.geos import Point
-from atlas.views import location_required
 
 
 class OpportunityDetailView(DetailView):
@@ -53,7 +52,6 @@ class MicroTaskListView(ListView):
 
         if not isinstance(position, Point):
             position = request.session['location']['city'].coordinates
-        print position
         tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
         return tasks.distance(position).order_by('distance')
 
