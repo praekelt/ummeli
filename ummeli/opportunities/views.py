@@ -51,7 +51,7 @@ class MicroTaskListView(ListView):
         position = self.request.session['location']['position']
 
         if not isinstance(position, Point):
-            position = request.session['location']['city'].coordinates
+            position = self.request.session['location']['city'].coordinates
         tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
         return tasks.distance(position).order_by('distance')
 
