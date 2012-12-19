@@ -148,10 +148,6 @@ class MicroTask(Opportunity):
 
 
 class TomTomMicroTask(MicroTask):
-    @models.permalink
-    def get_absolute_url(self):
-        return ('tom_tom_micro_task_detail', (self.slug,))
-
     category = models.TextField(blank=True, null=True)
     poi_id = models.TextField(blank=True, null=True)
     city = models.TextField(blank=True, null=True)
