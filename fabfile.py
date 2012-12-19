@@ -3,11 +3,9 @@ from fabric.api import *
 env.path = '/var/praekelt/ummeli'
 
 def qa():
-    env.supervisord_file = 'supervisord.staging.conf'
     env.hosts = ['ubuntu@cloud.praekeltfoundation.org']
 
 def production():
-    env.supervisord_file = 'supervisord.production.conf'
     env.hosts = ['ubuntu@app1.praekeltfoundation.org']
 
 def push():
@@ -22,14 +20,15 @@ def static():
 def deploy():
     with cd(env.path):
         run('git pull')
-        run('kill -HUP `cat tmp/pids/gunicorn*.pid`')
-        run('supervisorctl -c config/%(supervisord_file)s restart celery' % env)
+        run('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
+        run('sudo supervisorctl restart ummeli:u_celery' % env)
 
 def reload():
     with cd(env.path):
-        run('source ve/bin/activate && kill -HUP `cat tmp/pids/*gunicorn*.pid`')
+        run('git pull')
+        run('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
 
-def restart(app='all'):
+def restart(app=''):
     env.app = app
     with cd(env.path):
-        run('supervisorctl -c config/%(supervisord_file)s restart %(app)s' % env)
+        run('sudo supervisorctl restart ummeli:%(app)s' % env)
