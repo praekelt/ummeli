@@ -8,6 +8,7 @@
         Tasks
     </h2>
     <p>
+        You are near: <a href="{% url select-location %}?view={{request.path}}">{{city.name}}</a><br/>
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>

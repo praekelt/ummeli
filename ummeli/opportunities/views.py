@@ -59,6 +59,8 @@ class MicroTaskListView(ListView):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
         context['campaign'] = campaign
+        context['city'] = self.request.session['location']['city']
+        print context
         return context
 
 
