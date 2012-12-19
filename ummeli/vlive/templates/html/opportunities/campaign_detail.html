@@ -7,5 +7,5 @@
         {{object.title}}
     </h2>
 
-    {% render_object object %}
+    {% render_object object.as_leaf_class %}
 {% endblock %}

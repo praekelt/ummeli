@@ -69,6 +69,17 @@ class Opportunity(ModelBase):
         self.place = sanitize_html(self.place or '')
         super(Opportunity, self).save(*args, **kwargs)
 
+    def as_leaf_class(self):
+        try:
+            instance = self.__getattribute__(self.class_name.lower())
+        except AttributeError:
+            content_type = self.content_type
+            model = content_type.model_class()
+            if(model == ModelBase):
+                return self
+            instance = model.objects.get(id=self.id)
+        return instance
+
     class Meta:
         abstract = True
 
@@ -188,9 +199,9 @@ class Campaign(Opportunity):
         return ('campaign_detail', (self.slug,))
 
     def get_template(self):
-        return 'opportunities/campaign_detail_default.html'
+        return 'opportunities/microtasks/campaign_detail_default.html'
 
 
 class TomTomCampaign(Campaign):
     def get_template(self):
-        return 'opportunities/tom_tom_campaign_detail.html'
+        return 'opportunities/microtasks/tom_tom_campaign_detail.html'

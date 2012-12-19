@@ -4,13 +4,23 @@
 {% block content %}
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
 <div class="select-location">
-    <div class="title">{% trans "Select your location" %}</div>
+    <h2>{% trans "Select your location" %}</h2>
     <form action="{% url select-location %}" method="POST">
         {% csrf_token %}
-        {{ form.as_div }}
+        {{ form }}
         <div class="buttons">
             <input type="submit" value="{% trans "Continue" %}" />
         </div>
     </form>
 </div>
+<style type="text/css">
+.select-location table, .select-location label{
+    display: none;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input[type='submit']").addClass('btn');
+})
+</script>
 {% endblock %}
