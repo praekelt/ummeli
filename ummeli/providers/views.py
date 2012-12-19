@@ -104,6 +104,7 @@ def process_upload(csv_file, campaign_slug):
 
             t.publish()
 
+        if t:
             campaign.tasks.add(t)
 
 
