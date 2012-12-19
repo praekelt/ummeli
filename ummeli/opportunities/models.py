@@ -186,3 +186,11 @@ class Campaign(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('campaign_detail', (self.slug,))
+
+    def get_template(self):
+        return 'opportunities/campaign_detail_default.html'
+
+
+class TomTomCampaign(Campaign):
+    def get_template(self):
+        return 'opportunities/tom_tom_campaign_detail.html'
