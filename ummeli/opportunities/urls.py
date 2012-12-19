@@ -82,7 +82,7 @@ urlpatterns = patterns('',
         location_required(login_required(CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html'))),
         name='campaign_detail'),
-    url(r'^campaigns/(?P<campaign>[\w-]+)/task/(?P<slug>[\w-]+)/$',
+    url(r'^microtasks/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtask_detail.html'),
         name='micro_task_detail'),
