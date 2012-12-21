@@ -2,8 +2,10 @@ from django.conf.urls.defaults import patterns, url, include
 from ummeli.vlive import views
 from ummeli.vlive.utils import pin_required
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.conf import settings
+
+import object_tools
+object_tools.autodiscover()
 
 urlpatterns = patterns('',
     #url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
@@ -44,6 +46,7 @@ urlpatterns = patterns('',
 
     url(r'^community/jobs/$', views.community_jobs, name='community_jobs'),
     url(r'^community/jobs/(?P<id>\d+)/$', views.community_job, name='community_jobs'),
+    url(r'^object-tools/', include(object_tools.tools.urls)),
 )
 
 

@@ -134,6 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
+    'object_tools',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -178,6 +179,7 @@ INSTALLED_APPS = (
 
     # 3rd party
     'ckeditor',
+    'export',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
@@ -256,3 +258,7 @@ COMMENTS_PER_PAGE = 15
 
 PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
 GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
+
+SERIALIZATION_MODULES = {
+    'csv': 'snippetscream.csv_serializer',
+}
