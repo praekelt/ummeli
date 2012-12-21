@@ -40,8 +40,7 @@ ADMINS = ()
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ummeli',    # Or path to database file if using sqlite3.
         'USER': 'ummeli',
         'PASSWORD': 'ummeli',
@@ -135,6 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
+    'object_tools',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'tastypie',
     'simple_autocomplete',
+    'export',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
@@ -265,3 +266,6 @@ GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
 GEOIP_PATH = abspath('../ve/src/django-atlas/atlas/datasets/MaxMind/')
 GEOIP_CITY = 'GeoLiteCity.dat'
 GEOIP_COUNTRY = 'GeoIPv6.dat'
+SERIALIZATION_MODULES = {
+    'csv': 'snippetscream.csv_serializer',
+}

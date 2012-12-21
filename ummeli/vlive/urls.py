@@ -2,8 +2,10 @@ from django.conf.urls.defaults import patterns, url, include
 from ummeli.vlive import views
 from ummeli.vlive.utils import pin_required
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.conf import settings
+
+import object_tools
+object_tools.autodiscover()
 
 urlpatterns = patterns('',
     #url(r'^$', views.login, {'template_name': 'pml/login.xml'},  name='index'),
@@ -34,6 +36,7 @@ urlpatterns = patterns('',
     url(r'^poll/', include('jmboarticles.poll.urls')),
     url(r'^my/profile/', include('ummeli.vlive.profile.urls')),
     url(r'^downloads/', include('downloads.urls')),
+    url(r'^jmbo/', include('jmbo.urls')),
     url(r'^opportunities/', include('ummeli.opportunities.urls')),
     url(r'^livechat/', include('livechat.urls', namespace='livechat')),
     url(r'^jmbo-analytics/', include('jmbo_analytics.urls')),
@@ -48,6 +51,7 @@ urlpatterns = patterns('',
     url(r'^jmbo/', include('jmbo.urls')),
     url(r'^simple-autocomplete/', include('simple_autocomplete.urls')),
     url(r'^', include('atlas.urls')),
+    url(r'^object-tools/', include(object_tools.tools.urls)),
 )
 
 
