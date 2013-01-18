@@ -84,7 +84,6 @@ class LiveChatAdmin(admin.ModelAdmin):
 class LiveChatResponseAdmin(admin.ModelAdmin):
     raw_id_fields = ['comment', 'livechat']
     exclude = ['author']
-    readonly_fields = ['comment', 'livechat']
     list_display = ['comment', 'response']
 
     fieldsets = (
