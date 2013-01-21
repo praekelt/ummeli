@@ -20,6 +20,7 @@ class LiveChatAdmin(admin.ModelAdmin):
     form = LiveChatAdminForm
 
     list_filter = ['published', 'active', 'sites', 'created_at']
+    list_display = ['article', 'title', 'active']
     fields = (
         'published',
         'active',
@@ -83,6 +84,13 @@ class LiveChatAdmin(admin.ModelAdmin):
 class LiveChatResponseAdmin(admin.ModelAdmin):
     raw_id_fields = ['comment', 'livechat']
     exclude = ['author']
+    list_display = ['comment', 'response']
+
+    fieldsets = (
+        (None, {
+            'fields': ('comment', 'response', 'livechat',),
+        }),
+        )
 
     def save_model(self, request, obj, form, change):
         obj.author = request.user
