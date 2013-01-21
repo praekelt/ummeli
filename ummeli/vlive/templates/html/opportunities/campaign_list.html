@@ -33,4 +33,14 @@
     </div>
     {% endif %}
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
+    <script type="text/javascript">
+    domready(function(){
+        /* Geolocate the client */
+        if (typeof atlas !== 'undefined' && !atlas.isLocationSet()){
+            atlas.getLocation();
+        }
+    });
+    </script>
 {% endblock %}
