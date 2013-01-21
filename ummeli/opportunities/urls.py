@@ -18,37 +18,6 @@ urlpatterns = patterns('',
         OpportunityListView.as_view(model=Internship, \
             template_name='opportunities/internships.html'),
         name='internships'),
-    #url(r'^jobs/$',
-    #    OpportunityListView.as_view(model=Job, \
-    #        template_name='opportunities/jobs/jobs.html'),
-    #    name='job_opportunities'),
-    url(r'^bursaries/$',
-        OpportunityListView.as_view(model=Bursary, \
-            template_name='opportunities/bursaries.html'),
-        name='bursaries'),
-    url(r'^volunteering/$',
-        OpportunityListView.as_view(model=Volunteer, \
-            template_name='opportunities/volunteering.html'),
-        name='volunteering'),
-    url(r'^training/$',
-        OpportunityListView.as_view(model=Training, \
-            template_name='opportunities/training.html'),
-        name='training'),
-    url(r'^competitions/$',
-        OpportunityListView.as_view(model=Competition, \
-            template_name='opportunities/competitions.html'),
-        name='competitions'),
-    url(r'^events/$',
-        OpportunityListView.as_view(model=Event, \
-            template_name='opportunities/events.html'),
-        name='events'),
-    url(r'^campaigns/$',
-        OpportunityListView.as_view(model=Campaign, \
-            template_name='opportunities/campaigns.html'),
-        name='campaigns'),
-    url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
-        location_required(login_required(MicroTaskListView.as_view())),
-        name='micro_tasks'),
 
     #url(r'^jobs/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=Job,\
@@ -78,6 +47,10 @@ urlpatterns = patterns('',
         OpportunityDetailView.as_view(model=Event,\
             template_name='opportunities/event_detail.html'),
         name='event_detail'),
+    url(r'^campaigns/$',
+        OpportunityListView.as_view(model=Campaign, \
+            template_name='opportunities/campaigns.html'),
+        name='campaigns'),
     url(r'^campaigns/(?P<slug>[\w-]+)/$',
         location_required(login_required(CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html'))),
