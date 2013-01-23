@@ -152,13 +152,12 @@ class MicroTask(Opportunity):
 
     def available(self):
         return self.users_per_task == 0 or\
-            TaskCheckout.objects.filter(task__pk=self.pk)\
-                                .filter(state__lt=2)\
+            TaskCheckout.objects.filter(task__pk=self.pk, state__lt=2)\
                                 .count() < self.users_per_task
 
     def available_for(self, user):
-        active_checkouts = TaskCheckout.objects.filter(task__pk=self.pk)\
-                                            .filter(state__lt=2)
+        active_checkouts = TaskCheckout.objects.filter(task__pk=self.pk,
+                                                    state__lt=2)
         if active_checkouts.filter(user=user):
             return False
         return self.available()
@@ -177,9 +176,9 @@ class MicroTask(Opportunity):
                 continue
 
             cutoff_date = datetime.now() - timedelta(hours=task.hours_per_task)
-            task.taskcheckout_set.filter(task__pk=task.pk)\
-                                .filter(state__lt=2)\
-                                .filter(date__lte=cutoff_date)\
+            task.taskcheckout_set.filter(task__pk=task.pk,
+                                        state__lt=2,
+                                        date__lte=cutoff_date)\
                                 .update(state=2)
 
 
