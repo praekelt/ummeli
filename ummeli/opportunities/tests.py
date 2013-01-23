@@ -69,9 +69,9 @@ class OpportunitiesTest(VLiveTestCase):
         i = Event.objects.create(title='Test op',
                                     description='This is a test',
                                     owner=user,
-                                    location='Salt River')
+                                    place='Salt River')
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].event.location, 'Salt River')
+        self.assertEqual(user.modelbase_set.all()[0].event.place, 'Salt River')
 
     def test_change_province_session(self):
         self.login()
@@ -82,13 +82,13 @@ class OpportunitiesTest(VLiveTestCase):
         i = Event.objects.create(title='Test op',
                                     description='This is a test',
                                     owner=user,
-                                    location='Salt River',
+                                    place='Salt River',
                                     state='published')
         i.province.add(province)
         i.save()
 
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].event.location, 'Salt River')
+        self.assertEqual(user.modelbase_set.all()[0].event.place, 'Salt River')
 
         resp = self.client.get(reverse('events'))
         self.assertContains(resp, 'All (change)')
