@@ -1,20 +1,10 @@
-# Django settings for ummeli project.
-import os.path
-import djcelery
+from settings import *
 
 DEBUG = False
 
-try:
-    from local_settings import *
-except ImportError:
-    raise RuntimeError,  "you need a local_settings.py file"
-
-
-from settings import *
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.contrib.gis.db.backends.spatialite',
         'NAME': 'ummeli.db',    # Or path to database file if using sqlite3.
         'USER': '',
         'PASSWORD': '',
@@ -24,10 +14,10 @@ DATABASES = {
 }
 
 NEO4J_DATABASES = {
-    'default' : {
-        'HOST':'localhost',
-        'PORT':7475,
-        'ENDPOINT':'/db/data'
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 7475,
+        'ENDPOINT': '/db/data'
     }
 }
 

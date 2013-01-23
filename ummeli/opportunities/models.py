@@ -142,9 +142,44 @@ class Event(Opportunity):
 
 
 class MicroTask(Opportunity):
+    users_per_task = models.PositiveIntegerField(default=1)
+
     @models.permalink
     def get_absolute_url(self):
         return ('micro_task_detail', (self.slug,))
+
+    def available(self):
+        return self.users_per_task == 0 or\
+            TaskCheckout.objects.filter(task__pk=self.pk)\
+                                .filter(state__lt=2)\
+                                .count() < self.users_per_task
+
+    def available_for(self, user):
+        active_checkouts = TaskCheckout.objects.filter(task__pk=self.pk)\
+                                            .filter(state__lt=2)
+        if active_checkouts.filter(user=user):
+            return False
+        return self.available()
+
+    def checkout(self, user):
+        if self.available_for(user):
+            task = TaskCheckout(user=user, task=self)
+            task.save()
+            return True
+        return False
+
+
+TASK_CHECKOUT_STATE = (
+    (0, 'Open'),
+    (1, 'Returned'),
+    (2, 'Expired'),
+    )
+
+
+class TaskCheckout(models.Model):
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(MicroTask)
+    state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE, default=0)
 
 
 class TomTomMicroTask(MicroTask):

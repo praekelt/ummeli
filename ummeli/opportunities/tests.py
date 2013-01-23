@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-from ummeli.opportunities.models import Internship, Salary, Training, Event,\
-                                            Province
+from ummeli.opportunities.models import (Internship, Salary, Training, Event,
+                                            Province, MicroTask, TaskCheckout)
 from django.core.urlresolvers import reverse
 
 
@@ -114,3 +114,46 @@ class OpportunitiesTest(VLiveTestCase):
         resp = self.client.get(reverse('events'))
         self.assertContains(resp, 'Gauteng (change)')
         self.assertContains(resp, 'Location: Salt River')
+
+    def test_task_checkout(self):
+        t1 = MicroTask(title='Test1')
+        t1.save()
+        t2 = MicroTask(title='Test2', users_per_task=0)
+        t2.save()
+        t3 = MicroTask(title='Test3', users_per_task=2)
+        t3.save()
+        t4 = MicroTask(title='Test4', users_per_task=2)
+        t4.save()
+
+        user = User.objects.get(username=self.msisdn)
+        user2 = User.objects.get(username='27121111111')
+
+        #simple case - 1 user per task
+        self.assertTrue(t1.available())
+        result = t1.checkout(user)
+        self.assertTrue(result)
+        self.assertFalse(t1.available())
+
+        #infinite checkouts available
+        self.assertTrue(t2.available())
+        result = t2.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t2.available())
+
+        #custom - 2 users per task
+        self.assertTrue(t3.available())
+        result = t3.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t3.available())
+        result = t3.checkout(user2)
+        self.assertTrue(result)
+        self.assertFalse(t3.available())
+
+        #negative case - user attempt to checkout a task twice
+        self.assertTrue(t4.available())
+        result = t4.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t4.available())
+        result = t4.checkout(user)
+        self.assertFalse(result)
+        self.assertTrue(t4.available())
