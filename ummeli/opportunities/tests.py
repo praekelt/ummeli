@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 from ummeli.opportunities.models import (Internship, Salary, Training, Event,
-                                            Province, MicroTask, TaskCheckout)
+                                            Province, MicroTask)
 from django.core.urlresolvers import reverse
-
+from datetime import datetime, timedelta
 
 class OpportunitiesTest(VLiveTestCase):
     fixtures = [
@@ -157,3 +157,33 @@ class OpportunitiesTest(VLiveTestCase):
         result = t4.checkout(user)
         self.assertFalse(result)
         self.assertTrue(t4.available())
+
+    def test_task_expiration(self):
+        user = User.objects.get(username=self.msisdn)
+
+        t1 = MicroTask(title='task1')
+        t1.save()
+        t2 = MicroTask(title='task2')
+        t2.save()
+
+        self.assertTrue(t1.available())
+
+        d1 = datetime.now() - timedelta(hours=16)
+        t1.checkout(user)
+        t_checkout = t1.taskcheckout_set.all()[0]
+        t_checkout.date = d1
+        t_checkout.save()
+
+        MicroTask.expire_tasks()
+        self.assertFalse(t1.available())
+
+        self.assertTrue(t2.available())
+
+        d1 = datetime.now() - timedelta(hours=25)
+        t2.checkout(user)
+        t_checkout = t2.taskcheckout_set.all()[0]
+        t_checkout.date = d1
+        t_checkout.save()
+
+        MicroTask.expire_tasks()
+        self.assertTrue(t2.available())

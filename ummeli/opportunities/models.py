@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
+from datetime import datetime, timedelta
 
 EDUCATION_LEVEL_CHOICES = (
         (0, 'Any'),
@@ -143,6 +144,7 @@ class Event(Opportunity):
 
 class MicroTask(Opportunity):
     users_per_task = models.PositiveIntegerField(default=1)
+    hours_per_task = models.PositiveIntegerField(default=24)
 
     @models.permalink
     def get_absolute_url(self):
@@ -168,6 +170,18 @@ class MicroTask(Opportunity):
             return True
         return False
 
+    @classmethod
+    def expire_tasks(cls):
+        for task in cls.objects.all():
+            if task.hours_per_task == 0:  # no limit
+                continue
+
+            cutoff_date = datetime.now() - timedelta(hours=task.hours_per_task)
+            task.taskcheckout_set.filter(task__pk=task.pk)\
+                                .filter(state__lt=2)\
+                                .filter(date__lte=cutoff_date)\
+                                .update(state=2)
+
 
 TASK_CHECKOUT_STATE = (
     (0, 'Open'),
@@ -180,6 +194,7 @@ class TaskCheckout(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(MicroTask)
     state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE, default=0)
+    date = models.DateTimeField(auto_now_add=True)
 
 
 class TomTomMicroTask(MicroTask):
