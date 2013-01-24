@@ -5,6 +5,7 @@ from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from datetime import datetime, timedelta
 
+
 EDUCATION_LEVEL_CHOICES = (
         (0, 'Any'),
         (1, 'Matric or higher'),
@@ -152,13 +153,10 @@ class MicroTask(Opportunity):
 
     def available(self):
         return self.users_per_task == 0 or\
-            TaskCheckout.objects.filter(task__pk=self.pk, state__lt=2)\
-                                .count() < self.users_per_task
+            self.taskcheckout_set.filter(state__lt=2).count() < self.users_per_task
 
     def available_for(self, user):
-        active_checkouts = TaskCheckout.objects.filter(task__pk=self.pk,
-                                                    state__lt=2)
-        if active_checkouts.filter(user=user):
+        if self.taskcheckout_set.filter(state__lt=2, user=user).exists():
             return False
         return self.available()
 
