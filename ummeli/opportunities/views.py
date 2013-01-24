@@ -10,7 +10,7 @@ from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
 from ummeli.vlive.utils import get_lat_lon
-
+from django.db.models import Q
 from django.contrib.gis.geos import Point
 
 
@@ -24,6 +24,9 @@ class CampaignDetailView(OpportunityDetailView):
         context = super(CampaignDetailView, self).get_context_data(**kwargs)
         context['has_qualified'] = self.get_object()\
                                         .has_qualified(self.request.user)
+        context['tasks'] = self.get_object()\
+                                .tasks.filter(Q(taskcheckout__state=2) |
+                                                Q(taskcheckout__isnull=True))
         return context
 
 
@@ -73,14 +76,9 @@ class MyMicroTaskListView(MicroTaskListView):
         if not campaign.has_qualified(self.request.user):
             return MicroTask.objects.none()
 
-        position = self.request.session['location']['position']
-
-        if not isinstance(position, Point):
-            position = self.request.session['location']['city'].coordinates
-        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
-                        .filter(taskcheckout__user=self.request.user,
-                                taskcheckout__state=0)
-        return tasks.distance(position).order_by('distance')
+        return campaign.tasks.filter(taskcheckout__user=self.request.user,
+                                taskcheckout__state=0)\
+                            .order_by('-taskcheckout__date')
 
 
 def opportunities(request):
