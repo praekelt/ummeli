@@ -3,6 +3,7 @@
 {% block content %}
     <h2>Welcome {{user_profile.first_name}}!</h2>
     <h2>My Ummeli</h2>
+    <div class="bullet"><a href="{% url my_inbox %}">Inbox</a></div>
     <div class="bullet"><a href="{% url profile %}">Work Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
     <div class="bullet"><a href="{% url my_connections %}">My Connections</a>
         {% if user_profile.connection_requests.exists %}
