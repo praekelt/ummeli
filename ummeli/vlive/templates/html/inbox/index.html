@@ -2,6 +2,6 @@
 
 {% block content %}
     <h2>Inbox</h2>
-    <div class="bullet"><a href="#">Microtasks ({{tasks_out.count}})</a></div>
+    <div class="bullet"><a href="{% url my_microtasks %}">Microtasks ({{tasks_out.count}})</a></div>
 
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url my_inbox %}">Inbox</a> &raquo;
+        Micro Tasks
+    </h2>
+    <p>
+        <h2>My Tasks</h2>
+        {% for object in tasks_out %}
+        <div class="img-article list-separated">
+            <a href="{% url micro_task_upload object.task.slug %}">{{object.task.title}}</a><br/>
+            <small>{{object.task.location.city}}</small><br/>
+            <small>Expires: {{object.expires_on|timeuntil}}</small><br/>
+        </div>
+        {% empty %}
+        <p>0 tasks booked.</p>
+        {% endfor %}
+    </p>
+    <p>
+        <h2>Expired Tasks</h2>
+        <div>*Remeber you only have 24hrs to complete a task</div>
+        {% for object in tasks_expired %}
+        <div class="img-article list-separated">
+            <a href="{% url micro_task_upload object.task.slug %}">{{object.task.title}}</a><br/>
+            <small>{{object.task.location.city}}</small><br/>
+        </div>
+        {% empty %}
+        <p>0 tasks expired.</p>
+        {% endfor %}
+    </p>
+    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+{% endblock %}

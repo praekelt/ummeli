@@ -195,6 +195,9 @@ class TaskCheckout(models.Model):
     state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE, default=0)
     date = models.DateTimeField(auto_now_add=True)
 
+    def expires_on(self):
+        return self.date + timedelta(hours=self.task.hours_per_task)
+
 
 class TomTomMicroTask(MicroTask):
     category = models.TextField(blank=True, null=True)
