@@ -53,7 +53,8 @@ class MicroTaskListView(ListView):
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
         tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
-        return tasks.distance(position).order_by('distance')
+        ordered_tasks = tasks.distance(position).order_by('distance')
+        return [task for task in ordered_tasks if task.available()]
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
@@ -111,3 +112,10 @@ def campaign_qualify(request, slug):
         form = UploadTaskForm()
 
     return render(request, 'opportunities/campaign_qualify.html', context)
+
+
+@login_required
+def checkout(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+    task.checkout(request.user)
+    return redirect(reverse('micro_task_detail', args=[slug, ]))

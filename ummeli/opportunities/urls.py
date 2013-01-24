@@ -76,13 +76,17 @@ urlpatterns = patterns('',
         location_required(login_required(CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html'))),
         name='campaign_detail'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
+        location_required(login_required(MicroTaskListView.as_view(
+            template_name='opportunities/microtask_list.html'))),
+        name='micro_tasks'),
     url(r'^microtasks/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtasks/microtask_detail.html'),
         name='micro_task_detail'),
-    url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
-        location_required(login_required(MicroTaskListView.as_view())),
-        name='micro_tasks'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/checkout/$',
+        'ummeli.opportunities.views.checkout',
+        name='micro_task_checkout'),
     #url(r'^campaigns/task/tomtom/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=MicroTask,\
     #        template_name='opportunities/tom_tom_micro_task_detail.html'),
