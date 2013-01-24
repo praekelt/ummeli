@@ -27,9 +27,11 @@ def render_object(parser, token):
 
 
 @register.simple_tag(takes_context=True)
-def get_tasks_for_user(context, var_name='user_tasks'):
+def get_tasks_for_user(context, campaign, var_name='user_tasks'):
     request = context['request']
-    checkouts = TaskCheckout.objects.filter(user=request.user, state=0)
-    if checkouts.exists():
-        context[var_name] = checkouts
+    if campaign:
+        tasks = campaign.tasks.filter(taskcheckout__user=request.user,
+                                    taskcheckout__state=0)
+    if tasks.exists():
+        context[var_name] = tasks
     return ''

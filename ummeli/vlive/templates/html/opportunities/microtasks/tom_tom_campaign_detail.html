@@ -5,6 +5,7 @@
     <br/>
     {{ object.description|safe }}
 </div>
+<br/>
 {% if object.must_qualify and not has_qualified %}
 <h2>
     You need to qualify
@@ -18,15 +19,20 @@
 </div>
 {% else %}
 <div class="wrap">
-    <br/>
-    {% get_tasks_for_user %}
-    <a href="{% url micro_tasks object.slug %}">
-        Your Tasks ({{user_tasks.count}})
+    {% get_tasks_for_user object %}
+    {% if user_tasks %}
+    <div class="list-separated">
+    <a href="{% url my_micro_tasks object.slug %}">
+        My Tasks ({{user_tasks.count}})
     </a>
-    <br/>
+    </div>
+    {% endif %}
+
+    <div class="list-separated">
     <a href="{% url micro_tasks object.slug %}">
         Availabe Tasks ({{object.tasks.count}})
     </a>
+    </div>
 </div>
 {% endif %}
 <br/>

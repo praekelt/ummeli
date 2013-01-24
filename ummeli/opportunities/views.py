@@ -66,6 +66,23 @@ class MicroTaskListView(ListView):
         return context
 
 
+class MyMicroTaskListView(MicroTaskListView):
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+
+        if not campaign.has_qualified(self.request.user):
+            return MicroTask.objects.none()
+
+        position = self.request.session['location']['position']
+
+        if not isinstance(position, Point):
+            position = self.request.session['location']['city'].coordinates
+        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+                        .filter(taskcheckout__user=self.request.user,
+                                taskcheckout__state=0)
+        return tasks.distance(position).order_by('distance')
+
+
 def opportunities(request):
     context = {
         'campaigns': Campaign.permitted.exists(),
