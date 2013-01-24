@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
@@ -118,4 +119,15 @@ def campaign_qualify(request, slug):
 def checkout(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
     task.checkout(request.user)
-    return redirect(reverse('micro_task_detail', args=[slug, ]))
+    return redirect(reverse('micro_task_upload', args=[slug, ]))
+
+
+@login_required
+def task_upload(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+    if not task.taskcheckout_set.filter(user=request.user, state=0).exists():
+        messages.add_message(request, messages.ERROR, 'That task is no longer available.')
+        return redirect(reverse('campaigns'))
+
+    return render(request, 'opportunities/microtasks/microtask_upload.html',
+            {'object': task})
