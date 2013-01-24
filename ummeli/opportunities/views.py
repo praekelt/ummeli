@@ -135,7 +135,12 @@ def campaign_qualify(request, slug):
 @login_required
 def checkout(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
-    task.checkout(request.user)
+    if task.checkout(request.user):
+        msg = 'You have booked this task. You have %shrs to finish the task.'
+        messages.add_message(request, messages.SUCCESS, msg % task.hours_per_task)
+        return redirect(reverse('micro_task_upload', args=[slug, ]))
+    msg = 'That task is no longer available for you.'
+    messages.add_message(request, messages.ERROR, msg)
     return redirect(reverse('micro_task_upload', args=[slug, ]))
 
 
