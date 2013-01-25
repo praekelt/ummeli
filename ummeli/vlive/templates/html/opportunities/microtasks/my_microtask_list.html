@@ -11,7 +11,10 @@
         You are near: <a href="{% url select-location %}?view={{request.path}}">{{city.name}}</a><br/>
         {% for object in object_list %}
         <div class="img-article list-separated">
-            <a href="{% url micro_task_upload object.slug %}">{{object.title}}</a><br/>
+            <a href="{% url micro_task_upload object.slug %}">
+                {% if object.title %}{{object.title}}
+                {% else%}{{object.location.city.name}}{% endif %}
+            </a><br/>
             <small>{{object.location.city}}</small><br/>
         </div>
         {% empty %}
