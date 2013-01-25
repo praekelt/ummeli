@@ -6,7 +6,7 @@
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% for object in object_list %}
         <div class="img-article list-separated">
-            <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.tasks.count}})</a><br/>
+            <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.available_tasks.count}})</a><br/>
             <small>{{object.subtitle|truncatewords:20}}</small><br/>
         </div>
         {% empty %}

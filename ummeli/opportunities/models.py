@@ -4,6 +4,7 @@ from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from datetime import datetime, timedelta
+from django.db.models import Q
 
 
 EDUCATION_LEVEL_CHOICES = (
@@ -246,6 +247,11 @@ class Campaign(Opportunity):
 
     def get_template(self):
         return 'opportunities/microtasks/campaign_detail_default.html'
+
+    @classmethod
+    def available_tasks(cls):
+        return cls.objects.filter(Q(tasks__taskcheckout__state=2) |
+                                    Q(tasks__taskcheckout__isnull=True))
 
 
 class TomTomCampaign(Campaign):

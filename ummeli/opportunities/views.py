@@ -24,9 +24,6 @@ class CampaignDetailView(OpportunityDetailView):
         context = super(CampaignDetailView, self).get_context_data(**kwargs)
         context['has_qualified'] = self.get_object()\
                                         .has_qualified(self.request.user)
-        context['tasks'] = self.get_object()\
-                                .tasks.filter(Q(taskcheckout__state=2) |
-                                                Q(taskcheckout__isnull=True))
         return context
 
 
@@ -56,9 +53,9 @@ class MicroTaskListView(ListView):
 
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
-        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
-        ordered_tasks = tasks.distance(position).order_by('distance')
-        return [task for task in ordered_tasks if task.available()]
+        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+                                .distance(position).order_by('distance')
+        return [task for task in tasks if task.available()]
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
