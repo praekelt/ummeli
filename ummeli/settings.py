@@ -1,6 +1,15 @@
 # Django settings for ummeli project.
 import os.path
 import djcelery
+djcelery.setup_loader()
+
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'exipire-microtasks-every-minute': {
+        'task': 'ummeli.opportunities.tasks.microtask_expire_tasks',
+        'schedule': timedelta(seconds=60)
+    },
+}
 
 DEBUG = False
 
@@ -18,7 +27,6 @@ DJANGO_ATLAS = {
 
 TEMPLATE_DEBUG = DEBUG
 
-djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -218,7 +226,7 @@ CELERY_ALWAYS_EAGER = False
 CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks",
                 'jmbo_analytics.tasks')
 CELERY_RESULT_BACKEND = "amqp"
-CELERY_TASK_RESULT_EXPIRES = 3600
+CELERY_TASK_RESULT_EXPIRES = 60
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 

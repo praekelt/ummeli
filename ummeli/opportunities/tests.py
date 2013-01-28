@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-from ummeli.opportunities.models import Internship, Salary, Training, Event,\
-                                            Province
+from ummeli.opportunities.models import (Internship, Salary, Training, Event,
+                                            Province, MicroTask)
 from django.core.urlresolvers import reverse
-
+from datetime import datetime, timedelta
 
 class OpportunitiesTest(VLiveTestCase):
     fixtures = [
@@ -69,9 +69,9 @@ class OpportunitiesTest(VLiveTestCase):
         i = Event.objects.create(title='Test op',
                                     description='This is a test',
                                     owner=user,
-                                    location='Salt River')
+                                    place='Salt River')
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].event.location, 'Salt River')
+        self.assertEqual(user.modelbase_set.all()[0].event.place, 'Salt River')
 
     def test_change_province_session(self):
         self.login()
@@ -82,13 +82,13 @@ class OpportunitiesTest(VLiveTestCase):
         i = Event.objects.create(title='Test op',
                                     description='This is a test',
                                     owner=user,
-                                    location='Salt River',
+                                    place='Salt River',
                                     state='published')
         i.province.add(province)
         i.save()
 
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].event.location, 'Salt River')
+        self.assertEqual(user.modelbase_set.all()[0].event.place, 'Salt River')
 
         resp = self.client.get(reverse('events'))
         self.assertContains(resp, 'All (change)')
@@ -114,3 +114,76 @@ class OpportunitiesTest(VLiveTestCase):
         resp = self.client.get(reverse('events'))
         self.assertContains(resp, 'Gauteng (change)')
         self.assertContains(resp, 'Location: Salt River')
+
+    def test_task_checkout(self):
+        t1 = MicroTask(title='Test1')
+        t1.save()
+        t2 = MicroTask(title='Test2', users_per_task=0)
+        t2.save()
+        t3 = MicroTask(title='Test3', users_per_task=2)
+        t3.save()
+        t4 = MicroTask(title='Test4', users_per_task=2)
+        t4.save()
+
+        user = User.objects.get(username=self.msisdn)
+        user2 = User.objects.get(username='27121111111')
+
+        #simple case - 1 user per task
+        self.assertTrue(t1.available())
+        result = t1.checkout(user)
+        self.assertTrue(result)
+        self.assertFalse(t1.available())
+
+        #infinite checkouts available
+        self.assertTrue(t2.available())
+        result = t2.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t2.available())
+
+        #custom - 2 users per task
+        self.assertTrue(t3.available())
+        result = t3.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t3.available())
+        result = t3.checkout(user2)
+        self.assertTrue(result)
+        self.assertFalse(t3.available())
+
+        #negative case - user attempt to checkout a task twice
+        self.assertTrue(t4.available())
+        result = t4.checkout(user)
+        self.assertTrue(result)
+        self.assertTrue(t4.available())
+        result = t4.checkout(user)
+        self.assertFalse(result)
+        self.assertTrue(t4.available())
+
+    def test_task_expiration(self):
+        user = User.objects.get(username=self.msisdn)
+
+        t1 = MicroTask(title='task1')
+        t1.save()
+        t2 = MicroTask(title='task2')
+        t2.save()
+
+        self.assertTrue(t1.available())
+
+        d1 = datetime.now() - timedelta(hours=16)
+        t1.checkout(user)
+        t_checkout = t1.taskcheckout_set.all()[0]
+        t_checkout.date = d1
+        t_checkout.save()
+
+        MicroTask.expire_tasks()
+        self.assertFalse(t1.available())
+
+        self.assertTrue(t2.available())
+
+        d1 = datetime.now() - timedelta(hours=25)
+        t2.checkout(user)
+        t_checkout = t2.taskcheckout_set.all()[0]
+        t_checkout.date = d1
+        t_checkout.save()
+
+        MicroTask.expire_tasks()
+        self.assertTrue(t2.available())
