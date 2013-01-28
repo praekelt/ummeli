@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
 from ummeli.opportunities.models import (Internship, Salary, Training, Event,
-                                            Province, MicroTask)
+                                            Province, MicroTask, Campaign)
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 
@@ -166,6 +166,10 @@ class OpportunitiesTest(VLiveTestCase):
         t2 = MicroTask(title='task2')
         t2.save()
 
+        c = Campaign.objects.create(title='Campaign1')
+        c.tasks.add(t1)
+        c.tasks.add(t2)
+
         self.assertTrue(t1.available())
 
         d1 = datetime.now() - timedelta(hours=16)
@@ -187,3 +191,5 @@ class OpportunitiesTest(VLiveTestCase):
 
         MicroTask.expire_tasks()
         self.assertTrue(t2.available())
+
+        self.assertEqual(Campaign.available_tasks().count(), 1)
