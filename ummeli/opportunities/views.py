@@ -151,4 +151,6 @@ def task_upload(request, slug):
         return redirect(reverse('campaigns'))
 
     return render(request, 'opportunities/microtasks/microtask_upload.html',
-            {'object': task})
+            {'object': task,
+            'city': request.session['location']['city'],
+            })

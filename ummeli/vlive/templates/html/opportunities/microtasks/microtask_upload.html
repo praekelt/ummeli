@@ -13,11 +13,7 @@
 
     <h2>Map</h2>
     <div>
-        {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
-        <p>
-            <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=240x320&amp;sensor=false&amp;"/>
-        </p>
-        {% endwith %}
+        {% include 'opportunities/microtasks/tomtom_map.html' %}
     </div>
 
     <h2>Information</h2>
