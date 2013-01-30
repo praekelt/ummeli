@@ -68,7 +68,6 @@ class MicroTaskListView(ListView):
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
         context['campaign'] = campaign
         context['city'] = self.request.session['location']['city']
-        print context
         return context
 
 
@@ -102,7 +101,6 @@ def change_province(request, province=None):
 
     if province and int(province) in range(0, 10):
         request.session['province'] = int(province)
-        print request.session['province']
         return redirect(next)
 
     return render(request, 'opportunities/change_province.html',
