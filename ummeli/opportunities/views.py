@@ -10,13 +10,19 @@ from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
 from ummeli.vlive.utils import get_lat_lon
-from django.db.models import Q
 from django.contrib.gis.geos import Point
 
 
 class OpportunityDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(self.model, slug=self.kwargs['slug'])
+
+
+class MicroTaskDetailView(OpportunityDetailView):
+    def get_context_data(self, **kwargs):
+        context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
+        context['city'] = self.request.session['location']['city']
+        return context
 
 
 class CampaignDetailView(OpportunityDetailView):

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
 from ummeli.opportunities.views import (OpportunityDetailView,\
     OpportunityListView, CampaignDetailView, MicroTaskListView,
-    MyMicroTaskListView)
+    MyMicroTaskListView, MicroTaskDetailView)
 from atlas.views import location_required
 
 
@@ -86,7 +86,7 @@ urlpatterns = patterns('',
             template_name='opportunities/microtasks/my_microtask_list.html'))),
         name='my_micro_tasks'),
     url(r'^microtasks/(?P<slug>[\w-]+)/$',
-        location_required(login_required(OpportunityDetailView.as_view(model=MicroTask,\
+        location_required(login_required(MicroTaskDetailView.as_view(model=MicroTask,\
             template_name='opportunities/microtasks/microtask_detail.html'))),
         name='micro_task_detail'),
     url(r'^microtasks/(?P<slug>[\w-]+)/checkout/$',
