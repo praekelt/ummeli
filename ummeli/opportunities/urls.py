@@ -2,7 +2,8 @@ from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
 from ummeli.opportunities.views import (OpportunityDetailView,\
-    OpportunityListView, CampaignDetailView, MicroTaskListView)
+    OpportunityListView, CampaignDetailView, MicroTaskListView,
+    MyMicroTaskListView)
 from atlas.views import location_required
 
 
@@ -76,13 +77,24 @@ urlpatterns = patterns('',
         location_required(login_required(CampaignDetailView.as_view(model=Campaign,\
             template_name='opportunities/campaign_detail.html'))),
         name='campaign_detail'),
-    url(r'^microtasks/(?P<slug>[\w-]+)/$',
-        OpportunityDetailView.as_view(model=MicroTask,\
-            template_name='opportunities/microtasks/microtask_detail.html'),
-        name='micro_task_detail'),
     url(r'^campaigns/(?P<campaign>[\w-]+)/tasks/$',\
-        location_required(login_required(MicroTaskListView.as_view())),
+        location_required(login_required(MicroTaskListView.as_view(
+            template_name='opportunities/microtask_list.html'))),
         name='micro_tasks'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/mytasks/$',\
+        location_required(login_required(MyMicroTaskListView.as_view(
+            template_name='opportunities/microtasks/my_microtask_list.html'))),
+        name='my_micro_tasks'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/$',
+        location_required(login_required(OpportunityDetailView.as_view(model=MicroTask,\
+            template_name='opportunities/microtasks/microtask_detail.html'))),
+        name='micro_task_detail'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/checkout/$',
+        'ummeli.opportunities.views.checkout',
+        name='micro_task_checkout'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/upload/$',
+        'ummeli.opportunities.views.task_upload',
+        name='micro_task_upload'),
     #url(r'^campaigns/task/tomtom/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=MicroTask,\
     #        template_name='opportunities/tom_tom_micro_task_detail.html'),

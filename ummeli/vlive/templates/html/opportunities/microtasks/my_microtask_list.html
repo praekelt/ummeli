@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Micro Tasks</h2>
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
+        <a href="{% url campaign_detail campaign.slug %}">{{campaign.title}}</a> &raquo;
+        Tasks
+    </h2>
     <p>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+        You are near: <a href="{% url select-location %}?view={{request.path}}">{{city.name}}</a><br/>
         {% for object in object_list %}
         <div class="img-article list-separated">
-            <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.available_tasks.count}})</a><br/>
-            <small>{{object.subtitle|truncatewords:20}}</small><br/>
+            <a href="{% url micro_task_upload object.slug %}">
+                {% if object.title %}{{object.title}}
+                {% else%}{{object.location.city.name}}{% endif %}
+            </a><br/>
+            <small>{{object.location.city}}</small><br/>
         </div>
         {% empty %}
-        <p>0 tasks in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 tasks available.</p>
         {% endfor %}
     </p>
     {% if object_list %}
@@ -33,14 +41,4 @@
     </div>
     {% endif %}
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
-
-    <script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
-    <script type="text/javascript">
-    domready(function(){
-        /* Geolocate the client */
-        if (typeof atlas !== 'undefined' && !atlas.isLocationSet()){
-            atlas.getLocation();
-        }
-    });
-    </script>
 {% endblock %}

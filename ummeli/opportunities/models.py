@@ -4,6 +4,8 @@ from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from datetime import datetime, timedelta
+from django.db.models import Q
+
 
 EDUCATION_LEVEL_CHOICES = (
         (0, 'Any'),
@@ -152,13 +154,10 @@ class MicroTask(Opportunity):
 
     def available(self):
         return self.users_per_task == 0 or\
-            TaskCheckout.objects.filter(task__pk=self.pk, state__lt=2)\
-                                .count() < self.users_per_task
+            self.taskcheckout_set.filter(state__lt=2).count() < self.users_per_task
 
     def available_for(self, user):
-        active_checkouts = TaskCheckout.objects.filter(task__pk=self.pk,
-                                                    state__lt=2)
-        if active_checkouts.filter(user=user):
+        if self.taskcheckout_set.filter(state__lt=2, user=user).exists():
             return False
         return self.available()
 
@@ -194,6 +193,9 @@ class TaskCheckout(models.Model):
     task = models.ForeignKey(MicroTask)
     state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE, default=0)
     date = models.DateTimeField(auto_now_add=True)
+
+    def expires_on(self):
+        return self.date + timedelta(hours=self.task.hours_per_task)
 
 
 class TomTomMicroTask(MicroTask):
@@ -245,6 +247,11 @@ class Campaign(Opportunity):
 
     def get_template(self):
         return 'opportunities/microtasks/campaign_detail_default.html'
+
+    @classmethod
+    def available_tasks(cls):
+        return cls.objects.filter(Q(tasks__taskcheckout__state=2) |
+                                    Q(tasks__taskcheckout__isnull=True))
 
 
 class TomTomCampaign(Campaign):
