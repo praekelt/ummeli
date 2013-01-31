@@ -47,6 +47,8 @@ def campaign_view(request, slug):
         'object': campaign,
         'published_count': campaign.tasks.filter(state='published').count(),
         'new_count': campaign.tasks.filter(created__gte=date.today()).count(),
+        'response_count': campaign.tasks.filter(microtaskresponse__state=0).count(),
+        'response_new_count': campaign.tasks.filter(microtaskresponse__state=0, microtaskresponse__date__gte=date.today()).count(),
         'tasks': tasks,
     }
     return render(request, 'opportunities/campaign_detail.html', context)
