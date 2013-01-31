@@ -85,11 +85,12 @@ input.radio {margin: 5px 5px 0 0; display:inline; }
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .list, .list-separated, .comment_list {clear:both; margin:0; padding:5px; line-height:20px;overflow: hidden}
 .list-separated{border-top: 1px solid #577384;}
-.success {clear: both; height: 18px; margin: -10px 0 5px; padding: 5px; color: #fff; background: #21c0c2; font-weight: bold;}
+div.message .success, div.message .error {clear: both; height: 18px; margin: -10px 0 5px; padding: 5px; color: #fff; background: #21c0c2; font-weight: bold;}
+div.message .error{background-color: #ea2415}
 .info {clear: both; height: 18px; margin: -10px 0 5px; padding: 5px; color: #fff; background: #E99324;}
 .info a{color: #fff; font-weight: bold;text-decoration:underline}
 .warning{background-color:#ea2415;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
-.success a,.warning a{color:#fff;text-decoration:underline}
+.success a,.warning a, div.message .error a{color:#fff;text-decoration:underline}
 .more{clear:both;padding:3px}
 span.subtext,span.subtext a,span.subtext a:link,span.subtext a:visited{color:#666;font-size: 0.9em;}
 h1 span.subtext{color:#aaa;font-size: 0.9em}

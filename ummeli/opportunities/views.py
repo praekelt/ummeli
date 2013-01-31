@@ -9,6 +9,7 @@ from django.contrib import messages
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
+from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
 from ummeli.vlive.utils import get_lat_lon
 from django.contrib.gis.geos import Point
 
@@ -150,7 +151,24 @@ def task_upload(request, slug):
         messages.add_message(request, messages.ERROR, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
 
+    if request.method == 'POST':
+        form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.user = request.user
+            response.task = task
+            response.save()
+
+            messages.add_message(request, messages.SUCCESS, 'Thank you! Your task has been sent.')
+            return redirect(reverse('campaigns'))
+        else:
+            print form.errors
+            messages.add_message(request, messages.ERROR, 'Please correct the errors below.')
+    else:
+        form = TomTomMicroTaskResponseForm()
+
     return render(request, 'opportunities/microtasks/microtask_upload.html',
             {'object': task,
             'city': request.session['location']['city'],
+            'form': form,
             })

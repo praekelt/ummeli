@@ -33,13 +33,14 @@
         <fieldset>
         <div class="form-fields">
             <label>Picture:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.file %}
             <input type="file" name="file"/>
             <label>Tel 1:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.tel1 %}
-            <input type="text" name="tel1" value="{% if form.tel1.value %}{{form.tel1.value}}{% endif %}">
+            {% include "form_field_errors_snippet.html" with form_field=form.tel_1 %}
+            <input type="text" name="tel1" value="{% if form.tel_1.value %}{{form.tel_1.value}}{% endif %}">
             <label>Tel 2:</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.tel2 %}
-            <input type="text" name="tel2" value="{% if form.tel2.value %}{{form.tel2.value}}{% endif %}">
+            {% include "form_field_errors_snippet.html" with form_field=form.tel_2 %}
+            <input type="text" name="tel2" value="{% if form.tel_2.value %}{{form.tel_2.value}}{% endif %}">
             <label>Address:*</label>
             {% include "form_field_errors_snippet.html" with form_field=form.address %}
             <input type="text" name="address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
