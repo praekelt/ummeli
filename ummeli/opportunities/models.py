@@ -161,6 +161,9 @@ class MicroTask(Opportunity):
             return False
         return self.available()
 
+    def checked_out_by(self, user):
+        return self.taskcheckout_set.filter(state=0, user=user).exists()
+
     def checkout(self, user):
         if self.available_for(user):
             task = TaskCheckout(user=user, task=self)

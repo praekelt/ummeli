@@ -147,7 +147,7 @@ def checkout(request, slug):
 @login_required
 def task_upload(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
-    if not task.taskcheckout_set.filter(user=request.user, state=0).exists():
+    if not task.checked_out_by(request.user):
         messages.add_message(request, messages.ERROR, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
 
@@ -157,6 +157,7 @@ def task_upload(request, slug):
             response = form.save(commit=False)
             response.user = request.user
             response.task = task
+            response.state = 1
             response.save()
 
             messages.add_message(request, messages.SUCCESS, 'Thank you! Your task has been sent.')
