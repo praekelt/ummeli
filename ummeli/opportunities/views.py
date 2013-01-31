@@ -160,6 +160,9 @@ def task_upload(request, slug):
             response.state = 1
             response.save()
 
+            TaskCheckout.objects.filter(task=task, user=request.user, state=0)\
+                                .update(state=1)
+
             messages.add_message(request, messages.SUCCESS, 'Thank you! Your task has been sent.')
             return redirect(reverse('campaigns'))
         else:
