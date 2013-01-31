@@ -226,6 +226,31 @@ class TomTomMicroTask(MicroTask):
                 }
 
 
+TASK_RESPONSE_STATE = (
+    (0, 'Submitted'),
+    (1, 'Accepted'),
+    (2, 'Rejected'),
+    )
+
+
+class MicroTaskResponse(models.Model):
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(MicroTask)
+    state = models.PositiveIntegerField(choices=TASK_RESPONSE_STATE, default=0)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class TomTomMicroTaskResponse(MicroTaskResponse):
+    file = models.ImageField(upload_to='microtask_uploads/', blank=False, null=False)
+    tel_1 = models.TextField(blank=True, null=True)
+    tel_2 = models.TextField(blank=True, null=True)
+    fax = models.TextField(blank=True, null=True)
+    email = models.TextField(blank=True, null=True)
+    website = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+
 class Campaign(Opportunity):
     tasks = models.ManyToManyField(MicroTask,
                     blank=True,
