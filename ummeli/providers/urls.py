@@ -33,9 +33,12 @@ urlpatterns = patterns('',
 
     url(r'^campaigns/(?P<slug>[\w-]+)/$', views.campaign_view,
         name='providers.campaign_detail'),
-    url(r'^campagins/(?P<campaign>[\w-]+)/task/(?P<slug>[\w-]+)/$',
-        MicroTaskDetailView.as_view(model=MicroTask),\
+    url(r'^campaigns/(?P<campaign>[\w-]+)/task/(?P<slug>[\w-]+)/$',
+        MicroTaskDetailView.as_view(),\
         name='providers.micro_task_detail'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/responses/$',
+        TaskResponseListView.as_view(),\
+        name='providers.micro_task_responses'),
 )
 
 

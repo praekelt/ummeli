@@ -18,18 +18,18 @@
   <h2>{{object.title}}</h2>
 </div>
 <div class="row-fluid">
-    <a data-rel="tooltip" title="{{new_count}} new tasks" class="well span3 top-block" href="#">
+    <a data-rel="tooltip" title="{{object.tasks_new.count}} new tasks" class="well span3 top-block" href="#">
         <span class="icon32 icon-blue icon-basket"></span>
         <div>Published</div>
-        <div>{{published_count}}</div>
-        <span class="notification">{{new_count}}</span>
+        <div>{{object.tasks.count}}</div>
+        <span class="notification">{{object.tasks_new.count}}</span>
     </a>
 
-    <a data-rel="tooltip" title="{{response_new_count}} new responses" class="well span3 top-block" href="#">
+    <a data-rel="tooltip" title="{{object.responses_new.count}} new responses" class="well span3 top-block" href="{% url providers.micro_task_responses object.slug %}">
         <span class="icon32 icon-orange icon-compose"></span>
         <div>Responses</div>
-        <div>{{response_count}}</div>
-        <span class="notification yellow">{{response_new_count}}</span>
+        <div>{{object.responses.count}}</div>
+        <span class="notification yellow">{{object.responses_new.count}}</span>
     </a>
 
     <a data-rel="tooltip" title="Not implemented yet" class="well span3 top-block" href="#">
@@ -65,8 +65,9 @@
                         {% else %}
                         <i class="icon-edit"></i>
                         {% endif %}
-                        <span class="{% cycle 'green' 'blue' 'orange' 'white' %}">{{t.tasks.count}}</span>
-                        {{t.title}}
+                        &nbsp;
+                        {% if t.title %}{{t.title}}
+                        {% else%}{{t.location.city.name}}{% endif %}
                     </a>
                 </li>
             {% endfor %}

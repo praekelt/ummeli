@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.contrib.sites.models import Site
 
-from ummeli.opportunities.models import MicroTask, TomTomMicroTask, Campaign
+from ummeli.opportunities.models import (MicroTask, TomTomMicroTask, Campaign,
+                                        MicroTaskResponse)
 from ummeli.providers.forms import UploadTaskForm
 
 from django.views.generic import DetailView, ListView
@@ -12,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import csv
-from datetime import date
 
 from django.contrib.gis.geos import fromstr
 from atlas.models import Location
@@ -45,10 +45,6 @@ def campaign_view(request, slug):
 
     context = {
         'object': campaign,
-        'published_count': campaign.tasks.filter(state='published').count(),
-        'new_count': campaign.tasks.filter(created__gte=date.today()).count(),
-        'response_count': campaign.tasks.filter(microtaskresponse__state=0).count(),
-        'response_new_count': campaign.tasks.filter(microtaskresponse__state=0, microtaskresponse__date__gte=date.today()).count(),
         'tasks': tasks,
     }
     return render(request, 'opportunities/campaign_detail.html', context)
@@ -138,7 +134,7 @@ class MicroTaskDetailView(DetailView):
         campaign = get_object_or_404(Campaign,\
                         owner=self.request.user,
                         slug=self.kwargs['campaign'])
-        return get_object_or_404(self.model, campaign=campaign,\
+        return get_object_or_404(MicroTask, campaign=campaign,\
                                     slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
@@ -156,3 +152,23 @@ class MicroTaskListView(OpportunityListView):
                         owner=self.request.user,\
                         slug=self.kwargs['slug'])
         return campaign.tasks.order_by('-created')
+
+
+class TaskResponseListView(ListView):
+    paginate_by = 10
+    template_name = 'opportunities/responses.html'
+
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
+        return MicroTaskResponse.objects.filter(task__campaign=campaign, state=0)
+        return campaign.tasks.filter(microtaskresponse__state=0)
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskResponseListView, self).get_context_data(**kwargs)
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
+        context['campaign'] = campaign
+        return context

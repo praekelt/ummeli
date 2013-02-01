@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.db.models import Q
 
 
@@ -280,6 +280,16 @@ class Campaign(Opportunity):
     def available_tasks(cls):
         return cls.objects.filter(Q(tasks__taskcheckout__state=2) |
                                     Q(tasks__taskcheckout__isnull=True))
+
+    def tasks_new(self):
+        return self.tasks.filter(created__gte=date.today())
+
+    def responses(self):
+        return self.tasks.filter(microtaskresponse__state=0)
+
+    def responses_new(self):
+        return self.tasks.filter(microtaskresponse__state=0,
+                                microtaskresponse__date__gte=date.today())
 
 
 class TomTomCampaign(Campaign):
