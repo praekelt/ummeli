@@ -162,8 +162,9 @@ class TaskResponseListView(ListView):
         campaign = get_object_or_404(Campaign,\
                         owner=self.request.user,
                         slug=self.kwargs['campaign'])
-        return MicroTaskResponse.objects.filter(task__campaign=campaign, state=0)
-        return campaign.tasks.filter(microtaskresponse__state=0)
+        return MicroTaskResponse.objects.filter(task__campaign=campaign,
+                                                state=0)\
+                                        .order_by('date')
 
     def get_context_data(self, **kwargs):
         context = super(TaskResponseListView, self).get_context_data(**kwargs)
