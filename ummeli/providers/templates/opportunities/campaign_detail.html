@@ -60,19 +60,17 @@
                         {% if t.title %}{{t.title}}
                         {% else%}{{t.location.city.name}}{% endif %}
                     </a>
-                    <div class="muted" style="margin-left: 25px;">{{t.location.city}}</div>
-                <ul>
-                {% for r in t.microtaskresponse_set.all %}
-                <li>
-                    <i class="icon-edit"></i> {{r.user.get_profile.fullname}}
-                    <div class="pull-right">{{r.date|timesince}}</div>
-                </li>
-                {% endfor %}
-                </ul>
+                    <div class="muted" style="margin-left: 26px;">{{t.location.city}}</div>
+                    {% for r in t.microtaskresponse_set.all %}
+                        <i class="icon-edit"></i>
+                        <span style="margin-left: 8px;">
+                        {{r.user.get_profile.fullname}}
+                        <div class="pull-right">{{r.date|timesince}}</div>
+                        </span>
+                    {% endfor %}
                 </li>
             {% endfor %}
             </ul>
-            <div class="clearfix"></div>
         </div>
     </div>
 </div>

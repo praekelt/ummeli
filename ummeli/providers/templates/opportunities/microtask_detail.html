@@ -7,132 +7,105 @@
             <a href="{% url index %}">Home</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="{% url providers.campaign_detail campaign.slug %}">{{campaign.title}}</a> <span class="divider">/</span>
-        </li>
-        <li>
             {{object.title}}
         </li>
     </ul>
 </div>
-
 <div class="row-fluid">
-    <div class="box span12">
-        <div class="box-header well">
-            <h2><i class="icon-edit"></i> {{object.title}}</h2>
-        </div>
-        <div class="box-content">
-            {{object.description}}
-        </div>
-    </div>
-</div>
-
-<div class="row-fluid">
-<div class="box span12">
-    <div class="box-header well" data-original-title="">
-        <h2><i class="icon-list-alt"></i> Responses</h2>
-    </div>
-
-{% for response in object.microtaskresponse_set.all %}
-<div class="row-fluid">
-    <div class="box span4">
-        <div class="box-header well" data-original-title="">
-            <h2><i class="icon-list-alt"></i> response</h2>
-        </div>
+    <div class="box span10">
         <div class="box-content">
             <ul class="dashboard-list">
-                <li>{{response.user.get_profile.fullname}}</li>
-                <li>{{response.date|timesince}} ago</li>
                 <li>
-                    <strong>Status:</strong>
-                    <span class="label label-success">{{response.get_state}}</span>
+                        {% if object.tomtommicrotask %}
+                        <i class="icon-map-marker"></i>
+                        {% else %}
+                        <i class="icon-edit"></i>
+                        {% endif %}
+                        &nbsp;
+                        {% if object.title %}{{object.title}}
+                        {% else%}{{object.location.city.name}}{% endif %}
+                    <div class="muted" style="margin-left: 26px;">{{object.location.city}}</div>
+                    {% for r in object.microtaskresponse_set.all %}
+                        <i class="icon-edit"></i>
+                        <span style="margin-left: 8px;">
+                        {{r.user.get_profile.fullname}}
+                        <div class="pull-right">{{r.date|timesince}}</div>
+                        </span>
+                    {% endfor %}
                 </li>
-                <li><img src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
             </ul>
         </div>
     </div>
-    <div class="box span4">
+</div>
+
+{% for response in object.microtaskresponse_set.all %}
+<div class="row-fluid">
+    <div class="box span5 muted">
         <div class="box-header well" data-original-title="">
-            <h2><i class="icon-list-alt"></i> Information</h2>
+            <h2><i class="icon-list-alt"></i> Original Data</h2>
         </div>
         <div class="box-content">
-            <table class="table">
-                <thead>
-                    <tr><th>&nbsp;</th><th>Old</th><th>New</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Tel 1</strong></td>
-                        <td>{{object.tomtommicrotask.tel_1}}</td>
-                        <td>{{response.tomtommicrotaskresponse.tel_1}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tel 2</strong></td>
-                        <td>{{object.tomtommicrotask.tel_2}}</td>
-                        <td>{{response.tomtommicrotaskresponse.tel_2}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fax</strong></td>
-                        <td>{{object.tomtommicrotask.fax}}</td>
-                        <td>{{response.tomtommicrotaskresponse.fax}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Website</strong></td>
-                        <td>{{object.tomtommicrotask.website}}</td>
-                        <td>{{response.tomtommicrotaskresponse.website}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Email</strong></td>
-                        <td>{{object.tomtommicrotask.email}}</td>
-                        <td>{{response.tomtommicrotaskresponse.email}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <ul class="dashboard-list">
+                <li>
+                    {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
+                        <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=320x180&amp;sensor=false&amp;"/>
+                    {% endwith %}
+                </li>
+                <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
+                <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
+                <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
+                <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
+                <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
+                <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="box span5">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="icon-list-alt"></i> New Submission</h2>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+                <li><img src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
+                <li><strong>Tagged:</strong> N/A</li>
+                <li><strong>Tel 1:</strong> {{response.tomtommicrotaskresponse.tel_1}}</li>
+                <li><strong>Tel 2:</strong> {{response.tomtommicrotaskresponse.tel_2}}</li>
+                <li><strong>Fax:</strong> {{response.tomtommicrotaskresponse.fax}}</li>
+                <li><strong>Email:</strong> {{response.tomtommicrotaskresponse.email}}</li>
+                <li><strong>www:</strong> {{response.tomtommicrotaskresponse.website}}</li>
+            </ul>
         </div>
     </div>
 </div>
+<div class="row-fluid span10">
+    <div class="pull-right" style="margin-right:35px;">
+        <button class="btn btn-small btn-danger">Reject</button>
+        <button class="btn btn-large btn-success">Accept</button>
+    </div>
+</div>
 {% empty %}
-<div class="box-content">
-    No responses.
+<div class="row-fluid">
+    <div class="box span5">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="icon-list-alt"></i> Original Data</h2>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+                <li>
+                    {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
+                        <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=320x180&amp;sensor=false&amp;"/>
+                    {% endwith %}
+                </li>
+                <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
+                <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
+                <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
+                <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
+                <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
+                <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
+            </ul>
+        </div>
+    </div>
 </div>
 {% endfor %}
-</div>
-</div>
-
-<div class="row-fluid">
-    <div class="box span4">
-        <div class="box-header well">
-            <h2><i class="icon-map-marker"></i> Location</h2>
-        </div>
-        <div class="box-content">
-            {{object.tomtommicrotask.location.city}}
-            {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
-            <p>
-                <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=480x640&amp;sensor=false&amp;"/>
-            </p>
-            {% endwith %}
-        </div>
-    </div><!--/span-->
-
-    <div class="box span4">
-        <div class="box-header well" data-original-title="">
-            <h2><i class="icon-info"></i> Information</h2>
-        </div>
-        <div class="box-content">
-            <div class="box-content">
-                <ul class="dashboard-list">
-                    <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
-                    <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
-                    <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
-                    <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
-                    <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
-                    <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
-                </ul>
-            </div>
-        </div>
-    </div><!--/span-->
-</div>
-
-
-
 
 {% endblock %}
