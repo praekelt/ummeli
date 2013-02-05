@@ -289,7 +289,8 @@ class Campaign(Opportunity):
         return self.tasks.filter(created__gte=date.today())
 
     def responses(self):
-        return self.tasks.filter(microtaskresponse__state=0)
+        return self.tasks.filter(microtaskresponse__state=0)\
+                        .order_by('microtaskresponse__date')
 
     def responses_new(self):
         return self.tasks.filter(microtaskresponse__state=0,

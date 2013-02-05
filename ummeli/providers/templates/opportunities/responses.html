@@ -54,7 +54,7 @@
         </div>
         <div class="box-content">
             <ul class="dashboard-list">
-            {% for t in object_list %}
+            {% for t in object_list|slice:":3" %}
                 <li>
                     <a href="{% url providers.micro_task_detail campaign.slug t.task.slug %}">
                         <i class="icon-edit"></i>
