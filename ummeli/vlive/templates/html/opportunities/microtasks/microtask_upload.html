@@ -34,19 +34,31 @@
         <div class="form-fields">
             <label>Picture:*</label>
             {% include "form_field_errors_snippet.html" with form_field=form.file %}
-            <input type="file" name="file"/>
-            <label>Tel 1:*</label>
+            {{form.file}}
+
+            <label>Tel 1:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.tel_1 %}
-            <input type="text" name="tel1" value="{% if form.tel_1.value %}{{form.tel_1.value}}{% endif %}">
+            {{form.tel_1}}
+
             <label>Tel 2:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.tel_2 %}
-            <input type="text" name="tel2" value="{% if form.tel_2.value %}{{form.tel_2.value}}{% endif %}">
-            <label>Address:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.address %}
-            <input type="text" name="address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
+            {{form.tel_2}}
+
+            <label>Fax:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.fax %}
+            {{form.fax}}
+
             <label>Website:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.website %}
-            <input type="text" name="website" value="{% if form.website.value %}{{form.website.value}}{% endif %}">
+            {{form.website}}
+
+            <label>Email:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.email %}
+            {{form.email}}
+
+            <label>Comment:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.comment %}
+            {{form.comment}}
         </div>
         <input type="submit" value="Send" class="btn"/>
         {% csrf_token %}

@@ -4,6 +4,12 @@ from ummeli.vlive.utils import get_lat_lon
 
 
 class TomTomMicroTaskResponseForm(forms.ModelForm):
+    tel_1 = forms.CharField(required=False)
+    tel_2 = forms.CharField(required=False)
+    fax = forms.CharField(required=False)
+    email = forms.CharField(required=False)
+    website = forms.CharField(required=False)
+
     class Meta:
         model = TomTomMicroTaskResponse
         exclude = ('task', 'user', 'state')
