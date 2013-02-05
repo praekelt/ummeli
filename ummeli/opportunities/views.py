@@ -157,7 +157,7 @@ def task_upload(request, slug):
             response = form.save(commit=False)
             response.user = request.user
             response.task = task
-            response.state = 1
+            response.state = 0
             response.save()
 
             TaskCheckout.objects.filter(task=task, user=request.user, state=0)\
