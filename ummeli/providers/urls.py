@@ -2,7 +2,6 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
 from ummeli.providers import views
-from ummeli.opportunities.models import Campaign, MicroTask
 from ummeli.providers.views import *
 
 admin.autodiscover()
@@ -25,11 +24,6 @@ urlpatterns = patterns('',
 
     url(r'^campaigns/(?P<campaign>[\w-]+)/upload/$', views.upload, name='upload'),
     url(r'^campaigns/(?P<campaign>[\w-]+)/upload/process/$', views.process_upload, name='process_upload'),
-
-    url(r'^campaigns/$',
-        OpportunityListView.as_view(model=Campaign, \
-            template_name='opportunities/campaigns.html'),
-        name='providers.campaigns'),
 
     url(r'^campaigns/(?P<slug>[\w-]+)/$', views.campaign_view,
         name='providers.campaign_detail'),
