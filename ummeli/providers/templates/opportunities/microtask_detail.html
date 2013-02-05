@@ -92,8 +92,14 @@
         <p>By approving this submission, you are confirming the automatic allocation of R10 airtime to {{response.user.get_profile.fullname}}.</p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-        <a href="#" class="btn btn-success">Accept</a>
+        <form method="post">
+            <input type="hidden" name="accept" value="1"/>
+            <input type="hidden" name="response_id" value="{{response.pk}}"/>
+            <input type="hidden" name="username" value="{{response.user.get_profile.fullname}}"/>
+            {% csrf_token %}
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="btn btn-success" value="Accept"/>
+        </form>
     </div>
 </div>
 <div class="modal hide fade" id="confirm_reject">
@@ -115,8 +121,14 @@
         </p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-        <a href="#" class="btn btn-danger">Reject</a>
+        <form method="post">
+            <input type="hidden" name="accept" value="0"/>
+            <input type="hidden" name="response_id" value="{{response.pk}}"/>
+            <input type="hidden" name="username" value="{{response.user.get_profile.fullname}}"/>
+            {% csrf_token %}
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="btn btn-danger" value="Reject"/>
+        </form>
     </div>
 </div>
 {% empty %}

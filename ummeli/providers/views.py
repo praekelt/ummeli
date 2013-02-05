@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.contrib.sites.models import Site
+from django.contrib import messages
 
 from ummeli.opportunities.models import (MicroTask, TomTomMicroTask, Campaign,
                                         MicroTaskResponse)
-from ummeli.providers.forms import UploadTaskForm
+from ummeli.providers.forms import UploadTaskForm, TaskResponseForm
 
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404
@@ -83,6 +84,43 @@ def upload(request, campaign):
                 {'form': form, 'campaign': campaign_obj})
 
 
+@staff_member_required
+def micro_task_detail(request, campaign, slug):
+    campaign = get_object_or_404(Campaign,\
+                        owner=request.user,
+                        slug=campaign)
+    task = get_object_or_404(MicroTask, campaign=campaign, slug=slug)
+
+    if request.method == 'POST':
+        form = TaskResponseForm(request.POST, request.FILES)
+        if form.is_valid():
+            accept = form.cleaned_data['accept']
+            username = form.cleaned_data['username']
+            response_id = form.cleaned_data['response_id']
+            response = get_object_or_404(MicroTaskResponse, pk=response_id)
+            if accept:
+                msg = '%s`s submission for `%s` has been accepted.' % (
+                    username, task.title)
+                messages.add_message(request, messages.SUCCESS, msg)
+                response.state = 1
+                response.save()
+            else:
+                msg = '%s`s submission has been rejected. `%s` is now live on Ummeli again.' % (
+                    username, task.title)
+                messages.add_message(request, messages.ERROR, msg)
+
+                response.state = 2
+                response.save()
+            return redirect(reverse('index'))
+        else:
+            print form
+    else:
+        form = TaskResponseForm()
+
+    return render(request, 'opportunities/microtask_detail.html',\
+                {'form': form, 'campaign': campaign, 'object': task})
+
+
 def process_upload(csv_file, campaign_slug):
     #csv_file = open(file, 'rU')
     rows = read_data_from_csv_file(csv_file)
@@ -141,23 +179,6 @@ class OpportunityListView(ListView):
     def get_queryset(self):
         return self.model.objects.filter(owner=self.request.user)\
                                     .order_by('-created')
-
-
-class MicroTaskDetailView(DetailView):
-    def get_object(self):
-        campaign = get_object_or_404(Campaign,\
-                        owner=self.request.user,
-                        slug=self.kwargs['campaign'])
-        return get_object_or_404(MicroTask, campaign=campaign,\
-                                    slug=self.kwargs['slug'])
-
-    def get_context_data(self, **kwargs):
-        context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
-        campaign = get_object_or_404(Campaign,\
-                        owner=self.request.user,
-                        slug=self.kwargs['campaign'])
-        context['campaign'] = campaign
-        return context
 
 
 class MicroTaskListView(OpportunityListView):

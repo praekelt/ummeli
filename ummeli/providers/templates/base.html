@@ -224,6 +224,16 @@
     $(document).ready(function(){
         //uniform - styler for checkbox, radio and file input
         $("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
+
+        {% if messages %}
+        {% for message in messages %}
+            var option = {"text":"{{message}}",
+            "layout":"top",
+            "closeButton":"true",
+            "type":"{{message.tags}}"};
+            noty(option);
+        {% endfor %}
+        {% endif %}
     });
     </script>
     {% block script %}
