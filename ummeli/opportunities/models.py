@@ -239,6 +239,7 @@ TASK_RESPONSE_STATE = (
 class MicroTaskResponse(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(MicroTask)
+    task_checkout = models.OneToOneField(TaskCheckout)
     state = models.PositiveIntegerField(choices=TASK_RESPONSE_STATE, default=0)
     date = models.DateTimeField(auto_now_add=True)
 
