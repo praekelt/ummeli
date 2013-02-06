@@ -9,6 +9,10 @@ class OpportunityAdmin(ModelBaseAdmin):
         models.TextField: {'widget': AdminCKEditor},
     }
 
+
+class TaskCheckoutAdmin(admin.ModelAdmin):
+    list_display = ('user', 'task', 'state')
+
 admin.site.register(Job, OpportunityAdmin)
 admin.site.register(Internship, OpportunityAdmin)
 admin.site.register(Volunteer, OpportunityAdmin)
@@ -23,4 +27,4 @@ admin.site.register(TomTomMicroTask, OpportunityAdmin)
 admin.site.register(Salary)
 admin.site.register(MicroTaskResponse)
 admin.site.register(TomTomMicroTaskResponse)
-admin.site.register(TaskCheckout)
+admin.site.register(TaskCheckout, TaskCheckoutAdmin)
