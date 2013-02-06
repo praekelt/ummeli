@@ -6,31 +6,54 @@
         My Tasks
     </h2>
     <p>
-        <h2>My Tasks</h2>
-        {% for object in tasks_out %}
+        {% for object in object_list %}
+        {% if object.state == 0 %}
         <div class="img-article list-separated">
-            <a href="{% url micro_task_upload object.task.slug %}">
+            <div><a href="{% url micro_task_upload object.task.slug %}">
                 {% if object.task.title %}{{object.task.title}}
                 {% else%}{{object.task.location.city.name}}{% endif %}
-            </a><br/>
-            <small>{{object.task.location.city}}</small><br/>
-            <small>Expires: {{object.expires_on|timeuntil}}</small><br/>
+            </a></div>
+            <div class="list-separated"><small>{{object.expires_on|timeuntil}} left</small></div>
+            <div class="bullet"><a href="{% url micro_task_detail object.task.slug %}">Full instructions</a></div>
+            <div class="bullet"><a href="{% url micro_task_upload object.task.slug %}">Complete task</a></div>
         </div>
+        {% else %}{% if object.state == 1 %}
+        <div class="img-article list-separated">
+            <div><a href="{% url micro_task_detail object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <span class="subtext">submitted (waiting for approval)</span>
+        </div>
+        {% else %}
+        <div class="img-article list-separated">
+            <div><a href="{% url micro_task_detail object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <div><span class="subtext">Expired {{object.expires_on|timesince}}</span></div>
+        </div>
+        {% endif %}{% endif %}
         {% empty %}
         <p>0 tasks booked.</p>
         {% endfor %}
     </p>
-    <p>
-        <h2>Expired Tasks</h2>
-        <div>*Remeber you only have 24hrs to complete a task</div>
-        {% for object in tasks_expired %}
-        <div class="img-article list-separated">
-            <a href="{% url micro_task_upload object.task.slug %}">{{object.task.title}}</a><br/>
-            <small>{{object.task.location.city}}</small><br/>
-        </div>
-        {% empty %}
-        <p>0 tasks expired.</p>
-        {% endfor %}
-    </p>
+    <div id="pagination">
+    {% if page_obj.has_previous %}
+        <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
+    </div>
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
 {% endblock %}
