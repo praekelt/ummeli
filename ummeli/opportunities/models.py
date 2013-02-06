@@ -296,6 +296,14 @@ class Campaign(Opportunity):
         return self.tasks.filter(microtaskresponse__state=0,
                                 microtaskresponse__date__gte=date.today())
 
+    def accepted(self):
+        return self.tasks.filter(microtaskresponse__state=1)\
+                        .order_by('microtaskresponse__date')
+
+    def rejected(self):
+        return self.tasks.filter(microtaskresponse__state=2)\
+                        .order_by('microtaskresponse__date')
+
 
 class TomTomCampaign(Campaign):
     def get_template(self):
