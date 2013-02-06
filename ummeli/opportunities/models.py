@@ -179,7 +179,7 @@ class MicroTask(Opportunity):
 
             cutoff_date = datetime.now() - timedelta(hours=task.hours_per_task)
             task.taskcheckout_set.filter(task__pk=task.pk,
-                                        state__lt=2,
+                                        state__lt=0,
                                         date__lte=cutoff_date)\
                                 .update(state=2)
 
