@@ -56,6 +56,10 @@
             {% include "form_field_errors_snippet.html" with form_field=form.email %}
             {{form.email}}
 
+            <label>Address:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.address %}
+            {{form.address}}
+
             <label>Comment:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.comment %}
             {{form.comment}}

@@ -9,6 +9,8 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
     fax = forms.CharField(required=False)
     email = forms.CharField(required=False)
     website = forms.CharField(required=False)
+    address = forms.CharField(required=False)
+    comment = forms.CharField(required=False)
 
     class Meta:
         model = TomTomMicroTaskResponse

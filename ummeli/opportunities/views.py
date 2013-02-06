@@ -147,14 +147,18 @@ def checkout(request, slug):
 @login_required
 def task_upload(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
+
     if not task.checked_out_by(request.user):
-        messages.add_message(request, messages.ERROR, 'That task is no longer available.')
+        messages.add_message(request, messages.ERROR, 'That task is not available for you.')
         return redirect(reverse('campaigns'))
 
-    task_checkout = get_object_or_404(TaskCheckout, task=task, state=0)
-
+    task_checkout = get_object_or_404(TaskCheckout, task=task, state__lte=1)
     if request.method == 'POST':
-        form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
+        if task_checkout.microtaskresponse:
+            form = TomTomMicroTaskResponseForm(request.POST, request.FILES,
+                    instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
+        else:
+            form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
         if form.is_valid():
             response = form.save(commit=False)
             response.user = request.user
@@ -163,16 +167,18 @@ def task_upload(request, slug):
             response.state = 0
             response.save()
 
-            TaskCheckout.objects.filter(task=task, user=request.user, state=0)\
-                                .update(state=1)
+            task_checkout.state = 1
+            task_checkout.save()
 
             messages.add_message(request, messages.SUCCESS, 'Thank you! Your task has been sent.')
             return redirect(reverse('campaigns'))
         else:
-            print form.errors
             messages.add_message(request, messages.ERROR, 'Please correct the errors below.')
     else:
-        form = TomTomMicroTaskResponseForm()
+        if task_checkout.microtaskresponse:
+            form = TomTomMicroTaskResponseForm(instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
+        else:
+            form = TomTomMicroTaskResponseForm()
 
     return render(request, 'opportunities/microtasks/microtask_upload.html',
             {'object': task,
