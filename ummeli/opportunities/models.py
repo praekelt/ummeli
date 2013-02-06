@@ -162,7 +162,7 @@ class MicroTask(Opportunity):
         return self.available()
 
     def checked_out_by(self, user):
-        return self.taskcheckout_set.filter(state=0, user=user).exists()
+        return self.taskcheckout_set.filter(state__lte=1, user=user).exists()
 
     def checkout(self, user):
         if self.available_for(user):
@@ -178,8 +178,8 @@ class MicroTask(Opportunity):
                 continue
 
             cutoff_date = datetime.now() - timedelta(hours=task.hours_per_task)
-            task.taskcheckout_set.filter(task__pk=task.pk,
-                                        state__lt=0,
+            task.taskcheckout_set.filter(task=task,
+                                        state=0,
                                         date__lte=cutoff_date)\
                                 .update(state=2)
 
