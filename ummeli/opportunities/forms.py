@@ -12,7 +12,7 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
 
     class Meta:
         model = TomTomMicroTaskResponse
-        exclude = ('task', 'user', 'state')
+        exclude = ('task', 'user', 'state', 'task_checkout')
 
     def clean_file(self):
         file = self.cleaned_data['file']

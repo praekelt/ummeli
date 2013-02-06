@@ -151,12 +151,15 @@ def task_upload(request, slug):
         messages.add_message(request, messages.ERROR, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
 
+    task_checkout = get_object_or_404(TaskCheckout, task=task)
+
     if request.method == 'POST':
         form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
         if form.is_valid():
             response = form.save(commit=False)
             response.user = request.user
             response.task = task
+            response.task_checkout = task_checkout
             response.state = 0
             response.save()
 

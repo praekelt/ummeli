@@ -23,7 +23,13 @@
                 {% if object.task.title %}{{object.task.title}}
                 {% else%}{{object.task.location.city.name}}{% endif %}
             </a></div>
+            {% if object.microtaskresponse.state == 0 %}
             <span class="subtext">submitted (waiting for approval)</span>
+            {% else %}{% if object.microtaskresponse.state == 1 %}
+            <span class="subtext">Accepted</span>
+            {% else %}
+            <span class="subtext">Rejected</span>
+            {% endif %}{% endif %}
         </div>
         {% else %}
         <div class="img-article list-separated">
