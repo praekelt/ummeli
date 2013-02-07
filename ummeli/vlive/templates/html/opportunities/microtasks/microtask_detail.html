@@ -17,25 +17,28 @@
     </div>
 
     <h2>Information</h2>
-    <div>
-        <ul>
-            <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
-            <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
-            <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
-            <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
-            <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
-            <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
-        </ul>
-    </div>
+    <ul>
+        <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
+        <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
+        <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
+        <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
+        <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
+        <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
+    </ul>
     {% if object.available %}
     <h2>Want to do it?</h2>
+    <p>
     <ul>
         <li class="bullet">You have {{object.hours_per_task}}hrs and the task will expire</li>
         <li class="bullet">You have to physically go to the location</li>
         <li class="bullet">Make sure your GPS is enabled when taking the picture</li>
         <li class="bullet">You will only receive your airtime when we have checked that the data you submitted is correct.</li>
     </ul>
+    </p>
     <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
+    {% else %}
+    <br/>
+    <p><a href="{% url micro_task_upload object.slug %}">Complete Task</a></p>
     {% endif %}
 </div>
 

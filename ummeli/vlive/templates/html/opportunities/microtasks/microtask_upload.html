@@ -10,12 +10,6 @@
     <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
-
-    <h2>Map</h2>
-    <div>
-        {% include 'opportunities/microtasks/tomtom_map.html' %}
-    </div>
-
     <h2>Information</h2>
     <div>
         <ul>
@@ -32,10 +26,6 @@
     <form method="post" enctype="multipart/form-data">
         <fieldset>
         <div class="form-fields">
-            <label>Picture:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.file %}
-            {{form.file}}
-
             <label>Tel 1:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.tel_1 %}
             {{form.tel_1}}
@@ -63,7 +53,12 @@
             <label>Comment:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.comment %}
             {{form.comment}}
+
+            <label>Picture:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.file %}
+            {{form.file}}
         </div>
+        <br/>
         <input type="submit" value="Send" class="btn"/>
         {% csrf_token %}
         </fieldset>
