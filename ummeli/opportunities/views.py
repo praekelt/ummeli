@@ -138,10 +138,10 @@ def checkout(request, slug):
     if task.checkout(request.user):
         msg = 'You have booked this task. You have %shrs to finish the task.'
         messages.add_message(request, messages.SUCCESS, msg % task.hours_per_task)
-        return redirect(reverse('micro_task_upload', args=[slug, ]))
+        return redirect(reverse('micro_task_instructions', args=[slug, ]))
     msg = 'That task is no longer available for you.'
     messages.add_message(request, messages.ERROR, msg)
-    return redirect(reverse('micro_task_upload', args=[slug, ]))
+    return redirect(reverse('campaigns', args=[slug, ]))
 
 
 @login_required
@@ -175,7 +175,7 @@ def task_upload(request, slug):
         else:
             messages.add_message(request, messages.ERROR, 'Please correct the errors below.')
     else:
-        if task_checkout.microtaskresponse:
+        if hasattr(task_checkout, 'microtaskresponse'):
             form = TomTomMicroTaskResponseForm(instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
         else:
             form = TomTomMicroTaskResponseForm()
@@ -185,3 +185,15 @@ def task_upload(request, slug):
             'city': request.session['location']['city'],
             'form': form,
             })
+
+
+@login_required
+def task_instructions(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+
+    if not task.checked_out_by(request.user):
+        messages.add_message(request, messages.ERROR, 'That task is not available for you.')
+        return redirect(reverse('campaigns'))
+
+    return render(request, 'opportunities/microtasks/microtask_instructions.html',
+        {'object': task})
