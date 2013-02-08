@@ -19,7 +19,7 @@
 </div>
 {% else %}
 <div class="wrap">
-    {% get_tasks_for_user object %}
+    {% get_tasks_for_user object as user_tasks %}
     {% if user_tasks %}
     <div class="list-separated">
     <a href="{% url my_micro_tasks object.slug %}">
