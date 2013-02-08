@@ -14,11 +14,12 @@ DATABASES = {
 }
 
 NEO4J_DATABASES = {
-    'default': {
-        'HOST': 'localhost',
-        'PORT': 7475,
-        'ENDPOINT': '/db/data'
+    'default' : {
+        'HOST':'localhost',
+        'PORT':7475,
+        'ENDPOINT':'/db/data'
     }
 }
 
 CELERY_ALWAYS_EAGER = True
+GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', '/']
