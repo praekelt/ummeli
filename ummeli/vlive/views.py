@@ -286,11 +286,13 @@ def job(request,  cat_id,  id, user_submitted=0):
 
     form = None
     if int(user_submitted) == 1:
-        if not UserSubmittedJobArticle.objects.filter(pk = id):
-            return redirect(reverse('jobs',  args = [cat_id])) # Sorry, this ad has been removed.
-        article = UserSubmittedJobArticle.objects.get(pk = id).to_view_model()
+        if not UserSubmittedJobArticle.objects.filter(pk=id).exists():
+            return redirect(reverse('jobs', args=[cat_id]))  # Sorry, this ad has been removed.
+        article = UserSubmittedJobArticle.objects.get(pk=id).to_view_model()
     else:
-        article = Article.objects.get(pk = id)
+        if not Article.objects.filter(pk=id).exists():
+            return redirect(reverse('jobs', args=[cat_id]))
+        article = Article.objects.get(pk=id)
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
