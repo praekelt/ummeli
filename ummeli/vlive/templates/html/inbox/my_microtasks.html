@@ -9,13 +9,12 @@
         {% for object in object_list %}
         {% if object.state == 0 %}
         <div class="img-article list-separated">
-            <div><a href="{% url micro_task_upload object.task.slug %}">
+            <div><a href="{% url micro_task_detail object.task.slug %}">
                 {% if object.task.title %}{{object.task.title}}
                 {% else%}{{object.task.location.city.name}}{% endif %}
             </a></div>
-            <div class="list-separated"><small>{{object.expires_on|timeuntil}} left</small></div>
-            <div class="bullet"><a href="{% url micro_task_detail object.task.slug %}">Full instructions</a></div>
-            <div class="bullet"><a href="{% url micro_task_upload object.task.slug %}">Complete task</a></div>
+            <div><small>{{object.expires_on|timeuntil}} left</small></div>
+            <div class="bullet"><a href="{% url micro_task_detail object.task.slug %}">Complete Task</a></div>
         </div>
         {% else %}{% if object.state == 1 %}
         <div class="img-article list-separated">
