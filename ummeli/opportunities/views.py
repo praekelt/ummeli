@@ -137,10 +137,9 @@ def checkout(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
     if task.checkout(request.user):
         msg = 'You have booked this task. You have %shrs to finish the task.'
-        messages.add_message(request, messages.SUCCESS, msg % task.hours_per_task)
+        messages.success(request, msg % task.hours_per_task)
         return redirect(reverse('micro_task_instructions', args=[slug, ]))
-    msg = 'That task is no longer available for you.'
-    messages.add_message(request, messages.ERROR, msg)
+    messages.error(request, 'That task is no longer available for you.')
     return redirect(reverse('campaigns', args=[slug, ]))
 
 
@@ -149,7 +148,7 @@ def task_upload(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
 
     if not task.checked_out_by(request.user):
-        messages.add_message(request, messages.ERROR, 'That task is not available for you.')
+        messages.error(request, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
 
     task_checkout = get_object_or_404(TaskCheckout, task=task, state__lte=1)
