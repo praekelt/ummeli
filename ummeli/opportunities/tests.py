@@ -5,6 +5,7 @@ from ummeli.opportunities.models import (Internship, Salary, Training, Event,
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 
+
 class OpportunitiesTest(VLiveTestCase):
     fixtures = [
         'vlive/tests/auth/fixtures/sample.json',
@@ -16,6 +17,18 @@ class OpportunitiesTest(VLiveTestCase):
         self.msisdn = '27123456789'
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
+
+    def test_province_from_str(self):
+        p = Province.from_str('Gauteng')
+        self.assertEqual(p.pk, 3)
+
+        p = Province.from_str('KwaZulu Natal')
+        self.assertEqual(p.pk, 4)
+        p = Province.from_str('Kwa-Zulu Natal')
+        self.assertEqual(p.pk, 4)
+
+        p = Province.from_str('Western Cape')
+        self.assertEqual(p.pk, 9)
 
     def test_internship(self):
         self.login()
