@@ -1,9 +1,11 @@
+{% load opportunities_tags %}
 <div class="wrap">
     <strong>{{object.title}}</strong>
     <br/>
     <br/>
     {{ object.description|safe }}
 </div>
+<br/>
 {% if object.must_qualify and not has_qualified %}
 <h2>
     You need to qualify
@@ -17,10 +19,20 @@
 </div>
 {% else %}
 <div class="wrap">
-    <br/>
-    <a href="{% url micro_tasks object.slug %}">
-        Availabe Tasks ({{object.tasks.count}})
+    {% get_tasks_for_user object as user_tasks %}
+    {% if user_tasks %}
+    <div class="list-separated">
+    <a href="{% url my_micro_tasks object.slug %}">
+        My Tasks ({{user_tasks.count}})
     </a>
+    </div>
+    {% endif %}
+
+    <div class="list-separated">
+    <a href="{% url micro_tasks object.slug %}">
+        Availabe Tasks ({{object.available_tasks.count}})
+    </a>
+    </div>
 </div>
 {% endif %}
 <br/>

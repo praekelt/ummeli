@@ -23,3 +23,14 @@ def render_object(parser, token):
                     (len(token.split_contents()) - 1)
             )
     return RenderNode(obj)
+
+
+@register.assignment_tag
+def get_tasks_for_user(context, campaign):
+    request = context['request']
+    if campaign:
+        tasks = campaign.tasks.filter(taskcheckout__user=request.user,
+                                    taskcheckout__state=0)
+        if tasks.exists():
+            return tasks
+    return None

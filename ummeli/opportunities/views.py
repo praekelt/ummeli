@@ -4,12 +4,12 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
 from ummeli.vlive.utils import get_lat_lon
-
 from django.contrib.gis.geos import Point
 
 
@@ -52,8 +52,9 @@ class MicroTaskListView(ListView):
 
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
-        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)
-        return tasks.distance(position).order_by('distance')
+        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+                                .distance(position).order_by('distance')
+        return [task for task in tasks if task.available()]
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
@@ -62,6 +63,18 @@ class MicroTaskListView(ListView):
         context['city'] = self.request.session['location']['city']
         print context
         return context
+
+
+class MyMicroTaskListView(MicroTaskListView):
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+
+        if not campaign.has_qualified(self.request.user):
+            return MicroTask.objects.none()
+
+        return campaign.tasks.filter(taskcheckout__user=self.request.user,
+                                taskcheckout__state=0)\
+                            .order_by('-taskcheckout__date')
 
 
 def opportunities(request):
@@ -111,3 +124,25 @@ def campaign_qualify(request, slug):
         form = UploadTaskForm()
 
     return render(request, 'opportunities/campaign_qualify.html', context)
+
+
+@login_required
+def checkout(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+    if task.checkout(request.user):
+        msg = 'You have booked this task. You have %shrs to finish the task.'
+        messages.success(request, msg % task.hours_per_task)
+        return redirect(reverse('micro_task_upload', args=[slug, ]))
+    messages.error(request, 'That task is no longer available for you.')
+    return redirect(reverse('micro_task_upload', args=[slug, ]))
+
+
+@login_required
+def task_upload(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+    if not task.taskcheckout_set.filter(user=request.user, state=0).exists():
+        messages.error(request, 'That task is no longer available.')
+        return redirect(reverse('campaigns'))
+
+    return render(request, 'opportunities/microtasks/microtask_upload.html',
+            {'object': task})
