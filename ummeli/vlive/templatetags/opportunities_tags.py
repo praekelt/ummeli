@@ -1,5 +1,4 @@
 from django import template
-from ummeli.opportunities.models import TaskCheckout
 from django.template.loader import render_to_string
 register = template.Library()
 
@@ -26,12 +25,12 @@ def render_object(parser, token):
     return RenderNode(obj)
 
 
-@register.simple_tag(takes_context=True)
-def get_tasks_for_user(context, campaign, var_name='user_tasks'):
+@register.assignment_tag
+def get_tasks_for_user(context, campaign):
     request = context['request']
     if campaign:
         tasks = campaign.tasks.filter(taskcheckout__user=request.user,
                                     taskcheckout__state=0)
-    if tasks.exists():
-        context[var_name] = tasks
-    return ''
+        if tasks.exists():
+            return tasks
+    return None
