@@ -6,7 +6,7 @@ from django.contrib.sites.models import Site
 from django.contrib import messages
 
 from ummeli.opportunities.models import (MicroTask, TomTomMicroTask, Campaign,
-                                        MicroTaskResponse)
+                                        MicroTaskResponse, Province)
 from ummeli.providers.forms import UploadTaskForm, TaskResponseForm
 
 from django.views.generic import DetailView, ListView
@@ -147,6 +147,10 @@ def process_upload(csv_file, campaign_slug):
             t.fax = r['FAX_NR']
             t.email = r['E_MAIL']
             t.website = r['WEBSITE']
+
+            t.website = r['CITY']
+            t.website = r['SUBURB']
+            t.province = Province.from_str(r['PROVINCE'])
             t.owner = campaign.owner
             t.save()
 
