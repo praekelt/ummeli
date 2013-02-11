@@ -98,6 +98,11 @@ urlpatterns = patterns('',
     url(r'^microtasks/(?P<slug>[\w-]+)/instructions/$',
         'ummeli.opportunities.views.task_instructions',
         name='micro_task_instructions'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/conditions/$',
+        login_required(OpportunityDetailView.as_view(
+            template_name='opportunities/microtasks/tom_tom_microtask_conditions.html',
+            model=MicroTask)),
+        name='micro_task_conditions'),
     #url(r'^campaigns/task/tomtom/(?P<slug>[\w-]+)/$',
     #    OpportunityDetailView.as_view(model=MicroTask,\
     #        template_name='opportunities/tom_tom_micro_task_detail.html'),

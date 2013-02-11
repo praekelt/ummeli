@@ -63,6 +63,8 @@
         {% csrf_token %}
         </fieldset>
     </form>
+    <br/>
+    <div class="more"><a href="{% url micro_task_conditions object.slug %}">&larr; Back</a></div>
 </div>
 
 {% endblock %}
