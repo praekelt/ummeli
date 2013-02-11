@@ -169,10 +169,10 @@ def task_upload(request, slug):
             task_checkout.state = 1
             task_checkout.save()
 
-            messages.add_message(request, messages.SUCCESS, 'Thank you! Your task has been sent.')
+            messages.success(request, 'Thank you! Your task has been sent.')
             return redirect(reverse('campaigns'))
         else:
-            messages.add_message(request, messages.ERROR, 'Please correct the errors below.')
+            messages.error(request, 'Please correct the errors below.')
     else:
         if hasattr(task_checkout, 'microtaskresponse'):
             form = TomTomMicroTaskResponseForm(instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
@@ -191,7 +191,7 @@ def task_instructions(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
 
     if not task.checked_out_by(request.user):
-        messages.add_message(request, messages.ERROR, 'That task is not available for you.')
+        messages.error(request, 'That task is not available for you.')
         return redirect(reverse('campaigns'))
 
     return render(request, 'opportunities/microtasks/microtask_instructions.html',
