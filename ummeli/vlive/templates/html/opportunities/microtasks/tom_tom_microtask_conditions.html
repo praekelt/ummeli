@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    <a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    {{object.title}}
+</h2>
+<div class="wrap">
+    <h2>Terms and Conditions</h2>
+    <p>
+    <ul>
+        <li class="bullet">Lorem ipsum dolor sit amet, consectetur adipisicing elit</li>
+        <li class="bullet">Tempor incididunt ut labore et dolore magna aliqua.</li>
+        <li class="bullet">veniam, quis nostrud exercitation ullamco laboris</li>
+        <li class="bullet">nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor.</li>
+    </ul>
+    </p>
+    <p><a href="{% url micro_task_upload object.slug %}">Complete Task</a></p>
+    <div class="more"><a href="{% url micro_task_detail object.slug %}">&larr; Back</a></div>
+</div>
+
+{% endblock %}
