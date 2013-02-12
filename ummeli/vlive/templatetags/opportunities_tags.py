@@ -25,7 +25,7 @@ def render_object(parser, token):
     return RenderNode(obj)
 
 
-@register.assignment_tag
+@register.assignment_tag(takes_context=True)
 def get_tasks_for_user(context, campaign):
     request = context['request']
     if campaign:

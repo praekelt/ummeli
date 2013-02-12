@@ -18,6 +18,13 @@ class OpportunityDetailView(DetailView):
         return get_object_or_404(self.model, slug=self.kwargs['slug'])
 
 
+class MicroTaskDetailView(OpportunityDetailView):
+    def get_context_data(self, **kwargs):
+        context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
+        context['city'] = self.request.session['location']['city']
+        return context
+
+
 class CampaignDetailView(OpportunityDetailView):
     def get_context_data(self, **kwargs):
         context = super(CampaignDetailView, self).get_context_data(**kwargs)
@@ -61,7 +68,6 @@ class MicroTaskListView(ListView):
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
         context['campaign'] = campaign
         context['city'] = self.request.session['location']['city']
-        print context
         return context
 
 
@@ -95,7 +101,6 @@ def change_province(request, province=None):
 
     if province and int(province) in range(0, 10):
         request.session['province'] = int(province)
-        print request.session['province']
         return redirect(next)
 
     return render(request, 'opportunities/change_province.html',
@@ -145,4 +150,6 @@ def task_upload(request, slug):
         return redirect(reverse('campaigns'))
 
     return render(request, 'opportunities/microtasks/microtask_upload.html',
-            {'object': task})
+            {'object': task,
+            'city': request.session['location']['city'],
+            })

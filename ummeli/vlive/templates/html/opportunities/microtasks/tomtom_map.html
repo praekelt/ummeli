@@ -1,0 +1,32 @@
+{% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/map.css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tomtom/OpenLayers-2.12.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tomtom/tomtom.map.js"></script>
+<script type="text/javascript">
+domready(function(){
+    tomtom.setImagePath("{{STATIC_URL}}images/tomtom/");
+    map = new tomtom.Map({
+        domNode: "map",
+        displayTraffic: false,
+        panZoomBar: true,
+        controls: [],
+        center: new OpenLayers.LonLat({{city.coordinates.0}},{{city.coordinates.1}}),
+        apiKey: "9vmtv8wkch2734ak96uxz67b",
+    });
+
+    route_points = [{
+            lon: {{city.coordinates.0}},
+            lat: {{city.coordinates.1}}
+        },{
+            lon: {{x}},
+            lat: {{y}}
+        }];
+
+    map.displayRoute(route_points, function(){
+        map.panToTransform({{x}},{{y}});
+    });
+});
+</script>
+<div id="map"></div>
+{% endwith %}
