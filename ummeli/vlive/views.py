@@ -128,7 +128,8 @@ def generate_password(length=6, chars=string.letters + string.digits):
 
 def forgot_password_view(request):
     if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
+        post_data = process_post_data_username(request.POST)
+        form = ForgotPasswordForm(post_data)
 
         if(form.is_valid()):
             username = form.cleaned_data['username']
