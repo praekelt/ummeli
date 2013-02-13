@@ -7,10 +7,10 @@
 
         {% if campaigns %}
         <div class="bullet">
-            <a href="{% url campaigns %}">Micro Tasks</a>
+            <a href="{% url campaigns_index %}">Tasks</a>
         </div>
         {% endif %}
-        
+
         <div class="bullet">
             <a href="{% url jobs_list %}">Jobs</a>
         </div>
@@ -20,7 +20,7 @@
             <a href="{% url bursaries %}">Bursaries</a>
         </div>
         {% endif %}
-        
+
         {% if internships %}
         <div class="bullet">
             <a href="{% url internships %}">Internships</a>

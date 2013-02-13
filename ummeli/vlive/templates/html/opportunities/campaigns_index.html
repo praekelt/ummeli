@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</h2>
+    <p>Welcome to Tasks!</p>
+    <p>Here you can earn some extra airtime by completing tasks correctly
+        such as verifying an address in you area.</p>
+    <p>Interested?</p>
+    <div class="bullet"><a href="{% url campaigns %}">Get started</a></div>
+    <div class="bullet"><a href="{% url campaigns %}">Check there are task in your area</a></div>
+    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+{% endblock %}

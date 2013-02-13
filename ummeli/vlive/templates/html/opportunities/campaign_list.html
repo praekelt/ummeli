@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Micro Tasks</h2>
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</h2>
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% for object in object_list %}
