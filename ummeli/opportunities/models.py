@@ -251,10 +251,6 @@ class MicroTaskResponse(models.Model):
                                         default=SUBMITTED)
     date = models.DateTimeField(auto_now_add=True)
 
-    def get_state(self):
-        choices = dict(TASK_RESPONSE_STATE)
-        return choices[self.state]
-
 
 class TomTomMicroTaskResponse(MicroTaskResponse):
     file = models.ImageField(upload_to='microtask_uploads/', blank=False, null=False)
