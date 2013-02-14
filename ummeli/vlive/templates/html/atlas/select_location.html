@@ -2,25 +2,29 @@
 {% load i18n %}
 
 {% block content %}
-<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.6.2.min.js"></script>
-<div class="select-location">
-    <h2>{% trans "Select your location" %}</h2>
-    <form action="{% url select-location %}" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <div class="buttons">
-            <input type="submit" value="{% trans "Continue" %}" />
-        </div>
-    </form>
-</div>
-<style type="text/css">
-.select-location table, .select-location label{
-    display: none;
-}
-</style>
-<script type="text/javascript">
-$(document).ready(function(){
-    $("input[type='submit']").addClass('btn');
-})
-</script>
+<p>Please wait while we obtain you location...</p>
+
+
+<form id="result_form" method="post">
+    <input type="hidden" id="error" name="error" value="False"/>
+{% csrf_token %}
+</form>
+
+<script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
+    <script type="text/javascript">
+    domready(function(){
+        /* Geolocate the client */
+        if (typeof atlas !== 'undefined'){
+            atlas.getLocation(function(){
+                document.getElementById('result_form').submit();
+            },function(){
+                document.getElementById('error').value = 'True';
+                document.getElementById('result_form').submit();
+            });
+        }else{
+            document.getElementById('error').value = 'True';
+            document.getElementById('result_form').submit();
+        }
+    });
+    </script>
 {% endblock %}

@@ -118,6 +118,19 @@ def change_province(request, province=None):
                 'next': next})
 
 
+def microtask_change_province(request, province=None):
+    next = request.GET.get('next', reverse('opportunities'))
+
+    if province and int(province) in range(0, 10):
+        request.session['province'] = int(province)
+        request.session['override_location'] = True
+        return redirect(next)
+
+    return render(request, 'opportunities/microtasks/change_province.html',
+                {'provinces': PROVINCE_CHOICES,
+                'next': next})
+
+
 @login_required
 def campaign_qualify(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -206,3 +219,19 @@ def task_instructions(request, slug):
 
     return render(request, 'opportunities/microtasks/microtask_instructions.html',
         {'object': task})
+
+
+def select_location(request):
+    next = request.GET.get('next', reverse('campaigns'))
+
+    if request.method == 'POST' and request.POST.get('error') == 'False':
+        request.session['override_location'] = False
+        return redirect(next)
+
+    if request.method == 'POST' and request.POST.get('error'):
+        msg = 'We were unable to detect your location. Please try again.'
+        messages.error(request, msg)
+        return redirect('%s?next=%s' % (reverse('microtask_change_province'),
+                                        next))
+
+    return render(request, 'atlas/select_location.html', {'next': next})
