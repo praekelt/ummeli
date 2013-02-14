@@ -20,7 +20,7 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
         file = self.cleaned_data['file']
         lat, lon = get_lat_lon(file)
 
-        if lat and lon:
+        if not lat == None and not lon == None:
             return file
 
         error = ("Your image does not contain GPS information. "
