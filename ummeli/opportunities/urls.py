@@ -65,10 +65,6 @@ urlpatterns = patterns('',
             template_name='opportunities/event_detail.html'),
         name='event_detail'),
     url(r'^campaigns/$',
-        login_required(OpportunityListView.as_view(model=Campaign, \
-            template_name='opportunities/campaigns_index.html')),
-        name='campaigns_index'),
-    url(r'^campaigns/list/$',
         OpportunityListView.as_view(model=Campaign, \
             template_name='opportunities/campaigns.html'),
         name='campaigns'),
