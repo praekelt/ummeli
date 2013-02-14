@@ -58,6 +58,14 @@ class MicroTaskListView(ListView):
 
         position = self.request.session['location']['position']
 
+        if self.request.session.get('override_location'):
+            tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+                                        .order_by('province', 'location__city')
+            province = self.request.session['province']
+            if province > 0:
+                tasks = tasks.filter(province=province)
+            return [task for task in tasks if task.available()]
+
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
         tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
@@ -102,6 +110,7 @@ def change_province(request, province=None):
 
     if province and int(province) in range(0, 10):
         request.session['province'] = int(province)
+        request.session['override_location'] = True
         return redirect(next)
 
     return render(request, 'opportunities/change_province.html',
