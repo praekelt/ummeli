@@ -88,7 +88,7 @@ class MyMicroTaskListView(MicroTaskListView):
             return MicroTask.objects.none()
 
         return campaign.tasks.filter(taskcheckout__user=self.request.user,
-                                taskcheckout__state=0)\
+                                taskcheckout__state=OPEN)\
                             .order_by('-taskcheckout__date')
 
 
@@ -160,7 +160,8 @@ def task_upload(request, slug):
         messages.error(request, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
 
-    task_checkout = get_object_or_404(TaskCheckout, task=task, state__lte=1)
+    task_checkout = get_object_or_404(TaskCheckout, task=task,
+                                        state__lte=RETURNED)
     if request.method == 'POST':
         if task_checkout.microtaskresponse:
             form = TomTomMicroTaskResponseForm(request.POST, request.FILES,
@@ -172,10 +173,10 @@ def task_upload(request, slug):
             response.user = request.user
             response.task = task
             response.task_checkout = task_checkout
-            response.state = 0
+            response.state = SUBMITTED
             response.save()
 
-            task_checkout.state = 1
+            task_checkout.state = RETURNED
             task_checkout.save()
 
             messages.success(request, 'Thank you! Your task has been sent.')
