@@ -15,11 +15,6 @@ urlpatterns = patterns('',
         'ummeli.opportunities.views.change_province',
         name='change_province'),
 
-
-    #url(r'^jobs/(?P<slug>[\w-]+)/$',
-    #    OpportunityDetailView.as_view(model=Job,\
-    #        template_name='opportunities/job_detail'),
-    #    name='job_opportunity'),
     url(r'^internships/$',
         OpportunityListView.as_view(model=Internship, \
             template_name='opportunities/internships.html'),
@@ -95,11 +90,14 @@ urlpatterns = patterns('',
     url(r'^microtasks/(?P<slug>[\w-]+)/upload/$',
         'ummeli.opportunities.views.task_upload',
         name='micro_task_upload'),
-    #url(r'^campaigns/task/tomtom/(?P<slug>[\w-]+)/$',
-    #    OpportunityDetailView.as_view(model=MicroTask,\
-    #        template_name='opportunities/tom_tom_micro_task_detail.html'),
-    #    name='tom_tom_micro_task_detail'),
-
+    url(r'^microtasks/(?P<slug>[\w-]+)/instructions/$',
+        'ummeli.opportunities.views.task_instructions',
+        name='micro_task_instructions'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/conditions/$',
+        login_required(OpportunityDetailView.as_view(
+            template_name='opportunities/microtasks/tom_tom_microtask_conditions.html',
+            model=MicroTask)),
+        name='micro_task_conditions'),
     url(r'^campaigns/(?P<slug>[\w-]+)/qualify/$',\
         'ummeli.opportunities.views.campaign_qualify',\
         name='campaign_qualify'),

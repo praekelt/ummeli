@@ -21,11 +21,13 @@
 
     <div class="ruler"></div>
     {% if messages %}
-    <div class="success">
+        <div class="message">
         {% for message in messages %}
-        {{ message }} <br/>
+        <div class="{{message.tags}}">
+        {{ message }}
+        </div>
         {% endfor %}
-    </div>
+        </div>
     {% endif %}
 
     {% block body %}

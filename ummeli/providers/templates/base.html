@@ -108,25 +108,6 @@
     <!-- topbar ends -->
         <div class="container-fluid">
         <div class="row-fluid">
-
-            <!-- left menu starts -->
-            <div class="span2 main-menu-span">
-                <div class="well nav-collapse sidebar-nav">
-                    <ul class="nav nav-tabs nav-stacked main-menu">
-                        <li class="nav-header hidden-tablet">Opportunities</li>
-                        <li><a href="{% url providers.campaigns %}"><i class="icon-wrench"></i><span class="hidden-tablet"> Micro Tasks</span></a></li>
-                        <li><a href="#"><i class="icon-briefcase"></i><span class="hidden-tablet"> Jobs</span></a></li>
-                        <li><a href="#"><i class="icon-list-alt"></i><span class="hidden-tablet"> Bursaries</span></a></li>
-                        <li><a href="#"><i class="icon-download-alt"></i><span class="hidden-tablet"> Training</span></a></li>
-                        <li><a href="#"><i class="icon-random"></i><span class="hidden-tablet"> Internships</span></a></li>
-                        <li><a href="#"><i class="icon-hand-up"></i><span class="hidden-tablet"> Volunteering</span></a></li>
-                        <li><a href="#"><i class="icon-calendar"></i><span class="hidden-tablet"> Events</span></a></li>
-                        <li><a href="#"><i class="icon-gift"></i><span class="hidden-tablet"> Competitions</span></a></li>
-                    </ul>
-                </div><!--/.well -->
-            </div><!--/span-->
-            <!-- left menu ends -->
-
             <noscript>
                 <div class="alert alert-block span10">
                     <h4 class="alert-heading">Warning!</h4>
@@ -134,7 +115,7 @@
                 </div>
             </noscript>
 
-            <div id="content" class="span10">
+            <div id="content">
             <!-- content starts -->
 
 
@@ -143,7 +124,7 @@
 
                     <!-- content ends -->
             </div><!--/#content.span10-->
-                </div><!--/fluid-row-->
+        </div><!--/fluid-row-->
 
         <hr>
 
@@ -243,6 +224,16 @@
     $(document).ready(function(){
         //uniform - styler for checkbox, radio and file input
         $("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
+
+        {% if messages %}
+        {% for message in messages %}
+            var option = {"text":"{{message}}",
+            "layout":"top",
+            "closeButton":"true",
+            "type":"{{message.tags}}"};
+            noty(option);
+        {% endfor %}
+        {% endif %}
     });
     </script>
     {% block script %}

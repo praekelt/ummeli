@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.db.models import Q
 
 
@@ -154,12 +154,15 @@ class MicroTask(Opportunity):
 
     def available(self):
         return self.users_per_task == 0 or\
-            self.taskcheckout_set.filter(state__lt=2).count() < self.users_per_task
+            self.taskcheckout_set.filter(state__lt=EXPIRED).count() < self.users_per_task
 
     def available_for(self, user):
-        if self.taskcheckout_set.filter(state__lt=2, user=user).exists():
+        if self.taskcheckout_set.filter(state__lt=EXPIRED, user=user).exists():
             return False
         return self.available()
+
+    def checked_out_by(self, user):
+        return self.taskcheckout_set.filter(state__lte=RETURNED, user=user).exists()
 
     def checkout(self, user):
         if self.available_for(user):
@@ -175,23 +178,27 @@ class MicroTask(Opportunity):
                 continue
 
             cutoff_date = datetime.now() - timedelta(hours=task.hours_per_task)
-            task.taskcheckout_set.filter(task__pk=task.pk,
-                                        state__lt=2,
+            task.taskcheckout_set.filter(task=task, state=OPEN,
                                         date__lte=cutoff_date)\
-                                .update(state=2)
+                                .update(state=EXPIRED)
 
+
+OPEN = 0
+RETURNED = 1
+EXPIRED = 2
 
 TASK_CHECKOUT_STATE = (
-    (0, 'Open'),
-    (1, 'Returned'),
-    (2, 'Expired'),
+    (OPEN, 'Open'),
+    (RETURNED, 'Returned'),
+    (EXPIRED, 'Expired'),
     )
 
 
 class TaskCheckout(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(MicroTask)
-    state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE, default=0)
+    state = models.PositiveIntegerField(choices=TASK_CHECKOUT_STATE,
+                                        default=OPEN)
     date = models.DateTimeField(auto_now_add=True)
 
     def expires_on(self):
@@ -225,6 +232,36 @@ class TomTomMicroTask(MicroTask):
                 'id': self.id,
                 }
 
+SUBMITTED = 0
+ACCEPTED = 1
+REJECTED = 2
+
+TASK_RESPONSE_STATE = (
+    (SUBMITTED, 'Submitted'),
+    (ACCEPTED, 'Accepted'),
+    (REJECTED, 'Rejected'),
+    )
+
+
+class MicroTaskResponse(models.Model):
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(MicroTask)
+    task_checkout = models.OneToOneField(TaskCheckout)
+    state = models.PositiveIntegerField(choices=TASK_RESPONSE_STATE,
+                                        default=SUBMITTED)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class TomTomMicroTaskResponse(MicroTaskResponse):
+    file = models.ImageField(upload_to='microtask_uploads/', blank=False, null=False)
+    tel_1 = models.TextField(blank=True, null=True)
+    tel_2 = models.TextField(blank=True, null=True)
+    fax = models.TextField(blank=True, null=True)
+    email = models.TextField(blank=True, null=True)
+    website = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
 
 class Campaign(Opportunity):
     tasks = models.ManyToManyField(MicroTask,
@@ -250,8 +287,27 @@ class Campaign(Opportunity):
 
     @classmethod
     def available_tasks(cls):
-        return cls.objects.filter(Q(tasks__taskcheckout__state=2) |
+        return cls.objects.filter(Q(tasks__taskcheckout__state=EXPIRED) |
                                     Q(tasks__taskcheckout__isnull=True))
+
+    def tasks_new(self):
+        return self.tasks.filter(created__gte=date.today())
+
+    def responses(self):
+        return self.tasks.filter(microtaskresponse__state=SUBMITTED)\
+                        .order_by('microtaskresponse__date')
+
+    def responses_new(self):
+        return self.tasks.filter(microtaskresponse__state=SUBMITTED,
+                                microtaskresponse__date__gte=date.today())
+
+    def accepted(self):
+        return self.tasks.filter(microtaskresponse__state=ACCEPTED)\
+                        .order_by('microtaskresponse__date')
+
+    def rejected(self):
+        return self.tasks.filter(microtaskresponse__state=REJECTED)\
+                        .order_by('microtaskresponse__date')
 
 
 class TomTomCampaign(Campaign):

@@ -9,6 +9,7 @@ from django.contrib import messages
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
+from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
 from ummeli.vlive.utils import get_lat_lon
 from django.contrib.gis.geos import Point
 
@@ -79,7 +80,7 @@ class MyMicroTaskListView(MicroTaskListView):
             return MicroTask.objects.none()
 
         return campaign.tasks.filter(taskcheckout__user=self.request.user,
-                                taskcheckout__state=0)\
+                                taskcheckout__state=OPEN)\
                             .order_by('-taskcheckout__date')
 
 
@@ -137,19 +138,62 @@ def checkout(request, slug):
     if task.checkout(request.user):
         msg = 'You have booked this task. You have %shrs to finish the task.'
         messages.success(request, msg % task.hours_per_task)
-        return redirect(reverse('micro_task_upload', args=[slug, ]))
+        return redirect(reverse('micro_task_instructions', args=[slug, ]))
     messages.error(request, 'That task is no longer available for you.')
-    return redirect(reverse('micro_task_upload', args=[slug, ]))
+    return redirect(reverse('campaigns', args=[slug, ]))
 
 
 @login_required
 def task_upload(request, slug):
     task = get_object_or_404(MicroTask, slug=slug)
-    if not task.taskcheckout_set.filter(user=request.user, state=0).exists():
+
+    if not task.checked_out_by(request.user):
         messages.error(request, 'That task is no longer available.')
         return redirect(reverse('campaigns'))
+
+    task_checkout = get_object_or_404(TaskCheckout, task=task,
+                                        state__lte=RETURNED)
+    if request.method == 'POST':
+        if task_checkout.microtaskresponse:
+            form = TomTomMicroTaskResponseForm(request.POST, request.FILES,
+                    instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
+        else:
+            form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.user = request.user
+            response.task = task
+            response.task_checkout = task_checkout
+            response.state = SUBMITTED
+            response.save()
+
+            task_checkout.state = RETURNED
+            task_checkout.save()
+
+            messages.success(request, 'Thank you! Your task has been sent.')
+            return redirect(reverse('campaigns'))
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        if hasattr(task_checkout, 'microtaskresponse'):
+            form = TomTomMicroTaskResponseForm(instance=task_checkout.microtaskresponse.tomtommicrotaskresponse)
+        else:
+            form = TomTomMicroTaskResponseForm()
 
     return render(request, 'opportunities/microtasks/microtask_upload.html',
             {'object': task,
             'city': request.session['location']['city'],
+            'form': form,
             })
+
+
+@login_required
+def task_instructions(request, slug):
+    task = get_object_or_404(MicroTask, slug=slug)
+
+    if not task.checked_out_by(request.user):
+        messages.error(request, 'That task is not available for you.')
+        return redirect(reverse('campaigns'))
+
+    return render(request, 'opportunities/microtasks/microtask_instructions.html',
+        {'object': task})

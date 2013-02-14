@@ -3,16 +3,16 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.contrib.sites.models import Site
+from django.contrib import messages
 
-from ummeli.opportunities.models import MicroTask, TomTomMicroTask, Campaign
-from ummeli.providers.forms import UploadTaskForm
+from ummeli.opportunities.models import *
+from ummeli.providers.forms import UploadTaskForm, TaskResponseForm
 
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import csv
-from datetime import date
 
 from django.contrib.gis.geos import fromstr
 from atlas.models import Location
@@ -25,8 +25,22 @@ def health(request):
 
 @staff_member_required
 def index(request):
-    context = {}
-    return render(request, 'index.html', context)
+    campaign = request.user.campaign_set.all()[0]
+    paginator = Paginator(campaign.tasks.all(), 25)
+
+    page = request.GET.get('page', 1)
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
+
+    context = {
+        'object': campaign,
+        'tasks': tasks,
+    }
+    return render(request, 'opportunities/campaign_detail.html', context)
 
 
 @staff_member_required
@@ -45,8 +59,6 @@ def campaign_view(request, slug):
 
     context = {
         'object': campaign,
-        'published_count': campaign.tasks.filter(state='published').count(),
-        'new_count': campaign.tasks.filter(created__gte=date.today()).count(),
         'tasks': tasks,
     }
     return render(request, 'opportunities/campaign_detail.html', context)
@@ -69,6 +81,43 @@ def upload(request, campaign):
 
     return render(request, 'upload.html',\
                 {'form': form, 'campaign': campaign_obj})
+
+
+@staff_member_required
+def micro_task_detail(request, campaign, slug):
+    campaign = get_object_or_404(Campaign,\
+                        owner=request.user,
+                        slug=campaign)
+    task = get_object_or_404(MicroTask, campaign=campaign, slug=slug)
+
+    if request.method == 'POST':
+        form = TaskResponseForm(request.POST, request.FILES)
+        if form.is_valid():
+            accept = form.cleaned_data['accept']
+            username = form.cleaned_data['username']
+            response_id = form.cleaned_data['response_id']
+            response = get_object_or_404(MicroTaskResponse, pk=response_id)
+            if accept:
+                msg = '%s`s submission for `%s` has been accepted.' % (
+                    username, task.title)
+                messages.add_message(request, messages.SUCCESS, msg)
+                response.state = ACCEPTED
+                response.save()
+            else:
+                msg = '%s`s submission has been rejected. `%s` is now live on Ummeli again.' % (
+                    username, task.title)
+                messages.add_message(request, messages.ERROR, msg)
+
+                response.state = REJECTED
+                response.save()
+            return redirect(reverse('index'))
+        else:
+            print form
+    else:
+        form = TaskResponseForm()
+
+    return render(request, 'opportunities/microtask_detail.html',\
+                {'form': form, 'campaign': campaign, 'object': task})
 
 
 def process_upload(csv_file, campaign_slug):
@@ -131,26 +180,30 @@ class OpportunityListView(ListView):
                                     .order_by('-created')
 
 
-class MicroTaskDetailView(DetailView):
-    def get_object(self):
-        campaign = get_object_or_404(Campaign,\
-                        owner=self.request.user,
-                        slug=self.kwargs['campaign'])
-        return get_object_or_404(self.model, campaign=campaign,\
-                                    slug=self.kwargs['slug'])
-
-    def get_context_data(self, **kwargs):
-        context = super(MicroTaskDetailView, self).get_context_data(**kwargs)
-        campaign = get_object_or_404(Campaign,\
-                        owner=self.request.user,
-                        slug=self.kwargs['campaign'])
-        context['campaign'] = campaign
-        return context
-
-
 class MicroTaskListView(OpportunityListView):
     def get_queryset(self):
         campaign = get_object_or_404(MicroTask,\
                         owner=self.request.user,\
                         slug=self.kwargs['slug'])
         return campaign.tasks.order_by('-created')
+
+
+class TaskResponseListView(ListView):
+    paginate_by = 10
+    template_name = 'opportunities/responses.html'
+
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
+        return MicroTaskResponse.objects.filter(task__campaign=campaign,
+                                                state=SUBMITTED)\
+                                        .order_by('date')
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskResponseListView, self).get_context_data(**kwargs)
+        campaign = get_object_or_404(Campaign,\
+                        owner=self.request.user,
+                        slug=self.kwargs['campaign'])
+        context['campaign'] = campaign
+        return context

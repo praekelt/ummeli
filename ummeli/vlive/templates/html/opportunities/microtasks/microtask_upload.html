@@ -10,12 +10,6 @@
     <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
-
-    <h2>Map</h2>
-    <div>
-        {% include 'opportunities/microtasks/tomtom_map.html' %}
-    </div>
-
     <h2>Information</h2>
     <div>
         <ul>
@@ -32,25 +26,45 @@
     <form method="post" enctype="multipart/form-data">
         <fieldset>
         <div class="form-fields">
-            <label>Picture:*</label>
-            <input type="file" name="file"/>
-            <label>Tel 1:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.tel1 %}
-            <input type="text" name="tel1" value="{% if form.tel1.value %}{{form.tel1.value}}{% endif %}">
+            <label>Tel 1:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.tel_1 %}
+            {{form.tel_1}}
+
             <label>Tel 2:</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.tel2 %}
-            <input type="text" name="tel2" value="{% if form.tel2.value %}{{form.tel2.value}}{% endif %}">
-            <label>Address:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.address %}
-            <input type="text" name="address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
+            {% include "form_field_errors_snippet.html" with form_field=form.tel_2 %}
+            {{form.tel_2}}
+
+            <label>Fax:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.fax %}
+            {{form.fax}}
+
             <label>Website:</label>
             {% include "form_field_errors_snippet.html" with form_field=form.website %}
-            <input type="text" name="website" value="{% if form.website.value %}{{form.website.value}}{% endif %}">
+            {{form.website}}
+
+            <label>Email:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.email %}
+            {{form.email}}
+
+            <label>Address:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.address %}
+            {{form.address}}
+
+            <label>Comment:</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.comment %}
+            {{form.comment}}
+
+            <label>Picture:*</label>
+            {% include "form_field_errors_snippet.html" with form_field=form.file %}
+            {{form.file}}
         </div>
+        <br/>
         <input type="submit" value="Send" class="btn"/>
         {% csrf_token %}
         </fieldset>
     </form>
+    <br/>
+    <div class="more"><a href="{% url micro_task_conditions object.slug %}">&larr; Back</a></div>
 </div>
 
 {% endblock %}
