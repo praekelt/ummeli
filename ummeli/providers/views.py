@@ -5,8 +5,7 @@ from django.http import HttpResponse
 from django.contrib.sites.models import Site
 from django.contrib import messages
 
-from ummeli.opportunities.models import (MicroTask, TomTomMicroTask, Campaign,
-                                        MicroTaskResponse)
+from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm, TaskResponseForm
 
 from django.views.generic import DetailView, ListView
@@ -102,14 +101,14 @@ def micro_task_detail(request, campaign, slug):
                 msg = '%s`s submission for `%s` has been accepted.' % (
                     username, task.title)
                 messages.add_message(request, messages.SUCCESS, msg)
-                response.state = 1
+                response.state = ACCEPTED
                 response.save()
             else:
                 msg = '%s`s submission has been rejected. `%s` is now live on Ummeli again.' % (
                     username, task.title)
                 messages.add_message(request, messages.ERROR, msg)
 
-                response.state = 2
+                response.state = REJECTED
                 response.save()
             return redirect(reverse('index'))
         else:
@@ -198,7 +197,7 @@ class TaskResponseListView(ListView):
                         owner=self.request.user,
                         slug=self.kwargs['campaign'])
         return MicroTaskResponse.objects.filter(task__campaign=campaign,
-                                                state=0)\
+                                                state=SUBMITTED)\
                                         .order_by('date')
 
     def get_context_data(self, **kwargs):
