@@ -23,4 +23,6 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
         if lat and lon:
             return file
 
-        raise forms.ValidationError("Your image does not contain GPS information. Please read the instructions and try again.")
+        error = ("Your image does not contain GPS information. "
+                "Please read the instructions and try again.")
+        raise forms.ValidationError(error)
