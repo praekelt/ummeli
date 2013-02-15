@@ -221,6 +221,7 @@ def task_instructions(request, slug):
         {'object': task})
 
 
+@login_required
 def select_location(request):
     next = request.GET.get('next', reverse('campaigns'))
 
