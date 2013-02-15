@@ -3,7 +3,7 @@
 {% block content %}
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</h2>
     <p>
-        {% if request.session.override_location %}
+        {% if request.session.override_location or not request.session.location %}
         Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% else %}
         You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}}</a><br/>
