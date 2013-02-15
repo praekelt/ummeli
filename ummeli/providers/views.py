@@ -146,9 +146,13 @@ def process_upload(csv_file, campaign_slug):
             t.fax = r['FAX_NR']
             t.email = r['E_MAIL']
             t.website = r['WEBSITE']
+
+            t.website = r['CITY']
+            t.website = r['SUBURB']
             t.owner = campaign.owner
             t.save()
 
+            t.province.add(Province.from_str(r['PROVINCE']))
             t.sites.add(Site.objects.get_current())
 
             t.publish()

@@ -5,6 +5,7 @@ from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from datetime import datetime, timedelta, date
 from django.db.models import Q
+import re
 
 
 EDUCATION_LEVEL_CHOICES = (
@@ -27,6 +28,15 @@ class Province(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % dict(PROVINCE_CHOICES)[self.province]
+
+    @classmethod
+    def from_str(cls, str):
+        result = [i for i, p in PROVINCE_CHOICES\
+                    if re.sub('[\s-]', '', p.lower()) ==\
+                        re.sub('[\s-]', '', str.lower())]
+        if any(result):
+            return cls.objects.get(pk=result[0])
+        return None
 
 
 class Salary(models.Model):

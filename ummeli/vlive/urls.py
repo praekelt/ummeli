@@ -52,6 +52,11 @@ urlpatterns = patterns('',
     #Jmbo
     url(r'^jmbo/', include('jmbo.urls')),
     url(r'^simple-autocomplete/', include('simple_autocomplete.urls')),
+    #override atlas.select-location
+    url(r'^select-location/$',
+        'ummeli.opportunities.views.select_location',
+        name='select-location',
+    ),
     url(r'^', include('atlas.urls')),
     url(r'^object-tools/', include(object_tools.tools.urls)),
 )
