@@ -15,7 +15,8 @@
     domready(function(){
         /* Geolocate the client */
         if (typeof atlas !== 'undefined'){
-            atlas.getLocation(function(){
+            atlas.getLocation(function(location){
+                atlas.setLocation(location);
                 document.getElementById('result_form').submit();
             },function(){
                 document.getElementById('error').value = 'True';
