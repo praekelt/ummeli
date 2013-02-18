@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
 from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
@@ -41,8 +41,9 @@ class OpportunityListView(ListView):
         province = int(RequestContext(self.request)['province_id'])
         province_qs = self.model.objects.filter(state='published')
 
-        if province > 0:
-            province_qs = province_qs.filter(province__province__in=[province, 0])
+        if province != ALL:
+            province_qs = province_qs.filter(province__province__in=[province,
+                                                                    ALL])
 
         return province_qs.order_by('-created')
 
@@ -61,8 +62,8 @@ class MicroTaskListView(ListView):
         if self.request.session.get('override_location'):
             tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
                                         .order_by('province', 'location__city')
-            province = self.request.session['province']
-            if province > 0:
+            province = self.request.session.get('province', ALL)
+            if province != ALL:
                 tasks = tasks.filter(province=province)
             return [task for task in tasks if task.available()]
 
