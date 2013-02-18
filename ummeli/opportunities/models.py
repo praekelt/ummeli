@@ -31,8 +31,8 @@ class Province(models.Model):
 
     @classmethod
     def from_str(cls, str):
-        result = [i for i, p in PROVINCE_CHOICES\
-                    if re.sub('[\s-]', '', p.lower()) ==\
+        result = [i for i, p in PROVINCE_CHOICES
+                    if re.sub('[\s-]', '', p.lower()) ==
                         re.sub('[\s-]', '', str.lower())]
         if any(result):
             return cls.objects.get(pk=result[0])
