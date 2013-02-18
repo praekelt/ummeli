@@ -5,7 +5,7 @@ debug_path: /_debug
 health_path: /health
 
 handlers:
-  - wurfl: devproxy.handlers.wurfl_handler.simple.SimpleWurflHandler
+  - wurfl: ummeli.wurfl_handler.UmmeliWurflHandler
 
 wurfl:
   # All keys in Memcached are prefixed with this
