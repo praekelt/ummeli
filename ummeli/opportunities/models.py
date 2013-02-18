@@ -322,4 +322,4 @@ class Campaign(Opportunity):
 
 class TomTomCampaign(Campaign):
     def get_template(self):
-        return 'opportunities/microtasks/tom_tom_campaign_detail.html'
+        return 'opportunities/tomtom/campaign_detail.html'

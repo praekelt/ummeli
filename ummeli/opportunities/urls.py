@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
 from ummeli.opportunities.views import (OpportunityDetailView,\
@@ -90,20 +90,7 @@ urlpatterns = patterns('',
     url(r'^microtasks/(?P<slug>[\w-]+)/checkout/$',
         'ummeli.opportunities.views.checkout',
         name='micro_task_checkout'),
-    url(r'^microtasks/(?P<slug>[\w-]+)/upload/$',
-        'ummeli.opportunities.views.task_upload',
-        name='micro_task_upload'),
-    url(r'^microtasks/(?P<slug>[\w-]+)/instructions/$',
-        'ummeli.opportunities.views.task_instructions',
-        name='micro_task_instructions'),
-    url(r'^microtasks/(?P<slug>[\w-]+)/conditions/$',
-        login_required(OpportunityDetailView.as_view(
-            template_name='opportunities/microtasks/tom_tom_microtask_conditions.html',
-            model=MicroTask)),
-        name='micro_task_conditions'),
-    url(r'^campaigns/(?P<slug>[\w-]+)/qualify/$',\
-        'ummeli.opportunities.views.campaign_qualify',\
-        name='campaign_qualify'),
+    url(r'^tomtom/', include('ummeli.opportunities.tomtom.urls')),
 
     #Jobs from Ummeli 1.0
     url(r'^jobs/$',
