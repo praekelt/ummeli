@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style type="text/css">
+.form-radio label, .form-radio input{
+    display: inline;
+    padding: 5px;
+}
+.form-radio{
+    margin: 5px 0;
+}
+</style>
+<h2>
+    <a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    <a href="{% url campaign_detail object.slug %}">{{object.title}}</a>
+</h2>
+<h2>Choose a device</h2>
+<div class="wrap">
+    <form method="post">
+        <fieldset>
+            {% include "form_field_errors_snippet.html" with form_field=form.device %}
+            <div class="form-radio">
+                <input type="radio" name="device" value="Nokia" id="nokia"/>
+                <label for="nokia">Nokia</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="Samsung"/>
+                <label for="samsung">Samsung</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="Apple"/>
+                <label for="apple">Apple (iOS)</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="BlackBerry"/>
+                <label for="blackberry">BlackBerry</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="Motorolla"/>
+                <label for="motorolla">Motorolla</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="Google"/>
+                <label for="google">Google (Nexus)</label>
+            </div>
+            <div class="form-radio">
+                <input type="radio" name="device" value="other"/>
+                <label for="other">Other</label>
+            </div>
+        </div>
+            <input type="submit" value="Send" class="btn"/>
+            {% csrf_token %}
+        </fieldset>
+    </form>
+</div>
+<br/>
+<div class="more"><a href="{% url qualify_device object.slug %}">&larr; Back</a></div>
+{% endblock %}

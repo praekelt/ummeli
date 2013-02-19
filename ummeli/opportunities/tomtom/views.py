@@ -1,4 +1,5 @@
-from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
+from ummeli.opportunities.tomtom.forms import (MicroTaskResponseForm,
+    ChangeDeviceForm)
 from ummeli.providers.forms import UploadTaskForm
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -35,10 +36,10 @@ def task_upload(request, slug):
     if request.method == 'POST':
         if hasattr(task_checkout, 'microtaskresponse'):
             instance = task_checkout.microtaskresponse.tomtommicrotaskresponse
-            form = TomTomMicroTaskResponseForm(request.POST, request.FILES,
+            form = MicroTaskResponseForm(request.POST, request.FILES,
                     instance=instance)
         else:
-            form = TomTomMicroTaskResponseForm(request.POST, request.FILES)
+            form = MicroTaskResponseForm(request.POST, request.FILES)
         if form.is_valid():
             response = form.save(commit=False)
             response.user = request.user
@@ -57,9 +58,9 @@ def task_upload(request, slug):
     else:
         if hasattr(task_checkout, 'microtaskresponse'):
             instance = task_checkout.microtaskresponse.tomtommicrotaskresponse
-            form = TomTomMicroTaskResponseForm(instance=instance)
+            form = MicroTaskResponseForm(instance=instance)
         else:
-            form = TomTomMicroTaskResponseForm()
+            form = MicroTaskResponseForm()
 
     return render(request, 'opportunities/microtasks/microtask_upload.html',
             {'object': task,
@@ -69,7 +70,12 @@ def task_upload(request, slug):
 
 
 def get_recognised_device(request):
-    device = request.META.get('HTTP_X_UA_BRAND_NAME', None)
+    print request.META.get('HTTP_X_UA_BRAND_NAME', None)
+
+    if request.session.get('device_override'):
+        device = request.session.get('device_override')
+    else:
+        device = request.META.get('HTTP_X_UA_BRAND_NAME', None)
 
     return {
         'nokia': {
@@ -119,6 +125,27 @@ def qualify_device(request, slug):
         'device': get_recognised_device(request)
     }
     return render(request, 'opportunities/tomtom/qualify_device.html', context)
+
+
+@login_required
+def qualify_device_change(request, slug):
+    campaign = get_object_or_404(Campaign, slug=slug)
+
+    if request.method == 'POST':
+        form = ChangeDeviceForm(request.POST)
+        if form.is_valid():
+            request.session['device_override'] = form.cleaned_data['device']
+            return redirect(reverse('qualify_device', args=[slug, ]))
+    else:
+        form = ChangeDeviceForm()
+
+    context = {
+        'object': campaign,
+        'device': get_recognised_device(request),
+        'form': form
+    }
+    return render(request, 'opportunities/tomtom/qualify_device_change.html',
+                    context)
 
 
 @login_required
