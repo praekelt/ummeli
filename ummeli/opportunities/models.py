@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import MultipleObjectsReturned
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
@@ -35,6 +36,10 @@ class Province(models.Model):
         result = [i for i, p in PROVINCE_CHOICES
                     if re.sub('[\s-]', '', p.lower()) ==
                         re.sub('[\s-]', '', str.lower())]
+
+        if len(result) > 1:
+            raise MultipleObjectsReturned
+
         if any(result):
             return cls.objects.get(pk=result[0])
         return None
