@@ -84,9 +84,9 @@ def get_recognised_device(request):
             'name': device,
             'template': 'opportunities/tomtom/qualify_device_blackberry.html'
         },
-        'iphone': {
+        'apple': {
             'name': device,
-            'template': 'opportunities/tomtom/qualify_device_iphone.html'
+            'template': 'opportunities/tomtom/qualify_device_apple.html'
         },
         'motorolla': {
             'name': device,
