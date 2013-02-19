@@ -21,7 +21,7 @@
             <a href="{% url my_microtasks %}">Go to My Tasks</a>
         </p>
     </div>
-    {% if object.available %}
+    {% if object.is_available %}
     <h2>Want to do it?</h2>
     <ul>
         <li class="bullet">You have {{object.hours_per_task}}hrs and the task will expire</li>

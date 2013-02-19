@@ -137,7 +137,7 @@ def checkout(request, slug):
         messages.success(request, msg % task.hours_per_task)
         return redirect(reverse('micro_task_instructions', args=[slug, ]))
     messages.error(request, 'That task is no longer available for you.')
-    return redirect(reverse('campaigns', args=[slug, ]))
+    return redirect(reverse('campaigns'))
 
 
 @login_required
