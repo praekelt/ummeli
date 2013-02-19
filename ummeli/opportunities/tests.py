@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-from ummeli.opportunities.models import (Internship, Salary, Training, Event,
-                                            Province, MicroTask, Campaign)
+from ummeli.opportunities.models import *
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 from django.contrib.sites.models import Site
@@ -163,6 +162,9 @@ class OpportunitiesTest(VLiveTestCase):
         self.assertTrue(result)
         self.assertFalse(t1.is_available())
         self.assertEqual(MicroTask.available.all().count(), 3)
+
+        tc = TaskCheckout.objects.get(user=user)
+        self.assertEqual(tc.task, t1)
 
         #infinite checkouts available
         self.assertTrue(t2.is_available())

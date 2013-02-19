@@ -161,6 +161,8 @@ class Event(Opportunity):
 
 
 class AvailableManager(PermittedManager):
+    use_for_related_fields = False
+
     def get_query_set(self):
         # Get base queryset and exclude based on state.
         queryset = super(AvailableManager, self).get_query_set()\
@@ -173,6 +175,7 @@ class AvailableManager(PermittedManager):
 
 
 class MicroTask(Opportunity):
+    objects = models.Manager()
     available = AvailableManager()
     users_per_task = models.PositiveIntegerField(default=1)
     hours_per_task = models.PositiveIntegerField(default=24)
