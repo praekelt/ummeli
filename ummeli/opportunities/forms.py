@@ -26,3 +26,7 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
         error = ("Your image does not contain GPS information. "
                 "Please read the instructions and try again.")
         raise forms.ValidationError(error)
+
+
+class SelectLocationForm(forms.Form):
+    error = forms.BooleanField(required=False)
