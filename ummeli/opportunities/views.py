@@ -60,18 +60,18 @@ class MicroTaskListView(ListView):
         position = self.request.session['location']['position']
 
         if self.request.session.get('override_location'):
-            tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+            tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
                                         .order_by('province', 'location__city')
             province = self.request.session.get('province', ALL)
             if province != ALL:
                 tasks = tasks.filter(province=province)
-            return [task for task in tasks if task.available()]
+            return tasks
 
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
-        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+        tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
                                 .distance(position).order_by('distance')
-        return [task for task in tasks if task.available()]
+        return tasks
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
