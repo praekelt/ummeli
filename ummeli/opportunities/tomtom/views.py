@@ -92,9 +92,9 @@ def get_recognised_device(request):
             'name': device,
             'template': 'opportunities/tomtom/qualify_device_motorolla.html'
         },
-        'siemens': {
+        'google': {
             'name': device,
-            'template': 'opportunities/tomtom/qualify_device_siemens.html'
+            'template': 'opportunities/tomtom/qualify_device_google.html'
         },
     }.get(device.lower(),
         {'name': 'Other',
