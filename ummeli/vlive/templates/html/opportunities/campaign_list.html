@@ -1,16 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Micro Tasks</h2>
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</h2>
     <p>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+        {% if request.session.override_location or not request.session.location %}
+        Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+        {% else %}
+        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}}</a><br/>
+        {% endif %}
+
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.available_tasks.count}})</a><br/>
             <small>{{object.subtitle|truncatewords:20}}</small><br/>
         </div>
         {% empty %}
-        <p>0 tasks in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+        <p>0 tasks in <a href="{% url microtask_change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
     </p>
     {% if object_list %}
@@ -33,14 +38,4 @@
     </div>
     {% endif %}
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
-
-    <script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
-    <script type="text/javascript">
-    domready(function(){
-        /* Geolocate the client */
-        if (typeof atlas !== 'undefined' && !atlas.isLocationSet()){
-            atlas.getLocation();
-        }
-    });
-    </script>
 {% endblock %}

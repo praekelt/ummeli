@@ -11,9 +11,12 @@ urlpatterns = patterns('',
     url(r'^$',
         'ummeli.opportunities.views.opportunities',
         name='opportunities'),
-    url(r'^province(?:/(?P<province>\d+))?/$',
+    url(r'^province(?P<province>\d+)?/?$',
         'ummeli.opportunities.views.change_province',
         name='change_province'),
+    url(r'^microtasks/province/(?P<province>\d+)?/?$',
+        'ummeli.opportunities.views.microtask_change_province',
+        name='microtask_change_province'),
 
     url(r'^internships/$',
         OpportunityListView.as_view(model=Internship, \

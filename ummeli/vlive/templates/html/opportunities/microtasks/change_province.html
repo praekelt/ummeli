@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Province</h2>
+    <p>
+        {% if request.session.override_location %}
+        You are in: <strong><a href="#">{{province}}</a></strong>
+        {% else %}
+        You are near: <a href="#">{{request.session.location.city.name}}</a><br/>
+        {% endif %}
+        <p><a href="{% url select-location %}?next={{next}}">Near me..</a></p>
+        <p><strong>OR</strong></p>
+        {% for id, province in provinces %}
+        <div class="bullet">
+            <a href="{% url change_province id %}?next={{next}}">{{province}}</a>
+        </div>
+        {% endfor %}
+    </p>
+    <div class="more"><a href="{% url index %}">&larr; Back</a></div>
+{% endblock %}

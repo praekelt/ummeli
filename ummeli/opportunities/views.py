@@ -6,10 +6,11 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
-from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
+from ummeli.opportunities.forms import (TomTomMicroTaskResponseForm,
+    SelectLocationForm)
 from ummeli.vlive.utils import get_lat_lon
 from django.contrib.gis.geos import Point
 
@@ -41,8 +42,9 @@ class OpportunityListView(ListView):
         province = int(RequestContext(self.request)['province_id'])
         province_qs = self.model.objects.filter(state='published')
 
-        if province > 0:
-            province_qs = province_qs.filter(province__province__in=[province, 0])
+        if province != ALL:
+            province_qs = province_qs.filter(province__province__in=[province,
+                                                                    ALL])
 
         return province_qs.order_by('-created')
 
@@ -58,11 +60,19 @@ class MicroTaskListView(ListView):
 
         position = self.request.session['location']['position']
 
+        if self.request.session.get('override_location'):
+            tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
+                                        .order_by('province', 'location__city')
+            province = self.request.session.get('province', ALL)
+            if province != ALL:
+                tasks = tasks.filter(province=province)
+            return tasks
+
         if not isinstance(position, Point):
             position = self.request.session['location']['city'].coordinates
-        tasks = MicroTask.permitted.filter(campaign__pk=campaign.pk)\
+        tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
                                 .distance(position).order_by('distance')
-        return [task for task in tasks if task.available()]
+        return tasks
 
     def get_context_data(self, **kwargs):
         context = super(MicroTaskListView, self).get_context_data(**kwargs)
@@ -102,9 +112,23 @@ def change_province(request, province=None):
 
     if province and int(province) in range(0, 10):
         request.session['province'] = int(province)
+        request.session['override_location'] = True
         return redirect(next)
 
     return render(request, 'opportunities/change_province.html',
+                {'provinces': PROVINCE_CHOICES,
+                'next': next})
+
+
+def microtask_change_province(request, province=None):
+    next = request.GET.get('next', reverse('opportunities'))
+
+    if province and int(province) in range(0, 10):
+        request.session['province'] = int(province)
+        request.session['override_location'] = True
+        return redirect(next)
+
+    return render(request, 'opportunities/microtasks/change_province.html',
                 {'provinces': PROVINCE_CHOICES,
                 'next': next})
 
@@ -197,3 +221,25 @@ def task_instructions(request, slug):
 
     return render(request, 'opportunities/microtasks/microtask_instructions.html',
         {'object': task})
+
+
+@login_required
+def select_location(request):
+    next = request.GET.get('next', reverse('campaigns'))
+
+    if request.method == 'POST':
+        form = SelectLocationForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['error'] == False:
+                request.session['override_location'] = False
+                return redirect(next)
+            else:
+                msg = 'We were unable to detect your location. Please try again.'
+                messages.error(request, msg)
+                return redirect('%s?next=%s' %
+                        (reverse('microtask_change_province'), next))
+    else:
+        form = SelectLocationForm()
+
+    return render(request, 'atlas/select_location.html',
+        {'next': next, 'form': form})

@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import MultipleObjectsReturned
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from datetime import datetime, timedelta, date
-from django.db.models import Q
+from django.db.models import Q, F, Count
+from jmbo.managers import PermittedManager
+import re
 
 
 EDUCATION_LEVEL_CHOICES = (
@@ -27,6 +30,19 @@ class Province(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % dict(PROVINCE_CHOICES)[self.province]
+
+    @classmethod
+    def from_str(cls, str):
+        result = [i for i, p in PROVINCE_CHOICES
+                    if re.sub('[\s-]', '', p.lower()) ==
+                        re.sub('[\s-]', '', str.lower())]
+
+        if len(result) > 1:
+            raise MultipleObjectsReturned
+
+        if any(result):
+            return cls.objects.get(pk=result[0])
+        return None
 
 
 class Salary(models.Model):
@@ -144,7 +160,20 @@ class Event(Opportunity):
         return ('event_detail', (self.slug,))
 
 
+class AvailableManager(PermittedManager):
+    def get_query_set(self):
+        # Get base queryset and exclude based on state.
+        queryset = super(AvailableManager, self).get_query_set()\
+                        .filter(Q(taskcheckout__state__lt=EXPIRED) |
+                                Q(taskcheckout__isnull=True))\
+                        .annotate(checkedout_tasks=Count('taskcheckout'))\
+                        .filter(Q(checkedout_tasks__lt=F('users_per_task')) |
+                                Q(users_per_task=0))
+        return queryset
+
+
 class MicroTask(Opportunity):
+    available = AvailableManager()
     users_per_task = models.PositiveIntegerField(default=1)
     hours_per_task = models.PositiveIntegerField(default=24)
 
@@ -152,14 +181,14 @@ class MicroTask(Opportunity):
     def get_absolute_url(self):
         return ('micro_task_detail', (self.slug,))
 
-    def available(self):
+    def is_available(self):
         return self.users_per_task == 0 or\
             self.taskcheckout_set.filter(state__lt=EXPIRED).count() < self.users_per_task
 
     def available_for(self, user):
         if self.taskcheckout_set.filter(state__lt=EXPIRED, user=user).exists():
             return False
-        return self.available()
+        return self.is_available()
 
     def checked_out_by(self, user):
         return self.taskcheckout_set.filter(state__lte=RETURNED, user=user).exists()
@@ -173,7 +202,7 @@ class MicroTask(Opportunity):
 
     @classmethod
     def expire_tasks(cls):
-        for task in cls.objects.all():
+        for task in cls.permitted.all():
             if task.hours_per_task == 0:  # no limit
                 continue
 

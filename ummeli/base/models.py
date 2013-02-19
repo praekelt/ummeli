@@ -136,17 +136,28 @@ class Skill (models.Model):
         choices = dict(SKILL_LEVEL_CHOICES)
         return choices[self.level]
 
+ALL = 0
+EASTERN_CAPE = 1
+FREE_STATE = 2
+GAUTENG = 3
+KWAZULU_NATAL = 4
+LIMPOPO = 5
+MPUMALANGA = 6
+NORTH_WEST = 7
+NORTHERN_CAPE = 8
+WESTERN_CAPE = 9
+
 PROVINCE_CHOICES = (
-        (0, 'All'),
-        (1, 'Eastern Cape'),
-        (2, 'Free State'),
-        (3, 'Gauteng'),
-        (4, 'KwaZulu Natal'),
-        (5, 'Limpopo'),
-        (6, 'Mpumalanga'),
-        (7, 'North West'),
-        (8, 'Northern Cape'),
-        (9, 'Western Cape'),
+        (ALL, 'All'),
+        (EASTERN_CAPE, 'Eastern Cape'),
+        (FREE_STATE, 'Free State'),
+        (GAUTENG, 'Gauteng'),
+        (KWAZULU_NATAL, 'KwaZulu Natal'),
+        (LIMPOPO, 'Limpopo'),
+        (MPUMALANGA, 'Mpumalanga'),
+        (NORTH_WEST, 'North West'),
+        (NORTHERN_CAPE, 'Northern Cape'),
+        (WESTERN_CAPE, 'Western Cape'),
         )
 
 class CurriculumVitae(models.Model):

@@ -8,7 +8,11 @@
         Tasks
     </h2>
     <p>
-        You are near: <a href="{% url select-location %}?view={{request.path}}">{{city.name}}</a><br/>
+        {% if request.session.override_location %}
+        Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+        {% else %}
+        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{city.name}}</a><br/>
+        {% endif %}
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">
