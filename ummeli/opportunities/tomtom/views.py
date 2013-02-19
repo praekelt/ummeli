@@ -86,20 +86,20 @@ def get_recognised_device(request):
             'name': device,
             'template': 'opportunities/tomtom/qualify_device_samsung.html'
         },
-        'blackberry': {
-            'name': device,
+        'rim': {
+            'name': 'BlackBerry',
             'template': 'opportunities/tomtom/qualify_device_blackberry.html'
         },
         'apple': {
             'name': device,
             'template': 'opportunities/tomtom/qualify_device_apple.html'
         },
-        'motorolla': {
+        'motorola': {
             'name': device,
             'template': 'opportunities/tomtom/qualify_device_motorolla.html'
         },
-        'google': {
-            'name': device,
+        'android': {
+            'name': 'Google Nexus / Android',
             'template': 'opportunities/tomtom/qualify_device_google.html'
         },
     }.get(device.lower(),
