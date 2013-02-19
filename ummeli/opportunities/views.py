@@ -9,7 +9,8 @@ from django.contrib import messages
 from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
 from ummeli.providers.forms import UploadTaskForm
-from ummeli.opportunities.forms import TomTomMicroTaskResponseForm
+from ummeli.opportunities.forms import (TomTomMicroTaskResponseForm,
+    SelectLocationForm)
 from ummeli.vlive.utils import get_lat_lon
 from django.contrib.gis.geos import Point
 
@@ -226,14 +227,19 @@ def task_instructions(request, slug):
 def select_location(request):
     next = request.GET.get('next', reverse('campaigns'))
 
-    if request.method == 'POST' and request.POST.get('error') == 'False':
-        request.session['override_location'] = False
-        return redirect(next)
+    if request.method == 'POST':
+        form = SelectLocationForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['error'] == False:
+                request.session['override_location'] = False
+                return redirect(next)
+            else:
+                msg = 'We were unable to detect your location. Please try again.'
+                messages.error(request, msg)
+                return redirect('%s?next=%s' %
+                        (reverse('microtask_change_province'), next))
+    else:
+        form = SelectLocationForm()
 
-    if request.method == 'POST' and request.POST.get('error'):
-        msg = 'We were unable to detect your location. Please try again.'
-        messages.error(request, msg)
-        return redirect('%s?next=%s' % (reverse('microtask_change_province'),
-                                        next))
-
-    return render(request, 'atlas/select_location.html', {'next': next})
+    return render(request, 'atlas/select_location.html',
+        {'next': next, 'form': form})
