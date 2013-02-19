@@ -68,21 +68,55 @@ def task_upload(request, slug):
             })
 
 
+def get_recognised_device(request):
+    device = request.META.get('HTTP_X_UA_BRAND_NAME', None)
+
+    return {
+        'nokia': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_nokia.html'
+        },
+        'samsung': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_samsung.html'
+        },
+        'blackberry': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_blackberry.html'
+        },
+        'iphone': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_iphone.html'
+        },
+        'motorolla': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_motorolla.html'
+        },
+        'siemens': {
+            'name': device,
+            'template': 'opportunities/tomtom/qualify_device_siemens.html'
+        },
+    }.get(device.lower(),
+        {'name': 'Other',
+        'template': 'opportunities/tomtom/qualify_device_other.html'})
+
+
 @login_required
 def qualify(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
-        'device': request.META.get('HTTP_X_UA_BRAND_NAME'),
+        'device': get_recognised_device(request)
     }
     return render(request, 'opportunities/tomtom/qualify_detect.html', context)
 
 
 @login_required
-def qualify_device(request, slug, device):
+def qualify_device(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
+        'device': get_recognised_device(request)
     }
     return render(request, 'opportunities/tomtom/qualify_device.html', context)
 
@@ -92,6 +126,7 @@ def qualify_upload(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
+        'device': get_recognised_device(request)
     }
 
     if request.method == 'POST':

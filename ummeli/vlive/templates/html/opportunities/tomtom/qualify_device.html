@@ -4,18 +4,17 @@
     <h2>
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url campaigns %}">Campaigns</a> &raquo;
-        <a href="{% url campaign_detail object.slug %}">{{object.title}}</a>
+        <a href="{% url campaign_qualify object.slug %}">Test</a>
     </h2>
     <h2>Qualification Task</h2>
     <div class="wrap">
-        <p>In order to perform tasks you need to have a phone that can take GPS encoded pictures. We need to test if your phone has the right capabilities.</p>
+        <p>Instructions for: <strong>{{device.name}}</strong></p>
 
-        <p>We recognise your phone as a: Samsung</p>
+        <p>Lorem ipsum</p>
 
-        <p><a href="#">Continue to test &rarr;</a><br/>
-        not your phone? <a href="#">Click here</a></p>
+        <p><a href="#">Continue to upload &rarr;</a><br/>
 
     </div>
     <br/>
-    <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
+    <div class="more"><a href="{% url campaign_qualify object.slug %}">&larr; Back</a></div>
 {% endblock %}

@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[\w-]+)/qualify/upload/$',\
         'ummeli.opportunities.tomtom.views.qualify_upload',\
         name='campaign_upload'),
-    url(r'^(?P<slug>[\w-]+)/qualify/(?P<device>[\w-]+)/$',\
+    url(r'^(?P<slug>[\w-]+)/qualify/device/$',\
         'ummeli.opportunities.tomtom.views.qualify_device',\
         name='campaign_device'),
     url(r'^microtasks/(?P<slug>[\w-]+)/upload/$',
