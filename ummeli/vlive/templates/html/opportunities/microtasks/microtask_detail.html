@@ -10,21 +10,13 @@
     <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
+    <div><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</div>
 
     <h2>Map</h2>
     <div>
         {% include 'opportunities/tomtom/map.html' %}
     </div>
 
-    <h2>Information</h2>
-    <ul>
-        <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
-        <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
-        <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
-        <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
-        <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
-        <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
-    </ul>
     {% if object.is_available %}
     <h2>Want to do it?</h2>
     <p>
