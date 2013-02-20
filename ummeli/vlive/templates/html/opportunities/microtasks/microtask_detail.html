@@ -13,6 +13,8 @@
     <div><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</div>
 
     <h2>Map</h2>
+    <p>
+        <a href="{% url select-location %}?next={{request.path}}">Click here</a> to update your current location</p>
     <div>
         {% include 'opportunities/tomtom/map.html' %}
     </div>

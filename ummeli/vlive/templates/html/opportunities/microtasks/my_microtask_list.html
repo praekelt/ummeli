@@ -8,7 +8,7 @@
         Tasks
     </h2>
     <p>
-        You are near: <a href="{% url select-location %}?view={{request.path}}">{{city.name}}</a><br/>
+        You are near: <a href="{% url select-location %}?next={{request.path}}">{{city.name}}</a><br/>
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{% url micro_task_detail object.slug %}">
