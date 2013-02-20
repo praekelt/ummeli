@@ -3,7 +3,7 @@ from ummeli.opportunities.models import TomTomMicroTaskResponse
 from ummeli.vlive.utils import get_lat_lon
 
 
-class TomTomMicroTaskResponseForm(forms.ModelForm):
+class MicroTaskResponseForm(forms.ModelForm):
     tel_1 = forms.CharField(required=False)
     tel_2 = forms.CharField(required=False)
     fax = forms.CharField(required=False)
@@ -30,3 +30,8 @@ class TomTomMicroTaskResponseForm(forms.ModelForm):
 
 class SelectLocationForm(forms.Form):
     error = forms.BooleanField(required=False)
+
+
+class ChangeDeviceForm(forms.Form):
+    device = forms.CharField(required=True,
+                error_messages={'required': 'Please choose a device'})

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
+        <a href="{% url campaign_qualify object.slug %}">Test</a>
+    </h2>
+    <h2>Qualification Task</h2>
+    <div class="wrap">
+        <p>Instructions for: <strong>{{device.name}}</strong></p>
+
+        <p>The settings to enable GPS tagging are different for different phones.</p>
+
+        {% include device.template %}
+
+        <p><a href="{% url qualify_upload object.slug %}">Continue to upload &rarr;</a><br/>
+
+    </div>
+    <br/>
+    <div class="more"><a href="{% url campaign_qualify object.slug %}">&larr; Back</a></div>
+{% endblock %}
