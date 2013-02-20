@@ -70,8 +70,6 @@ def task_upload(request, slug):
 
 
 def get_recognised_device(request):
-    print request.META.get('HTTP_X_UA_BRAND_NAME', None)
-
     if request.session.get('device_override'):
         device = request.session.get('device_override')
     else:
