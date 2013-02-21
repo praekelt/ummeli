@@ -28,7 +28,8 @@
                     {% for r in object.microtaskresponse_set.all %}
                         <i class="icon-edit"></i>
                         <span style="margin-left: 8px;">
-                        {{r.user.get_profile.fullname}}
+                        {% if r.user.get_profile.fullname %}{{r.user.get_profile.fullname}}
+                        {% else %}{{r.user.username}}{% endif %}
                         <div class="pull-right">{{r.date|timesince}}</div>
                         </span>
                     {% endfor %}
@@ -93,13 +94,13 @@
         <h2>ARE YOU SURE?</h2>
     </div>
     <div class="modal-body">
-        <p>By approving this submission, you are confirming the automatic allocation of R10 airtime to {{response.user.get_profile.fullname}}.</p>
+        <p>By approving this submission, you are confirming the automatic allocation of R10 airtime to {% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}.</p>
     </div>
     <div class="modal-footer">
         <form method="post">
             <input type="hidden" name="accept" value="1"/>
             <input type="hidden" name="response_id" value="{{response.pk}}"/>
-            <input type="hidden" name="username" value="{{response.user.get_profile.fullname}}"/>
+            <input type="hidden" name="username" value="{% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}"/>
             {% csrf_token %}
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             <input type="submit" class="btn btn-success" value="Accept"/>
@@ -128,7 +129,7 @@
         <form method="post">
             <input type="hidden" name="accept" value="0"/>
             <input type="hidden" name="response_id" value="{{response.pk}}"/>
-            <input type="hidden" name="username" value="{{response.user.get_profile.fullname}}"/>
+            <input type="hidden" name="username" value="{% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}"/>
             {% csrf_token %}
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             <input type="submit" class="btn btn-danger" value="Reject"/>

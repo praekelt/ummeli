@@ -220,7 +220,7 @@ class CurriculumVitae(models.Model):
         return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
 
     def fullname(self):
-        return '%s %s' % (self.first_name,  self.surname)
+        return ('%s %s' % (self.first_name,  self.surname)).strip()
 
     def missing_fields(self):
         fields = []
