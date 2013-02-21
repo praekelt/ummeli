@@ -26,19 +26,17 @@ def health(request):
 @staff_member_required
 def index(request):
     campaign = request.user.campaign_set.all()[0]
-    paginator = Paginator(campaign.tasks.all(), 25)
-
-    page = request.GET.get('page', 1)
-    try:
-        tasks = paginator.page(page)
-    except PageNotAnInteger:
-        tasks = paginator.page(1)
-    except EmptyPage:
-        tasks = paginator.page(paginator.num_pages)
+    all_tasks = MicroTask.permitted.filter(campaign=campaign)
+    live_tasks = MicroTask.available.filter(campaign=campaign)
+    closed_tasks = MicroTask.permitted.filter(campaign=campaign,
+                                            microtaskresponse__state=ACCEPTED,
+                                            )[:5]
 
     context = {
         'object': campaign,
-        'tasks': tasks,
+        'all_tasks': all_tasks,
+        'live_tasks': live_tasks,
+        'closed_tasks': closed_tasks,
     }
     return render(request, 'opportunities/campaign_detail.html', context)
 

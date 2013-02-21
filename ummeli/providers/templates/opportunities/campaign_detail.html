@@ -14,13 +14,13 @@
             <span class="icon32 icon-blue icon-basket"></span>
         </div>
         <div class="span3" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
-            {{object.tasks.count}}<br/>Total Published
+            {{all_tasks.count}}<br/>Total Published
         </div>
         <div class="span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
-            {{object.tasks.count}}<br/>Live
+            {{live_tasks.count}}<br/>Live
         </div>
         <div class="span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
-            {{object.tasks.count}}<br/>Archived
+            {{closed_tasks.count}}<br/>Archived
         </div>
     </div>
 </div>
@@ -81,7 +81,7 @@
         </div>
         <div class="box-content">
             <ul class="dashboard-list">
-            {% for t in object.tasks.all|slice:":3" %}
+            {% for t in live_tasks|slice:":3" %}
                 <li>
                     <a href="{% url providers.micro_task_detail object.slug t.slug %}">
                         {% if t.tomtommicrotask %}
