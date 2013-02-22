@@ -6,7 +6,7 @@
         {% if request.session.override_location or not request.session.location %}
         Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% else %}
-        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}}</a><br/>
+        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}} (change)</a><br/>
         {% endif %}
         <p>Welcome to Tasks! Here you can earn some extra airtime by successfully completing a task.</p>
 

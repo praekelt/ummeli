@@ -11,7 +11,8 @@
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
     <h2>Guidelines</h2>
-    Once you have enabled GPS tagging on your phone, please remember the following guidelines:
+    <p>Once you have <a href="{% url device_instructions %}?next={{request.path}}">enabled GPS tagging</a> on your phone, please remember the following guidelines:
+    </p>
     <ul>
         <li class="bullet">For GPS to work properly, <strong>you need to be outside</strong></li>
         <li class="bullet">Your phone will likely have <strong>an indicator or icon</strong> showing you when your <strong>GPS is active</strong>. (consult your phone manual for details)</li>

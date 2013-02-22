@@ -4,9 +4,9 @@
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Province</h2>
     <p>
         {% if request.session.override_location %}
-        You are in: <strong><a href="#">{{province}}</a></strong>
+        You are in: <strong>{{province}}</strong>
         {% else %}
-        You are near: <a href="#">{{request.session.location.city.name}}</a><br/>
+        You are near: <strong>{{request.session.location.city.name}}</strong><br/>
         {% endif %}
         <p><a href="{% url select-location %}?next={{next}}">Near me..</a></p>
         <p><strong>OR</strong></p>

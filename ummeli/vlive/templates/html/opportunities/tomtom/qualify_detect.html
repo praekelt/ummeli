@@ -13,7 +13,7 @@
         <p>We recognise your phone as a: <strong>{{device.name}}</strong></p>
 
         <p><a href="{% url qualify_device object.slug %}">Continue to test &rarr;</a><br/>
-        Not your phone? <a href="{% url qualify_device_change object.slug %}">Click here</a></p>
+        Not your phone? <a href="{% url qualify_device_change %}?next={{request.path}}">Click here</a></p>
 
     </div>
     <br/>

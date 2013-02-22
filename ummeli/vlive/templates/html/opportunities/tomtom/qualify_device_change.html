@@ -13,7 +13,7 @@
 <h2>
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
     <a href="{% url campaigns %}">Campaigns</a> &raquo;
-    <a href="{% url campaign_detail object.slug %}">{{object.title}}</a>
+    Change device
 </h2>
 <h2>Choose a device</h2>
 <div class="wrap">
@@ -55,5 +55,5 @@
     </form>
 </div>
 <br/>
-<div class="more"><a href="{% url qualify_device object.slug %}">&larr; Back</a></div>
+<div class="more"><a href="{{next}}">&larr; Back</a></div>
 {% endblock %}

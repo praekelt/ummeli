@@ -127,24 +127,32 @@ def qualify_device(request, slug):
 
 
 @login_required
-def qualify_device_change(request, slug):
-    campaign = get_object_or_404(Campaign, slug=slug)
-
+def qualify_device_change(request):
+    next = request.GET.get('next', reverse('campaigns'))
     if request.method == 'POST':
         form = ChangeDeviceForm(request.POST)
         if form.is_valid():
             request.session['device_override'] = form.cleaned_data['device']
-            return redirect(reverse('qualify_device', args=[slug, ]))
+            return redirect(next)
     else:
         form = ChangeDeviceForm()
 
     context = {
-        'object': campaign,
         'device': get_recognised_device(request),
-        'form': form
+        'form': form,
+        'next': next,
     }
     return render(request, 'opportunities/tomtom/qualify_device_change.html',
                     context)
+
+
+@login_required
+def device_instructions(request):
+    next = request.GET.get('next', reverse('campaigns'))
+    return render(request, 'opportunities/tomtom/device_instructions.html',
+        {'next': next,
+        'device': get_recognised_device(request)
+        })
 
 
 @login_required
