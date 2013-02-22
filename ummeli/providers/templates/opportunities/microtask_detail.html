@@ -117,29 +117,47 @@
         <button type="button" class="close" data-dismiss="modal">×</button>
         <h2>NOT GOOD ENOUGH?</h2>
     </div>
+    <form method="post" id="reject-form">
     <div class="modal-body">
-        <p>
-            Tell us why:
-            <ul>
-                <li>incorrect information</li>
-                <li>Bad photograph</li>
-                <li>invalid information</li>
-                <li>reason:<br/>
-                    <input type="text" class="input-xlarge"/>
-                </li>
-            </ul>
-        </p>
+        <div class="control-group reject-options">
+            <label class="control-label">Tell us why</label>
+            <div class="controls">
+              <label class="radio">
+                <div class="radio">
+                    <span><input type="radio" name="reject_reason" value="0"></span></div>
+                    Incorrect information
+              </label>
+              <div style="clear:both"></div>
+              <label class="radio">
+                <div class="radio">
+                    <span><input type="radio" name="reject_reason" value="1"></span></div>
+                    Bad photograph
+              </label>
+              <div style="clear:both"></div>
+              <label class="radio">
+                <div class="radio">
+                    <span><input type="radio" name="reject_reason" value="2"></span></div>
+                    Other
+              </label>
+              <div style="clear:both"></div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputComment">Comment</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="inputComment" name="reject_comment"/>
+            </div>
+          </div>
     </div>
     <div class="modal-footer">
-        <form method="post">
             <input type="hidden" name="accept" value="0"/>
             <input type="hidden" name="response_id" value="{{response.pk}}"/>
             <input type="hidden" name="username" value="{% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}"/>
             {% csrf_token %}
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-            <input type="submit" class="btn btn-danger" value="Reject"/>
-        </form>
+            <input id="reject-confirm" type="submit" class="btn btn-danger" value="Reject"/>
     </div>
+    </form>
 </div>
 {% empty %}
 <div class="row-fluid">
@@ -178,6 +196,17 @@ $(function(){
         e.preventDefault();
         $('#confirm_reject').modal('show');
     });
+    $('#reject-confirm').click(function(e){
+        e.preventDefault();
+        if($('.modal-body input[type="radio"]').is(':checked')){
+            $('#reject-form').submit()
+        }else{
+            $('.reject-options').addClass('error');
+        }
+    });
+    $('.modal-body input[type="radio"]').change(function(){
+        $('.reject-options').removeClass('error');
+    })
 });
 </script>
 {% endblock %}

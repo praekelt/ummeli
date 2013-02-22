@@ -323,6 +323,16 @@ TASK_RESPONSE_STATE = (
     (REJECTED, 'Rejected'),
     )
 
+INCORRECT_INFO = 0
+BAD_PHOTO = 1
+OTHER_REASON = 2
+
+RESPONSE_REJECT_REASON = (
+    (INCORRECT_INFO, 'Incorrect information'),
+    (BAD_PHOTO, 'Bad photograph'),
+    (OTHER_REASON, 'Other'),
+    )
+
 
 class MicroTaskResponse(models.Model):
     user = models.ForeignKey(User)
@@ -331,6 +341,9 @@ class MicroTaskResponse(models.Model):
     state = models.PositiveIntegerField(choices=TASK_RESPONSE_STATE,
                                         default=SUBMITTED)
     date = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    reject_reason = models.PositiveIntegerField(choices=RESPONSE_REJECT_REASON)
+    reject_comment = models.TextField(blank=True, null=True)
 
 
 class TomTomMicroTaskResponse(MicroTaskResponse):

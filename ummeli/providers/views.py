@@ -106,6 +106,9 @@ def micro_task_detail(request, campaign, slug):
                     username, task.title)
                 messages.add_message(request, messages.ERROR, msg)
 
+                response.reject_reason = form.cleaned_data['reject_reason']
+                response.reject_comment = form.cleaned_data['reject_comment']
+
                 response.state = REJECTED
                 response.save()
             return redirect(reverse('index'))
