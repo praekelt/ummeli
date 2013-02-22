@@ -53,7 +53,7 @@ def task_upload(request, slug,
             task_checkout.save()
 
             messages.success(request, 'Thank you! Your task has been sent.')
-            return redirect(reverse('campaigns'))
+            return redirect(reverse('microtasks', args=[task.campaign.slug]))
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
