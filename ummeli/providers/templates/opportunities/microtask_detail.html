@@ -71,6 +71,10 @@
             <ul class="dashboard-list">
                 <li><img src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
                 <li><strong>Tagged:</strong> N/A</li>
+                {% if response.tomtommicrotaskresponse.poi_has_changed %}
+                <li><span class="label label-important">POI has changed</span></li>
+                <li><strong>Comment:</strong> {{response.tomtommicrotaskresponse.comment}}</li>
+                {% else %}
                 <li><strong>Tel 1:</strong> {{response.tomtommicrotaskresponse.tel_1}}</li>
                 <li><strong>Tel 2:</strong> {{response.tomtommicrotaskresponse.tel_2}}</li>
                 <li><strong>Fax:</strong> {{response.tomtommicrotaskresponse.fax}}</li>
@@ -78,6 +82,7 @@
                 <li><strong>www:</strong> {{response.tomtommicrotaskresponse.website}}</li>
                 <li><strong>Address:</strong> {{response.tomtommicrotaskresponse.address}}</li>
                 <li><strong>Comment:</strong> {{response.tomtommicrotaskresponse.comment}}</li>
+                {% endif %}
             </ul>
         </div>
     </div>

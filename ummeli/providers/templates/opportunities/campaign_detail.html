@@ -64,7 +64,8 @@
                     {% for r in t.microtaskresponse_set.all %}
                         <i class="icon-edit"></i>
                         <span style="margin-left: 8px;">
-                        {{r.user.get_profile.fullname}}
+                        {% if r.user.get_profile.fullname %}{{r.user.get_profile.fullname}}
+                        {% else %}{{r.user.username}}{% endif %}
                         <div class="pull-right">{{r.date|timesince}}</div>
                         </span>
                     {% endfor %}
