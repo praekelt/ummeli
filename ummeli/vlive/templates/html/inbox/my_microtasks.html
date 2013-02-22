@@ -35,7 +35,9 @@
                 {% if object.task.title %}{{object.task.title}}
                 {% else%}{{object.task.location.city.name}}{% endif %}
             </a></div>
-            <span class="subtext">Rejected</span>
+            <span class="subtext">
+                Rejected - {{object.microtaskresponse.get_reject_reason_display}}
+            </span>
             {% endif %}{% endif %}
         </div>
         {% else %}

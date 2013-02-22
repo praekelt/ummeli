@@ -10,6 +10,20 @@
     <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
+
+    {% if task_checkout.microtaskresponse.state == 2 %}
+    <br/>
+    <h2 class="warning">Your response was reject</h2>
+    <strong>Reason</strong>
+    <ul>
+        <li class="bullet">{{task_checkout.microtaskresponse.get_reject_reason_display}}</li>
+        {% if task_checkout.microtaskresponse.reject_comment%}
+            <li class="bullet">{{task_checkout.microtaskresponse.reject_comment}}</li>
+        {% endif %}
+    </ul>
+    <p><strong>Please go and correct the information and try again.</strong></p>
+    {% endif %}
+
     <h2>Guidelines</h2>
     <p>Once you have <a href="{% url device_instructions %}?next={{request.path}}">enabled GPS tagging</a> on your phone, please remember the following guidelines:
     </p>

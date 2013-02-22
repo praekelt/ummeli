@@ -67,6 +67,7 @@ def task_upload(request, slug,
             {'object': task,
             'city': request.session['location']['city'],
             'form': form,
+            'task_checkout': task_checkout,
             })
 
 
