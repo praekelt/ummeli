@@ -24,7 +24,8 @@ def task_instructions(request, slug):
 
 
 @login_required
-def task_upload(request, slug):
+def task_upload(request, slug,
+        template_name='opportunities/microtasks/microtask_upload.html'):
     task = get_object_or_404(MicroTask, slug=slug)
 
     if not task.checked_out_by(request.user):
@@ -62,7 +63,7 @@ def task_upload(request, slug):
         else:
             form = MicroTaskResponseForm()
 
-    return render(request, 'opportunities/microtasks/microtask_upload.html',
+    return render(request, template_name,
             {'object': task,
             'city': request.session['location']['city'],
             'form': form,

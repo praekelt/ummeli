@@ -28,4 +28,8 @@ urlpatterns = patterns('',
     url(r'^microtasks/(?P<slug>[\w-]+)/upload/$',
         'ummeli.opportunities.tomtom.views.task_upload',
         name='micro_task_upload'),
+    url(r'^microtasks/(?P<slug>[\w-]+)/moved/$',
+        'ummeli.opportunities.tomtom.views.task_upload',
+        {'template_name': 'opportunities/tomtom/microtask_moved.html'},
+        name='micro_task_moved'),
     )

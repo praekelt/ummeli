@@ -32,7 +32,8 @@
     <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
     {% else %}
     <br/>
-    <p><a href="{% url micro_task_conditions object.slug %}">Complete Task</a></p>
+    <p><a href="{% url micro_task_conditions object.slug %}">Complete Task</a><br/>
+        Has this location changed? <a href="{% url micro_task_moved object.slug %}">Click here</a></p>
     {% endif %}
 </div>
 
