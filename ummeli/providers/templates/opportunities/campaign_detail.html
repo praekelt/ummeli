@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="page-header">
-    <h2>Dashboard
-    <div class="pull-right">
-        <a href="{% url upload object.slug %}" class="btn btn-close btn-round"><i class="icon-upload"></i>Upload</a>
-    </div>
-    </h2>
+{% block topmenu %}
+<div class="pull-right">
+    <a href="{% url upload object.slug %}" class="btn btn-close btn-round"><i class="icon-upload"></i>Upload</a>
 </div>
+{% endblock %}
+
+{% block content %}
 <div class="row-fluid">
     <div class="well span12 top-block" href="#">
         <div style="float:left;">
