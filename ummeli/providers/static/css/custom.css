@@ -1,0 +1,45 @@
+body {
+    padding-bottom: 40px;
+    background: #E2E5E7 url(../img/bg.jpg) 0 0 repeat;
+}
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.navbar-inner{
+    background: #E2E5E7 url(../img/bg.jpg) 0 0 repeat;
+}
+
+.navbar{
+    border-bottom: none;
+}
+
+a.top-block{
+    background: -webkit-linear-gradient(top, rgba(30, 87, 153, 0.2) 0%,rgba(125, 185, 232, 0.1) 100%) !important;
+}
+
+.box{
+    background: #fff;
+    background: rgba(255, 255, 255, 0.6);
+}
+#id_username,
+#id_username:focus,
+#id_password,
+#id_password:focus{
+    border-radius: 5px;
+    padding: 5px 15px 5px 40px;
+    margin: 2px;
+}
+
+#id_username, #id_username:focus{
+    background: #fff url(../img/username.png) 0px 0px no-repeat !important;
+}
+
+#id_password, #id_password:focus{
+    background: #fff url(../img/password.png) 0px 0px no-repeat !important;
+}
+
+.dash-module span{
+    line-height: 60px;
+    font-size: 60px;
+}
