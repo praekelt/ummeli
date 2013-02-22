@@ -48,6 +48,7 @@
             {{form.file}}
         </div>
         <br/>
+        <input type="hidden" value="True" name="poi_has_changed"/>
         <input type="submit" value="Send" class="btn"/>
         {% csrf_token %}
         </fieldset>

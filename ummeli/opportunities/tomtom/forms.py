@@ -11,6 +11,7 @@ class MicroTaskResponseForm(forms.ModelForm):
     website = forms.CharField(required=False)
     address = forms.CharField(required=False)
     comment = forms.CharField(required=False)
+    poi_has_changed = forms.BooleanField(required=False)
 
     class Meta:
         model = TomTomMicroTaskResponse

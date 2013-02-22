@@ -342,3 +342,4 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
     website = models.TextField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
+    poi_has_changed = models.BooleanField(default=False)
