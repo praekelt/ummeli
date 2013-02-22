@@ -174,9 +174,58 @@ class AvailableManager(PermittedManager):
         return queryset
 
 
+class Campaign(Opportunity):
+    must_qualify = models.BooleanField(default=False)
+    qualifiers = models.ManyToManyField(User, blank=True, null=True)
+    qualification_instructions = models.TextField(blank=True, null=True)
+
+    def has_qualified(self, user):
+        if not self.must_qualify:
+            return True
+
+        return self.qualifiers.filter(id=user.id)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('campaign_detail', (self.slug,))
+
+    def get_template(self):
+        return 'opportunities/microtasks/campaign_detail_default.html'
+
+    @classmethod
+    def available_tasks(cls):
+        return cls.objects.filter(Q(tasks__taskcheckout__state=EXPIRED) |
+                                    Q(tasks__taskcheckout__isnull=True))
+
+    def tasks_new(self):
+        return self.tasks.filter(created__gte=date.today())
+
+    def responses(self):
+        return self.tasks.filter(microtaskresponse__state=SUBMITTED)\
+                        .order_by('microtaskresponse__date')
+
+    def responses_new(self):
+        return self.tasks.filter(microtaskresponse__state=SUBMITTED,
+                                microtaskresponse__date__gte=date.today())
+
+    def accepted(self):
+        return self.tasks.filter(microtaskresponse__state=ACCEPTED)\
+                        .order_by('microtaskresponse__date')
+
+    def rejected(self):
+        return self.tasks.filter(microtaskresponse__state=REJECTED)\
+                        .order_by('microtaskresponse__date')
+
+
+class TomTomCampaign(Campaign):
+    def get_template(self):
+        return 'opportunities/tomtom/campaign_detail.html'
+
+
 class MicroTask(Opportunity):
     objects = models.Manager()
     available = AvailableManager()
+    campaign = models.ForeignKey(Campaign)
     users_per_task = models.PositiveIntegerField(default=1)
     hours_per_task = models.PositiveIntegerField(default=24)
 
@@ -293,55 +342,3 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
     website = models.TextField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
-
-
-class Campaign(Opportunity):
-    tasks = models.ManyToManyField(MicroTask,
-                    blank=True,
-                    null=True,
-                    default=None)
-    must_qualify = models.BooleanField(default=False)
-    qualifiers = models.ManyToManyField(User, blank=True, null=True)
-    qualification_instructions = models.TextField(blank=True, null=True)
-
-    def has_qualified(self, user):
-        if not self.must_qualify:
-            return True
-
-        return self.qualifiers.filter(id=user.id)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('campaign_detail', (self.slug,))
-
-    def get_template(self):
-        return 'opportunities/microtasks/campaign_detail_default.html'
-
-    @classmethod
-    def available_tasks(cls):
-        return cls.objects.filter(Q(tasks__taskcheckout__state=EXPIRED) |
-                                    Q(tasks__taskcheckout__isnull=True))
-
-    def tasks_new(self):
-        return self.tasks.filter(created__gte=date.today())
-
-    def responses(self):
-        return self.tasks.filter(microtaskresponse__state=SUBMITTED)\
-                        .order_by('microtaskresponse__date')
-
-    def responses_new(self):
-        return self.tasks.filter(microtaskresponse__state=SUBMITTED,
-                                microtaskresponse__date__gte=date.today())
-
-    def accepted(self):
-        return self.tasks.filter(microtaskresponse__state=ACCEPTED)\
-                        .order_by('microtaskresponse__date')
-
-    def rejected(self):
-        return self.tasks.filter(microtaskresponse__state=REJECTED)\
-                        .order_by('microtaskresponse__date')
-
-
-class TomTomCampaign(Campaign):
-    def get_template(self):
-        return 'opportunities/tomtom/campaign_detail.html'
