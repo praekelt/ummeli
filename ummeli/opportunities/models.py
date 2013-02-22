@@ -342,7 +342,8 @@ class MicroTaskResponse(models.Model):
                                         default=SUBMITTED)
     date = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    reject_reason = models.PositiveIntegerField(choices=RESPONSE_REJECT_REASON)
+    reject_reason = models.PositiveIntegerField(choices=RESPONSE_REJECT_REASON,
+                                                blank=True, null=True)
     reject_comment = models.TextField(blank=True, null=True)
 
 
