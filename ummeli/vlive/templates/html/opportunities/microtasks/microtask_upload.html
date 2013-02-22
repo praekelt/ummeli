@@ -74,6 +74,8 @@
         </div>
         <br/>
         <input type="submit" value="Send" class="btn"/>
+        <p>
+        Has this location changed? <a href="{% url micro_task_moved object.slug %}">Click here</a></p>
         {% csrf_token %}
         </fieldset>
     </form>
