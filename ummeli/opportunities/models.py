@@ -225,7 +225,7 @@ class TomTomCampaign(Campaign):
 class MicroTask(Opportunity):
     objects = models.Manager()
     available = AvailableManager()
-    campaign = models.ForeignKey(Campaign)
+    campaign = models.ForeignKey(Campaign, related_name='tasks')
     users_per_task = models.PositiveIntegerField(default=1)
     hours_per_task = models.PositiveIntegerField(default=24)
 
