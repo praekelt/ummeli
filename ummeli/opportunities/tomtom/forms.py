@@ -4,14 +4,23 @@ from ummeli.vlive.utils import get_lat_lon
 
 
 class MicroTaskResponseForm(forms.ModelForm):
-    tel_1 = forms.CharField(required=False)
-    tel_2 = forms.CharField(required=False)
-    fax = forms.CharField(required=False)
-    email = forms.CharField(required=False)
-    website = forms.CharField(required=False)
+    tel_1 = forms.RegexField('[0-9+]', required=False,
+                error_message='Please enter a valid telephone number.')
+    tel_2 = forms.RegexField('[0-9+]', required=False,
+                error_message='Please enter a valid telephone number.')
+    fax = forms.RegexField('[0-9+]', required=False,
+                error_message='Please enter a valid fax number.')
+    email = forms.EmailField(required=False, error_messages={
+                'invalid': 'Please enter a valid email address.'})
+    website = forms.URLField(required=False, error_messages={
+                'invalid': 'Please enter a valid website address.'})
     address = forms.CharField(required=False)
     comment = forms.CharField(required=False)
     poi_has_changed = forms.BooleanField(required=False)
+    file = forms.FileField(required=True, error_messages={
+                'required': 'Please choose a valid photo to upload.',
+                'invalid': 'Please choose a valid photo to upload.',
+                })
 
     class Meta:
         model = TomTomMicroTaskResponse
