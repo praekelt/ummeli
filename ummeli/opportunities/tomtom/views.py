@@ -99,7 +99,7 @@ def get_recognised_device(request):
             'template': 'opportunities/tomtom/qualify_device_motorola.html'
         },
         'android': {
-            'name': 'Google Nexus / Android',
+            'name': 'Android',
             'template': 'opportunities/tomtom/qualify_device_google.html'
         },
     }.get(device.lower(),
