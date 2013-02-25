@@ -71,48 +71,11 @@ def task_upload(request, slug,
             })
 
 
-def get_recognised_device(request):
-    if request.session.get('device_override'):
-        device = request.session.get('device_override')
-    else:
-        device = request.META.get('HTTP_X_UA_BRAND_NAME', None)
-
-    return {
-        'nokia': {
-            'name': device,
-            'template': 'opportunities/tomtom/qualify_device_nokia.html'
-        },
-        'samsung': {
-            'name': device,
-            'template': 'opportunities/tomtom/qualify_device_samsung.html'
-        },
-        'rim': {
-            'name': 'BlackBerry',
-            'template': 'opportunities/tomtom/qualify_device_blackberry.html'
-        },
-        'apple': {
-            'name': device,
-            'template': 'opportunities/tomtom/qualify_device_apple.html'
-        },
-        'motorola': {
-            'name': device,
-            'template': 'opportunities/tomtom/qualify_device_motorola.html'
-        },
-        'android': {
-            'name': 'Android',
-            'template': 'opportunities/tomtom/qualify_device_google.html'
-        },
-    }.get(device.lower(),
-        {'name': 'Other',
-        'template': 'opportunities/tomtom/qualify_device_other.html'})
-
-
 @login_required
 def qualify(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
-        'device': get_recognised_device(request)
     }
     return render(request, 'opportunities/tomtom/qualify_detect.html', context)
 
@@ -122,7 +85,6 @@ def qualify_device(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
-        'device': get_recognised_device(request)
     }
     return render(request, 'opportunities/tomtom/qualify_device.html', context)
 
@@ -139,7 +101,6 @@ def qualify_device_change(request):
         form = ChangeDeviceForm()
 
     context = {
-        'device': get_recognised_device(request),
         'form': form,
         'next': next,
     }
@@ -152,7 +113,6 @@ def device_instructions(request):
     next = request.GET.get('next', reverse('campaigns'))
     return render(request, 'opportunities/tomtom/device_instructions.html',
         {'next': next,
-        'device': get_recognised_device(request)
         })
 
 
@@ -161,7 +121,6 @@ def qualify_upload(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     context = {
         'object': campaign,
-        'device': get_recognised_device(request)
     }
 
     if request.method == 'POST':
