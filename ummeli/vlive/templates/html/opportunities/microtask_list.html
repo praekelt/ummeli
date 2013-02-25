@@ -26,6 +26,7 @@
         {% endfor %}
     </p>
     {% if object_list %}
+    {% if page_obj.has_previous or page_obj.has_next %}
     <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
@@ -44,5 +45,6 @@
         {% endif %}
     </div>
     {% endif %}
-    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+    {% endif %}
+    <div class="more"><a href="{% url campaign_detail campaign.slug %}">&larr; Back</a></div>
 {% endblock %}
