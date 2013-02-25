@@ -42,11 +42,10 @@
             <div><strong>Please explain what you see</strong></div>
             {% include "form_field_errors_snippet.html" with form_field=form.comment %}
             {{form.comment}}
-
-            <label>Picture:*</label>
-            {% include "form_field_errors_snippet.html" with form_field=form.file %}
-            {{form.file}}
         </div>
+        <label>Picture:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.file %}
+        {{form.file}}
         <br/>
         <input type="hidden" value="True" name="poi_has_changed"/>
         <input type="submit" value="Send" class="btn"/>
