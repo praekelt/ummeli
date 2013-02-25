@@ -17,6 +17,7 @@ from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
@@ -184,6 +185,10 @@ def education_details(request):
         form = EducationDetailsForm(request.POST, instance=cv)
         if form.is_valid():
             form.save()
+        else:
+            for field in form:
+                for e in field.errors:
+                    messages.error(request, '%s - %s' % (field.label, e))
     return redirect(reverse('certificate_list'))
 
 class PersonalDetailsEditView(UpdateView):
