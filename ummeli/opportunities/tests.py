@@ -4,7 +4,6 @@ from ummeli.opportunities.models import *
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 from django.contrib.sites.models import Site
-from django.conf import settings
 
 
 class OpportunitiesTest(VLiveTestCase):
@@ -130,23 +129,25 @@ class OpportunitiesTest(VLiveTestCase):
         self.assertContains(resp, 'Location: Salt River')
 
     def test_task_checkout(self):
-        web_site = Site(domain="web.address.com")
-        web_site.save()
-        settings.SITE_ID = web_site.id
+        web_site = Site.objects.get_current()
+        c = Campaign.objects.create(title='Campaign1')
 
-        t1 = MicroTask(title='Test1', state='published')
+        t1 = MicroTask(title='Test1', state='published', campaign=c)
         t1.save()
         t1.sites.add(web_site)
 
-        t2 = MicroTask(title='Test2', users_per_task=0, state='published')
+        t2 = MicroTask(title='Test2', users_per_task=0, state='published',
+                        campaign=c)
         t2.save()
         t2.sites.add(web_site)
 
-        t3 = MicroTask(title='Test3', users_per_task=2, state='published')
+        t3 = MicroTask(title='Test3', users_per_task=2, state='published',
+                        campaign=c)
         t3.save()
         t3.sites.add(web_site)
 
-        t4 = MicroTask(title='Test4', users_per_task=2, state='published')
+        t4 = MicroTask(title='Test4', users_per_task=2, state='published',
+                        campaign=c)
         t4.save()
         t4.sites.add(web_site)
 
@@ -195,19 +196,17 @@ class OpportunitiesTest(VLiveTestCase):
     def test_task_expiration(self):
         user = User.objects.get(username=self.msisdn)
 
-        web_site = Site(domain="web.address.com")
-        web_site.save()
-        settings.SITE_ID = web_site.id
+        web_site = Site.objects.get_current()
+        c = Campaign.objects.create(title='Campaign1')
 
-        t1 = MicroTask(title='task1', state='published')
+        t1 = MicroTask(title='task1', state='published', campaign=c)
         t1.save()
         t1.sites.add(web_site)
 
-        t2 = MicroTask(title='task2', state='published')
+        t2 = MicroTask(title='task2', state='published', campaign=c)
         t2.save()
         t2.sites.add(web_site)
 
-        c = Campaign.objects.create(title='Campaign1')
         c.tasks.add(t1)
         c.tasks.add(t2)
 
