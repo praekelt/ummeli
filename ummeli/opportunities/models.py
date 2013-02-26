@@ -108,7 +108,7 @@ Opportunity._meta.get_field_by_name('sites')[0].blank = False
 class Job(Opportunity):
     @models.permalink
     def get_absolute_url(self):
-        return ('job_opportunity', (self.slug,))
+        return ('job_detail', (self.slug,))
 
 
 class Internship(Opportunity):

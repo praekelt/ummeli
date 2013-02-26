@@ -106,6 +106,12 @@ urlpatterns = patterns('',
         'ummeli.vlive.views.job',
         name='job'),
 
+    #Jobs from Ummeli 2.0
+    url(r'^jobs/new/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Job,\
+            template_name='opportunities/job_detail.html'),
+        name='job_detail'),
+
     url(r'jobs/connection/apply/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
         'ummeli.vlive.views.connection_job',
         name='connection_job_apply'),
