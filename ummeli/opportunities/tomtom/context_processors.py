@@ -3,7 +3,7 @@ def get_recognised_device(request):
     if device_override:
         device = device_override
     else:
-        device = request.META.get('HTTP_X_UA_BRAND_NAME', None)
+        device = request.META.get('HTTP_X_UA_BRAND_NAME', 'Other')
 
     return {
         'nokia': {
