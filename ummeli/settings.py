@@ -1,6 +1,15 @@
 # Django settings for ummeli project.
 import os.path
 import djcelery
+djcelery.setup_loader()
+
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'exipire-microtasks-every-minute': {
+        'task': 'ummeli.opportunities.tasks.microtask_expire_tasks',
+        'schedule': timedelta(seconds=60)
+    },
+}
 
 DEBUG = False
 
@@ -18,7 +27,6 @@ DJANGO_ATLAS = {
 
 TEMPLATE_DEBUG = DEBUG
 
-djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -40,7 +48,7 @@ ADMINS = ()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ummeli',    # Or path to database file if using sqlite3.
         'USER': 'ummeli',
         'PASSWORD': 'ummeli',
@@ -131,6 +139,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "vlive.custom_context_processors.unique_id_processor",
     "vlive.custom_context_processors.user_profile_processor",
     "vlive.custom_context_processors.province_session_processor",
+    "opportunities.tomtom.context_processors.recognised_device_processor",
 )
 
 INSTALLED_APPS = (
@@ -179,6 +188,10 @@ INSTALLED_APPS = (
 
     # 3rd party
     'ckeditor',
+    'atlas',
+    'django.contrib.gis',
+    'tastypie',
+    'simple_autocomplete',
     'export',
 )
 
@@ -214,7 +227,7 @@ CELERY_ALWAYS_EAGER = False
 CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks",
                 'jmbo_analytics.tasks')
 CELERY_RESULT_BACKEND = "amqp"
-CELERY_TASK_RESULT_EXPIRES = 3600
+CELERY_TASK_RESULT_EXPIRES = 60
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
@@ -259,6 +272,9 @@ COMMENTS_PER_PAGE = 15
 PML_IGNORE_PATH = ['/vlive/downloads/', '/vlive/jmbo-analytics/', ]
 GOOGLE_ANALYTICS_IGNORE_PATH = ['/health/', ]
 
+GEOIP_PATH = abspath('../ve/src/django-atlas/atlas/datasets/MaxMind/')
+GEOIP_CITY = 'GeoLiteCity.dat'
+GEOIP_COUNTRY = 'GeoIPv6.dat'
 SERIALIZATION_MODULES = {
     'csv': 'snippetscream.csv_serializer',
 }

@@ -1,0 +1,39 @@
+{% load opportunities_tags %}
+<div class="wrap">
+    <strong>{{object.title}}</strong>
+    <br/>
+    <br/>
+    {{ object.description|safe }}
+</div>
+<br/>
+{% if object.must_qualify and not has_qualified %}
+<h2>
+    You need to qualify
+</h2>
+<div class="wrap">
+    In order to begin you have to succesfully complete this qualification task.
+    <br/>
+    <a href="{% url campaign_qualify object.slug %}">
+        Qualification Task
+    </a>
+</div>
+{% else %}
+<div class="wrap">
+    {% get_tasks_for_user object as user_tasks %}
+    {% if user_tasks %}
+    <div class="list-separated">
+    <a href="{% url my_micro_tasks object.slug %}">
+        My Tasks ({{user_tasks.count}})
+    </a>
+    </div>
+    {% endif %}
+
+    <div class="list-separated">
+    <a href="{% url micro_tasks object.slug %}">
+        Availabe Tasks ({{object.available_tasks.count}})
+    </a>
+    </div>
+</div>
+{% endif %}
+<br/>
+<div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>

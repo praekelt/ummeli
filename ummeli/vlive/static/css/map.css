@@ -1,0 +1,754 @@
+#map {
+    width: 240px;
+    height: 320px;
+}
+
+.olMap {
+	cursor: default;
+    z-index: 0;
+}
+
+.olLayerDiv {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+}
+
+.olLayerGrid .olTileImage {
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+}
+
+/**
+ * Cursor styles
+ */
+
+.olCursorWait {
+    cursor: wait;
+}
+.olDragDown {
+    cursor: move;
+}
+.olDrawBox {
+    cursor: crosshair;
+}
+.olControlDragFeatureOver {
+    cursor: move;
+}
+.olControlDragFeatureActive.olControlDragFeatureOver.olDragDown {
+    cursor: -moz-grabbing;
+}
+
+.olMap .trafficIcon {
+	width: 28px;
+	height: 28px;
+	position: absolute;
+	margin: -14px 0 0 -14px;
+	cursor: pointer;
+}
+
+.olMap .trafficIcon-cluster {
+	width: 32px;
+	height: 16px;
+	padding-top: 17px;
+	text-align: center;
+	font: 10px arial;
+	color: #fff;
+	font-weight: bold;
+	margin: -16px 0 0 -16px;
+}
+
+.olMap .trafficIcon-region {
+	width: 40px;
+	height: 21px;
+	padding-top: 20px;
+}
+
+.olMap .trafficIcon-hover {
+	width: 56px;
+	height: 56px;
+	margin: -28px 0 0 -28px;
+	background-position: -28px 0;
+}
+
+.olMap .trafficIcon-cluster.trafficIcon-hover {
+	background-position: -32px 0;
+	padding-top: 31px;
+	height: 25px;
+	font-size: 14px;
+}
+
+.olMap .trafficIcon-region.trafficIcon-hover {
+	background-position: -40px 0;
+}
+
+.olPopup {
+	min-width: 200px;
+}
+
+.olPopup .olPopupInner,
+.olPopup .olPopupSide,
+.olPopup .olPopupBottom,
+.olPopup .olPopupBottom div {
+	background: transparent url(../images/balloon-bg.png) no-repeat top right;
+}
+
+.olPopup .olPopupInner {
+	padding:0px 12px 0px 0px;
+}
+
+.olPopup .olPopupSide {
+	/* top+left vertical slice */
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:12px; /* top slice width */
+	margin-left:-12px;
+	height:100%;
+	background-position:top left;
+}
+
+.olPopup .olPopupBottom {
+	/* bottom */
+	position:relative;
+	width:100%;
+}
+
+.olPopup .olPopupBottom,
+.olPopup .olPopupBottom div {
+	height:18px; /* height of bottom cap/shade */
+	font-size:1px;
+}
+
+.olPopup .olPopupBottom {
+	background-position:bottom right;
+}
+
+.olPopup .olPopupBottom div {
+	position:relative;
+	width:12px; /* bottom corner width */
+	margin-left:-12px;
+	background-position:bottom left;
+}
+
+.olPopup .olPopupWrapper {
+	/* extra content protector - preventing vertical overflow (past background) */
+	position:static;
+	max-height:1000px;
+}
+
+.olPopup .olPopupContent {
+	padding: 10px 0;
+}
+
+.olPopup .olPopupArrow {
+	background: transparent url(../images/balloon-arrows.png) no-repeat;
+	position: absolute;
+	width: 21px;
+	height: 18px;
+}
+
+.olPopup-br .olPopupArrow {
+	top: 0;
+	margin-top: -8px;
+	background-position: -19px -40px;
+}
+
+.olPopup-tr .olPopupArrow {
+	bottom: 0;
+	margin-bottom: -6px;
+	background-position: -19px 0;
+}
+
+.olPopup-tl .olPopupArrow {
+	bottom: 0;
+	margin-bottom: -6px;
+	background-position: -19px 0;
+	right: 18px;
+}
+
+.olPopup-bl .olPopupArrow {
+	top: 0;
+	margin-top: -8px;
+	background-position: -19px -40px;
+	right: 18px;
+}
+
+.olPopup-br {
+	margin: 4px 0 0 -12px;
+}
+
+.olPopup-tr {
+	margin: -4px 0 0 -12px;
+}
+
+.olPopup-tl {
+	margin: -4px 0 0 27px;
+}
+
+.olPopup-bl {
+	margin: 4px 0 0 27px;
+}
+
+.olMap .trafficInfo {
+	font: 11px Verdana;
+}
+
+.olMap .trafficInfo .header {
+	background-color: #EBF5D9;
+	padding: 4px;
+	overflow: hidden;
+}
+
+.olMap .trafficInfo .icon,
+.olMap .trafficInfo .road,
+.olMap .trafficInfo .delay,
+.olMap .trafficInfo .length {
+	float: left;
+}
+
+.olMap .trafficInfo label,
+.olMap .trafficInfo label {
+	display: block;
+	color: #989898;
+	font-size: 9px;
+}
+
+.olMap .trafficInfo .description {
+	color: #989898;
+	font-size: 9px;
+}
+
+.olMap .trafficInfo .body {
+	width: 300px;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
+.olMap .trafficInfo .location {
+	border-style: dashed;
+	border-width: 1px 0;
+	border-color: #989898;
+	margin-top: 2px;
+	padding: 2px 0;
+}
+
+.olMap .trafficInfo .body label {
+	float: left;
+	width: 80px;
+	text-align: right;
+}
+
+.olMap .trafficInfo .location .line {
+	overflow: hidden;
+}
+
+.olMap .trafficInfo .location .line div {
+	float: right;
+	width: 215px;
+}
+
+.olMap .trafficInfo .icon {
+	background-repeat: none;
+	width: 32px;
+	height: 32px;
+}
+
+.olMap .trafficInfo .road {
+	width: 150px;
+	padding-top: 8px;
+}
+
+.olMap .trafficInfo .delay {
+	width: 60px;
+}
+
+.olMap .trafficInfo-cluster table {
+	width: 100%;
+	cursor: pointer;
+	border-spacing: 0;
+}
+
+.olMap .trafficInfo-cluster .header {
+	font-weight: bold;
+}
+
+.olMap .trafficInfo-cluster td.location {
+	border-top: none;
+}
+
+.olMap .trafficInfo-cluster td {
+	border-bottom: 1px dashed #ccc;
+}
+
+.olMap .trafficInfo-cluster h3 {
+	margin: 6px 0;
+	padding: 4px 0;
+	font-size: 12px;
+	border-style: solid none dashed none;
+	border-width: 1px 0 1px 0;
+	border-color: #ccc;
+}
+
+.olMap .trafficInfo-cluster h3 span {
+	font-weight: normal;
+	font-size: 10px;
+	color: #989898;
+}
+
+.olMap .trafficInfo-cluster tr.last td {
+	border: 0 none;
+}
+
+.olMap .trafficInfo-cluster .delay,
+.olMap .trafficInfo-cluster .length {
+	float: none;
+	width: auto;
+	padding-bottom: 25px;
+}
+
+.olMap .trafficInfo-cluster tr:hover td {
+	background-color: #EBF5D9;
+}
+
+.routeControlWrapper {
+	height: 100%;
+	overflow: auto;
+}
+
+.routeControl {
+	background-color: #fff;
+	padding: 10px;
+	overflow: auto;
+}
+
+.routeControl .routeInformation {
+	border-top: 1px solid #ccc;
+	margin-top: 10px;
+	font-size: 14px;
+	display: none;
+}
+
+.routeControl .summary {
+	padding: 10px 0 0 20px;
+	background: transparent url(../images/instructions/delay_icon.png) no-repeat left center;
+}
+
+.routeControl .summary p {
+	margin: 0;
+}
+
+.routeControl .instructions {
+	padding: 0;
+	margin: 10px 0 0 0;
+}
+
+.routeControl .instructions li {
+	list-style: none;
+	overflow: hidden;
+	border-top: 1px solid #eee;
+	padding: 5px 0;
+	cursor: pointer;
+}
+
+.routeControl .instructions li:hover {
+	background-color: #eee;
+}
+
+.routeControl .instructions li .icon {
+	float: left;
+	margin-right: 10px;
+}
+
+.routeControl .instructions li .instructionText {
+	float: left;
+	width: 200px;
+}
+
+.routeControl .instructions li .distance {
+	float: right;
+}
+
+.routeControl .instructions .sign {
+	background-color: #080;
+	color: #fff;
+	font-weight: bold;
+	padding: 2px 4px;
+}
+
+.routeControl h2 {
+	margin: 0 0 5px 0;
+	font-size: 16px;
+}
+
+.routeControl .parameters .text {
+	width: 200px;
+}
+
+.routeControl .parameters .row {
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+
+.routeControl .parameters .row label {
+	float: left;
+	width: 60px;
+	text-align: right;
+	margin-right: 10px;
+}
+
+.routeControl .parameters .row .data {
+	float: left;
+}
+
+.routeControl .parameters .row .data label {
+	width: auto;
+	float: none;
+}
+
+.routeControl .buttons {
+	text-align: right;
+}
+
+.olAutoComplete {
+	position: absolute;
+	max-height: 100px;
+	overflow: auto;
+	background: #fff none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	display: none;
+	min-width: 200px;
+}
+
+.olAutoComplete ul {
+	padding: 0;
+	margin: 0;
+}
+
+.olAutoComplete li {
+	list-style: none;
+	padding: 4px;
+}
+
+.olAutoComplete li.selected {
+	background: #eee;
+}
+
+.olMap .loadingBackdrop {
+	background: rgba(0, 0, 0, 0.7);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2000000, endColorstr=#b2000000);
+	/* For IE 8*/
+	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2000000, endColorstr=#b2000000);
+	width: 100%;
+	height: 100%;
+	z-index: 9998;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.olMap .loadingMessage {
+	width: 350px;
+	height: 100px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 0 0 6px #999;
+	position: absolute;
+	z-index: 9999;
+}
+
+.olMap .loadingMessage .message {
+	width: 100%;
+	text-align: center;
+	padding-top: 20px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.olMap .loadingMessage .image {
+	background: transparent url(../images/loading.gif);
+	width: 220px;
+	height: 19px;
+	position: absolute;
+	bottom: 20px;
+	left: 65px;
+}
+
+.olControlOverviewMapContainer {
+	bottom: 0;
+	right: 0;
+	background: transparent url(../images/balloon-bg.png) no-repeat;
+	padding: 18px 0 0 18px;
+}
+
+.olControlOverviewMapExtentRectangle {
+	border: 2px solid #f00;
+	cursor: move;
+	overflow: hidden;
+	/* all because of IE...the spacer.gif lives again */
+	background-image: url(../images/blank.gif);
+}
+
+.olControlOverviewMapContainer .olControlOverviewMapElement {
+	display: none;
+}
+
+.olControlOverviewMapContainerMaximized .olControlOverviewMapElement {
+	display: block;
+}
+
+.olControlOverviewMapContainer .button {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 10px;
+	height: 10px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.olControlOverviewMapContainer .button div {
+	width: 7px;
+	height: 7px;
+	background: transparent url(../images/minimap-arrow.png) no-repeat;
+}
+
+.olControlOverviewMapContainerMaximized .button div {
+	background-position: 0 -7px;
+}
+
+.olControlOverviewMapContainerMaximized .button {
+	top: 0;
+	left: 0;
+}
+
+.olControlScaleLine {
+   display: block;
+   position: absolute;
+   left: 15px;
+   bottom: 45px;
+   font-size: xx-small;
+}
+
+.olControlScaleLineBottom {
+   border: solid 2px black;
+   border-bottom: none;
+   margin-top:-2px;
+   text-align: center;
+}
+
+.olControlScaleLineTop {
+   border: solid 2px black;
+   border-top: none;
+   text-align: center;
+}
+
+.olControlPanZoomBar {
+
+}
+
+.olControlPanZoomBar .olPanContainer {
+	background: transparent url(../images/panZoom.png) no-repeat -89px -81px;
+	width: 62px;
+	height: 62px;
+	position: relative;
+}
+
+.olControlPanZoomBar a {
+	display: block;
+	position: absolute;
+}
+
+.olControlPanZoomBar .olPanContainer a {
+	width: 16px;
+	height: 16px;
+}
+
+.olControlPanZoomBar .olPanUp {
+	top: 6px;
+	left: 24px;
+}
+
+.olControlPanZoomBar .olPanUp:hover {
+	background: transparent url(../images/panZoom.png) no-repeat -113px -149px;
+}
+
+.olControlPanZoomBar .olPanLeft {
+	top: 22px;
+	left: 8px;
+}
+
+.olControlPanZoomBar .olPanLeft:hover {
+	background: transparent url(../images/panZoom.png) no-repeat -97px -165px;
+}
+
+.olControlPanZoomBar .olPanRight {
+	top: 22px;
+	left: 40px;
+}
+
+.olControlPanZoomBar .olPanRight:hover {
+	background: transparent url(../images/panZoom.png) no-repeat -130px -165px;
+}
+
+.olControlPanZoomBar .olPanDown {
+	top: 38px;
+	left: 24px;
+}
+
+.olControlPanZoomBar .olPanDown:hover {
+	background: transparent url(../images/panZoom.png) no-repeat -113px -182px;
+}
+
+.olControlPanZoomBar .olZoomBar {
+	position: absolute;
+	left: 18px;
+	top: 84px;
+	width: 28px;
+	height: 134px;
+	background: transparent url(../images/panZoom.png) no-repeat -29px -71px;
+}
+
+.olControlPanZoomBar .olZoomIn {
+	position: absolute;
+	top: 65px;
+	left: 19px;
+	width: 26px;
+	height: 20px;
+	background: transparent url(../images/panZoom.png) no-repeat -69px -2px;
+}
+
+.olControlPanZoomBar .olZoomIn:hover {
+	background-position-x: -41px;
+}
+
+.olControlPanZoomBar .olZoomOut {
+	position: absolute;
+	top: 217px;
+	left: 18px;
+	width: 28px;
+	height: 22px;
+	background: transparent url(../images/panZoom.png) no-repeat -124px 0;
+}
+
+.olControlPanZoomBar .olZoomOut:hover {
+	background-position-x: -96px;
+}
+
+.olControlPanZoomBar .olZoomBarHandle {
+	left: 6px;
+	width: 16px;
+	height: 9px;
+	position: absolute;
+	background: transparent url(../images/panZoom.png) no-repeat -75px -196px;
+}
+
+.olMarkerCluster {
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	background: transparent url(../images/marker_cluster.png) no-repeat;
+	margin: -16px 0 0 -16px;
+	text-align: center;
+	padding-top: 8px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.olPopupContent .cluster {
+	overflow: auto;
+	height: 100%;
+	width: 300px;
+}
+
+.olPopupContent .clusterItem {
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.olPopupContent .clusterItem:hover {
+	background-color: #eee;
+}
+
+.olPopupContent .cluster .icon {
+	float: left;
+	width: 60px;
+	height: 60px;
+	background-repeat: no-repeat;
+}
+
+.olPopupContent .cluster .description {
+	width: 200px;
+	float: left;
+}
+
+.olPopupMarker {
+	cursor: pointer;
+}
+
+.olControlAttribution {
+	left: 0;
+	bottom: 0;
+	color: #000;
+	font-size: 12px;
+	padding: 8px;
+	background: rgba(255, 255, 255, 0.7);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2ffffff, endColorstr=#b2ffffff);
+	/* For IE 8*/
+	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2ffffff, endColorstr=#b2ffffff);
+}
+
+.olMap .contextMenu {
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 1px 1px 10px #000;
+	padding: 4px 0;
+	max-width: 300px;
+	max-height: 300px;
+	overflow-y: auto;
+	margin: 0;
+}
+
+.olMap .contextMenu li {
+	list-style: none;
+	margin: 0;
+	padding: 4px 8px;
+	cursor: pointer;
+}
+
+.olMap .contextMenuActive {
+	display: block;
+}
+
+.olMap .contextMenu .menuItemHover {
+	background-color: #ccc;
+}
+
+.olMap .copyrightInfo {
+	font-size: 14px;
+	width: 300px;
+	min-height: 80px;
+}
+
+.olMap .copyrightInfo img {
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+.olInstructionPopup img {
+	float: left;
+}
+
+.olInstructionPopup .road {
+	padding-top: 6px;
+	display: block;
+}

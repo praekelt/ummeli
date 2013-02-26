@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    <a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    {{object.title}}
+</h2>
+<div class="wrap">
+    <div>
+        <p>
+            You have accepted the task <strong>{{object.title}}</strong>
+        </p>
+        <p>
+            This task is now saved in "My Ummeli > My Tasks" so you can read the full instructions and submit your completed task when you are ready.
+        </p>
+        <p>
+            Remember you must complete this task within <strong>24 hours</strong>.
+        </p>
+        <p>
+            <a href="{% url my_microtasks %}">Go to My Tasks</a>
+        </p>
+    </div>
+    {% if object.is_available %}
+    <h2>Want to do it?</h2>
+    <ul>
+        <li class="bullet">You have {{object.hours_per_task}}hrs and the task will expire</li>
+        <li class="bullet">You have to physically go to the location</li>
+        <li class="bullet">Make sure your GPS is enabled when taking the picture</li>
+        <li class="bullet">You will only receive your airtime when we have checked that the data you submitted is correct.</li>
+    </ul>
+    <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
+    {% endif %}
+</div>
+
+{% endblock %}

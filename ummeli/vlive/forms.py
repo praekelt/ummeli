@@ -101,7 +101,8 @@ class PersonalStatementForm(PMLModelForm):
         fields = ('about_me',)
 
 class EducationDetailsForm(PMLModelForm):
-    highest_grade = IntegerField(label = 'Highest grade passed',  required = False)
+    highest_grade = IntegerField(label='Highest grade passed', required=False,
+                    error_messages={'invalid': 'Please enter a valid number'})
     highest_grade_year = IntegerField(label = 'Year passed',  required = False,
                                       error_messages = {'invalid': 'Please enter a valid Year'})
     school = CharField(label = 'Name of school', required = False)

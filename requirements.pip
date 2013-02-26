@@ -35,8 +35,11 @@ django_geckoboard
 -e git+git://github.com/praekelt/jmbo-word-suggest.git@develop#egg=jmbo-word-suggest
 -e git+git://github.com/praekelt/jmbo-your-words.git@develop#egg=jmbo-your-words
 BeautifulSoup>=3.0.8.1
--e git+https://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
+-e git+git://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
 raven
+-e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
+-e git+git://github.com/praekelt/jmbo.git@feature/add_location_to_modelbase#egg=jmbo
+django-simple-autocomplete
 -e git://github.com/smn/device-proxy.git@develop#egg=device-proxy
 -e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics
 django-object-tools

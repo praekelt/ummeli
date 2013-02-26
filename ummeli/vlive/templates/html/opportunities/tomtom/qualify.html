@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Campaigns</a> &raquo;
+        <a href="{% url campaign_detail object.slug %}">{{object.title}}</a>
+    </h2>
+    <h2>General Rules</h2>
+    Once you have enabled GPS tagging on your phone, please remember the following guidelines:
+    <ul>
+        <li class="bullet">For GPS to work properly, <strong>you need to be outside</strong></li>
+        <li class="bullet">Your phone will likely have <strong>an indicator or icon</strong> showing you when your <strong>GPS is active</strong>. (consult your phone manual for details)</li>
+        <li class="bullet">Only when the indicator is active will your image be tagged.</li>
+    </ul>
+
+    <h2>Qualification Task</h2>
+    <div class="wrap">
+        {% if error %}
+            <div class="warning">
+                Your image did not contain GPS info. Please check your camera settings and re-take the picture.
+            </div>
+        {% endif %}
+        <strong>{{object.title}}</strong>
+        <br/><br/>
+        {{object.qualification_instructions|safe}}
+        <br/><br/>
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <input type="file" name="file"/>
+                <input type="submit" value="Send" class="btn"/>
+                {% csrf_token %}
+            </fieldset>
+        </form>
+    </div>
+    <br/>
+    <div class="more"><a href="{% url qualify_device object.slug %}">&larr; Back</a></div>
+{% endblock %}

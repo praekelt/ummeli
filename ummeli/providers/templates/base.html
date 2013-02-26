@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+        Charisma v1.0.0
+
+        Copyright 2012 Muhammad Usman
+        Licensed under the Apache License v2.0
+        http://www.apache.org/licenses/LICENSE-2.0
+
+        http://usman.it
+        http://twitter.com/halalit_usman
+    -->
+    <meta charset="utf-8">
+    <title>Ummeli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+    <link id="bs-css" href="{{STATIC_URL}}charisma/css/bootstrap-spacelab.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/custom.css" rel="stylesheet">
+
+    <link href="{{STATIC_URL}}charisma/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}charisma/css/charisma-app.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}charisma/css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+    <link href='{{STATIC_URL}}charisma/css/fullcalendar.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/fullcalendar.print.css' rel='stylesheet'  media='print'>
+    <link href='{{STATIC_URL}}charisma/css/chosen.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/uniform.default.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/colorbox.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/jquery.cleditor.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/jquery.noty.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/elfinder.min.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/opa-icons.css' rel='stylesheet'>
+    <link href='{{STATIC_URL}}charisma/css/uploadify.css' rel='stylesheet'>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.gif">
+
+</head>
+
+<body>
+        <!-- topbar starts -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a href="{% url index %}"> <img alt="Ummeli" src="{{STATIC_URL}}img/ummeli.gif" /></a>
+
+                <!-- user dropdown starts -->
+                <div class="btn-group pull-right" >
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-user"></i><span class="hidden-phone"> {{request.user.username}}</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url logout %}">Logout</a></li>
+                    </ul>
+                </div>
+                <!-- user dropdown ends -->
+
+                {% block topmenu %}
+                {% endblock %}
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <!-- topbar ends -->
+        <div class="container-fluid">
+        <div class="row-fluid">
+            <noscript>
+                <div class="alert alert-block span10">
+                    <h4 class="alert-heading">Warning!</h4>
+                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+                </div>
+            </noscript>
+
+            <div id="content">
+            <!-- content starts -->
+
+
+            {% block content %}
+            {% endblock %}
+
+                    <!-- content ends -->
+            </div><!--/#content.span10-->
+        </div><!--/fluid-row-->
+
+        <hr>
+
+        <div class="modal hide fade" id="myModal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Settings</h3>
+            </div>
+            <div class="modal-body">
+                <p>Here settings can be configured...</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Close</a>
+                <a href="#" class="btn btn-primary">Save changes</a>
+            </div>
+        </div>
+
+        <!--
+        <footer>
+            <p class="pull-left">&copy; <a href="http://usman.it" target="_blank">Muhammad Usman</a> 2012</p>
+            <p class="pull-right">Powered by: <a href="http://usman.it/free-responsive-admin-template">Charisma</a></p>
+        </footer>
+        -->
+
+        <footer>
+                <div class="pull-left">©  {% now "Y" %} <a href="http://praekeltfoundation.org/" target="_blank">Praekelt Foundation</a><!-- | <a href="terms.html">Terms &amp; Conditions</a>--> | <a href="http://ummeli.com/contact.html" target="_blank">Contact Us</a></div>
+        </footer>
+
+    </div><!--/.fluid-container-->
+
+    <!-- external javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jQuery -->
+    <script src="{{STATIC_URL}}charisma/js/jquery-1.7.2.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="{{STATIC_URL}}charisma/js/jquery-ui-1.8.21.custom.min.js"></script>
+    <!-- transition / effect library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-transition.js"></script>
+    <!-- alert enhancer library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-alert.js"></script>
+    <!-- modal / dialog library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-modal.js"></script>
+    <!-- scrolspy library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-scrollspy.js"></script>
+    <!-- library for advanced tooltip -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-tooltip.js"></script>
+    <!-- popover effect library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-popover.js"></script>
+    <!-- button enhancer library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-button.js"></script>
+    <!-- autocomplete library -->
+    <script src="{{STATIC_URL}}charisma/js/bootstrap-typeahead.js"></script>
+    <!-- data table plugin -->
+    <script src='{{STATIC_URL}}charisma/js/jquery.dataTables.min.js'></script>
+
+    <!-- checkbox, radio, and file input styler -->
+    <script src="{{STATIC_URL}}charisma/js/jquery.uniform.min.js"></script>
+    <!-- notification plugin -->
+    <script src="{{STATIC_URL}}charisma/js/jquery.noty.js"></script>
+    <!-- for iOS style toggle switch -->
+    <script src="{{STATIC_URL}}charisma/js/jquery.iphone.toggle.js"></script>
+    <!-- autogrowing textarea plugin -->
+    <script src="{{STATIC_URL}}charisma/js/jquery.autogrow-textarea.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        //uniform - styler for checkbox, radio and file input
+        $("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
+
+        {% if messages %}
+        {% for message in messages %}
+            var option = {"text":"{{message}}",
+            "layout":"top",
+            "closeButton":"true",
+            "type":"{{message.tags}}"};
+            noty(option);
+        {% endfor %}
+        {% endif %}
+    });
+    </script>
+    {% block script %}
+    {% endblock %}
+</body>
+</html>

@@ -7,7 +7,7 @@
         {% for object in object_list %}
         <div class="img-article article">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Location: {{object.location}}</small><br/>
+            <small>Location: {{object.place}}</small><br/>
             <small>When: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>
         </div>
         {% empty %}

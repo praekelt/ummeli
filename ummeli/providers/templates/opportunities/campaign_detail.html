@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block topmenu %}
+<div class="pull-right">
+    <a href="{% url upload object.slug %}" class="btn btn-close btn-round"><i class="icon-upload"></i>Upload</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="well span12 top-block" href="#">
+        <div style="float:left;">
+            <span class="icon32 icon-blue icon-basket"></span>
+        </div>
+        <div class="dash-module span3" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{all_tasks.count}}</span>
+            <br/>Total Published
+        </div>
+        <div class="dash-module span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{live_tasks.count}}</span>
+            <br/>Live
+        </div>
+        <div class="dash-module span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{closed_tasks.count}}</span>
+            <br/>Archived
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="well span12 top-block" href="#">
+        <div style="float:left;">
+            <span class="icon32 icon-blue icon-compose"></span>
+        </div>
+        <div class="dash-module span3" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{object.responses.count}}</span><br/>Total Submissions
+        </div>
+        <div class="dash-module span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{object.accepted.count}}</span><br/>Accepted
+        </div>
+        <div class="dash-module span4" style="float:left;border-left: 2px solid #fefefe;text-align:left;padding-left: 10px;">
+            <span>{{object.rejected.count}}</span><br/>Rejected
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="box span12">
+        <div class="box-header well">
+            <h2><i class="icon-folder-open"></i> New Submissions</h2>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+            {% for t in object.responses|slice:":3" %}
+                <li>
+                    <a href="{% url providers.micro_task_detail object.slug t.slug %}">
+                        {% if t.tomtommicrotask %}
+                        <i class="icon-map-marker"></i>
+                        {% else %}
+                        <i class="icon-edit"></i>
+                        {% endif %}
+                        &nbsp;
+                        {% if t.title %}{{t.title}}
+                        {% else%}{{t.location.city.name}}{% endif %}
+                    </a>
+                    <div class="muted" style="margin-left: 26px;">{{t.location.city}}</div>
+                    {% for r in t.microtaskresponse_set.all %}
+                        <i class="icon-edit"></i>
+                        <span style="margin-left: 8px;">
+                        {% if r.user.get_profile.fullname %}{{r.user.get_profile.fullname}}
+                        {% else %}{{r.user.username}}{% endif %}
+                        <div class="pull-right">{{r.date|timesince}}</div>
+                        </span>
+                    {% endfor %}
+                </li>
+            {% empty %}
+            <li>No new submissions</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="box span12">
+        <div class="box-header well">
+            <h2><i class="icon-folder-open"></i> Live</h2>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+            {% for t in live_tasks|slice:":3" %}
+                <li>
+                    <a href="{% url providers.micro_task_detail object.slug t.slug %}">
+                        {% if t.tomtommicrotask %}
+                        <i class="icon-map-marker"></i>
+                        {% else %}
+                        <i class="icon-edit"></i>
+                        {% endif %}
+                        &nbsp;
+                        {% if t.title %}{{t.title}}
+                        {% else%}{{t.location.city.name}}{% endif %}
+                    </a>
+                        <div class="pull-right">{{t.created|timesince}}</div>
+                    <div class="muted" style="margin-left: 25px;">{{t.location.city}}</div>
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -3,7 +3,6 @@
 
     {% block content %}
     {% endblock %}
-    <br/>
     <h2>Menu</h2>
     <div id="menu">
         <div><a href="{% url home %}">Home</a></div>
@@ -14,4 +13,5 @@
         <div><a href="{% url my_ummeli %}">My Ummeli</a></div>
     </div>
 
+<script type="text/javascript" src="{{ STATIC_URL }}js/ummeli-atlas.js"></script>
 {% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url index %}">Home</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url providers.campaign_detail campaign.slug %}">{{campaign.title}}</a> <span class="divider">/</span>
+        </li>
+        <li>
+            Upload
+        </li>
+    </ul>
+</div>
+<div class="row-fluid">
+    <div class="box span12">
+        <div class="box-header well" data-original-title="">
+            <h2><i class="icon-edit"></i> Upload CSV</h2>
+        </div>
+        <div class="box-content">
+            <form class="form-horizontal" method='post' enctype="multipart/form-data">
+              <fieldset>
+                <div class="control-group {% if form.file.errors %}error{%endif%}">
+                    <label class="control-label" for="id_file">CSV File</label>
+                    {{form.file}}
+                </div>
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Upload"/>
+                </div>
+                {% csrf_token %}
+              </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

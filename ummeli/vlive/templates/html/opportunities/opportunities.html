@@ -5,6 +5,12 @@
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
 
+        {% if campaigns %}
+        <div class="bullet">
+            <a href="{% url campaigns %}">Tasks</a>
+        </div>
+        {% endif %}
+
         <div class="bullet">
             <a href="{% url jobs_list %}">Jobs</a>
         </div>
@@ -14,7 +20,7 @@
             <a href="{% url bursaries %}">Bursaries</a>
         </div>
         {% endif %}
-        
+
         {% if internships %}
         <div class="bullet">
             <a href="{% url internships %}">Internships</a>

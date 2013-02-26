@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url index %}">Home</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url providers.campaign_detail campaign.slug %}">{{campaign.title}}</a> <span class="divider">/</span>
+        </li>
+        <li>
+            Responses
+        </li>
+    </ul>
+</div>
+<div class="page-header">
+  <h2>{{campaign.title}}</h2>
+</div>
+<div class="row-fluid">
+    <a data-rel="tooltip" title="{{campaign.tasks_new.count}} new tasks" class="well span3 top-block" href="{% url providers.campaign_detail campaign.slug %}">
+        <span class="icon32 icon-blue icon-basket"></span>
+        <div>Published</div>
+        <div>{{campaign.tasks.count}}</div>
+        <span class="notification">{{campaign.tasks_new.count}}</span>
+    </a>
+
+    <a data-rel="tooltip" title="{{campaign.responses_new.count}} new responses" class="well span3 top-block" href="{% url providers.micro_task_responses campaign.slug %}">
+        <span class="icon32 icon-orange icon-compose"></span>
+        <div>Responses</div>
+        <div>{{campaign.responses.count}}</div>
+        <span class="notification yellow">{{campaign.responses_new.count}}</span>
+    </a>
+
+    <a data-rel="tooltip" title="Not implemented yet" class="well span3 top-block" href="#">
+        <span class="icon32 icon-color icon-close"></span>
+        <div>Rejected</div>
+        <div>NA</div>
+        <span class="notification red">NA</span>
+    </a>
+
+    <a data-rel="tooltip" title="Not implemented yet" class="well span3 top-block" href="#">
+        <span class="icon32 icon-color icon-check"></span>
+        <div>Accepted</div>
+        <div>NA</div>
+        <span class="notification green">NA</span>
+    </a>
+</div>
+
+<div class="row-fluid">
+    <div class="box span12">
+        <div class="box-header well">
+            <h2><i class="icon-folder-open"></i> Responses</h2>
+        </div>
+        <div class="box-content">
+            <ul class="dashboard-list">
+            {% for t in object_list|slice:":3" %}
+                <li>
+                    <a href="{% url providers.micro_task_detail campaign.slug t.task.slug %}">
+                        <i class="icon-edit"></i>
+                        &nbsp;
+                        {% if t.task.title %}{{t.task.title}}
+                        {% else%}{{t.task.location.city.name}}{% endif %}
+                    </a> &nbsp; {{t.date|timesince}} ago
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="row-fluid">
+                <div class="span12">
+                    <br/>
+                    <span class="clearfix">
+                        Showing {{page_obj.start_index}} to {{page_obj.end_index}} of {{page_obj.paginator.count}} entries
+                    </span>
+                </div>
+                <div class="span12 center">
+                    <div class="dataTables_paginate paging_bootstrap pagination">
+                        <ul>
+                            <li class="prev {% if not page_obj.has_previous %}disabled{% endif %}">
+                                <a href="{{request.path}}?page={{page_obj.previous_page_number}}">← Previous</a>
+                            </li>
+                            {% for p in page_obj.paginator.page_range %}
+                            <li {% if p == page_obj.number %}class="active"{% endif %}>
+                                <a href="{{request.path}}?page={{p}}">{{p}}</a>
+                            </li>
+                            {% endfor %}
+                            <li class="next {% if not page_obj.has_next %}disabled{% endif %}">
+                                <a href="{{request.path}}?page={{page_obj.next_page_number}}">Next → </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

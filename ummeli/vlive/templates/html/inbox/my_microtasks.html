@@ -1,0 +1,78 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url my_ummeli %}">My Ummeli</a> &raquo;
+        My Tasks
+    </h2>
+    <p>
+        {% for object in object_list %}
+        {% if object.state == 0 %}
+        <div class="img-article list-separated">
+            <div><a href="{% url micro_task_detail object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <div><small>{{object.expires_on|timeuntil}} left</small></div>
+            <div class="bullet"><a href="{% url micro_task_detail object.task.slug %}">Complete Task</a></div>
+        </div>
+        {% else %}{% if object.state == 1 %}
+        <div class="img-article list-separated">
+            {% if object.microtaskresponse.state == 0 %}
+            <div><a href="{% url micro_task_upload object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <span class="subtext">submitted (waiting for approval)</span>
+            {% else %}{% if object.microtaskresponse.state == 1 %}
+            <div>
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </div>
+            <span class="subtext">Accepted</span>
+            {% else %}
+            <div><a href="{% url micro_task_upload object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <span class="subtext">
+                Rejected - {{object.microtaskresponse.get_reject_reason_display}}
+            </span>
+            {% endif %}{% endif %}
+        </div>
+        {% else %}
+        <div class="img-article list-separated">
+            <div><a href="{% url micro_task_detail object.task.slug %}">
+                {% if object.task.title %}{{object.task.title}}
+                {% else%}{{object.task.location.city.name}}{% endif %}
+            </a></div>
+            <div><span class="subtext">Expired {{object.expires_on|timesince}}</span></div>
+        </div>
+        {% endif %}{% endif %}
+        {% empty %}
+        <p>0 tasks booked.</p>
+        {% endfor %}
+    </p>
+    {% if object_list %}
+    {% if page_obj.has_previous or page_obj.has_next %}
+    <div id="pagination">
+    {% if page_obj.has_previous %}
+        <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
+    {% else %}
+        <span>Previous</span> |
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+    {% else %}
+        | <span>Next</span>
+    {% endif %}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+{% endblock %}

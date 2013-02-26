@@ -12,6 +12,7 @@
         {% endif %}
     </div>
     <div class="bullet"><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
+    <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a><span class="subtext">  &rarr; {{request.user.taskcheckout_set.count}} tasks</span></div>
     <div class="bullet"><a href="{% url my_settings %}">My Settings &rarr; </a></div>
     <div class="bullet"><a href="{% url send %}">Send as CV &rarr; </a></div>
 {% endblock %}

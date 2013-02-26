@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    <a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    {{object.title}}
+</h2>
+<div class="wrap">
+    <div>{{object.title}}</div>
+    <div>{{object.description}}</div>
+    <div>{{object.tomtommicrotask.location.city}}</div>
+    <h2>Guidelines</h2>
+    <p>Once you have <a href="{% url device_instructions %}?next={{request.path}}">enabled GPS tagging</a> on your phone, please remember the following guidelines:
+    </p>
+    <ul>
+        <li class="bullet">For GPS to work properly, <strong>you need to be outside</strong></li>
+        <li class="bullet">Your phone will likely have <strong>an indicator or icon</strong> showing you when your <strong>GPS is active</strong>. (consult your phone manual for details)</li>
+        <li class="bullet">Only when the indicator is active will your image be tagged.</li>
+    </ul>
+
+    <h2>Information</h2>
+    <div>
+        <ul>
+            <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
+            <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
+            <li><strong>Tel 2:</strong> {{object.tomtommicrotask.tel_2}}</li>
+            <li><strong>Fax:</strong> {{object.tomtommicrotask.fax}}</li>
+            <li><strong>Email:</strong> {{object.tomtommicrotask.email}}</li>
+            <li><strong>www:</strong> {{object.tomtommicrotask.website}}</li>
+        </ul>
+    </div>
+    <h2 class="warning">Location has changed</h2>
+    <ul>
+        <li class="bullet">Tell us why you say this location has changed or moved</li>
+        <li class="bullet">You are still required to give the picture of the location</li>
+    </ul><br/>
+    <form method="post" enctype="multipart/form-data">
+        <fieldset>
+        <div class="form-fields">
+            <label>Reason:</label>
+            <div><strong>Please explain what you see</strong></div>
+            {% include "form_field_errors_snippet.html" with form_field=form.comment %}
+            {{form.comment}}
+        </div>
+        <label>Picture:*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.file %}
+        {{form.file}}
+        <br/>
+        <input type="hidden" value="True" name="poi_has_changed"/>
+        <input type="submit" value="Send" class="btn"/>
+        {% csrf_token %}
+        </fieldset>
+    </form>
+    <br/>
+    <div class="more"><a href="{% url micro_task_detail object.slug %}">&larr; Back</a></div>
+</div>
+
+{% endblock %}

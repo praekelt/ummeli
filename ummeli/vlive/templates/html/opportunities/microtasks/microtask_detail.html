@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    <a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    {{object.title}}
+</h2>
+<div class="wrap">
+    <div>{{object.title}}</div>
+    <div>{{object.description}}</div>
+    <div>{{object.tomtommicrotask.location.city}}</div>
+    <div><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</div>
+
+    <h2>Map</h2>
+    <p>
+        <a href="{% url select-location %}?next={{request.path}}">Click here</a> to update your current location
+        {% if device.name == 'Android' %}
+        <br/>
+        <strong>OR</strong><br/>
+        Open <a href="geo:{{object.location.coordinates.0}},{{object.location.coordinates.1}}?z=10">Maps application</a> on your android phone.
+        {% endif %}
+    </p>
+
+    <div>
+        {% include 'opportunities/tomtom/map.html' %}
+    </div>
+
+    {% if object.is_available %}
+    <h2>Want to do it?</h2>
+    <p>
+    <ul>
+        <li class="bullet">You have {{object.hours_per_task}}hrs and the task will expire</li>
+        <li class="bullet">You have to physically go to the location</li>
+        <li class="bullet">Make sure your GPS is enabled when taking the picture</li>
+        <li class="bullet">You will only receive your airtime when we have checked that the data you submitted is correct.</li>
+    </ul>
+    </p>
+    <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
+    {% else %}
+    <br/>
+    <p><a href="{% url micro_task_conditions object.slug %}">Complete Task</a><br/>
+        Has this location changed? <a href="{% url micro_task_moved object.slug %}">Click here</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

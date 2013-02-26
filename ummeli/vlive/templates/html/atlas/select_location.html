@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<p>Please wait while we obtain you location...</p>
+
+
+<form id="result_form" method="post">
+    <input type="hidden" id="error" name="error" value="False"/>
+{% csrf_token %}
+</form>
+
+<script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
+    <script type="text/javascript">
+    domready(function(){
+        /* Geolocate the client */
+        if (typeof atlas !== 'undefined'){
+            atlas.getLocation(function(location){
+                atlas.setLocation(location, function(){
+                    document.getElementById('result_form').submit();
+                });
+            },function(){
+                document.getElementById('error').value = 'True';
+                document.getElementById('result_form').submit();
+            });
+        }else{
+            document.getElementById('error').value = 'True';
+            document.getElementById('result_form').submit();
+        }
+    });
+    </script>
+{% endblock %}
