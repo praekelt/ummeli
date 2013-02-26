@@ -8,7 +8,7 @@ from django.contrib import messages
 
 from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
-from ummeli.opportunities.forms import SelectLocationForm
+from ummeli.opportunities.tomtom.forms import SelectLocationForm
 from django.contrib.gis.geos import Point
 
 
