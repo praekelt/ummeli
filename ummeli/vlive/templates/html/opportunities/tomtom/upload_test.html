@@ -62,6 +62,13 @@
             var aLat = exif.GPSLatitude;
             var aLong = exif.GPSLongitude;
 
+            if (!(aLat && aLong)){
+                span = "<p><div class='message'><div class='error'>No GPS Data found! Please try a different image</div></div></p>"
+                document.getElementById('status').innerHTML = span;
+                document.getElementById('lat').value = '';
+                document.getElementById('lon').value = '';
+                return; // whoops, no GPS info
+            }
 
             // convert from deg/min/sec to decimal for Google
             var strLatRef = exif.GPSLatitudeRef || "N";
@@ -75,8 +82,8 @@
                 document.getElementById('status').innerHTML = span;
                 document.getElementById('lat').value = '';
                 document.getElementById('lon').value = '';
-                return; // whoops, no GPS info
             }
+                return; // whoops, no GPS info
 
             document.getElementById('lat').value = fLat;
             document.getElementById('lon').value = fLong
@@ -93,7 +100,9 @@
             get_lat_lon(exif);
             document.getElementById('thumb').src = evt.target.result;
             document.getElementById('thumb').setAttribute('style', '');
-            document.getElementById('upload-result').setAttribute('style', 'display:none;');
+            if (document.getElementById('upload-result')) {
+                document.getElementById('upload-result').setAttribute('style', 'display:none;');
+            }
         }
         reader.readAsDataURL(f);
     }
