@@ -30,6 +30,10 @@ def get_recognised_device(request):
             'name': 'Android',
             'template': 'opportunities/tomtom/qualify_device_google.html'
         },
+        'google': {
+            'name': 'Android',
+            'template': 'opportunities/tomtom/qualify_device_google.html'
+        },
     }.get(device.lower(),
         {'name': 'Other',
         'template': 'opportunities/tomtom/qualify_device_other.html'})
