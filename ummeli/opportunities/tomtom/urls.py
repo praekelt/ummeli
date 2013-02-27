@@ -35,4 +35,7 @@ urlpatterns = patterns('',
         'ummeli.opportunities.tomtom.views.task_upload',
         {'template_name': 'opportunities/tomtom/microtask_moved.html'},
         name='micro_task_moved'),
+    url(r'^upload/test/$',
+        'ummeli.opportunities.tomtom.views.upload_test',
+        name='upload_test'),
     )

@@ -126,8 +126,8 @@ def qualify_upload(request, slug):
     if request.method == 'POST':
         form = UploadTaskForm(request.POST, request.FILES)
         if form.is_valid():
-            file = form.cleaned_data['file']
-            lat, lon = get_lat_lon(file)
+            f = form.cleaned_data['file']
+            lat, lon = get_lat_lon(f)
             if lat and lon:
                 campaign.qualifiers.add(request.user)
                 return redirect(reverse('campaign_detail', args=[slug, ]))
@@ -137,3 +137,31 @@ def qualify_upload(request, slug):
         form = UploadTaskForm()
 
     return render(request, 'opportunities/tomtom/qualify.html', context)
+
+
+from django import forms
+class UploadTestForm(forms.Form):
+    file = forms.FileField(required=True)
+    lat = forms.CharField(required=True, error_messages={'required': 'Image missing x-coordinate'})
+    lon = forms.CharField(required=True, error_messages={'required': 'Image missing y-coordinate'})
+
+
+@login_required
+def upload_test(request):
+    lat = lon = exif = None
+    if request.method == 'POST':
+        form = UploadTestForm(request.POST, request.FILES)
+        if form.is_valid():
+            f = form.cleaned_data['file']
+            lat = form.cleaned_data['lat']
+            lon = form.cleaned_data['lon']
+    else:
+        form = UploadTestForm()
+
+    context = {
+        'lat': lat,
+        'lon': lon,
+        'form': form,
+    }
+
+    return render(request, 'opportunities/tomtom/upload_test.html', context)
