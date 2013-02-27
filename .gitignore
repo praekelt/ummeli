@@ -18,8 +18,9 @@ MANIFEST.in
 /ummeli/ummeli-static/
 /ummeli/providers-static/
 /ummeli/providers-static/
+/ummeli/vlive_settings.py
 /ummeli/mobi_settings.py
-/ummeli/basic_settings.py
+/ummeli/basic_mobi_settings.py
 /ummeli/providers_settings.py
 /ummeli/media/
 /neo4j/
