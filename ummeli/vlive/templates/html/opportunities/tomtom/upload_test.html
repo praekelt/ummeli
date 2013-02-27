@@ -77,13 +77,13 @@
             var fLat = (aLat[0] + aLat[1]/60 + aLat[2]/3600) * (strLatRef == "N" ? 1 : -1);
             var fLong = (aLong[0] + aLong[1]/60 + aLong[2]/3600) * (strLongRef == "W" ? -1 : 1);
 
-            if (!(fLat && fLong)){
+            if (fLat == 0 && fLong == 0){
                 span = "<p><div class='message'><div class='error'>No GPS Data found! Please try a different image</div></div></p>"
                 document.getElementById('status').innerHTML = span;
                 document.getElementById('lat').value = '';
                 document.getElementById('lon').value = '';
-            }
                 return; // whoops, no GPS info
+            }
 
             document.getElementById('lat').value = fLat;
             document.getElementById('lon').value = fLong
