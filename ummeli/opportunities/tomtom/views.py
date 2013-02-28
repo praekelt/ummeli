@@ -146,7 +146,6 @@ class UploadTestForm(forms.Form):
     lon = forms.CharField(required=True, error_messages={'required': 'Image missing y-coordinate'})
 
 
-@login_required
 def upload_test(request):
     lat = lon = exif = None
     if request.method == 'POST':

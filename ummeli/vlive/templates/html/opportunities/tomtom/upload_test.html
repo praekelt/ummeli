@@ -3,7 +3,7 @@
 {% block content %}
     <h2>
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        Upload Test</a>
+        Upload Test
     </h2>
     <p>Upload test page.</p>
     <p>
@@ -35,7 +35,7 @@
                 <input type="hidden" name="lat" id="lat"/>
                 <input type="hidden" name="lon" id="lon"/>
                 <img width="128px" class="thumb" id="thumb" style="display:none;"/>
-                <p><div id="status"></div></p>
+                <div id="status"></div>
                 <input type="submit" value="Send" class="btn"/>
                 {% csrf_token %}
             </fieldset>
@@ -44,7 +44,7 @@
     <br/>
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/exif.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/exif.js?v=0"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/binaryajax.js"></script>
 <script>
   function handleFileSelect(evt) {
