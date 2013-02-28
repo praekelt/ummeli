@@ -9,6 +9,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'ummeli.opportunities.tasks.microtask_expire_tasks',
         'schedule': timedelta(seconds=60)
     },
+    'update-recharge-status-every-minute': {
+         'task': 'praekeltpayment.flickswitch.tasks.update_payment_status',
+         'schedule': timedelta(seconds=60)
+     },
 }
 
 DEBUG = False
@@ -24,6 +28,14 @@ JMBO_ANALYTICS = {
 DJANGO_ATLAS = {
     'google_maps_api_key': 'xxx',
 }
+
+PRAEKELT_PAYMENT = {
+    'flickswitch_username': 'xxx',
+    'flickswitch_password': 'xxx',
+    # trailing slash included,
+    'flickswitch_url': 'http://api.hotsocket.co.za:8080/test/'
+}
+
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -177,6 +189,7 @@ INSTALLED_APPS = (
     'jmbowordsuggest',
     'jmboyourwords',
     'jmbo_analytics',
+    'praekeltpayment.flickswitch',
 
     'downloads',
     'sites_groups',
@@ -224,8 +237,11 @@ LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 
 CELERY_ALWAYS_EAGER = False
-CELERY_IMPORTS = ("ummeli.vlive.jobs.tasks", "ummeli.vlive.tasks",
-                'jmbo_analytics.tasks')
+CELERY_IMPORTS = ('ummeli.vlive.jobs.tasks',
+                'ummeli.vlive.tasks',
+                'jmbo_analytics.tasks',
+                'praekeltpayment.flickswitch.api',
+                )
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_TASK_RESULT_EXPIRES = 60
 

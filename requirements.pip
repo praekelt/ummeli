@@ -44,3 +44,4 @@ django-simple-autocomplete
 -e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics
 django-object-tools
 django-export
+-e git://github.com/praekelt/praekelt-payment.git@develop#egg=praekelt-payment
