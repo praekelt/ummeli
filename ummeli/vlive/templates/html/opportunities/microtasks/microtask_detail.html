@@ -26,6 +26,11 @@
         {% include 'opportunities/tomtom/map.html' %}
     </div>
 
+    {% if device.name == 'Apple' %}
+    {% include device.template %}
+    <p>Not your phone? <a href="{% url qualify_device_change %}?next={{request.path}}">Click here</a></p>
+    {% else %}
+
     {% if object.is_available %}
     <h2>Want to do it?</h2>
     <p>
@@ -41,6 +46,7 @@
     <br/>
     <p><a href="{% url micro_task_conditions object.slug %}">Complete Task</a><br/>
         Has this location changed? <a href="{% url micro_task_moved object.slug %}">Click here</a></p>
+    {% endif %}
     {% endif %}
 </div>
 

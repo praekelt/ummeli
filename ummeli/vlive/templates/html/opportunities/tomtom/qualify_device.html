@@ -14,7 +14,9 @@
 
         {% include device.template %}
 
-        <p><a href="{% url qualify_upload object.slug %}">Continue to upload &rarr;</a><br/>
+        {% if device.name != 'Apple' %}
+        <p><a href="{% url qualify_upload object.slug %}">Continue to upload &rarr;</a></p>
+        {% endif %}
 
     </div>
     <br/>

@@ -10,6 +10,9 @@
     <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
+    {% if device.name == 'Apple' %}
+    {% include device.template %}
+    {% endif %}
 
     {% if task_checkout.microtaskresponse.state == 2 %}
     <br/>
