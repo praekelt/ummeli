@@ -151,15 +151,13 @@ def process_upload(csv_file, campaign_slug):
             t.website = r['CITY']
             t.website = r['SUBURB']
             t.owner = campaign.owner
+            t.campaign = campaign
             t.save()
 
             t.province.add(Province.from_str(r['PROVINCE']))
             t.sites.add(Site.objects.get_current())
 
             t.publish()
-
-        if t:
-            campaign.tasks.add(t)
 
 
 def read_data_from_csv_file(csvfile):
