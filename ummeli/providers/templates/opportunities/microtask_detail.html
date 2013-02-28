@@ -105,6 +105,7 @@
         <form method="post">
             <input type="hidden" name="accept" value="1"/>
             <input type="hidden" name="response_id" value="{{response.pk}}"/>
+            <input type="hidden" name="reject_reason" value="0"/>
             <input type="hidden" name="username" value="{% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}"/>
             {% csrf_token %}
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>

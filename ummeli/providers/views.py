@@ -17,7 +17,7 @@ import csv
 from django.contrib.gis.geos import fromstr
 from atlas.models import Location
 from atlas.utils import get_city
-
+from praekeltpayment.flickswitch.models import FlickSwitchPayment
 
 def health(request):
     return HttpResponse("")
@@ -101,6 +101,11 @@ def micro_task_detail(request, campaign, slug):
                 messages.add_message(request, messages.SUCCESS, msg)
                 response.state = ACCEPTED
                 response.save()
+
+                payment = FlickSwitchPayment.objects.create(
+                                            msisdn=response.user.username,
+                                            amount=1000)
+                payment.send_airtime()
             else:
                 msg = '%s`s submission has been rejected. `%s` is now live on Ummeli again.' % (
                     username, task.title)
