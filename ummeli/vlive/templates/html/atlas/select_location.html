@@ -7,6 +7,7 @@
 
 <form id="result_form" method="post">
     <input type="hidden" id="error" name="error" value="False"/>
+    <input type="hidden" id="ignore_post_success" name="ignore_post_success" value="False"/>
 {% csrf_token %}
 </form>
 
@@ -21,10 +22,12 @@
                 });
             },function(){
                 document.getElementById('error').value = 'True';
+                document.getElementById('ignore_post_success').value = 'True';
                 document.getElementById('result_form').submit();
             });
         }else{
             document.getElementById('error').value = 'True';
+            document.getElementById('ignore_post_success').value = 'True';
             document.getElementById('result_form').submit();
         }
     });
