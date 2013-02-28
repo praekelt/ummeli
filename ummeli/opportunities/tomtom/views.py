@@ -89,7 +89,6 @@ def qualify_device(request, slug):
     return render(request, 'opportunities/tomtom/qualify_device.html', context)
 
 
-@login_required
 def qualify_device_change(request):
     next = request.GET.get('next', reverse('campaigns'))
     if request.method == 'POST':

@@ -10,6 +10,8 @@
         {% endif %}
         <p>Welcome to Tasks! Here you can earn some extra airtime by successfully completing a task.</p>
 
+
+
         {% for object in object_list %}
         <div class="img-article list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}} ({{object.available_tasks.count}})</a><br/>
@@ -18,7 +20,6 @@
         {% empty %}
         <p>0 tasks in <a href="{% url microtask_change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
-    </p>
     {% if object_list %}
     {% if page_obj.has_previous or page_obj.has_next %}
     <div id="pagination">
@@ -41,4 +42,13 @@
     {% endif %}
     {% endif %}
     <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>
+    </p>
+
+    <h2>Quick Menu</h2>
+    <div class="bullet"><a href="{% url qualify_device_change %}">Change device ({{device.name}})</a></div>
+    <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a>
+        {% if request.user.taskcheckout_set %}
+        <span class="subtext"> &rarr; {{request.user.taskcheckout_set.count}} task{{request.user.taskcheckout_set.count|pluralize}}</span>
+    {% endif %}
+    </div>
 {% endblock %}
