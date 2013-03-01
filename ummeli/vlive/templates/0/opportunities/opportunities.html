@@ -6,6 +6,9 @@
         <div class="list">Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></div>
 
         <div class="list">
+            <strong>Tom Tom tasks are only available for Smart Phones with GPS. Please try again using a different phone.</strong>
+        </div>
+        <div class="list">
             <a href="{% url jobs_list %}">Jobs</a>
         </div>
 
