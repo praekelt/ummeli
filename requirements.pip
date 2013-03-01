@@ -1,4 +1,4 @@
-Django
+Django>=1.4
 django-piston==0.2.2
 django-nose==0.1.3
 South==0.7.3
@@ -9,9 +9,8 @@ pisa
 html5lib
 pypdf
 reportlab
-django-celery
+django-celery>=3.0
 django-celery-email
-supervisor==3.0a10
 gunicorn==0.13.4
 psycopg2==2.4.1
 libxml2dom
@@ -38,7 +37,7 @@ BeautifulSoup>=3.0.8.1
 -e git+git://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
 raven
 -e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
--e git+git://github.com/praekelt/jmbo.git@feature/add_location_to_modelbase#egg=jmbo
+-e git+git://github.com/praekelt/jmbo.git@develop#egg=jmbo
 django-simple-autocomplete
 -e git://github.com/smn/device-proxy.git@develop#egg=device-proxy
 -e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics
