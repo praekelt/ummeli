@@ -27,14 +27,7 @@
     <p><strong>Please go and correct the information and try again.</strong></p>
     {% endif %}
 
-    <h2>Guidelines</h2>
-    <p>Once you have <a href="{% url device_instructions %}?next={{request.path}}">enabled GPS tagging</a> on your phone, please remember the following guidelines:
-    </p>
-    <ul>
-        <li class="bullet">For GPS to work properly, <strong>you need to be outside</strong></li>
-        <li class="bullet">Your phone will likely have <strong>an indicator or icon</strong> showing you when your <strong>GPS is active</strong>. (consult your phone manual for details)</li>
-        <li class="bullet">Only when the indicator is active will your image be tagged.</li>
-    </ul>
+    {% include 'opportunities/tomtom/device_general_guidelines.html' %}
 
     <h2>Information</h2>
     <div>
