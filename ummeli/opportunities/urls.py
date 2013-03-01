@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
 from ummeli.opportunities.views import (OpportunityDetailView,\
     OpportunityListView, CampaignDetailView, MicroTaskListView,
-    MyMicroTaskListView, MicroTaskDetailView)
+    MyMicroTaskListView, MicroTaskDetailView, VliveMicroTaskListView)
 from atlas.views import location_required
 
 
@@ -42,6 +42,16 @@ urlpatterns = patterns('',
         OpportunityListView.as_view(model=Event, \
             template_name='opportunities/events.html'),
         name='events'),
+
+    #vlive campaigns
+    url(r'^vlive/campaigns/$',
+        OpportunityListView.as_view(model=Campaign, \
+            template_name='opportunities/vlive_campaigns.html'),
+        name='vlive_campaigns'),
+    url(r'^vlive/campaigns/(?P<campaign>[\w-]+)/$',
+        VliveMicroTaskListView.as_view(
+            template_name='opportunities/vlive_campaigns_tasks.html'),
+        name='vlive_campaigns_tasks'),
 
     url(r'^internships/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Internship,\

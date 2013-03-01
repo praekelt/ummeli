@@ -11,6 +11,10 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
+    <LINK href="{% url vlive_campaigns %}">
+        <TEXT>Tasks</TEXT>
+    </LINK>
+
     <LINK href="{% url jobs_list %}">
         <TEXT>Jobs</TEXT>
     </LINK>
@@ -20,7 +24,7 @@
         <TEXT>Bursaries</TEXT>
     </LINK>
     {% endif %}
-    
+
     {% if internships %}
     <LINK href="{% url internships %}">
         <TEXT>Internships</TEXT>

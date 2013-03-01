@@ -1,0 +1,62 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Campaigns</LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url change_province %}?next={{request.path}}">
+        <TEXT>{{province}} (change)</TEXT>
+    </LINK>
+</CONTAINER>
+<CONTAINER type="data">
+    <TEXT>{{ object.description|safe }}</TEXT>
+</CONTAINER>
+</MODULE>
+{% for object in object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <LINK href="http://ummeli.mobi/login/?next=/opportunities/campaigns/">
+        <TEXT>{% if object.title %}{{object.title}}
+                {% else%}{{object.location.city.name}}{% endif %}
+        </TEXT>
+    </LINK>
+    <br/>{{object.location.city}}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% empty %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>0 campaigns in {{province}}.</TEXT>
+</CONTAINER>
+</MODULE>
+{% endfor %}
+
+{% if object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% if page_obj.has_previous %}
+    <LINK href="?page={{ page_obj.previous_page_number }}?{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <LINK href="?page={{ page_obj.next_page_number }}?{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+{% endif %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url opportunities %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

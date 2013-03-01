@@ -71,12 +71,19 @@ class MicroTaskListView(ListView):
                                 .distance(position).order_by('distance')
         return tasks
 
-    def get_context_data(self, **kwargs):
-        context = super(MicroTaskListView, self).get_context_data(**kwargs)
+
+class VliveMicroTaskListView(ListView):
+    paginate_by = 10
+
+    def get_queryset(self):
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
-        context['campaign'] = campaign
-        context['city'] = self.request.session['location']['city']
-        return context
+
+        tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
+                                    .order_by('province', 'location__city')
+        province = self.request.session.get('province', ALL)
+        if province != ALL:
+            tasks = tasks.filter(province=province)
+        return tasks
 
 
 class MyMicroTaskListView(MicroTaskListView):
