@@ -10,6 +10,10 @@ class OpportunityAdmin(ModelBaseAdmin):
     }
 
 
+class CampaignAdmin(OpportunityAdmin):
+    readonly_fields = ('qualifiers', )
+
+
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('user', 'task', 'state')
 
@@ -20,7 +24,7 @@ admin.site.register(Bursary, OpportunityAdmin)
 admin.site.register(Training, OpportunityAdmin)
 admin.site.register(Event, OpportunityAdmin)
 admin.site.register(Competition, OpportunityAdmin)
-admin.site.register(Campaign, OpportunityAdmin)
+admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(TomTomCampaign, OpportunityAdmin)
 admin.site.register(MicroTask, OpportunityAdmin)
 admin.site.register(TomTomMicroTask, OpportunityAdmin)
