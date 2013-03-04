@@ -22,7 +22,8 @@ def health(request):
 
 @staff_member_required
 def index(request):
-    campaign = request.user.campaign_set.all()[0]
+    campaign = Campaign.objects.filter(owner=request.user).latest('created')
+
     all_tasks = MicroTask.permitted.filter(campaign=campaign)
     live_tasks = MicroTask.available.filter(campaign=campaign)
     closed_tasks = MicroTask.permitted.filter(campaign=campaign,
