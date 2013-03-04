@@ -241,6 +241,7 @@ CELERY_IMPORTS = ('ummeli.vlive.jobs.tasks',
                 'ummeli.vlive.tasks',
                 'jmbo_analytics.tasks',
                 'praekeltpayment.flickswitch.api',
+                'ummeli.providers.tasks',
                 )
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_TASK_RESULT_EXPIRES = 60
