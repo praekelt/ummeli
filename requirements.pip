@@ -37,7 +37,7 @@ BeautifulSoup>=3.0.8.1
 -e git+git://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
 raven
 -e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
--e git+git://github.com/praekelt/jmbo.git@develop#egg=jmbo
+jmbo
 django-simple-autocomplete
 -e git://github.com/smn/device-proxy.git@develop#egg=device-proxy
 -e git://github.com/praekelt/jmbo-analytics.git@develop#egg=jmbo-analytics
