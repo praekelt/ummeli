@@ -12,7 +12,7 @@
         <p><strong>OR</strong></p>
         {% for id, province in provinces %}
         <div class="bullet">
-            <a href="{% url change_province id %}?next={{next}}">{{province}}</a>
+            <a href="{% url microtask_change_province id %}?next={{next}}">{{province}}</a>
         </div>
         {% endfor %}
     </p>
