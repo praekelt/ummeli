@@ -1,6 +1,6 @@
 #!/bin/bash
 source ve/bin/activate &&
-python ummeli/manage.py article_content_scheduler &&
-python ummeli/manage.py your_words_content_scheduler &&
-python ummeli/manage.py jmbo_publish &&
+python ummeli/manage.py article_content_scheduler --settings=vlive_settings &&
+python ummeli/manage.py your_words_content_scheduler --settings=vlive_settings &&
+python ummeli/manage.py jmbo_publish --settings=vlive_settings &&
 deactivate

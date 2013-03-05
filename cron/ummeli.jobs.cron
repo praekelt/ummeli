@@ -1,2 +1,2 @@
 #!/bin/bash
-source ve/bin/activate && python ummeli/manage.py ummeli_jobs_cron && deactivate
+source ve/bin/activate && python ummeli/manage.py ummeli_jobs_cron --settings=vlive_settings && deactivate
