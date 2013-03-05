@@ -71,6 +71,12 @@ class MicroTaskListView(ListView):
                                 .distance(position).order_by('distance')
         return tasks
 
+    def get_context_data(self, **kwargs):
+        context = super(MicroTaskListView, self).get_context_data(**kwargs)
+        campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
+        context['campaign'] = campaign
+        return context
+
 
 class VliveMicroTaskListView(ListView):
     paginate_by = 10
@@ -100,7 +106,7 @@ class MyMicroTaskListView(MicroTaskListView):
 
 def opportunities(request):
     context = {
-        'campaigns': Campaign.permitted.exists(),
+        'campaign': Campaign.permitted.latest('created'),
         'bursaries': Bursary.permitted.exists(),
         'internships': Internship.permitted.exists(),
         'volunteering': Volunteer.permitted.exists(),

@@ -3,7 +3,8 @@
 {% block content %}
 <h2>
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
-    <a href="{% url campaigns %}">Campaigns</a> &raquo;
+    <a href="{% url campaign_detail object.campaign.slug %}">{{object.campaign.title}}</a> &raquo;
+    <a href="{% url micro_tasks object.campaign.slug %}">Tasks</a> &raquo;
     {{object.title}}
 </h2>
 <div class="wrap">
