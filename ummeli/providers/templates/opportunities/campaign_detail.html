@@ -75,6 +75,13 @@
             {% empty %}
             <li>No new submissions</li>
             {% endfor %}
+            {% if object.responses.exists %}
+            <li>
+                <a href="{% url providers.task_submissions object.slug %}" class="btn btn-primary btn-mini">
+                    more..
+                </a>
+            </li>
+            {% endif %}
             </ul>
         </div>
     </div>
@@ -102,6 +109,13 @@
                     <div class="muted" style="margin-left: 25px;">{{t.location.city}}</div>
                 </li>
             {% endfor %}
+            {% if live_tasks.exists %}
+                <li>
+                    <a href="{% url providers.task_live object.slug %}" class="btn btn-primary btn-mini">
+                        more..
+                    </a>
+                </li>
+            {% endif %}
             </ul>
             <div class="clearfix"></div>
         </div>

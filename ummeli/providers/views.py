@@ -159,9 +159,9 @@ class MicroTaskListView(OpportunityListView):
         return campaign.tasks.order_by('-created')
 
 
-class TaskResponseListView(ListView):
+class TaskSubmissionsListView(ListView):
     paginate_by = 10
-    template_name = 'opportunities/responses.html'
+    template_name = 'opportunities/task_submissions.html'
 
     def get_queryset(self):
         campaign = get_object_or_404(Campaign,
@@ -171,10 +171,14 @@ class TaskResponseListView(ListView):
                                                 state=SUBMITTED)\
                                         .order_by('date')
 
-    def get_context_data(self, **kwargs):
-        context = super(TaskResponseListView, self).get_context_data(**kwargs)
+
+class TaskLiveListView(ListView):
+    paginate_by = 10
+    template_name = 'opportunities/task_live.html'
+
+    def get_queryset(self):
         campaign = get_object_or_404(Campaign,
                         owner=self.request.user,
                         slug=self.kwargs['campaign'])
-        context['campaign'] = campaign
-        return context
+        return MicroTask.available.filter(campaign=campaign)\
+                                    .order_by('created')

@@ -23,4 +23,5 @@ MANIFEST.in
 /ummeli/basic_mobi_settings.py
 /ummeli/providers_settings.py
 /ummeli/media/
+/ummeli/providers/uploaded/
 /neo4j/

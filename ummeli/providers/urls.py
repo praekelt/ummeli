@@ -28,11 +28,14 @@ urlpatterns = patterns('',
     url(r'^campaigns/(?P<slug>[\w-]+)/$', views.campaign_view,
         name='providers.campaign_detail'),
     url(r'^campaigns/(?P<campaign>[\w-]+)/task/(?P<slug>[\w-]+)/$',
-        views.micro_task_detail,\
+        views.micro_task_detail,
         name='providers.micro_task_detail'),
-    url(r'^campaigns/(?P<campaign>[\w-]+)/responses/$',
-        TaskResponseListView.as_view(),\
-        name='providers.micro_task_responses'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/submissions/$',
+        TaskSubmissionsListView.as_view(),
+        name='providers.task_submissions'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/live/$',
+        TaskLiveListView.as_view(),
+        name='providers.task_live'),
 )
 
 
