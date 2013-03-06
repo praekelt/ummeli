@@ -29,6 +29,7 @@
     {{ article.content|safe }}
 
     {% if article.linked_article or article.linked_page %}
+    <p>
         <strong>See also:</strong>
         <div>
         {% if article.linked_article %}
@@ -47,6 +48,7 @@
             </div>
         {% endif %}
         </div>
+    </p>
         <br/>
     {% endif %}
 </div>
