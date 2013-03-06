@@ -161,12 +161,15 @@ def select_location(request):
     if request.method == 'POST':
         form = SelectLocationForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data['error'] == False:
+            if form.cleaned_data['error'] is False:
                 request.session['override_location'] = False
                 return redirect(next)
             else:
-                msg = 'We were unable to detect your location. Please try again.'
-                messages.error(request, msg)
+                msg = 'We were unable to detect your location. %s'
+                help = '<a href="%s?next=%s">Need Help? Click here</a>' % (
+                        reverse('device_privacy'),
+                        next)
+                messages.error(request, msg % help)
                 return redirect('%s?next=%s' %
                         (reverse('microtask_change_province'), next))
     else:

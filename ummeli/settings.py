@@ -151,6 +151,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "vlive.custom_context_processors.unique_id_processor",
     "vlive.custom_context_processors.user_profile_processor",
     "vlive.custom_context_processors.province_session_processor",
+    "vlive.custom_context_processors.next_url_processor",
     "opportunities.tomtom.context_processors.recognised_device_processor",
 )
 

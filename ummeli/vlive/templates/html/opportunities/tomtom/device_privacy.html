@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        <a href="{% url campaigns %}">Tasks</a> &raquo;
+        Device Privacy
+    </h2>
+    <h2>Privacy Settings</h2>
+    <div class="wrap">
+        <p>The most likely cause for our location detection not to work is that your browser has not been abled to provide location information.</p>
+
+        <p>The steps to enable location detection are different for different phones.</p>
+        <h2>Common steps</h2>
+        <div class="bullet">In your browser, find <strong>Settings</strong></div>
+        <div class="bullet"><strong>Enable Location</strong></div>
+        <div class="bullet">This can also be found in the <strong>Privacy</strong> settings</div>
+    </div>
+    <br/>
+    <p>
+    <a href="{% url device_instructions %}">Click here</a> for help on taking GPS tagged pictures.
+    </p>
+    {% if next %}
+    <div class="more"><a href="{{next}}">&larr; Back</a></div>
+    {% else %}
+    <div class="more"><a href="{% url campaigns %}">&larr; Back</a></div>
+    {% endif %}
+{% endblock %}

@@ -2,15 +2,20 @@ from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import MicroTask
 from ummeli.opportunities.views import OpportunityDetailView
-
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
     url(r'^device/instructions/$',
         'ummeli.opportunities.tomtom.views.device_instructions',
         name='device_instructions'),
+    url(r'^device/privacy/$',
+        TemplateView.as_view(
+            template_name='opportunities/tomtom/device_privacy.html'),
+        name='device_privacy'),
     url(r'^device/change/$',
         'ummeli.opportunities.tomtom.views.qualify_device_change',
         name='qualify_device_change'),
+
     url(r'^microtasks/(?P<slug>[\w-]+)/instructions/$',
         'ummeli.opportunities.tomtom.views.task_instructions',
         name='micro_task_instructions'),

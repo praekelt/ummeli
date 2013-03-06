@@ -6,6 +6,10 @@ def unique_id_processor(request):
     return {'uuid': str(uuid.uuid4())}
 
 
+def next_url_processor(request):
+    return {'next': request.GET.get('next')}
+
+
 def user_profile_processor(request):
     if hasattr(request, 'user') and request.user.is_authenticated():
         return {'user_profile': request.user.get_profile()}

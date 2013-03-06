@@ -40,6 +40,7 @@
 
 <h2>Quick Menu</h2>
 <div class="bullet"><a href="{% url qualify_device_change %}?next={{request.path}}">Change device ({{device.name}})</a></div>
+<div class="bullet"><a href="{% url device_privacy %}?next={{request.path}}">Device Settings</a></div>
 <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a>
     {% if request.user.taskcheckout_set %}
     <span class="subtext"> &rarr; {{request.user.taskcheckout_set.count}} task{{request.user.taskcheckout_set.count|pluralize}}</span>

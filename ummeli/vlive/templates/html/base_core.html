@@ -24,7 +24,7 @@
         <div class="message">
         {% for message in messages %}
         <div class="{{message.tags}}">
-        {{ message }}
+        {{ message|safe }}
         </div>
         {% endfor %}
         </div>
