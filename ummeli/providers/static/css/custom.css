@@ -43,3 +43,12 @@ a.top-block{
     line-height: 60px;
     font-size: 60px;
 }
+
+#prov-map{
+    width: 500px;
+    height: 280px;
+}
+
+#prov-map img{
+    max-width: none !important;
+}

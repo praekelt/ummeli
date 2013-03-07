@@ -4,6 +4,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from jmbo.models import ModelBase
 from ummeli.base.models import PROVINCE_CHOICES
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
+from ummeli.vlive.utils import get_lat_lon
 from datetime import datetime, timedelta, date
 from django.db.models import Q, F, Count
 from jmbo.managers import PermittedManager
@@ -357,3 +358,6 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
     address = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
     poi_has_changed = models.BooleanField(default=False)
+
+    def get_lat_lon(self):
+        return get_lat_lon(self.file)

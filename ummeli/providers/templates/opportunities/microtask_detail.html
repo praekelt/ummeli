@@ -48,9 +48,7 @@
         <div class="box-content">
             <ul class="dashboard-list">
                 <li>
-                    {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
-                        <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=320x180&amp;sensor=false&amp;"/>
-                    {% endwith %}
+                    {% include 'opportunities/map.html' %}
                 </li>
                 <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
                 <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>
@@ -69,8 +67,8 @@
         </div>
         <div class="box-content">
             <ul class="dashboard-list">
-                <li><img src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
-                <li><strong>Tagged:</strong> N/A</li>
+                <li><img width="500" height="280" src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
+                <li><strong>Tagged:</strong> {{ response.tomtommicrotaskresponse.get_lat_lon }}</li>
                 {% if response.tomtommicrotaskresponse.poi_has_changed %}
                 <li><span class="label label-important">POI has changed</span></li>
                 <li><strong>Comment:</strong> {{response.tomtommicrotaskresponse.comment}}</li>
@@ -173,9 +171,7 @@
         <div class="box-content">
             <ul class="dashboard-list">
                 <li>
-                    {% with x=object.location.coordinates.0 y=object.location.coordinates.1%}
-                        <img src="http://maps.googleapis.com/maps/api/staticmap?center={{y}},{{x}}&amp;markers=color:blue|label:S|{{y}},{{x}}&amp;zoom=12&amp;size=320x180&amp;sensor=false&amp;"/>
-                    {% endwith %}
+                    {% include 'opportunities/map.html' %}
                 </li>
                 <li><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</li>
                 <li><strong>Tel 1:</strong> {{object.tomtommicrotask.tel_1}}</li>

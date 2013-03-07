@@ -1,0 +1,30 @@
+{% with x=object.location.coordinates.0 y=object.location.coordinates.1 new_x=response.tomtommicrotaskresponse.get_lat_lon.1 new_y=response.tomtommicrotaskresponse.get_lat_lon.0 %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/map.css" />
+<script type="text/javascript" src="{{STATIC_URL}}js/ready.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tomtom/OpenLayers-2.12.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/tomtom/tomtom.map.js"></script>
+<script type="text/javascript">
+domready(function(){
+    tomtom.setImagePath("{{STATIC_URL}}images/tomtom/");
+    map = new tomtom.Map({
+        domNode: "prov-map",
+        displayTraffic: false,
+        panZoomBar: true,
+        zoom: 15,
+        center: new OpenLayers.LonLat({{x}},{{y}}),
+        apiKey: "gx4cq599rgs5bdwuasesmt2b",
+    });
+
+
+    {% if new_x and new_y %}
+    map.addMarker(new tomtom.Marker({{new_x}}, {{new_y}}));
+    {% endif %}
+
+    var opt = tomtom.Marker.DEFAULT_MARKER_OPTIONS;
+    opt.url = 'marker_gray.png';
+    map.addMarker(new tomtom.Marker({{x}}, {{y}}, opt));
+
+});
+</script>
+<div id="prov-map"></div>
+{% endwith %}
