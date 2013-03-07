@@ -141,18 +141,31 @@ def qualify_upload(request, slug):
 from django import forms
 class UploadTestForm(forms.Form):
     file = forms.FileField(required=True)
-    lat = forms.CharField(required=True, error_messages={'required': 'Image missing x-coordinate'})
-    lon = forms.CharField(required=True, error_messages={'required': 'Image missing y-coordinate'})
+    lat = forms.CharField(required=False, error_messages={'required': 'Image missing x-coordinate'})
+    lon = forms.CharField(required=False, error_messages={'required': 'Image missing y-coordinate'})
+
+
+from tempfile import NamedTemporaryFile
+from ummeli.settings import abspath
+def handle_uploaded_file(f):
+    temp = NamedTemporaryFile(dir=abspath('test/uploaded'),
+                            delete=False)
+    with open(temp.name, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return temp.name
 
 
 def upload_test(request):
-    lat = lon = exif = None
+    lat = lon = None
     if request.method == 'POST':
         form = UploadTestForm(request.POST, request.FILES)
         if form.is_valid():
             f = form.cleaned_data['file']
+            handle_uploaded_file(f)
             lat = form.cleaned_data['lat']
             lon = form.cleaned_data['lon']
+            print f
     else:
         form = UploadTestForm()
 
