@@ -55,20 +55,21 @@ class MicroTaskListView(ListView):
         if not campaign.has_qualified(self.request.user):
             return MicroTask.objects.none()
 
-        position = self.request.session['location']['position']
+        location = self.request.session.get('location')
 
-        if self.request.session.get('override_location'):
+        if location and not self.request.session.get('override_location'):
+            position = location.get('position')
+            if not isinstance(position, Point):
+                position = location('city').coordinates
             tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
-                                        .order_by('province', 'location__city')
-            province = self.request.session.get('province', ALL)
-            if province != ALL:
-                tasks = tasks.filter(province=province)
+                                    .distance(position).order_by('distance')
             return tasks
 
-        if not isinstance(position, Point):
-            position = self.request.session['location']['city'].coordinates
         tasks = MicroTask.available.filter(campaign__pk=campaign.pk)\
-                                .distance(position).order_by('distance')
+                                    .order_by('province', 'location__city')
+        province = self.request.session.get('province', ALL)
+        if province != ALL:
+            tasks = tasks.filter(province=province)
         return tasks
 
     def get_context_data(self, **kwargs):
@@ -156,7 +157,8 @@ def checkout(request, slug):
 
 @login_required
 def select_location(request):
-    next = request.GET.get('next', reverse('campaigns'))
+    c = Campaign.permitted.latest('created')
+    next = request.GET.get('next', reverse('micro_tasks', args=[c.slug]))
 
     if request.method == 'POST':
         form = SelectLocationForm(request.POST)
