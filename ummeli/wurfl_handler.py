@@ -4,7 +4,7 @@ from devproxy.handlers.wurfl_handler.base import WurflHandler
 class UmmeliWurflHandler(WurflHandler):
 
     def handle_device(self, request, device):
-        if device.brand_name == 'Android':
+        if device.brand_name == 'Android' or device.device_os == 'Android':
             return [{
                 self.header_name: 'high',
                 'X-UA-brand-name': device.brand_name,
