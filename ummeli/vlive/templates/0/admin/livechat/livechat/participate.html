@@ -73,7 +73,15 @@
                 <p>
                     <a href="{% url admin:livechat_livechatresponse_add %}?comment={{comment.pk}}&amp;livechat={{livechat.pk}}" class="add-another" id="add_livechatresponse_{{comment.pk}}_id" onclick="return showAddAnotherPopup(this);">
                         Respond to:
-                        {{ comment.user.get_full_name|default:"Anon." }}
+                        {% if comment.user.get_profile.comment_as_anon %}
+                            Anon.
+                        {% else %}
+                            {% if comment.user.get_profile.fullname %}
+                                {{ comment.user.get_profile.fullname }}</a>
+                            {% else %}
+                                Anon.
+                            {% endif %}
+                        {% endif %}
                     </a>
                 </p>
                 <label><strong>Comment:</strong></label>
