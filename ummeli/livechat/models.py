@@ -43,7 +43,7 @@ class LiveChatResponse(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
     def __unicode__(self):
         return "Live Chat Response from %s: %s" % (self.author,
