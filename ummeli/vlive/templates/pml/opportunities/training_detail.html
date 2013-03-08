@@ -14,7 +14,7 @@
     <CONTAINER type="data">
     <TEXT>
     <b>{{object.title}}</b>
-    <br/>Cost: R {{ object.cost }}</b>
+    <br/>Cost: R {{ object.cost }}
     {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
     <br/>Province: {{ object.get_provinces }}
     <br/>Min. education required: {{ object.get_education}}
