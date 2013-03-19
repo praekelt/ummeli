@@ -27,7 +27,12 @@
     <CONTAINER type="data">
     <TEXT>
     <LINK href="{% url job cat_id article.pk article.user_submitted %}">
-        <TEXT><color value="blue">***</color>{{ article.text|truncatewords:10 }}</TEXT>
+        <TEXT>
+            {% if article.user_submitted == 1 %}
+            <color value="blue">***</color>
+            {% endif %}
+            {{ article.text|truncatewords:10 }}
+        </TEXT>
     </LINK>
     <br/>{{article.date|date:'d M y'}}
     </TEXT>
