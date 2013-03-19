@@ -107,7 +107,7 @@ Opportunity._meta.get_field_by_name('sites')[0].blank = False
 
 
 CATEGORY_CHOICES = (
-    (0, 'All'),
+    (0, '---------'),
     (1, 'Admin/Clerical'),
     (2, 'Artisans/Trade'),
     (3, 'Au Pairs/Childcare'),
