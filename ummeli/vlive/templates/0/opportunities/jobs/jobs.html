@@ -29,11 +29,17 @@
     <strong>*** = Submitted by Ummeli user</strong><br />
     {% for article in articles.object_list %}
         <div class="list">
-            {% if article.user_submitted %}<color value="blue">***</color>{% endif %}
+            {% if article.user_submitted == 2 %}
+            <a href="{% url job_detail article.slug %}">
+                {{ article.text }}
+            </a>
+            {% else %}
+            {% if article.user_submitted == 1 %}<color value="blue">***</color>{% endif %}
             <a href="{% url job cat_id article.pk article.user_submitted %}">
                 {% if article.user_submitted %}{{ article.source|truncatewords:10 }} - {% endif %}
                 {{ article.text|truncatewords:10 }}
             </a>
+            {% endif %}
             <br/>
             <small>
                 {{ article.date|date:"D, j M Y" }}

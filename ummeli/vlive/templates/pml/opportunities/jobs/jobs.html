@@ -8,21 +8,33 @@
     </LINK>
 </CONTAINER>
 </MODULE>
+{% for article in articles.object_list %}
+{% if article.user_submitted == 2 %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL> </LABEL></HEADER>
-<CONTAINER  type="list">
-    {% for article in articles.object_list %}
-        <LINK href="{% url job cat_id article.pk article.user_submitted %}">
-            <TEXT>
-            {% if article.user_submitted %}
-            <color value="blue">***</color>
-            {% endif %}
-            {{article.date|date:'d M y'}} :: {{ article.text|truncatewords:10 }}
-            </TEXT>
-        </LINK>
-    {% endfor %}
-</CONTAINER>
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <LINK href="{% url job_detail article.slug %}">
+        <TEXT>{{ article.text }}</TEXT>
+    </LINK>
+    <br/>{{article.date|date:'d M y'}}
+    </TEXT>
+    </CONTAINER>
 </MODULE>
+{% else %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    <LINK href="{% url job cat_id article.pk article.user_submitted %}">
+        <TEXT><color value="blue">***</color>{{ article.text|truncatewords:10 }}</TEXT>
+    </LINK>
+    <br/>{{article.date|date:'d M y'}}
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endif %}
+{% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</LABEL></HEADER>
     <CONTAINER  type="list">

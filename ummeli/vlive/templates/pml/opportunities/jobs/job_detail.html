@@ -1,0 +1,23 @@
+{% extends "base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>{{object.get_category_display}}</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TITLE>{{object.title}}</TITLE>
+        <TEXT>
+            {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
+            <br/>Province: {{ object.get_provinces }}
+            <br/>Min. education required: {{ object.get_education}}
+            <br/>
+            <br/>
+            {{ object.description|safe }}
+        </TEXT>
+    </CONTAINER>
+    <br/>
+    <CONTAINER  type="list">
+        <LINK href="{% url jobs cat_id %}">
+            <TEXT>&lt;&lt; Back</TEXT>
+        </LINK>
+    </CONTAINER>
+</MODULE>
+{% endblock %}
