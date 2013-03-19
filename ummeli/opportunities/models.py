@@ -42,7 +42,7 @@ class Province(models.Model):
             raise MultipleObjectsReturned
 
         if any(result):
-            return cls.objects.get(pk=result[0])
+            return cls.objects.get(province=result[0])
         return None
 
 
@@ -106,10 +106,73 @@ class Opportunity(ModelBase):
 Opportunity._meta.get_field_by_name('sites')[0].blank = False
 
 
+CATEGORY_CHOICES = (
+    (0, 'All'),
+    (1, 'Admin/Clerical'),
+    (2, 'Artisans/Trade'),
+    (3, 'Au Pairs/Childcare'),
+    (4, 'Building/Construction'),
+    (5, 'Call Centre'),
+    (6, 'Clothing'),
+    (7, 'Domestics'),
+    (8, 'Drivers'),
+    (9, 'Education & Training'),
+    (10, 'General'),
+    (11, 'Hairdressing/Beauty Care'),
+    (12, 'Hotel/Catering'),
+    (13, 'Logistics (Transportation)'),
+    (14, 'Marketing'),
+    (15, 'Media'),
+    (16, 'Motor Industry'),
+    (17, 'Part-time'),
+    (18, 'Payroll'),
+    (19, 'People with Disabilities'),
+    (20, 'Personnel/HR'),
+    (21, 'Recep/SWB/Office Support'),
+    (22, 'Retailing'),
+    (23, 'Sales'),
+    (24, 'Secretary/PA'),
+    (25, 'Security'),
+    (26, 'Senior Citizens'),
+    (27, 'Stores/Warehousing'),
+    (28, 'Temps'),
+    (29, 'Typing/WP'),
+)
+
+
 class Job(Opportunity):
+    category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
+
     @models.permalink
     def get_absolute_url(self):
         return ('job_detail', (self.slug,))
+
+    def to_view_model(self):
+        class JobViewModel(object):
+            def __init__(self,  article):
+                self.pk = article.pk
+                self.source = article.description
+                self.text = article.title
+                self.date = article.created
+                self.user = article.owner
+                self.slug = article.slug
+
+            def user_submitted(self):
+                return 2
+        return JobViewModel(self)
+
+    @classmethod
+    def from_str(cls, str):
+        result = [i for i, p in CATEGORY_CHOICES
+                    if re.sub('[\s-]', '', p.lower()) ==
+                        re.sub('[\s-]', '', str.lower())]
+
+        if len(result) > 1:
+            return cls.objects.none()
+
+        if any(result):
+            return cls.permitted.filter(category=result[0])
+        return cls.objects.none()
 
 
 class Internship(Opportunity):

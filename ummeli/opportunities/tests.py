@@ -20,15 +20,15 @@ class OpportunitiesTest(VLiveTestCase):
 
     def test_province_from_str(self):
         p = Province.from_str('Gauteng')
-        self.assertEqual(p.pk, 3)
+        self.assertEqual(p.get_province_display(), 'Gauteng')
 
         p = Province.from_str('KwaZulu Natal')
-        self.assertEqual(p.pk, 4)
+        self.assertEqual(p.get_province_display(), 'KwaZulu Natal')
         p = Province.from_str('Kwa-Zulu Natal')
-        self.assertEqual(p.pk, 4)
+        self.assertEqual(p.get_province_display(), 'KwaZulu Natal')
 
         p = Province.from_str('Western Cape')
-        self.assertEqual(p.pk, 9)
+        self.assertEqual(p.get_province_display(), 'Western Cape')
 
     def test_internship(self):
         self.login()

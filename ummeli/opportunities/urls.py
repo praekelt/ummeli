@@ -119,7 +119,7 @@ urlpatterns = patterns('',
     #Jobs from Ummeli 2.0
     url(r'^jobs/new/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Job,
-            template_name='opportunities/job_detail.html'),
+            template_name='opportunities/jobs/job_detail.html'),
         name='job_detail'),
 
     url(r'jobs/connection/apply/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
