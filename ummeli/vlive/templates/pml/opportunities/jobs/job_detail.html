@@ -13,11 +13,12 @@
             {{ object.description|safe }}
         </TEXT>
     </CONTAINER>
-    <br/>
-    <CONTAINER  type="list">
-        <LINK href="{% url jobs_list %}">
-            <TEXT>&lt;&lt; Back</TEXT>
-        </LINK>
-    </CONTAINER>
 </MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="{% url jobs_list %}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
 {% endblock %}
