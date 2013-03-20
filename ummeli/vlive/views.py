@@ -10,7 +10,7 @@ from django.conf import settings
 from ummeli.opportunities.models import Job, Province as OpportunityProvince
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
-    UserSubmittedJobArticle)
+    UserSubmittedJobArticle, ALL)
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
@@ -270,7 +270,7 @@ def jobs(request, id):
     else:
         a_province = OpportunityProvince.from_str(province.name)
         [all_jobs.append(a.to_view_model())
-            for a in ummeli_jobs.filter(province__in=[a_province])]
+            for a in ummeli_jobs.filter(province__in=[a_province, ALL])]
 
     all_jobs = sorted(all_jobs, key=lambda job: job.date, reverse=True)
 
