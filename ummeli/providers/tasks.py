@@ -5,6 +5,8 @@ from django.contrib.gis.geos import fromstr
 from atlas.models import Location
 from atlas.utils import get_city
 from celery import task
+import logging
+logger = logging.getLogger('django.request')
 
 
 @task(ignore_result=True)
@@ -15,38 +17,48 @@ def process_upload(csv_file, campaign_slug):
 
     for r in rows:
         try:
-            t = TomTomMicroTask.objects.get(poi_id=r['POI_ID'])
+            TomTomMicroTask.objects.get(poi_id=r['POI_ID'])
         except TomTomMicroTask.DoesNotExist:
-            t = TomTomMicroTask(poi_id=r['POI_ID'])
-            loc = Location()
-            # srid is the ID for the coordinate system, 4326
-            # specifies longitude/latitude coordinates
-            loc.coordinates = fromstr("POINT (%s %s)" % (r['X'], r['Y']),
-                                        srid=4326)
-            loc.city = get_city(position=loc.coordinates)
-            loc.country = loc.city.country
-            loc.save()
+            create_task(campaign, r)
 
-            t.title = r['NAME']
-            t.description = '%s %s' % (r['NAME_ALT'], r['ADDRESS'])
-            t.category = r['CAT_NAME']
-            t.location = loc
-            t.tel_1 = r['TEL_NR']
-            t.tel_2 = r['TEL_NR2']
-            t.fax = r['FAX_NR']
-            t.email = r['E_MAIL']
-            t.website = r['WEBSITE']
 
-            t.website = r['CITY']
-            t.website = r['SUBURB']
-            t.owner = campaign.owner
-            t.campaign = campaign
-            t.save()
+def create_task(campaign, r):
+    t = TomTomMicroTask(poi_id=r['POI_ID'])
+    loc = Location()
+    # srid is the ID for the coordinate system, 4326
+    # specifies longitude/latitude coordinates
+    loc.coordinates = fromstr("POINT (%s %s)" % (r['X'], r['Y']), srid=4326)
+    city = get_city(position=loc.coordinates)
 
-            t.province.add(Province.from_str(r['PROVINCE']))
-            t.sites.add(Site.objects.get_current())
+    if not city:
+        logger.error('Unable to create task: %s - %s. Could not obtain city from coordinates. (%s, %s)',
+            r['NAME'], r['POI_ID'], r['Y'], r['X'])
+        return
 
-            t.publish()
+    loc.city = city
+    loc.country = city.country
+    loc.save()
+
+    t.title = r['NAME']
+    t.description = '%s %s' % (r['NAME_ALT'], r['ADDRESS'])
+    t.category = r['CAT_NAME']
+    t.location = loc
+    t.tel_1 = r['TEL_NR']
+    t.tel_2 = r['TEL_NR2']
+    t.fax = r['FAX_NR']
+    t.email = r['E_MAIL']
+    t.website = r['WEBSITE']
+
+    t.city = r['CITY']
+    t.suburb = r['SUBURB']
+    t.owner = campaign.owner
+    t.campaign = campaign
+    t.save()
+
+    t.province.add(Province.from_str(r['PROVINCE']))
+    t.sites.add(Site.objects.get_current())
+
+    t.publish()
 
 
 def read_data_from_csv_file(csvfile_name):
