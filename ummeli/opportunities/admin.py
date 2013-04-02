@@ -12,11 +12,12 @@ class OpportunityAdmin(ModelBaseAdmin):
 
 
 class CampaignAdmin(OpportunityAdmin):
-    readonly_fields = ('qualifiers', )
+    raw_id_fields = ('qualifiers', )
 
 
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('user', 'task', 'state')
+    raw_id_fields = ('user', 'task')
 
 admin.site.register(Job, OpportunityAdmin)
 admin.site.register(Internship, OpportunityAdmin)

@@ -7,11 +7,12 @@ from jmbocomments.admin import UserCommentAdmin
 
 
 class UserSubmittedJobArticleAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'text',)
-    list_display = ('date','title', 'text', 'province', 'job_category')
+    search_fields = ('title', 'text', 'user__username')
+    list_display = ('date', 'title', 'text', 'province', 'job_category')
     list_filter = ('province', 'job_category')
     ordering = ('-date',)
     date_hierarchy = 'date'
+    raw_id_fields = ('user', )
 
 
 class UmmeliUserCommentAdmin(UserCommentAdmin):
