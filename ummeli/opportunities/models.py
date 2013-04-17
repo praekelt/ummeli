@@ -30,7 +30,7 @@ class Province(models.Model):
     province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
 
     def __unicode__(self):  # pragma: no cover
-        return '%s' % dict(PROVINCE_CHOICES)[self.province]
+        return self.get_province_display()
 
     @classmethod
     def from_str(cls, str):

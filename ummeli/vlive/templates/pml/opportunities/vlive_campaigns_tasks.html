@@ -8,7 +8,20 @@
     </LINK>
 </CONTAINER>
 <CONTAINER type="data">
-    <TEXT>Please note: You will be redirected to the <b>Ummeli Mobi Site</b>. Please login using your cellphone number and your Ummeli PIN.</TEXT>
+    <TEXT>There are tasks available in many different locations in your province. Check below whether there are tasks near you.
+    <br/>
+    <br/>
+    To get started you will be redirected to Ummeli Mobi site to
+    complete a qualification task. Please login using your cellphone
+    number and Ummeli PIN. <b>Please note</b>: Ummeli Mobi site is not a
+    free service (you must have airtime to access it) but for each task you complete you have the
+    opportunity to earn R10. The pay off is worth it, so give it a try.
+    </TEXT>
+</CONTAINER>
+<CONTAINER type="list">
+    <LINK href="http://ummeli.mobi/login/?next=/opportunities/">
+        <TEXT>Get started!</TEXT>
+    </LINK>
 </CONTAINER>
 </MODULE>
 {% for object in object_list %}
@@ -16,12 +29,7 @@
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    <LINK href="http://ummeli.mobi/login/?next=/opportunities/">
-        <TEXT>{% if object.title %}{{object.title}}
-                {% else%}{{object.location.city.name}}{% endif %}
-        </TEXT>
-    </LINK>
-    <br/>{{object.location.city}}
+        {{object.location__city__region__name}}, {{object.location__city__name}} ({{object.num_tasks}})
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -35,6 +43,15 @@
 {% endfor %}
 
 {% if object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    <LINK href="http://ummeli.mobi/login/?next=/opportunities/">
+        <TEXT>Get started!</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
