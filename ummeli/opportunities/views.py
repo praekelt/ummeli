@@ -91,9 +91,9 @@ class VliveMicroTaskListView(ListView):
         if province != ALL:
             tasks = tasks.filter(province=province)
 
-        tasks = tasks.values('province', 'location__city__region__name', 'location__city__name')\
+        tasks = tasks.values('province', 'location__city__name')\
                     .annotate(num_tasks=Count('id'))\
-                    .order_by('province', 'location__city__name')
+                    .order_by('location__city__name')
         return tasks
 
 
