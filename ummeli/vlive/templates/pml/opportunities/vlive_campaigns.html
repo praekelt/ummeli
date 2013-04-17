@@ -2,13 +2,28 @@
 
 {% block content %}
 <HEADER><LABEL>Campaigns</LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>Welcome to Tasks! Here you can earn some extra airtime by successfully completing a task.</TEXT>
+</CONTAINER>
+<CONTAINER type="list">
+    <LINK href="{% url article_detail_redo 354 %}?{{uuid}}">
+        <TEXT>Use your phone to earn Airtime rewards</TEXT>
+    </LINK>
+    <LINK href="{% url article_detail_redo 359 %}?{{uuid}}">
+        <TEXT>TomTom Technical Trouble?</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="data">
+    <TEXT>Find tasks near you, choose your provice.</TEXT>
+</CONTAINER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={{request.path}}">
         <TEXT>{{province}} (change)</TEXT>
     </LINK>
-</CONTAINER>
-<CONTAINER type="data">
-    <TEXT>Welcome to Tasks! Here you can earn some extra airtime by successfully completing a task.</TEXT>
 </CONTAINER>
 </MODULE>
 {% for object in object_list %}

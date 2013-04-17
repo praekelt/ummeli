@@ -148,7 +148,7 @@ NORTHERN_CAPE = 8
 WESTERN_CAPE = 9
 
 PROVINCE_CHOICES = (
-        (ALL, 'All'),
+        (ALL, 'All Provinces'),
         (EASTERN_CAPE, 'Eastern Cape'),
         (FREE_STATE, 'Free State'),
         (GAUTENG, 'Gauteng'),
