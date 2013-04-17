@@ -85,15 +85,15 @@ class VliveMicroTaskListView(ListView):
     def get_queryset(self):
         campaign = get_object_or_404(Campaign, slug=self.kwargs['campaign'])
 
-        tasks = MicroTask.objects.filter(campaign__pk=campaign.pk)\
-                .values('province', 'location__city__region__name', 'location__city__name')
-        province = self.request.session.get('province', ALL)
+        tasks = MicroTask.objects.filter(campaign__pk=campaign.pk)
 
+        province = self.request.session.get('province', ALL)
         if province != ALL:
             tasks = tasks.filter(province=province)
 
-        tasks = tasks.annotate(num_tasks=Count('id'))\
-            .order_by('province', 'location__city__name')
+        tasks = tasks.values('province', 'location__city__region__name', 'location__city__name')\
+                    .annotate(num_tasks=Count('id'))\
+                    .order_by('province', 'location__city__name')
         return tasks
 
 
