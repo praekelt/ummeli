@@ -29,9 +29,21 @@ def send_sms(msisdn, message):
 
 
 def disable_commenting():
-    Article.objects.filter(comments_enabled=True).update(temp_can_comment=True)
-    Article.objects.filter(temp_can_comment=True).update(comments_enabled=False)
+    Article.objects.filter(comments_enabled=True, can_comment=False)\
+                   .update(can_comment=True)\
+                   .update(comments_enabled=False)
 
 
 def enable_commenting():
-    Article.objects.filter(temp_can_comment=True).update(comments_enabled=True)
+    Article.objects.filter(can_comment=True, comments_enabled=False)\
+                   .update(comments_enabled=True)
+
+
+@task(ignore_result=True)
+def disable_comments_scheduler():
+    from datetime import datetime, time
+    now = datetime.now().time()
+    if now > time(22, 0, 0) or now < time(6, 0, 0):
+        disable_commenting()
+    else:
+        enable_commenting()
