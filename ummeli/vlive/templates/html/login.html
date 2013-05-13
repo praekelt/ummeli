@@ -3,14 +3,14 @@
 {% block content %}
     <h2>Sign In</h2>
     <p><span>Not registered? <a href="{% url register %}">Sign up here</a></span></p>
-    <form class="content-form" method="post">        
-    <fieldset> 
+    <form class="content-form" method="post">
+    <fieldset>
         {% if form.errors %}
             {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
                     {% if error == 'This account is inactive.' %}
                         <div class="warning">
-                            Your account has been deactivated for violating our <a href="{% url terms %}">terms and conditions</a>.
+                            Your account has been deactivated for violating our <a href="/terms/">terms and conditions</a>.
                             If you feel you should not have been removed from this community, you may send a query
                             <a href="{% url contactsupport %}">here</a>.
                         </div>
@@ -23,16 +23,16 @@
         <div class="form-fields">
             <label for="form-username">Mobile Number</label>
             {% include "form_field_errors_snippet.html" with form_field=form.username %}
-            {{form.username}}        
+            {{form.username}}
             <label for="form-pin">PIN</label>
             {% include "form_field_errors_snippet.html" with form_field=form.password %}
             {{form.password}}
         </div>
 
         <input type="submit" class="btn" value="Sign In" name="submit" />
-        <span><a href="{% url forgot %}">Forgot your PIN?</a></span> 
+        <span><a href="{% url forgot %}">Forgot your PIN?</a></span>
         <input type="hidden" name="next" value="{{next}}" />
         {% csrf_token %}
-    </fieldset> 
+    </fieldset>
     </form>
 {% endblock %}
