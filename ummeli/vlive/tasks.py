@@ -30,7 +30,8 @@ def send_sms(msisdn, message):
 
 def disable_commenting():
     Article.objects.filter(comments_enabled=True, can_comment=False)\
-                   .update(can_comment=True)\
+                   .update(can_comment=True)
+    Article.objects.filter(comments_enabled=True, can_comment=True)\
                    .update(comments_enabled=False)
 
 
