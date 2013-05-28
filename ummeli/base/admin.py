@@ -19,7 +19,7 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
     list_display = ('content_object', 'user', 'comment_alias', 'comment',
                     'submit_date', 'is_public', 'is_removed', 'like_count',
                     'latest_flag')
-    list_filter = ('submit_date', 'site', 'is_public', 'is_removed')
+    list_filter = ('submit_date', 'site', 'is_removed')
 
     def comment_alias(self, instance):
         return instance.user.get_profile().fullname()\
