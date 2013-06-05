@@ -13,10 +13,6 @@ CELERYBEAT_SCHEDULE = {
          'task': 'praekeltpayment.flickswitch.tasks.update_payment_status',
          'schedule': timedelta(seconds=60)
      },
-    'disable-comments-scheduler': {
-         'task': 'ummeli.vlive.tasks.disable_comments_scheduler',
-         'schedule': timedelta(seconds=60)
-     },
 }
 
 DEBUG = False
