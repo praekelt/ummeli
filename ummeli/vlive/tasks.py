@@ -48,7 +48,7 @@ def enable_commenting():
 
     #disable other articles
     Article.published_objects.filter(comments_enabled=True, can_comment=True,
-                                     homepage=False)\
+                                     on_homepage=False)\
                              .exclude(pk__in=[a.pk for a in featured])\
                              .update(comments_enabled=False)
 
