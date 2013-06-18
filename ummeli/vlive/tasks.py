@@ -4,6 +4,7 @@ from vumiclient.client import Client
 from django.conf import settings
 from django.core.mail import send_mail,  EmailMessage
 from jmboarticles.models import Article
+from django.db.models import Q
 
 
 @task(ignore_result=True)
@@ -38,14 +39,20 @@ def disable_commenting():
 def enable_commenting():
     qs = Article.published_objects.filter(can_comment=True,
                                           comments_enabled=False)
-    if qs.exists():
-        disable_commenting()
-        print 'disabling all comments: prep for re-enable'
 
     #on homepage
     qs.filter(on_homepage=True).update(comments_enabled=True)
+
     #latest 3 articles
-    for a in qs.filter(on_homepage=False)[:3]:
+    featured = qs.filter(on_homepage=False)[:3]
+
+    #disable other articles
+    Article.published_objects.filter(comments_enabled=True, can_comment=True,
+                                     homepage=False)\
+                             .exclude(pk__in=[a.pk for a in featured])\
+                             .update(comments_enabled=False)
+
+    for a in featured:
         a.comments_enabled = True
         a.save()
 
