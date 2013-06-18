@@ -36,8 +36,18 @@ def disable_commenting():
 
 
 def enable_commenting():
-    Article.objects.filter(can_comment=True, comments_enabled=False)\
-                   .update(comments_enabled=True)
+    qs = Article.published_objects.filter(can_comment=True,
+                                          comments_enabled=False)
+    if qs.exists():
+        disable_commenting()
+        print 'disabling all comments: prep for re-enable'
+
+    #on homepage
+    qs.filter(on_homepage=True).update(comments_enabled=True)
+    #latest 3 articles
+    for a in qs.filter(on_homepage=False)[:3]:
+        a.comments_enabled = True
+        a.save()
 
 
 @task(ignore_result=True)
