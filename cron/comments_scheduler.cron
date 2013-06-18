@@ -1,0 +1,2 @@
+#!/bin/bash
+source ve/bin/activate && python ummeli/manage.py comments_scheduler --settings=vlive_settings && deactivate
