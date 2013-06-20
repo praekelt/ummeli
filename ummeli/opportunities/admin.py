@@ -5,7 +5,7 @@ from ckeditor.widgets import AdminCKEditor
 
 
 class OpportunityAdmin(ModelBaseAdmin):
-    raw_id_fields = ('owner', )
+    raw_id_fields = ('owner', 'location')
     formfield_overrides = {
         models.TextField: {'widget': AdminCKEditor},
     }
