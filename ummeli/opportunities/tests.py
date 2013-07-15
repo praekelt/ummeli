@@ -193,6 +193,17 @@ class OpportunitiesTest(VLiveTestCase):
         self.assertFalse(result)
         self.assertTrue(t4.is_available())
 
+        #test microtask response object
+        checkout = TaskCheckout.objects.get(task=t1)
+        task_response = TomTomMicroTaskResponse.objects.create(
+            task_checkout=checkout,
+            user=user,
+            state=SUBMITTED,
+            task=t1)
+
+        self.assertIsNotNone(checkout.microtaskresponse)
+        self.assertIsNotNone(checkout.microtaskresponse.tomtommicrotaskresponse)
+
     def test_task_expiration(self):
         user = User.objects.get(username=self.msisdn)
 
