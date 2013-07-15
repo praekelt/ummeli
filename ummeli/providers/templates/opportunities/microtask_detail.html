@@ -68,7 +68,7 @@
         <div class="box-content">
             <ul class="dashboard-list">
                 <li><img width="500" height="280" src="{{response.tomtommicrotaskresponse.file.url}}"/></li>
-                <li><strong>Tagged:</strong> {{ response.tomtommicrotaskresponse.get_lat_lon }}</li>
+                <li><strong>Tagged:</strong> {{ response.tomtommicrotaskresponse.get_lat_lon.1 }}, {{ response.tomtommicrotaskresponse.get_lat_lon.0 }}</li>
                 {% if response.tomtommicrotaskresponse.poi_has_changed %}
                 <li><span class="label label-important">POI has changed</span></li>
                 <li><strong>Comment:</strong> {{response.tomtommicrotaskresponse.comment}}</li>
