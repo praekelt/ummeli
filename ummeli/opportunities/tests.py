@@ -104,7 +104,7 @@ class OpportunitiesTest(VLiveTestCase):
         self.assertEqual(user.modelbase_set.all()[0].event.place, 'Salt River')
 
         resp = self.client.get(reverse('events'))
-        self.assertContains(resp, 'All (change)')
+        self.assertContains(resp, 'All Provinces (change)')
         self.assertContains(resp, 'Location: Salt River')
 
         resp = self.client.get(reverse('change_province'))
