@@ -24,7 +24,7 @@
                 {% else%}{{object.task.location.city.name}}{% endif %}
             </a></div>
             <span class="subtext">submitted (waiting for approval)</span>
-            {% else %}{% if object.microtaskresponse.state == 1 %}
+            {% else %}{% if object.microtaskresponse.state == 1 or object.microtaskresponse.state == 2 %}
             <div>
                 {% if object.task.title %}{{object.task.title}}
                 {% else%}{{object.task.location.city.name}}{% endif %}

@@ -379,7 +379,8 @@ class TomTomMicroTask(MicroTask):
 
 SUBMITTED = 0
 ACCEPTED = 1
-REJECTED = 2
+PAID = 2
+REJECTED = 3
 
 TASK_RESPONSE_STATE = (
     (SUBMITTED, 'Submitted'),

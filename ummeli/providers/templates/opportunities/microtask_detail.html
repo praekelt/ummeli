@@ -87,12 +87,20 @@
 </div>
 <div class="row-fluid span10">
     <div class="pull-right" style="margin-right:35px;">
-        {% if response.state == 1 %}
-        <span><label class="label label-success">already accepted</label></span>
-        {% else %}
+        {% ifequal response.state 0 %}
         <button class="btn btn-small btn-danger btn-reject">Reject</button>
         <button class="btn btn-large btn-success btn-accept">Accept</button>
-        {% endif %}
+        {% else %}{% ifequal response.state 1 %}
+        <span><label class="label label-success">already accepted</label></span>
+        <button class="btn btn-large btn-success btn-submit-payment">Pay R10</button>
+        {% else %}{% ifequal response.state 2 %}
+        <span><label class="label label-success">already accepted</label></span>
+        <span><label class="label label-info">already paid</label></span>
+        {% endifequal %}{% ifequal response.state 3 %}
+        <span><label class="label label-important">rejected</label></span>
+        {% endifequal %}
+        {% endifequal %}
+        {% endifequal %}
     </div>
 </div>
 <div class="modal hide fade" id="confirm_accept">
@@ -101,7 +109,7 @@
         <h2>ARE YOU SURE?</h2>
     </div>
     <div class="modal-body">
-        <p>By approving this submission, you are confirming the automatic allocation of R10 airtime to {% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}.</p>
+        <p>By approving this submission, you are confirming that this POI is correct and verified.</p>
     </div>
     <div class="modal-footer">
         <form method="post">
@@ -112,6 +120,22 @@
             {% csrf_token %}
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             <input type="submit" class="btn btn-success" value="Accept"/>
+        </form>
+    </div>
+</div>
+<div class="modal hide fade" id="confirm_submit_payment">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h2>ARE YOU SURE?</h2>
+    </div>
+    <div class="modal-body">
+        <p>By approving this submission, you are confirming the automatic allocation of R10 airtime to {% if response.user.get_profile.fullname %}{{response.user.get_profile.fullname}}{% else %}{{response.user.username}}{% endif %}.</p>
+    </div>
+    <div class="modal-footer">
+        <form method="post" action="{% url providers.submit_payment campaign.slug object.slug response.pk%}">
+            {% csrf_token %}
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="btn btn-success" value="Pay R10"/>
         </form>
     </div>
 </div>
@@ -192,6 +216,10 @@ $(function(){
     $('.btn-accept').click(function(e){
         e.preventDefault();
         $('#confirm_accept').modal('show');
+    });
+    $('.btn-submit-payment').click(function(e){
+        e.preventDefault();
+        $('#confirm_submit_payment').modal('show');
     });
     $('.btn-reject').click(function(e){
         e.preventDefault();

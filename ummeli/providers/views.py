@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 
 from ummeli.opportunities.models import (Campaign, MicroTask, ACCEPTED,
-    MicroTaskResponse, REJECTED, SUBMITTED)
+    MicroTaskResponse, REJECTED, SUBMITTED, PAID)
 from ummeli.providers.forms import UploadTaskForm, TaskResponseForm
 from ummeli.providers.tasks import process_upload
 
@@ -111,11 +111,6 @@ def micro_task_detail(request, campaign, slug):
                 messages.add_message(request, messages.SUCCESS, msg)
                 response.state = ACCEPTED
                 response.save()
-
-                payment = FlickSwitchPayment.objects.create(
-                                            msisdn=response.user.username,
-                                            amount=1000)
-                payment.send_airtime()
             else:
                 msg = '%s`s submission has been rejected. `%s` is now live on Ummeli again.' % (
                     username, task.title)
@@ -126,14 +121,32 @@ def micro_task_detail(request, campaign, slug):
 
                 response.state = REJECTED
                 response.save()
-            return redirect(reverse('index'))
+                return redirect(reverse('index'))
         else:
             print form
     else:
         form = TaskResponseForm()
 
     return render(request, 'opportunities/microtask_detail.html',
-                {'form': form, 'campaign': campaign, 'object': task})
+                  {'form': form, 'campaign': campaign, 'object': task})
+
+
+def submit_payment(request, campaign, slug, response_id):
+    if request.method == 'POST':
+        get_object_or_404(Campaign, owner=request.user, slug=campaign)
+        get_object_or_404(MicroTask, campaign__slug=campaign, slug=slug)
+        response = get_object_or_404(MicroTaskResponse, pk=response_id)
+
+        payment = FlickSwitchPayment.objects.create(msisdn=response.user.username,
+                                                    amount=1000)
+        payment.send_airtime()
+        response.state = PAID
+        response.save()
+
+        msg = 'Payment has been made to `%s`' % response.user.username
+        messages.success(request, msg)
+    return redirect(reverse('providers.micro_task_detail',
+                            args=[campaign, slug]))
 
 
 class OpportunityDetailView(DetailView):
