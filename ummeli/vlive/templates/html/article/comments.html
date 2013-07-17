@@ -80,10 +80,8 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                 <span class="tag right">
+                    {{ comment.community_moderation_flags.latest.flag_count }}&nbsp;&nbsp;|&nbsp;
                     <a href="{% url comment_flag comment.pk %}">Report</a>
-                </span>
-                <span class="likes right">
-                {{ comment.community_moderation_flags.latest.flag_count }}
                 </span>
                 {% endif %}
             </div>
