@@ -56,6 +56,7 @@
 <div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
         <div class="comment {% cycle 'even' 'odd' %}">
+            {% if not comment.is_community_moderated and not comment.is_moderated %}
             <div>
                 <!-- link to user profile -->
                         {% if comment.user.get_profile.fullname %}
@@ -66,35 +67,39 @@
                     <span class="subtext">
                     - {{ comment.submit_date|date:"D, j M Y, H:i" }}
                 </span>
+                <div>{{ comment.comment }}</div>
             </div>
-
-            <div>{% spaceless %}
-                {% if comment.is_community_moderated %}
-                    <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
-                {% else %}
-                    {% if comment.is_moderated %}
-                        <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
-                    {% else %}
-                        {{ comment.comment }}
-                    {% endif %}
-                {% endif %}{% endspaceless %}
-            </div>
-
             <div>
                 <span class="likes">
                     {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
                 </span>
-                    {% if user.is_authenticated %}
-                    <span class="tag">
-                        <a href="{% url comment_like comment.pk %}">+Like</a>
-                        </span>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                    <span class="tag right">
-                        <a href="{% url comment_flag comment.pk %}">Report</a>
+                {% if user.is_authenticated %}
+                <span class="tag">
+                    <a href="{% url comment_like comment.pk %}">+Like</a>
                     </span>
-                    {% endif %}
+                {% endif %}
+                {% if user.is_authenticated %}
+                <span class="tag right">
+                    <a href="{% url comment_flag comment.pk %}">Report</a>
+                </span>
+                <span class="likes right">
+                {{ comment.community_moderation_flags.latest.flag_count }}
+                </span>
+                {% endif %}
             </div>
+            {% else %}
+                {% spaceless %}
+                {% if comment.is_community_moderated %}
+                    <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
+                {% else %}{% if comment.is_moderated %}
+                    <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
+                {% else %}
+                    {{ comment.comment }}
+                {% endif %}
+                {% endif %}
+                {% endspaceless %}
+            {% endif %}
+
         </div>
     {% endfor %}
 </div>
