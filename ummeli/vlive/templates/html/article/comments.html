@@ -65,7 +65,7 @@
                             Anon.
                         {% endif %}
                     <span class="subtext">
-                    - {{ comment.submit_date|date:"D, j M Y, H:i" }}
+                    - {{ comment.submit_date|timesince }} ago
                 </span>
                 <div>{{ comment.comment }}</div>
             </div>
@@ -88,11 +88,20 @@
                 {% endif %}
             </div>
             {% else %}
+                <span class="subtext">
+                    {{ comment.submit_date|timesince }} ago
+                </span>
                 {% spaceless %}
                 {% if comment.is_community_moderated %}
+                    {% comment %}
                     <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
+                    {% endcomment %}
+                    <strong>Moderated:</strong> Removed by the community
                 {% else %}{% if comment.is_moderated %}
+                    {% comment %}
                     <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
+                    {% endcomment %}
+                    <strong>Moderated:</strong> Removed by moderator
                 {% else %}
                     {{ comment.comment }}
                 {% endif %}
