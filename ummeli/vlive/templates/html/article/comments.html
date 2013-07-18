@@ -52,6 +52,17 @@
     {% endif %}
 </div>
 
+<div class="comment-rules">
+    <div><strong>Help keep your Ummeli clean:
+        <span class="tag report"><a href="#">Report</a></span>
+        any comments that are abusive, inappropriate, chat or
+        break any of our other commenting rules.
+        </strong>
+    </div>
+    <div>3 separate reports and the comment will be removed.</div>
+    <div><strong>Don't know the rules?</strong> <a href="#">Read them here.</a></div>
+</div>
+
 
 <div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
@@ -79,9 +90,11 @@
                     </span>
                 {% endif %}
                 {% if user.is_authenticated %}
-                <span class="tag right">
-                    {{ comment.community_moderation_flags.latest.flag_count }}&nbsp;&nbsp;|&nbsp;
+                <span class="tag report">
                     <a href="{% url comment_flag comment.pk %}">Report</a>
+                </span>
+                <span class="reports tag">
+                    {{ comment.community_moderation_flags.latest.flag_count }}
                 </span>
                 {% endif %}
             </div>
