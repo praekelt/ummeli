@@ -52,6 +52,16 @@
     {% endif %}
 </div>
 
+<div class="comment-rules">
+    <div><strong>Help keep your Ummeli clean:
+        <span class="tag report"><a href="#">Report</a></span>
+        any comments that are abusive, inappropriate, chat or
+        break any of our other commenting rules.
+        </strong>
+    </div>
+    <div>3 separate reports and the comment will be removed.</div>
+    <div><strong>Don't know the rules?</strong> <a href="#">Read them here.</a></div>
+</div>
 
 <div class="comment_list">
     {% for comment in comment_list.object_list %}
@@ -94,7 +104,7 @@
                     {% if user.is_authenticated %}
                         <div class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></div>
                     {% endif %}
-                    <div class="tag">
+                    <div class="tag report right">
                         {% if user.is_authenticated %}
                             <a href="{% url comment_flag comment.pk %}">Report</a>
                         {% endif %}
