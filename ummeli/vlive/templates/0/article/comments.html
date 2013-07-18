@@ -65,6 +65,7 @@
 
 <div class="comment_list">
     {% for comment in comment_list.object_list %}
+        {% if not comment.is_community_moderated and not comment.is_moderated %}
         <div id="c{{ comment.id }}">
             <div class="comment-item">
                 <!-- link to user profile -->
@@ -82,7 +83,7 @@
                     </strong>
                  -
 
-                {{ comment.submit_date|date:"D, j M Y, H:i" }}
+                {{ comment.submit_date|timesince }} ago
                 </span>
 
                 <p class="comment">{% spaceless %}
@@ -99,7 +100,7 @@
 
                 <div class="article-tools">
                     <div class="likes">
-                        {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
+                        {{ comment.like_count }}
                     </div>
                     {% if user.is_authenticated %}
                         <div class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></div>
@@ -112,6 +113,38 @@
                 </div>
             </div>
         </div>
+        {% else %}
+            <div id="c{{ comment.id }}">
+                <div class="comment-item">
+                    <!-- link to user profile -->
+                    <span class="byline">
+                        <strong>
+                            {% if comment.user.get_profile.comment_as_anon %}
+                                Anon.
+                            {% else %}
+                                {% if comment.user.get_profile.fullname %}
+                                    <a href="{% url profile_view comment.user.pk %}">{{ comment.user.get_profile.fullname }}</a>
+                                {% else %}
+                                    Anon.
+                                {% endif %}
+                            {% endif %}
+                        </strong>
+                     -
+
+                    {{ comment.submit_date|timesince }} ago
+
+                    {% spaceless %}
+                    {% if comment.is_community_moderated %}
+                        <strong>Moderated:</strong> Removed by the community
+                    {% else %}{% if comment.is_moderated %}
+                        <strong>Moderated:</strong> Removed by moderator
+                    {% endif %}
+                    {% endif %}
+                    {% endspaceless %}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 

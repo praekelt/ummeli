@@ -112,9 +112,9 @@ span.report a{color: #f80000;}
 .comment_list .comment{margin: 5px 0; padding: 5px;}
 .comment_list span a{color: #e99324;}
 .comment_list .even{background: #bcc7ce;}
+.comment_list .odd{border: 1px solid #bcc7ce;}
 .comment_list span.likes, .comment_list span.tag, .comment_list span.reports{color: #666; font-weight: bold;}
 .comment_list span.report, .comment_list span.reports{float: right;}
-.comment_list span.reports{min-width: 12px;}
 .comment_list{padding: 0}
 
 .livechatresponses .t{
@@ -152,7 +152,7 @@ input[type="radio"] {
 img.left{float: left;margin: 5px 5px 0 0;}
 .img-article{clear:both;min-height:50px;padding:3px;}
 .item-tools {font-size: small;color: #666;}
-span.likes, span.comments, span.tag { background-color: #ddd; padding: 3px 5px 3px 7px; margin: 3px 3px 3px 0; display: inline-block; min-width: 24px }
+span.likes, span.comments, span.tag { background-color: #ddd; padding: 3px 5px 3px 7px; margin: 3px 3px 3px 0; display: inline-block; min-width: 12px }
 span.comments {
 	background: #DDD url(/ummeli-static/images/comments.png) 5px 4px no-repeat;
 	padding-left: 22px;

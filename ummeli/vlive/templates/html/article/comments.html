@@ -82,7 +82,7 @@
             </div>
             <div>
                 <span class="likes">
-                    {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
+                    {{ comment.like_count }}
                 </span>
                 {% if user.is_authenticated %}
                 <span class="tag">
@@ -94,7 +94,9 @@
                     <a href="{% url comment_flag comment.pk %}">Report</a>
                 </span>
                 <span class="reports tag">
-                    {{ comment.community_moderation_flags.latest.flag_count }}
+                    {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+                    {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+                    {% endwith %}
                 </span>
                 {% endif %}
             </div>
