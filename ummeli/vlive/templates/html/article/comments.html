@@ -104,7 +104,6 @@
                 <span class="subtext">
                     {{ comment.submit_date|timesince }} ago
                 </span>
-                {% spaceless %}
                 {% if comment.is_community_moderated %}
                     {% comment %}
                     <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
@@ -119,7 +118,6 @@
                     {{ comment.comment }}
                 {% endif %}
                 {% endif %}
-                {% endspaceless %}
             {% endif %}
 
         </div>
