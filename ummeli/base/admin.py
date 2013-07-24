@@ -32,6 +32,7 @@ class ArticleAdmin(admin.ModelAdmin):
     list_filter = ('source',)
     ordering = ('-date',)
     date_hierarchy = 'date'
+    list_per_page = 10
 
 class JobCategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
