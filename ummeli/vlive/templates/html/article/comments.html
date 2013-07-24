@@ -67,7 +67,6 @@
 <div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
         <div class="comment {% cycle 'even' 'odd' %}">
-            {% if not comment.is_community_moderated and not comment.is_moderated %}
             <div>
                 <!-- link to user profile -->
                         {% if comment.user.get_profile.fullname %}
@@ -100,26 +99,6 @@
                 </span>
                 {% endif %}
             </div>
-            {% else %}
-                <span class="subtext">
-                    {{ comment.submit_date|timesince }} ago
-                </span>
-                {% if comment.is_community_moderated %}
-                    {% comment %}
-                    <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
-                    {% endcomment %}
-                    <strong>Moderated:</strong> Removed by the community
-                {% else %}{% if comment.is_moderated %}
-                    {% comment %}
-                    <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
-                    {% endcomment %}
-                    <strong>Moderated:</strong> Removed by moderator
-                {% else %}
-                    {{ comment.comment }}
-                {% endif %}
-                {% endif %}
-            {% endif %}
-
         </div>
     {% endfor %}
 </div>

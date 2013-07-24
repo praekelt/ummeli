@@ -65,7 +65,6 @@
 
 <div class="comment_list">
     {% for comment in comment_list.object_list %}
-        {% if not comment.is_community_moderated and not comment.is_moderated %}
         <div id="c{{ comment.id }}">
             <div class="comment-item">
                 <!-- link to user profile -->
@@ -86,17 +85,7 @@
                 {{ comment.submit_date|timesince }} ago
                 </span>
 
-                <p class="comment">{% spaceless %}
-                    {% if comment.is_community_moderated %}
-                        <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
-                    {% else %}
-                        {% if comment.is_moderated %}
-                            <strong>Moderated:</strong> {{ comment.moderation_flags.latest.reason }}
-                        {% else %}
-                            {{ comment.comment }}
-                        {% endif %}
-                    {% endif %}{% endspaceless %}
-                </p>
+                <p class="comment">{{ comment.comment }}</p>
 
                 <div class="article-tools">
                     <div class="likes">
@@ -113,23 +102,6 @@
                 </div>
             </div>
         </div>
-        {% else %}
-            <div id="c{{ comment.id }}">
-                <div class="comment-item">
-                    <!-- link to user profile -->
-                    <span class="byline">
-                    {{ comment.submit_date|timesince }} ago
-
-                    {% if comment.is_community_moderated %}
-                        <strong>Moderated:</strong> Removed by the community
-                    {% else %}{% if comment.is_moderated %}
-                        <strong>Moderated:</strong> Removed by moderator
-                    {% endif %}
-                    {% endif %}
-                    </span>
-                </div>
-            </div>
-        {% endif %}
     {% endfor %}
 </div>
 
