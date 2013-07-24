@@ -104,7 +104,7 @@ h1 span.subtext{color:#aaa;font-size: 0.9em}
 /*---------------------------
 9.	Comments
 -----------------------------*/
-span.report a{color: #f80000;}
+span.report a{color: #f80000 !important;}
 .comment-rules{background: #577384; color: #fff; padding: 5px}
 	.comment-rules a{color: #e99324; font-weight: bold;}
 	.comment-rules div{margin-bottom: 3px;}
