@@ -39,6 +39,9 @@ urlpatterns = patterns('',
     url(r'^campaigns/(?P<campaign>[\w-]+)/live/$',
         TaskLiveListView.as_view(),
         name='providers.task_live'),
+    url(r'^campaigns/(?P<campaign>[\w-]+)/accepted/$',
+        TaskAcceptedListView.as_view(),
+        name='providers.task_accepted'),
 )
 
 

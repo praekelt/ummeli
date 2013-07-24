@@ -27,8 +27,8 @@ def index(request):
     all_tasks = MicroTask.permitted.filter(campaign=campaign)
     live_tasks = MicroTask.available.filter(campaign=campaign)
     closed_tasks = MicroTask.permitted.filter(campaign=campaign,
-                                            microtaskresponse__state=ACCEPTED,
-                                            )[:5]
+                                              microtaskresponse__state=ACCEPTED,
+                                              )
 
     context = {
         'object': campaign,
@@ -195,3 +195,16 @@ class TaskLiveListView(ListView):
                         slug=self.kwargs['campaign'])
         return MicroTask.available.filter(campaign=campaign)\
                                     .order_by('created')
+
+
+class TaskAcceptedListView(ListView):
+    paginate_by = 10
+    template_name = 'opportunities/task_accepted.html'
+
+    def get_queryset(self):
+        campaign = get_object_or_404(Campaign,
+                                     owner=self.request.user,
+                                     slug=self.kwargs['campaign'])
+        return MicroTaskResponse.objects.filter(task__campaign=campaign,
+                                                state=ACCEPTED)\
+                                        .order_by('date')
