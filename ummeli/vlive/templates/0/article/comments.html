@@ -93,12 +93,8 @@
                     </div>
                     {% if user.is_authenticated %}
                         <div class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></div>
+                        <div class="tag report right"><a href="{% url comment_flag comment.pk %}">Report</a></div>
                     {% endif %}
-                    <div class="tag report right">
-                        {% if user.is_authenticated %}
-                            <a href="{% url comment_flag comment.pk %}">Report</a>
-                        {% endif %}
-                    </div>
                 </div>
             </div>
         </div>

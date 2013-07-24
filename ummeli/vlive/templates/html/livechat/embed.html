@@ -61,6 +61,18 @@
 
 {% endif %}
 
+<div class="comment-rules">
+    <div><strong>Help keep your Ummeli clean:
+        <span class="tag report"><a href="#">Report</a></span>
+        any comments that are abusive, inappropriate, chat or
+        break any of our other commenting rules.
+        </strong>
+    </div>
+    <div>3 separate reports and the comment will be removed.</div>
+    <div><strong>Don't know the rules?</strong> <a href="/rules/">Read them here.</a></div>
+</div>
+
+
 
 {% if user.is_authenticated %}
 {% get_mylivechat livechat %}
@@ -156,7 +168,12 @@ You haven't asked any questions.
             {% endif %}
 
             {% if user.is_authenticated %}
-            <span class="tag"><a href="{% url comment_flag comment.pk %}">Report</a></span>
+            <span class="tag report"><a href="{% url comment_flag comment.pk %}">Report</a></span>
+            <span class="reports tag">
+                {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+                {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+                {% endwith %}
+            </span>
             {% endif %}
         </div>
         {% if comment.livechatresponse_set.exists %}

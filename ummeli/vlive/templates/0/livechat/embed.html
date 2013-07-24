@@ -61,6 +61,18 @@
 
 {% endif %}
 
+<div class="comment-rules">
+    <div><strong>Help keep your Ummeli clean:
+        <span class="tag report"><a href="#">Report</a></span>
+        any comments that are abusive, inappropriate, chat or
+        break any of our other commenting rules.
+        </strong>
+    </div>
+    <div>3 separate reports and the comment will be removed.</div>
+    <div><strong>Don't know the rules?</strong> <a href="/rules/">Read them here.</a></div>
+</div>
+
+
 {% if user.is_authenticated %}
 {% get_mylivechat livechat %}
 <div class="h2">My Questions</div>
@@ -154,12 +166,8 @@
             </div>
             {% if user.is_authenticated %}
                 <div class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></div>
+                <div class="tag report right"><a href="{% url comment_flag comment.pk %}">Report</a></div>
             {% endif %}
-            <div class="tag">
-                {% if user.is_authenticated %}
-                    <a href="{% url comment_flag comment.pk %}">Report</a>
-                {% endif %}
-            </div>
         </div>
         {% if comment.livechatresponse_set.exists %}
         <div class="livechatresponses">
