@@ -27,7 +27,7 @@ def index(request):
     all_tasks = MicroTask.permitted.filter(campaign=campaign)
     live_tasks = MicroTask.available.filter(campaign=campaign)
     closed_tasks = MicroTask.permitted.filter(campaign=campaign,
-                                              microtaskresponse__state=ACCEPTED,
+                                              microtaskresponse__state=PAID,
                                               )
 
     context = {
