@@ -86,9 +86,7 @@
                 {% if user.is_authenticated %}
                 <span class="tag">
                     <a href="{% url comment_like comment.pk %}">+Like</a>
-                    </span>
-                {% endif %}
-                {% if user.is_authenticated %}
+                </span>
                 <span class="tag report">
                     <a href="{% url comment_flag comment.pk %}">Report</a>
                 </span>

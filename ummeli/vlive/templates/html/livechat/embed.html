@@ -165,15 +165,12 @@ You haven't asked any questions.
             </span>
             {% if user.is_authenticated %}
                 <span class="tag"><a href="{% url comment_like comment.pk %}">+Like</a></span>
-            {% endif %}
-
-            {% if user.is_authenticated %}
-            <span class="tag report"><a href="{% url comment_flag comment.pk %}">Report</a></span>
-            <span class="reports tag">
-                {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
-                {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
-                {% endwith %}
-            </span>
+                <span class="tag report"><a href="{% url comment_flag comment.pk %}">Report</a></span>
+                <span class="reports tag">
+                    {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+                    {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+                    {% endwith %}
+                </span>
             {% endif %}
         </div>
         {% if comment.livechatresponse_set.exists %}
