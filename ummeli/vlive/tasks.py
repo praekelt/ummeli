@@ -37,8 +37,7 @@ def disable_commenting():
 
 
 def enable_commenting():
-    qs = Article.published_objects.filter(can_comment=True,
-                                          comments_enabled=False)
+    qs = Article.published_objects.filter(can_comment=True)
 
     #on homepage
     qs.filter(on_homepage=True).update(comments_enabled=True)
