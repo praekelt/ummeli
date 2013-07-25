@@ -35,7 +35,7 @@
         <div>
         {% if article.linked_article %}
             <div class="bullet">
-                <a href="{% url article_detail article.linked_article.pk %}">
+                <a href="{% url article_detail_redo article.linked_article.pk %}">
                     {{ article.linked_article.title }}
                 </a>
             </div>
