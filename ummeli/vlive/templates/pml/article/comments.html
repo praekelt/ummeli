@@ -1,6 +1,6 @@
 {% load comments %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
+<HEADER><LABEL>Share your comment</LABEL></HEADER>
 {% if user.is_active %}
     {% if article.comments_enabled %}
         <CONTAINER type="data">
@@ -52,9 +52,23 @@
     </CONTAINER>
 {% endif %}
 </MODULE>
+<MODULE backgroundColor="false" palette="MiOrange">
+<HEADER><LABEL>Help keep your Ummeli clean</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+<p><b>Report</b> any comments that are abusive, inappropriate, chat or
+   break any of our other commenting rules.</p>
+<br/>
+<p>3 separate reports and the comment will be removed.</p>
+<p><b>Don't know the rules?</b> <LINK href="/vlive/pages/rules/">Read them here.</LINK></p>
+</TEXT>
+</CONTAINER>
+</MODULE>
+<MODULE palette="MiDove">
+<HEADER><LABEL>{{ comment_count }} comment{{ comment_count|pluralize }}</LABEL></HEADER>
+</MODULE>
 {% for comment in comment_list.object_list %}
 <MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
 <TEXT><b>
     {% if comment.user.get_profile.comment_as_anon %}
@@ -66,35 +80,31 @@
             Anon.
         {% endif %}
     {% endif %}
- - {{ comment.submit_date|date:"D, j M Y, H:i" }} </b><br/>
+ </b><small> {{ comment.submit_date|timesince }} ago</small><br/>
 </TEXT>
 <TEXT>
     {% spaceless %}
-    {% if comment.is_community_moderated %}
-        <color value="blue">
-        <b>Moderated:</b> {{ comment.community_moderation_flags.latest.reason }}
-        </color>
-    {% else %}
-        {% if comment.is_moderated %}
-            <color value="red">
-            <b>Moderated:</b> {{ comment.moderation_flags.latest.reason }}
-            </color>
-        {% else %}
-            {{ comment.comment }}
-        {% endif %}
-    {% endif %}
+    {{ comment.comment }}
     {% endspaceless %}
-</TEXT>
-<TEXT>
-<LINK href="{% url comment_like comment.pk %}?{{uuid}}">
-    <TEXT>+Like ({{ comment.like_count }})</TEXT>
-</LINK>
-<LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
-    <TEXT>Report</TEXT>
-</LINK>
 </TEXT>
 </CONTAINER>
 </MODULE>
+<MODULE role="MOD20" palette="MiDove">
+<CONTAINER type="list">
+<LINK href="{% url comment_like comment.pk %}?{{uuid}}">
+    {{ comment.like_count }} Like{{comment.like_count|pluralize}}
+</LINK>
+</CONTAINER>
+<CONTAINER type="list">
+<LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
+{% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+{% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+ Report{{flag_count|pluralize}}
+{% endwith %}
+</LINK>
+</CONTAINER>
+</MODULE>
+<MODULE role="MOD17"><HEADER/></MODULE>
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
