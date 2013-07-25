@@ -85,7 +85,7 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
-<TEXT><b>{{ comment.submit_date|timesince }}</b></TEXT>
+<TEXT><small>{{ comment.submit_date|timesince }} ago</small></TEXT>
 <TEXT>
     {% spaceless %}
     {% if comment.is_community_moderated %}
@@ -115,7 +115,7 @@
     <TEXT>
     <color value="orange">
         <b>{{response.author.first_name}}</b>
-        <br/>{{ response.updated_at|timesince }}
+        <br/><small>{{ response.updated_at|timesince }} ago</small>
         <br/>{{response.response}}
     </color>
     </TEXT>
@@ -167,7 +167,8 @@
             Anon.
         {% endif %}
     {% endif %}
- - {{ comment.submit_date|timesince }} </b><br/>
+    </b>
+ - <small>{{ comment.submit_date|timesince }} ago</small><br/>
 </TEXT>
 <TEXT>
     {% spaceless %}
@@ -212,7 +213,7 @@
     <TEXT>
     <color value="orange">
         <b>{{response.author.first_name}}</b>
-        <br/>{{ response.updated_at|timesince }}
+        <br/><small>{{ response.updated_at|timesince }} ago</small>
         <br/>{{response.response}}
     </color>
     </TEXT>
