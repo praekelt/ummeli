@@ -37,7 +37,7 @@
     {% if article.linked_article %}
     <CONTAINER type="list">
         <LINK href="{% url article_detail article.linked_article.pk %}?{{uuid}}">
-            <TEXT>{{ article.linked_article.title }}</TEXT>
+            <TEXT>{{ article.linked_article.title }}<TEASER>{{ article.linked_article.description }}</TEASER></TEXT>
         </LINK>
     </CONTAINER>
     {% endif %}
