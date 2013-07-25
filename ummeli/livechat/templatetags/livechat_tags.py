@@ -1,6 +1,7 @@
 from django import template
 from django.core.paginator import Paginator
 from django.contrib.sites.models import Site
+from jmbocomments.models import UserComment, UserCommentFlag
 
 current_site = Site.objects.get_current()
 
@@ -23,8 +24,14 @@ def get_livechat_page(context, livechat, var_name):
     """
     request = context['request']
 
-    comments_qs = livechat.comment_set().distinct() \
-                    .select_related('user').order_by('-submit_date')
+    comments_qs = livechat.comment_set()\
+        .exclude(is_removed=True)\
+        .exclude(flag_set__flag=UserCommentFlag.COMMUNITY_REMOVAL)\
+        .exclude(flag_set__flag=UserCommentFlag.MODERATOR_DELETION)\
+        .distinct()\
+        .select_related('user')\
+        .order_by('-submit_date')
+
     answered = request.GET.get('answered', '')
     popular = request.GET.get('popular', '')
     if answered == 'true':

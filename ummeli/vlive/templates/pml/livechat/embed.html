@@ -64,6 +64,19 @@
 {% endif %}
 </MODULE>
 
+<MODULE backgroundColor="false" palette="MiOrange">
+<HEADER><LABEL>Help keep your Ummeli clean</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+<p><b>Report</b> any comments that are abusive, inappropriate, chat or
+   break any of our other commenting rules.</p>
+<br/>
+<p>3 separate reports and the comment will be removed.</p>
+<p><b>Don't know the rules?</b> <LINK href="/vlive/pages/rules/">Read them here.</LINK></p>
+</TEXT>
+</CONTAINER>
+</MODULE>
+
 {% get_mylivechat livechat %}
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL>My Questions</LABEL></HEADER>
@@ -72,7 +85,7 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="data">
-<TEXT><b>{{ comment.submit_date|date:"D, j M Y, H:i" }}</b></TEXT>
+<TEXT><b>{{ comment.submit_date|timesince }}</b></TEXT>
 <TEXT>
     {% spaceless %}
     {% if comment.is_community_moderated %}
@@ -102,7 +115,7 @@
     <TEXT>
     <color value="orange">
         <b>{{response.author.first_name}}</b>
-        <br/>{{ response.updated_at|date:"D, j M Y, H:i" }}
+        <br/>{{ response.updated_at|timesince }}
         <br/>{{response.response}}
     </color>
     </TEXT>
@@ -154,7 +167,7 @@
             Anon.
         {% endif %}
     {% endif %}
- - {{ comment.submit_date|date:"D, j M Y, H:i" }} </b><br/>
+ - {{ comment.submit_date|timesince }} </b><br/>
 </TEXT>
 <TEXT>
     {% spaceless %}
@@ -173,14 +186,21 @@
     {% endif %}
     {% endspaceless %}
 </TEXT>
-<TEXT>
+</CONTAINER>
+</MODULE>
+<MODULE role="MOD20" palette="MiDove">
+<CONTAINER type="list">
     <LINK href="{% url comment_like comment.pk %}?{{uuid}}">
-        <TEXT>+Like ({{ comment.like_count }})</TEXT>
+        {{ comment.like_count }} Like{{comment.like_count|pluralize}}
     </LINK>
+</CONTAINER>
+<CONTAINER type="list">
     <LINK href="{% url comment_flag comment.pk %}?{{uuid}}">
-        <TEXT>Report</TEXT>
+        {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+        {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+         Report{{flag_count|pluralize}}
+        {% endwith %}
     </LINK>
-</TEXT>
 </CONTAINER>
 </MODULE>
 
@@ -192,7 +212,7 @@
     <TEXT>
     <color value="orange">
         <b>{{response.author.first_name}}</b>
-        <br/>{{ response.updated_at|date:"D, j M Y, H:i" }}
+        <br/>{{ response.updated_at|timesince }}
         <br/>{{response.response}}
     </color>
     </TEXT>
@@ -201,6 +221,7 @@
 {% endfor %}
 {% endif %}
 
+<MODULE><CONTAINER type="data"><TEXT>____________________</TEXT></CONTAINER></MODULE>
 {% endfor %}
 
 <MODULE backgroundColor="false" palette="MiDove">
