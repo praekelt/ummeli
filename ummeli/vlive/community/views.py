@@ -1,9 +1,15 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
+from django.views.generic import FormView
+from django.contrib.sites.models import Site
 
-from ummeli.base.models import UserSubmittedJobArticle
+from ummeli.base.models import UserSubmittedJobArticle, StatusUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
+from ummeli.vlive.community.forms import StatusUpdateForm
+
+
+current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
@@ -51,3 +57,25 @@ def community_job(request, id):
 
     return render(request, 'opportunities/jobs/community_job.html',
                   {'job': article, 'form':  form})
+
+
+class StatusUpdateView(FormView):
+    """
+    Renders and handles user status update view/form.
+    """
+    form_class = StatusUpdateForm
+    template_name = "profile/community/status_edit.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(StatusUpdateView, self).get_context_data(*args, **kwargs)
+        context.update({
+            'statuses': StatusUpdate.objects.order_by('-created')[:5],
+        })
+        return context
+
+    def form_valid(self, form):
+        title = form.cleaned_data['title']
+        s = StatusUpdate.objects.create(title=title, owner=self.request.user)
+        s.sites.add(current_site)
+        s.save()
+        return redirect(reverse('status_update'))
