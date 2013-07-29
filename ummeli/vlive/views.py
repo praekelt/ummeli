@@ -1,16 +1,14 @@
 import urlparse
-import uuid
 import string
 import random
 
-from datetime import datetime, date, timedelta, time
+from datetime import datetime, timedelta
 
 from django.conf import settings
 
 from ummeli.opportunities.models import Job, Province as OpportunityProvince
-from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
-    UserSubmittedJobArticle, ALL)
+from ummeli.base.models import CurriculumVitae, Article,  Province,\
+    Category, UserSubmittedJobArticle, ALL
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
@@ -24,20 +22,20 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
-from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 
 #imports for login
-from django.http import  HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
-from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
-    PasswordChangeForm, SetPasswordForm)
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm,\
+    PasswordChangeForm, SetPasswordForm
 
 from jmboarticles.models import Article as EditorialArticle
+
 
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -357,50 +355,6 @@ def connection_job(request, user_id, pk):
 
     return redirect(reverse('my_connections'))
 
-def community_jobs(request):
-    articles = UserSubmittedJobArticle.objects.all().order_by('-date')
-
-    paginator = Paginator(articles, 15) # Show 15 contacts per page
-    page = request.GET.get('page', 'none')
-
-    try:
-        paged_jobs = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        paged_jobs = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        paged_jobs = paginator.page(paginator.num_pages)
-    return render(request, 'opportunities/jobs/community_jobs.html', {'articles': paged_jobs})
-
-def community_job(request, id):
-    form = None
-    if not UserSubmittedJobArticle.objects.filter(pk = id):
-        return redirect(reverse('community_jobs')) # Sorry, this ad has been removed.
-    article = UserSubmittedJobArticle.objects.get(pk = id)
-
-    if request.method == 'POST':
-        if(request.POST.get('send_via') == 'email'):
-            form = EmailCVForm(data = request.POST)
-        else:
-            form = FaxCVForm(data = request.POST)
-
-        user_profile = request.user.get_profile()
-
-        if form.is_valid() and not user_profile.missing_fields():
-            send_via = form.cleaned_data['send_via']
-            send_to = form.cleaned_data['send_to']
-
-            if send_via == 'email':
-                user_profile.email_cv(send_to,  article.text)
-                return redirect(reverse('community_jobs'))
-            else:
-                user_profile.fax_cv(send_to, article.text)
-                return redirect(reverse('community_jobs'))
-
-    return render(request, 'opportunities/jobs/community_job.html',
-                              {'job': article,
-                              'form':  form,})
 
 def send_thanks_job_apply(request,  cat_id):
     return redirect(reverse('jobs',  args=[cat_id]))
