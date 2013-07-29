@@ -5,11 +5,21 @@ from django.forms import ModelForm
 from django.conf import settings
 from django.template.loader import render_to_string
 
+from jmbo.models import ModelBase
 from ummeli.base.utils import render_to_pdf
 from django.core.mail import send_mail,  EmailMessage
 from datetime import datetime
 
 from celery.task import task
+
+
+class StatusUpdate(ModelBase):
+    pass
+
+
+class SkillsUpdate(ModelBase):
+    pass
+
 
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
