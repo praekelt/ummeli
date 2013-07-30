@@ -73,6 +73,7 @@ class Opportunity(ModelBase):
                     default=0)
     salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
     place = models.TextField(null=True, blank=True, default=None)
+    is_community = models.BooleanField(default=False)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
