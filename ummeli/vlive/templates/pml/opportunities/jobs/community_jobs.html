@@ -6,22 +6,34 @@
 {% for article in articles.object_list %}
 <MODULE backgroundColor="false" palette="MiDove" role="MOD16">
     <CONTAINER type="image">
-    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    {% if article.statusupdate %}
     <TITLE>
-        <LINK href="{% url community_jobs article.pk %}?{{uuid}}">
+        <LINK href="{% url profile_view article.owner.pk %}?{{uuid}}">
+            <TEXT>{{article.owner.get_profile.fullname}}</TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ article.title }}<br/>
+        {{ article.created|timesince }} ago<br/>
+    </TEXT>
+    {% else %}
+    <TITLE>
+        <LINK href="{% url community_jobs article.slug %}?{{uuid}}">
             <TEXT>{{ article.title|truncatewords:10 }}</TEXT>
         </LINK>
     </TITLE>
     <TEXT>
-        {{ article.text|truncatewords:10 }}<br/>
-        {% if article.province %}{{article.province}}<br/>{% endif %}
-        {{ article.date|date:"D, j M Y, H:i" }} <br/>
-        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
+        {{ article.description|truncatewords:10 }}<br/>
+        {{article.get_provinces}}<br/>
+        {{ article.created|timesince }} ago<br/>
+        {{article.owner.get_profile.fullname}}
     </TEXT>
+    {% endif %}
     </CONTAINER>
 </MODULE>
 {% endfor %}
-    
+
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
