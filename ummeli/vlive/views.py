@@ -160,7 +160,7 @@ def password_change_view(request):
     return render(request, 'password_change.html', {'form': form})
 
 def index(request):
-    community_list = UserSubmittedJobArticle.objects.all().order_by('-date')[:3]
+    community_list = Job.objects.filter(is_community=True).order_by('-created')[:3]
     return render(request, 'index.html', {'community_list': community_list})
 
 @login_required

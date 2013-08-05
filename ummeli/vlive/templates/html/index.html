@@ -34,12 +34,12 @@
     {% for article in community_list %}
         <div class="img-article">
             <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="56" alt="Title Here" class="left">
-            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
+            <a href="{% url community_jobs article.slug %}">{{ article.title|truncatewords:10 }}</a> {{ article.description|truncatewords:10 }}
             <br/>
-            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
+            <small>{{article.get_provinces}}</small><br/>
             <small>
-                {{ article.date|date:"D, j M Y, H:i" }}
-                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
+                {{ article.created|timesince }} ago
+                <a href="{% url profile_view article.owner.pk %}">{{article.owner.get_profile.fullname}}</a>
             </small>
         </div>
     {% endfor %}

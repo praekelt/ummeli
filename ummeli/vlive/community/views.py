@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic import FormView
 from django.contrib.sites.models import Site
 
-from ummeli.base.models import UserSubmittedJobArticle, StatusUpdate
+from ummeli.base.models import StatusUpdate
+from ummeli.opportunities.models import Job
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
 from ummeli.vlive.community.forms import StatusUpdateForm
 
@@ -13,9 +14,9 @@ current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
-    articles = UserSubmittedJobArticle.objects.all().order_by('-date')
+    jobs = Job.objects.filter(is_community=True).order_by('-created')
 
-    paginator = Paginator(articles, 15)  # Show 15 contacts per page
+    paginator = Paginator(jobs, 15)  # Show 15 contacts per page
     page = request.GET.get('page', 'none')
 
     try:
@@ -30,11 +31,11 @@ def community_jobs(request):
                   {'articles': paged_jobs})
 
 
-def community_job(request, id):
+def community_job(request, slug):
     form = None
-    if not UserSubmittedJobArticle.objects.filter(pk=id):
+    if not Job.objects.filter(slug=slug):
         return redirect(reverse('community_jobs'))  # Sorry, this ad has been removed.
-    article = UserSubmittedJobArticle.objects.get(pk=id)
+    article = Job.objects.get(slug=slug)
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
