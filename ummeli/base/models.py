@@ -13,14 +13,6 @@ from datetime import datetime
 from celery.task import task
 
 
-class StatusUpdate(ModelBase):
-    pass
-
-
-class SkillsUpdate(ModelBase):
-    pass
-
-
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
     date = models.DateTimeField(blank=True,  default = datetime.now())

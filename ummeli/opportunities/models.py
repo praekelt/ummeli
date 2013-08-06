@@ -62,6 +62,20 @@ class Salary(models.Model):
         verbose_name_plural = "salaries"
 
 
+class UmmeliOpportunity(ModelBase):
+    province = models.ManyToManyField(
+                    Province,
+                    blank=True,
+                    null=True,
+                    default=None)
+    education = models.PositiveIntegerField(
+                    choices=EDUCATION_LEVEL_CHOICES,
+                    default=0)
+    salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
+    place = models.TextField(null=True, blank=True, default=None)
+    is_community = models.BooleanField(default=False)
+
+
 class Opportunity(ModelBase):
     province = models.ManyToManyField(
                     Province,
@@ -141,7 +155,7 @@ CATEGORY_CHOICES = (
 )
 
 
-class Job(Opportunity):
+class Job(UmmeliOpportunity):
     category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
 
     @models.permalink
@@ -176,13 +190,13 @@ class Job(Opportunity):
         return cls.objects.none()
 
 
-class Internship(Opportunity):
+class Internship(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('internship_detail', (self.slug,))
 
 
-class Volunteer(Opportunity):
+class Volunteer(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('volunteer_detail', (self.slug,))
@@ -191,7 +205,7 @@ class Volunteer(Opportunity):
         verbose_name_plural = "volunteering"
 
 
-class Bursary(Opportunity):
+class Bursary(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('bursary_detail', (self.slug,))
@@ -200,7 +214,7 @@ class Bursary(Opportunity):
         verbose_name_plural = "bursaries"
 
 
-class Training(Opportunity):
+class Training(UmmeliOpportunity):
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     @models.permalink
@@ -426,3 +440,11 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
 
     def get_lat_lon(self):
         return get_lat_lon(self.file)
+
+
+class StatusUpdate(UmmeliOpportunity):
+    pass
+
+
+class SkillsUpdate(UmmeliOpportunity):
+    pass
