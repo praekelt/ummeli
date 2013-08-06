@@ -4,8 +4,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import FormView
 from django.contrib.sites.models import Site
 
-from ummeli.base.models import StatusUpdate
-from ummeli.opportunities.models import Job
+from ummeli.opportunities.models import Job, UmmeliOpportunity, StatusUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
 from ummeli.vlive.community.forms import StatusUpdateForm
 
@@ -14,21 +13,21 @@ current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
-    jobs = Job.objects.filter(is_community=True).order_by('-created')
+    posts = UmmeliOpportunity.objects.filter(is_community=True).order_by('-created')
 
-    paginator = Paginator(jobs, 15)  # Show 15 contacts per page
+    paginator = Paginator(posts, 15)  # Show 15 contacts per page
     page = request.GET.get('page', 'none')
 
     try:
-        paged_jobs = paginator.page(page)
+        paged_posts = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        paged_jobs = paginator.page(1)
+        paged_posts = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        paged_jobs = paginator.page(paginator.num_pages)
+        paged_posts = paginator.page(paginator.num_pages)
     return render(request, 'opportunities/jobs/community_jobs.html',
-                  {'articles': paged_jobs})
+                  {'articles': paged_posts})
 
 
 def community_job(request, slug):
@@ -76,7 +75,10 @@ class StatusUpdateView(FormView):
 
     def form_valid(self, form):
         title = form.cleaned_data['title']
-        s = StatusUpdate.objects.create(title=title, owner=self.request.user)
+        s = StatusUpdate.objects.create(title=title,
+                                        owner=self.request.user,
+                                        state='published',
+                                        is_community=True)
         s.sites.add(current_site)
         s.save()
         return redirect(reverse('status_update'))
