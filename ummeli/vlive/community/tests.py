@@ -1,8 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-from ummeli.opportunities.models import StatusUpdate
-from ummeli.opportunities.models import Job
+from ummeli.opportunities.models import StatusUpdate, Job, Bursary
 
 
 class CommunityTestCase(VLiveTestCase):
@@ -31,12 +30,19 @@ class CommunityTestCase(VLiveTestCase):
         j.save()
         i = StatusUpdate.objects.create(title='Test status update',
                                         owner=user,
+                                        is_community=True,
                                         state='published')
-        i.save()
+        b = Bursary.objects.create(title='Test Bursary',
+                                   owner=user,
+                                   is_community=True,
+                                   state='published')
+        b.save()
 
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].statusupdate.title, 'Test status update')
+        self.assertEqual(user.modelbase_set.get(slug=i.slug).ummeliopportunity.statusupdate.title, 'Test status update')
+        self.assertEqual(user.modelbase_set.get(slug=b.slug).ummeliopportunity.bursary.title, 'Test Bursary')
 
         resp = self.client.get(reverse('community_jobs'))
         self.assertContains(resp, 'Test community job')
         self.assertContains(resp, 'Test status update')
+        self.assertContains(resp, 'Test Bursary')
