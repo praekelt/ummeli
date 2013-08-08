@@ -17,7 +17,6 @@ from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
-from django.contrib.contenttypes.models import ContentType
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
@@ -47,10 +46,9 @@ def profile_view(request, user_id):
 
     already_requested = other_user.get_profile().is_connection_requested(request.user.pk)
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
-    ummeliopportunity_content_type = ContentType.objects.get_for_model(UmmeliOpportunity)
     return render(request, 'profile/profile_view.html',
                 {'other_user_profile': other_user.get_profile(),
-                 'other_user_jobs': other_user.modelbase_set.filter(content_type=ummeliopportunity_content_type).count(),
+                 'other_user_jobs': other_user.modelbase_set.filter(ummeliopportunity__isnull=False).count(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
@@ -531,7 +529,7 @@ class MyJobsListView(ListView):
     template_name = 'my_jobs_list.html'
 
     def get_queryset(self):
-        return self.request.user.user_submitted_job_article_user.all().order_by('-date')
+        return self.request.user.modelbase_set.filter(ummeliopportunity__isnull=False).order_by('-created')
 
 class ConnectionJobsListView(ListView):
     paginate_by = 5

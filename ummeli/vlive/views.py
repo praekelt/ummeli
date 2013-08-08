@@ -5,6 +5,8 @@ import random
 from datetime import datetime, timedelta
 
 from django.conf import settings
+from django.contrib.sites.models import Site
+site = Site.objects.get_current()
 
 from ummeli.opportunities.models import Job, Province as OpportunityProvince,\
     UmmeliOpportunity
@@ -23,7 +25,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
-from django.utils.hashcompat import md5_constructor
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
@@ -162,7 +163,7 @@ def password_change_view(request):
     return render(request, 'password_change.html', {'form': form})
 
 def index(request):
-    community_list = Job.objects.filter(is_community=True).order_by('-created')[:3]
+    community_list = UmmeliOpportunity.objects.filter(is_community=True).order_by('-created')[:3]
     return render(request, 'index.html', {'community_list': community_list})
 
 @login_required
@@ -413,38 +414,26 @@ def jobs_create(request):
         form = JobEditForm(request.POST)
 
         title = request.POST.get('title')
-        text = request.POST.get('text')
+        description = request.POST.get('description')
         # check if the user hasn't placed the exact same job article
         # with the exact same information in the last 5 minutes to prevent duplicates
         delta = datetime.now() - timedelta(minutes=5)
         duplicate = Job.objects \
-                        .filter(owner=request.user, created__gte=delta, title=title,  description=text) \
+                        .filter(owner=request.user, created__gte=delta, title=title,  description=description) \
                         .exists()
         if form.is_valid():
             if not duplicate:
-                province = Province.objects.get(pk = int(request.POST.get('province')))
-
-                category_title = request.POST.get('category')
-                category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
-                if not Category.objects.filter(hash_key=category_hash).exists():
-                    cat  = Category(province=province, hash_key = category_hash,  title=category_title)
-                    cat.save()
-                else:
-                    cat  = Category.objects.get(hash_key = category_hash)
-
                 user_article = form.save(commit=False)
-                user_article.user = request.user
-                user_article.province = province.name
-                user_article.job_category = cat.title
+                user_article.owner = request.user
+                user_article.state = 'published'
+                user_article.is_community = True
+                user_article.publish_on = datetime.now()
                 user_article.save()
-
+                user_article.sites.add(site)
+                user_article.province.add(form.cleaned_data['province'])
             return redirect(reverse('my_jobs'))
     else:
         form = JobEditForm()
 
-    provinces = Province.objects.all().order_by('name').exclude(pk=1)
-    categories = Category.objects.filter(is_allowed=True).values('title').distinct().order_by('title')
-
     return render(request, 'opportunities/jobs/jobs_create.html',
-                                {'form': form,  'provinces': provinces,
-                                'categories': categories})
+                                {'form': form})

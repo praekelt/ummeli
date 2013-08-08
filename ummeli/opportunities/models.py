@@ -75,6 +75,31 @@ class UmmeliOpportunity(ModelBase):
     place = models.TextField(null=True, blank=True, default=None)
     is_community = models.BooleanField(default=False)
 
+    def __unicode__(self):  # pragma: no cover
+        return '%s' % self.title
+
+    def get_education(self):
+        return dict(EDUCATION_LEVEL_CHOICES)[self.education]
+
+    def get_provinces(self):
+        return ', '.join(['%s' % a for a in self.province.all()])
+
+    def save(self, *args, **kwargs):
+        self.description = sanitize_html(self.description or '')
+        self.place = sanitize_html(self.place or '')
+        super(UmmeliOpportunity, self).save(*args, **kwargs)
+
+    def as_leaf_class(self):
+        try:
+            instance = self.__getattribute__(self.class_name.lower())
+        except AttributeError:
+            content_type = self.content_type
+            model = content_type.model_class()
+            if(model == ModelBase):
+                return self
+            instance = model.objects.get(id=self.id)
+        return instance
+
 
 class Opportunity(ModelBase):
     province = models.ManyToManyField(

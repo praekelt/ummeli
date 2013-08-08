@@ -5,19 +5,20 @@
     <h2>Jobs Posted</h2>
         {% if object_list %}
         {% for item in object_list %}
-            <div class="img-article"><a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
+            <div class="img-article">
+                <a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} ({{item.as_leaf_class.get_provinces}})</a>
             <br/>
-            {{item.text|truncatewords:10}}
+            {{item.description|truncatewords:10}}
             <br/>
             <small>
-                {{ item.date|date:"D, j M Y, H:i" }}
+                {{ item.created|timesince }} ago
             </small>
             <br/>
             <div class="more"><a href="{% url my_jobs_delete item.pk %}">Delete</a></div>
             </div>
         {% endfor %}
         {% endif %}
-        
+
         <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
@@ -35,7 +36,7 @@
             | <span>Next</span>
         {% endif %}
         </div>
-    
+
         <div class="more"><a href="{% url jobs_create %}">+ Add another</a></div>
         <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
     </form>
