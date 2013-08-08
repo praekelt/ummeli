@@ -49,9 +49,9 @@ class OpportunitiesTest(VLiveTestCase):
         i.save()
 
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].internship.salary.amount, 50)
-        self.assertEqual(user.modelbase_set.all()[0].internship.education, 0)
-        self.assertEqual(user.modelbase_set.all()[0].internship.province.count(), 2)
+        self.assertEqual(user.modelbase_set.all()[0].ummeliopportunity.internship.salary.amount, 50)
+        self.assertEqual(user.modelbase_set.all()[0].ummeliopportunity.internship.education, 0)
+        self.assertEqual(user.modelbase_set.all()[0].ummeliopportunity.internship.province.count(), 2)
 
         resp = self.client.get(reverse('internships'))
         self.assertContains(resp, 'Test op')
@@ -71,7 +71,7 @@ class OpportunitiesTest(VLiveTestCase):
                                     owner=user,
                                     cost=300)
         self.assertEqual(user.modelbase_set.filter(slug=i.slug).count(), 1)
-        self.assertEqual(user.modelbase_set.all()[0].training.cost, 300)
+        self.assertEqual(user.modelbase_set.all()[0].ummeliopportunity.training.cost, 300)
 
     def test_event(self):
         self.login()
