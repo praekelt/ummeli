@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-from ummeli.base.models import StatusUpdate
+from ummeli.opportunities.models import StatusUpdate
 from ummeli.opportunities.models import Job
 
 
