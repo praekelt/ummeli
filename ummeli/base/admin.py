@@ -1,18 +1,8 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
-    UserSubmittedJobArticle)
+    Reference, Article,  Province, Category, CurriculumVitae)
 from django.contrib import admin
 from jmbocomments.models import UserComment
 from jmbocomments.admin import UserCommentAdmin
-
-
-class UserSubmittedJobArticleAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'text', 'user__username')
-    list_display = ('date', 'title', 'text', 'province', 'job_category')
-    list_filter = ('province', 'job_category')
-    ordering = ('-date',)
-    date_hierarchy = 'date'
-    raw_id_fields = ('user', )
 
 
 class UmmeliUserCommentAdmin(UserCommentAdmin):
@@ -48,7 +38,6 @@ admin.site.register(Reference)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Province)
 admin.site.register(Category, JobCategoryAdmin)
-admin.site.register(UserSubmittedJobArticle, UserSubmittedJobArticleAdmin)
 
 if UserComment in admin.site._registry:
     admin.site.unregister(UserComment)

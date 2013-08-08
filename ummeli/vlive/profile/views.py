@@ -3,11 +3,10 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm,
                                 ReferenceForm, SkillForm,
-                                PersonalStatementForm,
-                                UserSubmittedJobArticleForm,
-                                UserSubmittedJobArticleEditForm)
+                                PersonalStatementForm)
 from ummeli.vlive.profile.forms import IndustrySearchForm,\
                                         ConnectionNameSearchForm
+from ummeli.vlive.community.forms import JobEditForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -21,14 +20,14 @@ from django.contrib import messages
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
-                                UserSubmittedJobArticle,
                                 Province,  Category, PROVINCE_CHOICES)
+from ummeli.opportunities.models import UmmeliOpportunity
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
 
 from jmbowordsuggest.models import AcceptedWord, AcceptedWordCategory
-from jmbowordsuggest.utils import suggest_words
+
 
 @login_required
 @pin_required
@@ -549,7 +548,7 @@ class ConnectionJobsListView(ListView):
 
 
 class ConnectionJobsDetailView(DetailView):
-    model = UserSubmittedJobArticle
+    model = UmmeliOpportunity
     template_name = 'connection_jobs_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -561,8 +560,8 @@ class ConnectionJobsDetailView(DetailView):
 
 
 class MyJobsEditView(UpdateView):
-    model = UserSubmittedJobArticle
-    form_class = UserSubmittedJobArticleEditForm
+    model = UmmeliOpportunity
+    form_class = JobEditForm
     template_name = 'my_jobs_create.html'
 
     def get_success_url(self):
@@ -577,7 +576,7 @@ class MyJobsEditView(UpdateView):
 
 
 class MyJobsDeleteView(DeleteView):
-    model = UserSubmittedJobArticle
+    model = UmmeliOpportunity
     template_name = 'my_jobs_delete.html'
 
     def get_success_url(self):

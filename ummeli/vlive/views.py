@@ -6,14 +6,16 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 
-from ummeli.opportunities.models import Job, Province as OpportunityProvince
+from ummeli.opportunities.models import Job, Province as OpportunityProvince,\
+    UmmeliOpportunity
 from ummeli.base.models import CurriculumVitae, Article,  Province,\
-    Category, UserSubmittedJobArticle, ALL
+    Category, ALL
 from ummeli.vlive.jobs import tasks
+from ummeli.vlive.community.forms import JobEditForm
 from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
 from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
-                                UserSubmittedJobArticleForm, ForgotPasswordForm,
+                                ForgotPasswordForm,
                                 ConcactSupportForm, MyContactPrivacyForm,
                                 MyCommentSettingsForm)
 
@@ -295,9 +297,9 @@ def job(request,  cat_id,  id, user_submitted=0):
 
     form = None
     if int(user_submitted) == 1:
-        if not UserSubmittedJobArticle.objects.filter(pk=id).exists():
+        if not Job.objects.filter(pk=id).exists():
             return redirect(reverse('jobs', args=[cat_id]))  # Sorry, this ad has been removed.
-        article = UserSubmittedJobArticle.objects.get(pk=id).to_view_model()
+        article = Job.objects.get(pk=id)
     else:
         if not Article.objects.filter(pk=id).exists():
             return redirect(reverse('jobs', args=[cat_id]))
@@ -333,7 +335,7 @@ def job(request,  cat_id,  id, user_submitted=0):
                               'form':  form,})
 
 def connection_job(request, user_id, pk):
-    article = get_object_or_404(UserSubmittedJobArticle, pk = pk).to_view_model()
+    article = get_object_or_404(UmmeliOpportunity, pk = pk).to_view_model()
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
@@ -400,20 +402,20 @@ def stats(request):
                                 {'users': users_count,
                                 'cvs_complete': cvs_complete,
                                 'cvs_complete_percent': cvs_complete_percent,
-                                'user_articles': UserSubmittedJobArticle.objects.count()})
+                                'user_articles': UmmeliOpportunity.objects.count()})
 
 @login_required
 @pin_required
 def jobs_create(request):
     if request.method == 'POST':
-        form = UserSubmittedJobArticleForm(request.POST)
+        form = JobEditForm(request.POST)
 
         title = request.POST.get('title')
         text = request.POST.get('text')
         # check if the user hasn't placed the exact same job article
         # with the exact same information in the last 5 minutes to prevent duplicates
         delta = datetime.now() - timedelta(minutes=5)
-        duplicate = UserSubmittedJobArticle.objects \
+        duplicate = Job.objects \
                         .filter(user=request.user, date__gte=delta, title = title,  text = text) \
                         .exists()
         if form.is_valid():
@@ -438,7 +440,7 @@ def jobs_create(request):
 
             return redirect(reverse('my_jobs'))
     else:
-        form = UserSubmittedJobArticleForm()
+        form = JobEditForm()
 
     provinces = Province.objects.all().order_by('name').exclude(pk=1)
     categories = Category.objects.filter(is_allowed=True).values('title').distinct().order_by('title')

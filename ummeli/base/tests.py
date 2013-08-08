@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from ummeli.base.utils import render_to_pdf, convert_community_job_to_opportunity
 from ummeli.opportunities.models import Job
-from ummeli.base.models import UserSubmittedJobArticle, GAUTENG
+from ummeli.base.models import GAUTENG
 
 
 class BaseTestCase(TestCase):
@@ -26,18 +26,3 @@ class BaseTestCase(TestCase):
         cv = self.user.get_profile()
         result = render_to_pdf('pdf_template.html', {'model': cv})
         self.assertNotEquals(result, None)
-
-    def test_community_job_to_opportunity_job(self):
-        community_job = UserSubmittedJobArticle.objects.create(
-            title='Sample Title',
-            text='This is the description',
-            province='Gauteng',
-            job_category='Marketing',
-            user=self.user
-        )
-        job = convert_community_job_to_opportunity(community_job)
-
-        self.assertEquals(job.title, 'Sample Title')
-        self.assertEquals(job.description, 'This is the description')
-        self.assertEquals(job.category, 14)
-        self.assertEquals(job.owner, self.user)

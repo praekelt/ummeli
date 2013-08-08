@@ -26,36 +26,6 @@ class Article(models.Model):
                 return 0
 
 
-class UserSubmittedJobArticle(models.Model):
-    title = models.CharField(max_length=100)
-    text = models.TextField(default='')
-    province = models.TextField(default='')
-    job_category = models.TextField(default='')
-    moderated = models.BooleanField(default = False)
-    date = models.DateTimeField(auto_now_add = True)
-    date_updated = models.DateTimeField(auto_now = True)
-    user = models.ForeignKey(User, related_name='user_submitted_job_article_user')
-
-    def __unicode__(self):  # pragma: no cover
-        return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
-
-    def user_submitted(self):
-                return 1
-
-    def to_view_model(self):
-        class UserSubmittedJobArticleViewModel(object):
-            def __init__(self,  user_article):
-                self.pk = user_article.pk
-                self.source = user_article.title
-                self.text = user_article.text
-                self.date = user_article.date
-                self.user = user_article.user
-
-            def user_submitted(self):
-                return 1
-        return UserSubmittedJobArticleViewModel(self)
-
-
 class Province(models.Model):
     search_id = models.IntegerField(primary_key = True)
     name = models.CharField(max_length=45)
@@ -69,7 +39,6 @@ class Category(models.Model):
     title = models.CharField(max_length=45)
     province = models.ForeignKey(Province)
     articles = models.ManyToManyField(Article, blank=True,  null=True)
-    user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
     is_allowed = models.BooleanField(default=True)
 
     def must_show(self):
