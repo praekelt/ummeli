@@ -103,7 +103,6 @@ class JobsTestCase(VLiveTestCase):
         # apply via fax
 
         resp = self.client.get(reverse('jobs', args=[1]))
-        print resp
 
         resp = self.client.post(reverse('job', args=[1, 3, 0]),
                                         {'send_via':'fax',  'send_to':'+27123456789'})

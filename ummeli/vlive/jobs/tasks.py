@@ -39,8 +39,6 @@ def queue_categories(search_id,  category_parser,  jobs_parser):
 
     province = Province.objects.get(search_id = search_id)
 
-    print urls
-
     for link, title in urls:
         hash = create_category_id_hash(search_id,  title)
         if not Category.objects.filter(hash_key = hash).exists():

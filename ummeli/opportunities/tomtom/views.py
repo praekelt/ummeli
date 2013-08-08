@@ -165,7 +165,6 @@ def upload_test(request):
             handle_uploaded_file(f)
             lat = form.cleaned_data['lat']
             lon = form.cleaned_data['lon']
-            print f
     else:
         form = UploadTestForm()
 

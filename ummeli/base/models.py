@@ -42,12 +42,10 @@ class Category(models.Model):
     is_allowed = models.BooleanField(default=True)
 
     def must_show(self):
-        return (self.articles.exists() or\
-            self.user_submitted_job_articles.exists()) and\
-            self.is_allowed
+        return self.articles.exists() and self.is_allowed
 
     def articles_count(self):
-        return self.articles.count() + self.user_submitted_job_articles.count()
+        return self.articles.count()
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s (%s)' % (self.province.name, self.title, self.articles_count())

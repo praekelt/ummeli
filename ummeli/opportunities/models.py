@@ -96,7 +96,6 @@ class Opportunity(ModelBase):
         return dict(EDUCATION_LEVEL_CHOICES)[self.education]
 
     def get_provinces(self):
-        print self.province.all()
         return ', '.join(['%s' % a for a in self.province.all()])
 
     def save(self, *args, **kwargs):

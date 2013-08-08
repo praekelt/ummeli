@@ -71,7 +71,6 @@ def upload(request, campaign):
         if form.is_valid():
             file = form.cleaned_data['file']
             temp_file = handle_uploaded_file(file)
-            print '-------: %s' % temp_file
             process_upload.delay(temp_file, campaign)
             return redirect(reverse('index'))
     else:
@@ -122,8 +121,6 @@ def micro_task_detail(request, campaign, slug):
                 response.state = REJECTED
                 response.save()
                 return redirect(reverse('index'))
-        else:
-            print form
     else:
         form = TaskResponseForm()
 

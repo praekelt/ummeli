@@ -261,7 +261,9 @@ def jobs(request, id):
 
     all_jobs = []
     [all_jobs.append(a) for a in category.articles.all()]
-    [all_jobs.append(a.to_view_model()) for a in category.user_submitted_job_articles.all()]
+
+    #TODO: filter jobs in a category (Job.objects.filter(category=category))
+    #[all_jobs.append(a.to_view_model()) for a in category.user_submitted_job_articles.all()]
 
     ummeli_jobs = Job.from_str(category.title)
 
@@ -299,7 +301,7 @@ def job(request,  cat_id,  id, user_submitted=0):
     if int(user_submitted) == 1:
         if not Job.objects.filter(pk=id).exists():
             return redirect(reverse('jobs', args=[cat_id]))  # Sorry, this ad has been removed.
-        article = Job.objects.get(pk=id)
+        article = Job.objects.get(pk=id).to_view_model()
     else:
         if not Article.objects.filter(pk=id).exists():
             return redirect(reverse('jobs', args=[cat_id]))
@@ -416,7 +418,7 @@ def jobs_create(request):
         # with the exact same information in the last 5 minutes to prevent duplicates
         delta = datetime.now() - timedelta(minutes=5)
         duplicate = Job.objects \
-                        .filter(user=request.user, date__gte=delta, title = title,  text = text) \
+                        .filter(owner=request.user, created__gte=delta, title=title,  description=text) \
                         .exists()
         if form.is_valid():
             if not duplicate:
@@ -424,8 +426,8 @@ def jobs_create(request):
 
                 category_title = request.POST.get('category')
                 category_hash = md5_constructor('%s:%s' % (category_title, province.search_id)).hexdigest()
-                if not Category.objects.filter(hash_key = category_hash).exists():
-                    cat  = Category(province = province, hash_key = category_hash,  title = category_title)
+                if not Category.objects.filter(hash_key=category_hash).exists():
+                    cat  = Category(province=province, hash_key = category_hash,  title=category_title)
                     cat.save()
                 else:
                     cat  = Category.objects.get(hash_key = category_hash)
@@ -435,8 +437,6 @@ def jobs_create(request):
                 user_article.province = province.name
                 user_article.job_category = cat.title
                 user_article.save()
-
-                cat.user_submitted_job_articles.add(user_article)
 
             return redirect(reverse('my_jobs'))
     else:
