@@ -10,8 +10,13 @@
         <small><strong>{{job.get_provinces}}</strong></small><br/>
         {{ job.description }}
         <br/><br/>
-        <small>{{ job.created|timesince }}</small>
-        <br/>submitted by <a href="{% url profile_view job.owner.pk %}">{{job.owner.get_profile.fullname}}</a>
+        <small>{{ job.created|timesince }} ago</small>
+        <br/>submitted by
+        {% if job.owner.get_profile.fullname %}
+            <a href="{% url profile_view job.owner.pk %}">{{ job.owner.get_profile.fullname }}</a>
+        {% else %}
+            Anon.
+        {% endif %}
     </div>
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>

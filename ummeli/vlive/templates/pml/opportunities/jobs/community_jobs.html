@@ -10,7 +10,13 @@
     {% if article.statusupdate %}
     <TITLE>
         <LINK href="{% url profile_view article.owner.pk %}?{{uuid}}">
-            <TEXT>{{article.owner.get_profile.fullname}}</TEXT>
+            <TEXT>
+                {% if article.owner.get_profile.fullname %}
+                    {{ article.owner.get_profile.fullname }}</a>
+                {% else %}
+                    Anon.
+                {% endif %}
+            </TEXT>
         </LINK>
     </TITLE>
     <TEXT>
@@ -27,7 +33,11 @@
         {{ article.description|truncatewords:10 }}<br/>
         {{article.get_provinces}}<br/>
         {{ article.created|timesince }} ago<br/>
-        {{article.owner.get_profile.fullname}}
+        {% if article.owner.get_profile.fullname %}
+            {{ article.owner.get_profile.fullname }}</a>
+        {% else %}
+            Anon.
+        {% endif %}
     </TEXT>
     {% endif %}
     </CONTAINER>
