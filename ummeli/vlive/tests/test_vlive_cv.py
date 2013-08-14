@@ -2,12 +2,14 @@ from django.core.urlresolvers import reverse
 from django.core import mail
 from django.conf import settings
 
-from ummeli.base.models import (Category, Province,
-    CurriculumVitae)
+from ummeli.base.models import CurriculumVitae
 from ummeli.vlive.tests.utils import VLiveClient, VLiveTestCase
-
+from ummeli.opportunities.models import Job
 
 class VLiveCVTestCase(VLiveTestCase):
+    fixtures = [
+        'fixtures/opportunities.provinces.json',
+    ]
 
     def setUp(self):
         self.msisdn = '27123456789'
@@ -369,18 +371,14 @@ class VLiveCVTestCase(VLiveTestCase):
         self.register()
         self.login()
 
-        Province(search_id = 2,  name = 'Gauteng').save()
-        Province(search_id = 5,  name = 'Western Cape').save()
-        Province(search_id = 6,  name = 'KZN').save()
-
         post_data = {
             'province': '2',
-            'category': 'Engineering',
+            'category': '6',
             'title': 'Plumber needed',
-            'text': 'This is some sample text.',
+            'description': 'This is some sample text.',
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
-        self.assertEqual(Category.objects.count(), 1)
+        self.assertEqual(Job.objects.all().count(), 1)
 
         #test shows in my jobs
         resp = self.client.get(reverse('my_jobs'))
@@ -392,26 +390,29 @@ class VLiveCVTestCase(VLiveTestCase):
 
         post_data = {
             'province': '2',
-            'job_category': 'Engineering',
+            'category': '6',
             'title': 'Plumber needed 2',
-            'text': 'This is some sample text.',
+            'description': 'This is some sample text.',
         }
-        resp = self.client.post(reverse('my_jobs', args=[1]), post_data)
+        resp = self.client.post(reverse('jobs_create'), post_data)
+        print resp
+        self.assertEqual(Job.objects.all().count(), 2)
+
         resp = self.client.get(reverse('my_jobs'))
         self.assertContains(resp,  'Plumber needed 2')
 
         #test duplicate submissions
         resp = self.client.post(reverse('jobs_create'), post_data)
-        self.assertEqual(Category.objects.count(), 1)
+        self.assertEqual(Job.objects.all().count(), 2)
 
         post_data = {
-            'province': '',
-            'category': 'Engineering',
+            'province': '2',
+            'category': '0',
             'title': 'Plumber needed',
-            'text': 'This is some sample text.',
+            'description': 'This is some sample text.',
         }
         resp = self.client.post(reverse('jobs_create'), post_data)
-        self.assertContains(resp,  'Province - This field is required')
+        self.assertContains(resp,  'Please choose a category.')
 
     def test_cv_is_complete(self):
         # setup user's first_name and surname

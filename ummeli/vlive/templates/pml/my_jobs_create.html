@@ -11,28 +11,7 @@
 </CONTAINER>
 <CONTAINER type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
-        <TEXT position="ABOVE">Province:*</TEXT>
-        <SELECT name="province">
-            <ITEM value="">Please select province</ITEM>
-            {% for p in provinces %}
-            <ITEM value="{{p.name}}" {% if p.name == form.province.value %}checked="true"{%endif%}>{{p.name}}</ITEM>
-            {% endfor %}
-        </SELECT>
-        <TEXT position="ABOVE">Category:*</TEXT>
-        <SELECT name="job_category">
-            <ITEM value="">Please select category</ITEM>
-            {% for category in categories %}
-            <ITEM value="{{category.title}}" {% if category.title == form.job_category.value %}checked="true"{%endif%}>{{category.title}}</ITEM>
-            {% endfor %}
-        </SELECT>
-
-        <TEXT position="ABOVE">Job Title:*</TEXT>
-        <FIELD name="title" type="text" default="{{form.title.value}}"/><br/>
-        <TEXT position="ABOVE">Description:*<br/>
-        Please provide as much information about the job as possible including 
-        contact details.
-        </TEXT>
-        <FIELD name="text" type="text" default="{{form.text.value}}"/><br/>
+        {{ form.as_pml }}
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>

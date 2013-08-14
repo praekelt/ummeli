@@ -21,7 +21,7 @@ from django.contrib import messages
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
                                 Province,  Category, PROVINCE_CHOICES)
-from ummeli.opportunities.models import UmmeliOpportunity
+from ummeli.opportunities.models import UmmeliOpportunity, Job
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
@@ -573,6 +573,23 @@ class MyJobsEditView(UpdateView):
         context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
         context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
         return context
+
+
+@pin_required
+@login_required
+def my_jobs_edit(request, pk):
+    opportunity = get_object_or_404(Job, pk=pk)
+    if request.method == 'POST':
+        form = JobEditForm(request.POST, instance=opportunity)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.save()
+            job.province = [form.cleaned_data['province'], ]
+            return redirect(reverse("my_jobs"))
+    else:
+        form = JobEditForm(instance=opportunity)
+
+    return render(request, 'my_jobs_create.html', {'form': form})
 
 
 class MyJobsDeleteView(DeleteView):
