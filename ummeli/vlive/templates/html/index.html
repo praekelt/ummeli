@@ -35,28 +35,26 @@
         <div class="img-article">
             {% if article.statusupdate %}
             <img src="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
-            <a href="{% url profile_view article.owner.pk %}">{{article.owner.get_profile.fullname}}</a>
             {{ article.title }}
-            <br/>
-            <small>
-                {{ article.created|timesince }} ago
-            </small>
             {% else %}
             <a href="{% url community_jobs article.slug %}">
                 <img src="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
             </a>
             <a href="{% url community_jobs article.slug %}">{{ article.title|truncatechars:30 }}</a> {{ article.description|truncatechars:50 }}
             <br/>
-            <small>{{article.get_provinces}}</small><br/>
+            {{article.get_provinces}}
+            {% endif %}
+            <br/>
             <small>
                 {{ article.created|timesince }} ago&nbsp;|&nbsp;
+                <a href="{% url profile_view article.owner.pk %}">
                 {% if article.owner.get_profile.fullname %}
-                    {{ article.owner.get_profile.fullname }}</a>
+                    {{ article.owner.get_profile.fullname }}
                 {% else %}
                     Anon.
                 {% endif %}
+                </a>
             </small>
-            {% endif %}
         </div>
     {% endfor %}
     <div class="more"><a href="{% url community_jobs %}">more...</a></div>
