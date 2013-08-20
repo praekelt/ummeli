@@ -46,6 +46,22 @@ class OpportunityListView(ListView):
         return province_qs.order_by('-created')
 
 
+class JobListView(OpportunityListView):
+    template_name='opportunities/jobs/jobs.html'
+    def get_queryset(self):
+        qs = super(JobListView, self).get_queryset()
+
+        if self.kwargs['category_id'] != 0:
+            qs = qs.filter(category=self.kwargs['category_id'])
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(JobListView, self).get_context_data(**kwargs)
+        context['category'] = dict(CATEGORY_CHOICES)[int(self.kwargs['category_id'])]
+        return context
+
+
 class MicroTaskListView(ListView):
     paginate_by = 10
 

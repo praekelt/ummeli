@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import MultipleObjectsReturned
 from jmbo.models import ModelBase
-from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.base.models import *
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from ummeli.vlive.utils import get_lat_lon
 from datetime import datetime, timedelta, date
@@ -27,6 +27,17 @@ SALARY_FREQUENCY_CHOICES = (
 
 
 class Province(models.Model):
+    ALL = ALL
+    EASTERN_CAPE = EASTERN_CAPE
+    FREE_STATE = FREE_STATE
+    GAUTENG = GAUTENG
+    KWAZULU_NATAL = KWAZULU_NATAL
+    LIMPOPO = LIMPOPO
+    MPUMALANGA = MPUMALANGA
+    NORTH_WEST = NORTH_WEST
+    NORTHERN_CAPE = NORTHERN_CAPE
+    WESTERN_CAPE = WESTERN_CAPE
+
     province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
 
     def __unicode__(self):  # pragma: no cover
@@ -181,6 +192,7 @@ CATEGORY_CHOICES = (
 
 class Job(UmmeliOpportunity):
     category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
+    hash_key = models.CharField(max_length=32, db_index=True, blank=True, null=True)
 
     @models.permalink
     def get_absolute_url(self):

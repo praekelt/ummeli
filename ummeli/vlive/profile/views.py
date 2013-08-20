@@ -20,8 +20,8 @@ from django.contrib import messages
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
-                                Province,  Category, PROVINCE_CHOICES)
-from ummeli.opportunities.models import UmmeliOpportunity, Job
+                                PROVINCE_CHOICES)
+from ummeli.opportunities.models import UmmeliOpportunity, Job, CATEGORY_CHOICES
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
@@ -569,9 +569,7 @@ class MyJobsEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyJobsEditView, self).get_context_data(**kwargs)
-
-        context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
-        context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
+        context['categories'] = CATEGORY_CHOICES
         return context
 
 
