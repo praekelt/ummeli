@@ -16,6 +16,7 @@ urlpatterns = patterns('',
         'ummeli.opportunities.views.microtask_change_province',
         name='microtask_change_province'),
 
+    url(r'^jobs/$', 'ummeli.opportunities.views.jobs_list', name='jobs_list'),
     url(r'^jobs/(?P<category_id>\d+)/$',
         JobListView.as_view(model=Job,
             template_name='opportunities/jobs/jobs.html'),
@@ -109,10 +110,6 @@ urlpatterns = patterns('',
     url(r'^tomtom/', include('ummeli.opportunities.tomtom.urls')),
 
     #Jobs from Ummeli 1.0
-    url(r'^jobs/$',
-        'ummeli.vlive.views.jobs_list',
-        name='jobs_list'),
-
     url(r'jobs/connection/apply/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
         'ummeli.vlive.views.connection_job',
         name='connection_job_apply'),

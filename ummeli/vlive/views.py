@@ -229,12 +229,6 @@ def send(request):
 def send_thanks(request):
     return redirect(reverse('my_ummeli'))
 
-def jobs_list(request):
-    categories = list(CATEGORY_CHOICES)
-    categories.remove((0, '---------')) # remove the blank option
-    return render(request, 'opportunities/jobs/jobs_list.html',
-                              {'categories': categories})
-
 
 def connection_job(request, user_id, pk):
     article = get_object_or_404(UmmeliOpportunity, pk = pk).to_view_model()

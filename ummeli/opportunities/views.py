@@ -43,7 +43,7 @@ class OpportunityListView(ListView):
             province_qs = province_qs.filter(province__province__in=[province,
                                                                     ALL])
 
-        return province_qs.order_by('-created')
+        return province_qs.order_by('-publish_on')
 
 
 class JobListView(OpportunityListView):
@@ -199,3 +199,8 @@ def select_location(request):
 
     return render(request, 'atlas/select_location.html',
         {'next': next, 'form': form})
+
+
+def jobs_list(request):
+    return render(request, 'opportunities/jobs/jobs_list.html',
+                              {'categories': CATEGORY_CHOICES})
