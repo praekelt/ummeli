@@ -51,7 +51,6 @@ def queue_categories(province, category_parser, jobs_parser):
 @task(ignore_result=True)
 def run_jobs_update(category_parser = CategoryParser,  jobs_parser = JobsParser):    # allow mocking of parsers
     provinces = [
-        (1, 'All Provinces'),
         (2, 'Gauteng'),
         (5, 'Western Cape'),
         (6, 'KwaZulu Natal')
