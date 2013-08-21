@@ -6,7 +6,7 @@
         {{category}}
     </h2>
     <p>
-        Province: <strong><a href="{% url change_province %}?next={% url jobs_list %}">{{province}} (change)</a></strong>
+        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
     </p>
     {% if object_list %}
     <div id="pagination">
@@ -28,7 +28,9 @@
     </div>
     {% endif %}
 
-    <br/><strong>*** = Submitted by Ummeli user</strong>
+    <strong>*** = Submitted by Ummeli user</strong>
+    <br/>
+    <br/>
 
     {% for article in object_list %}
         <div class="list-separated">
@@ -38,13 +40,16 @@
             {% endif %}
             {{ article.description|truncatewords:10 }}
             </a>
+            <br/><small>{{ article.get_provinces }}</small>
             <br/>
             <small>
                 {{ article.publish_on|timesince }} ago
             </small>
         </div>
+    {% empty %}
+        <p>0 Jobs in this category.</p>
     {% endfor %}
-    <br/>
+
     {% if object_list %}
     <div id="pagination">
         {% if page_obj.has_previous %}

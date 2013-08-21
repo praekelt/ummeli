@@ -196,7 +196,7 @@ class Job(UmmeliOpportunity):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('job_detail', (self.slug,))
+        return ('job', (self.slug,))
 
     def to_view_model(self):
         class JobViewModel(object):

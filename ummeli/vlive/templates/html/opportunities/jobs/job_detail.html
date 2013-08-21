@@ -13,6 +13,19 @@
         <br/>
         <br/>
         {{ object.description|safe }}
+        {% if not object.is_community %}
+            <p>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a></p>
+        {% else %}
+        <p><span style="color: blue">submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a></span>
+        </p>
+        {% endif %}
     </p>
     <div class="more"><a href="{% url jobs_list %}">&larr; Back to jobs</a></div>
     </form>

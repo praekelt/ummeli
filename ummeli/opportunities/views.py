@@ -51,8 +51,10 @@ class JobListView(OpportunityListView):
     def get_queryset(self):
         qs = super(JobListView, self).get_queryset()
 
-        if self.kwargs['category_id'] != 0:
-            qs = qs.filter(category=self.kwargs['category_id'])
+        category_id = int(self.kwargs['category_id'])
+
+        if category_id != 0:
+            qs = qs.filter(category=category_id)
 
         return qs
 
