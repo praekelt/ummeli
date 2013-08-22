@@ -116,5 +116,6 @@ urlpatterns = patterns('',
 
     url(r'^jobs/cron/$', 'ummeli.vlive.views.jobs_cron', name='jobs_cron'),
     url(r'^jobs/create/$', 'ummeli.vlive.views.jobs_create', name='jobs_create'),
+    url(r'^create/$', 'ummeli.vlive.views.opportunity_create', name='opportunity_create'),
 
 )

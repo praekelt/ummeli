@@ -12,7 +12,7 @@ from ummeli.opportunities.models import Job, Province as OpportunityProvince,\
     UmmeliOpportunity, CATEGORY_CHOICES
 from ummeli.base.models import CurriculumVitae, ALL
 from ummeli.vlive.jobs import tasks
-from ummeli.vlive.community.forms import JobEditForm
+from ummeli.vlive.community.forms import JobEditForm, OpportunityEditForm
 from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
 from ummeli.vlive.forms import (EmailCVForm, FaxCVForm, MobiUserCreationForm,
@@ -149,7 +149,6 @@ def forgot_password_view(request):
     return render(request,'forgot_password.html', {'form': form})
 
 @login_required
-@pin_required
 def password_change_view(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user,  data = request.POST)
@@ -166,12 +165,10 @@ def index(request):
     return render(request, 'index.html', {'community_list': community_list})
 
 @login_required
-@pin_required
 def my_ummeli(request):
     return render(request, 'my_ummeli.html')
 
 @login_required
-@pin_required
 def my_settings(request):
     return render(request, 'my_settings.html')
 
@@ -225,7 +222,6 @@ def send(request):
     return render(request, 'send_cv.html', {'form': form})
 
 @login_required
-@pin_required
 def send_thanks(request):
     return redirect(reverse('my_ummeli'))
 
@@ -301,7 +297,6 @@ def stats(request):
                                 'user_articles': UmmeliOpportunity.objects.count()})
 
 @login_required
-@pin_required
 def jobs_create(request):
     if request.method == 'POST':
         form = JobEditForm(request.POST)
@@ -329,4 +324,35 @@ def jobs_create(request):
         form = JobEditForm()
 
     return render(request, 'opportunities/jobs/jobs_create.html',
+                                {'form': form})
+
+@login_required
+def opportunity_create(request):
+    if request.method == 'POST':
+        form = OpportunityEditForm(request.POST)
+
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        # check if the user hasn't placed the exact same job article
+        # with the exact same information in the last 5 minutes to prevent duplicates
+        delta = datetime.now() - timedelta(minutes=5)
+        duplicate = UmmeliOpportunity.objects \
+                        .filter(owner=request.user, created__gte=delta, title=title,  description=description) \
+                        .exists()
+        if form.is_valid():
+            if not duplicate:
+                model = form.get_model()
+                user_article = model(title=title, description=description)
+                user_article.owner = request.user
+                user_article.state = 'published'
+                user_article.is_community = True
+                user_article.publish_on = datetime.now()
+                user_article.save()
+                user_article.sites.add(site)
+                user_article.province.add(form.cleaned_data['province'])
+            return redirect(reverse('my_jobs'))
+    else:
+        form = OpportunityEditForm()
+
+    return render(request, 'opportunities/opportunity_create.html',
                                 {'form': form})
