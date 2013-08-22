@@ -2,9 +2,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView
+from django.views.generic.base import TemplateView
 from django.contrib.sites.models import Site
+from django.contrib import messages
 
-from ummeli.opportunities.models import Job, UmmeliOpportunity, StatusUpdate
+from ummeli.opportunities.models import Job, UmmeliOpportunity, StatusUpdate, SkillsUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
 from ummeli.vlive.community.forms import StatusUpdateForm
 
@@ -82,3 +84,23 @@ class StatusUpdateView(FormView):
         s.sites.add(current_site)
         s.save()
         return redirect(reverse('status_update'))
+
+
+class AdvertiseSkillsView(TemplateView):
+    template_name = "profile/community/advertise_skills.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AdvertiseSkillsView, self).get_context_data(*args, **kwargs)
+        return context
+
+def advertise_skills_post(request):
+    if request.method == 'POST':
+        s = SkillsUpdate.objects.create(title=request.user.username,
+                                        owner=request.user,
+                                        is_community=True,
+                                        state='published')
+        s.sites.add(current_site)
+        s.save()
+        msg = 'You skills have been posted.'
+        messages.success(request, msg)
+    return redirect(reverse('index'))

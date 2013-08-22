@@ -162,9 +162,11 @@ class CurriculumVitae(models.Model):
         if not self.gender:
             fields.append('gender')
         if not self.telephone_number:
-            fields.append('telephone number')
-        if not self.date_of_birth:
-            fields.append('date of birth')
+            fields.append('phone number (only shared with your connections)')
+        if not self.city:
+            fields.append('city')
+        if not self.about_me:
+            fields.append('about me')
         if not self.highest_grade:
             fields.append('highest grade passed')
         if not self.languages.exists():
@@ -195,6 +197,8 @@ class CurriculumVitae(models.Model):
             count += 1
         if  self.city:
             count += 1
+        if  self.about_me:
+            count += 1
         if  self.certificates.exists():
             count += 1
         if  self.languages.exists():
@@ -203,7 +207,7 @@ class CurriculumVitae(models.Model):
             count += 1
         if  self.references.exists():
             count += 1
-        return (count/15)*100
+        return (count/16)*100
 
     def update_is_complete(self):
         if not self.missing_fields():
