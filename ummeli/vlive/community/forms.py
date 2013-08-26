@@ -55,7 +55,7 @@ class OpportunityEditForm(PMLForm):
                 return Training
 
             if opportunity_type == self.VOLUNTEERING:
-                return Volunteering
+                return Volunteer
 
             if opportunity_type == self.INTERNSHIP:
                 return Internship
