@@ -34,12 +34,15 @@
 
     {% for article in object_list %}
         <div class="list-separated">
-            <a href="{% url job article.slug %}">
             {% if article.is_community %}
+            <a href="{% url job article.slug %}">
             <color value="blue">***</color>
-            {% endif %}
             {{ article.description|truncatewords:10 }}
             </a>
+            {% else %}
+            <a href="{% url job article.slug %}">{{ article.title }}</a>
+
+            {% endif %}
             <br/><small>{{ article.get_provinces }}</small>
             <br/>
             <small>

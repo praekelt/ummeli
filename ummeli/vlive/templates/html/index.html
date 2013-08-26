@@ -31,41 +31,8 @@
     {% endfor %}
 
     <h1>Community Board</h1>
-    {% for article in community_list %}
-        <div class="img-article">
-        {% if article.statusupdate %}
-            <img src="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
-            {{ article.title }}
-        {% else %}{% if article.skillsupdate %}
-            {% with user_profile=article.owner.get_profile %}
-            <div class="img-article">
-                <a href="{% url profile_view article.owner.pk %}">
-                    <img src="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
-                </a>
-                <a href="{% url profile_view article.owner.pk %}">{{ user_profile.primary_skill }}</a>
-                {% if user_profile.about_me %}{{user_profile.about_me}}{% endif %}
-                {% if user_profile.city %}<br/>{{user_profile.city}}{% endif %}
-            {% endwith %}
-        {% else %}
-            <a href="{% url community_jobs article.slug %}">
-                <img src="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
-            </a>
-            <a href="{% url community_jobs article.slug %}">{{ article.title|truncatechars:30 }}</a> {{ article.description|truncatechars:50 }}
-            <br/>
-            {{article.get_provinces}}
-        {% endif %}{% endif %}
-            <br/>
-            <small>
-                {{ article.created|timesince }} ago&nbsp;|&nbsp;
-                <a href="{% url profile_view article.owner.pk %}">
-                {% if article.owner.get_profile.fullname %}
-                    {{ article.owner.get_profile.fullname }}
-                {% else %}
-                    Anon.
-                {% endif %}
-                </a>
-            </small>
-        </div>
+    {% for object in community_list %}
+        {% include 'opportunities/community_opportunity_listing.html' %}
     {% endfor %}
     <div class="more"><a href="{% url community_jobs %}">more...</a></div>
 
