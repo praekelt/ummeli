@@ -2,7 +2,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView
-from django.views.generic.base import TemplateView
 from django.contrib.sites.models import Site
 from django.contrib import messages
 
@@ -85,13 +84,6 @@ class StatusUpdateView(FormView):
         s.save()
         return redirect(reverse('status_update'))
 
-
-class AdvertiseSkillsView(TemplateView):
-    template_name = "profile/community/advertise_skills.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(AdvertiseSkillsView, self).get_context_data(*args, **kwargs)
-        return context
 
 def advertise_skills_post(request):
     if request.method == 'POST':
