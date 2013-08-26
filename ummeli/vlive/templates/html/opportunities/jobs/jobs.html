@@ -37,8 +37,9 @@
             {% if article.is_community %}
             <a href="{% url job article.slug %}">
             <color value="blue">***</color>
-            {{ article.description|truncatewords:10 }}
+            {{ article.title|truncatewords:10 }}
             </a>
+            {{ article.description|truncatewords:10 }}
             {% else %}
             <a href="{% url job article.slug %}">{{ article.title }}</a>
 
