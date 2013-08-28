@@ -1,0 +1,48 @@
+<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
+    <CONTAINER type="image">
+{% if object.statusupdate %}
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE><TEXT>{{ object.title }}</TEXT></TITLE>
+{% else %}{% if object.skillsupdate %}
+    {% with user_profile=object.owner.get_profile %}
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url profile_view object.owner.pk %}?{{uuid}}">
+            <TEXT>
+                {{ user_profile.primary_skill }}
+                {% if user_profile.about_me %}{{user_profile.about_me}}{% endif %}
+            </TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {% if user_profile.city %}<br/>{{user_profile.city}}{% endif %}
+    </TEXT>
+    {% endwith %}
+{% else %}
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url community_jobs object.slug %}?{{uuid}}">
+            <TEXT>
+                {{ object.title|truncatechars:30 }}
+            </TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ object.description|truncatechars:50 }}
+        <br/> {{object.get_provinces}}
+    </TEXT>
+{% endif %}
+    <TEXT>
+        {{ object.created|timesince }} ago <br/>
+        <LINK href="{% url profile_view object.owner.pk %}">
+            <TEXT>
+                {% if object.owner.get_profile.fullname %}
+                    {{ object.owner.get_profile.fullname }}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </TEXT>
+        </LINK>
+    </TEXT>
+    </CONTAINER>
+</MODULE>

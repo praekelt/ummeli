@@ -61,23 +61,11 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Community Board</LABEL></HEADER>
 </MODULE>
-{% for article in community_list %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-    <CONTAINER type="image">
-    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
-    <TITLE>
-        <LINK href="{% url community_jobs article.pk %}?{{uuid}}">
-            <TEXT>{{ article.title|truncatewords:10 }}</TEXT>
-        </LINK>
-    </TITLE>
-    <TEXT>
-        {{ article.text|truncatewords:10 }}<br/>
-        {{ article.date|date:"D, j M Y, H:i" }}<br/>
-        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
-    </TEXT>
-    </CONTAINER>
-</MODULE>
+
+{% for object in community_list %}
+    {% include 'opportunities/community_opportunity_listing.html' %}
 {% endfor %}
+
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
 <TEXT>
@@ -95,6 +83,15 @@
     <CONTAINER type="list">
     <LINK href="{% url jobs_create %}?{{uuid}}">
         <TEXT>Add a job</TEXT>
+    </LINK>
+    <LINK href="{% url opportunity_create %}?{{uuid}}">
+        <TEXT>Add an opportunity</TEXT>
+    </LINK>
+    <LINK href="{% url status_update %}?{{uuid}}">
+        <TEXT>Update your status</TEXT>
+    </LINK>
+    <LINK href="{% url advertise_skills %}?{{uuid}}">
+        <TEXT>Advertise your skills</TEXT>
     </LINK>
 </CONTAINER>
 </MODULE>
