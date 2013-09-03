@@ -51,9 +51,13 @@ def community_job(request, slug):
 
             if send_via == 'email':
                 user_profile.email_cv(send_to,  article.description)
+                msg = 'You email has been sent.'
+                messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
             else:
                 user_profile.fax_cv(send_to, article.description)
+                msg = 'You fax has been sent.'
+                messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
 
     return render(request, 'opportunities/jobs/community_job.html',
@@ -82,6 +86,8 @@ class StatusUpdateView(FormView):
                                         is_community=True)
         s.sites.add(current_site)
         s.save()
+        msg = 'You status has been updated.'
+        messages.success(self.request, msg)
         return redirect(reverse('status_update'))
 
 
