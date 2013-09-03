@@ -16,8 +16,9 @@
     <LINK href="{{object.get_absolute_url}}">
         <TEXT>{{object.title}}</TEXT>
     </LINK>
-    <br/>Salary: R {{object.salary}}
+    {% if not object.is_community %}<br/>Salary: R {{object.salary}}{% endif %}
     {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
+    {% include 'opportunities/community_opportunity_meta.html' %}
     </TEXT>
     </CONTAINER>
 </MODULE>
