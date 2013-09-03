@@ -20,6 +20,10 @@
     <br/>
     <br/>
     {{ object.description|safe }}
+    {% if object.ummeliopportunity.is_community %}
+    <br/><br/>
+    {% include 'opportunities/community_opportunity_meta.html' %}
+    {% endif %}
     </TEXT>
     </CONTAINER>
 </MODULE>

@@ -4,7 +4,7 @@
     <div class="h2">
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
-        {{category_title}}
+        {{category}}
     </div>
     <div class="list">
         Province: <strong><a href="{% url change_province %}?next={% url jobs_list %}">{{province}} (change)</a></strong>

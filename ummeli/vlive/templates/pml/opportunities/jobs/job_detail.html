@@ -11,6 +11,20 @@
             <br/>
             <br/>
             {{ object.description|safe }}
+
+            {% if object.is_community %}
+            <p>submitted by
+                <LINK href="{% url profile_view object.owner.pk %}">
+                <TEXT>
+                    {% if object.owner.get_profile.fullname %}
+                        {{object.owner.get_profile.fullname}}
+                    {% else %}
+                        Anon.
+                    {% endif %}
+                </TEXT>
+                </LINK>
+            </p>
+            {% endif %}
         </TEXT>
     </CONTAINER>
 </MODULE>
