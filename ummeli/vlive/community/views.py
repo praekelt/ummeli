@@ -33,9 +33,9 @@ def community_jobs(request):
 
 def community_job(request, slug):
     form = None
-    if not Job.objects.filter(slug=slug):
+    if not UmmeliOpportunity.objects.filter(slug=slug):
         return redirect(reverse('community_jobs'))  # Sorry, this ad has been removed.
-    article = Job.objects.get(slug=slug)
+    article = UmmeliOpportunity.objects.get(slug=slug)
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
@@ -50,10 +50,10 @@ def community_job(request, slug):
             send_to = form.cleaned_data['send_to']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to,  article.text)
+                user_profile.email_cv(send_to,  article.description)
                 return redirect(reverse('community_jobs'))
             else:
-                user_profile.fax_cv(send_to, article.text)
+                user_profile.fax_cv(send_to, article.description)
                 return redirect(reverse('community_jobs'))
 
     return render(request, 'opportunities/jobs/community_job.html',
