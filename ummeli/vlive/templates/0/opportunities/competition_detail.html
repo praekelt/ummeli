@@ -10,10 +10,24 @@
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
         <br/><small>Province: {{ object.get_provinces }}</small>
-        <br/><small>Cost: R {{ object.cost }}</small>
+        {% if object.cost %}<br/><small>Cost: R {{ object.cost }}</small>{% endif %}
         <br/>
         <br/>
         {{ object.description|safe }}
+        {% if not object.owner %}
+            <p>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a></p>
+        {% else %}
+        {% if object.is_community %}
+        <p>submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a>
+        </p>
+        {% endif %}{% endif %}
     </div>
     <div class="more"><a href="{% url competitions %}">&larr; Back</a></div>
 {% endblock %}
