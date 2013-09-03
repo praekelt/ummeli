@@ -5,12 +5,18 @@
     <CONTAINER type="data">
     <TITLE>{{job.title}}</TITLE>
     <TEXT>
-        {% if job.province %}<strong>{{job.province}}</strong><br/>{% endif %}
-        {{ job.text }}
-        <br/><br/>
-        <small>{{ job.date|date:"D, j M Y, H:i" }}</small>    
+        <strong>{{job.get_provinces}}</strong><br>
+        <small>{{ job.created|timesince }} ago</small>
+        <br/>
+        <br/>
+        {{ job.description }}
+        <br/>
         <br/><color value="blue">submitted by </color>
-        <LINK href="{% url profile_view job.user.pk %}"><TEXT>{{job.user.get_profile.fullname}}</TEXT></LINK>
+        {% if job.owner.get_profile.fullname %}
+            <LINK href="{% url profile_view job.owner.pk %}"><TEXT>{{job.owner.get_profile.fullname}}</TEXT></LINK>
+        {% else %}
+            Anon.
+        {% endif %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -39,7 +45,7 @@
             <CONTAINER type="data">
                 <TITLE>Missing fields</TITLE>
                 <TEXT><color value="red">
-                    Your CV is incomplete. Please make sure that the following information is 
+                    Your CV is incomplete. Please make sure that the following information is
                     completed before you can send your CV.</color></TEXT><br/>
             {% for field in user_profile.missing_fields %}
                 <TEXT><color value="red">- {{field}}</color></TEXT><br/>
@@ -58,7 +64,7 @@
         </CONTAINER>
     {% else %}
         <CONTAINER type="data">
-        <TEXT><color value="red">You are not signed in. Please sign in to be able to 
+        <TEXT><color value="red">You are not signed in. Please sign in to be able to
         respond to a job advert.</color>
         <br/>
         <LINK href="{% url login %}?next={% url community_jobs job.pk %}">

@@ -3,45 +3,8 @@
 {% block content %}
     <HEADER><LABEL>Community Board</LABEL></HEADER>
 </MODULE>
-{% for article in articles.object_list %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-    <CONTAINER type="image">
-    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
-    {% if article.statusupdate %}
-    <TITLE>
-        <LINK href="{% url profile_view article.owner.pk %}?{{uuid}}">
-            <TEXT>
-                {% if article.owner.get_profile.fullname %}
-                    {{ article.owner.get_profile.fullname }}</a>
-                {% else %}
-                    Anon.
-                {% endif %}
-            </TEXT>
-        </LINK>
-    </TITLE>
-    <TEXT>
-        {{ article.title }}<br/>
-        {{ article.created|timesince }} ago<br/>
-    </TEXT>
-    {% else %}
-    <TITLE>
-        <LINK href="{% url community_jobs article.slug %}?{{uuid}}">
-            <TEXT>{{ article.title|truncatewords:10 }}</TEXT>
-        </LINK>
-    </TITLE>
-    <TEXT>
-        {{ article.description|truncatewords:10 }}<br/>
-        {{article.get_provinces}}<br/>
-        {{ article.created|timesince }} ago<br/>
-        {% if article.owner.get_profile.fullname %}
-            {{ article.owner.get_profile.fullname }}</a>
-        {% else %}
-            Anon.
-        {% endif %}
-    </TEXT>
-    {% endif %}
-    </CONTAINER>
-</MODULE>
+{% for object in articles.object_list %}
+    {% include 'opportunities/community_opportunity_listing.html' %}
 {% endfor %}
 
 <MODULE backgroundColor="false" palette="MiDove">
