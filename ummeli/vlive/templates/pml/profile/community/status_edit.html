@@ -1,0 +1,38 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Update your status</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+    Tell the Ummeli community how you are feeling today?
+</TEXT>
+</CONTAINER>
+<CONTAINER type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Update">
+        <FIELD name="title" type="text"/>
+
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Recent updates</LABEL></HEADER>
+</MODULE>
+
+{% for status in statuses %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <CONTAINER type="data">
+    <TEXT>{{status.title}} - <small>{{status.created|timesince}} ago</small></TEXT>
+    </CONTAINER>
+</MODULE>
+<MODULE><CONTAINER type="data"><TEXT>____________________</TEXT></CONTAINER></MODULE>
+{% endfor %}
+
+<CONTAINER type="list">
+    <LINK href="{% url profile %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
