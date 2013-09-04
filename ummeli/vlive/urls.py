@@ -40,14 +40,12 @@ urlpatterns = patterns('',
     url(r'^downloads/', include('downloads.urls')),
     url(r'^jmbo/', include('jmbo.urls')),
     url(r'^opportunities/', include('ummeli.opportunities.urls')),
+    url(r'^community/', include('ummeli.vlive.community.urls')),
     url(r'^livechat/', include('livechat.urls', namespace='livechat')),
     url(r'^jmbo-analytics/', include('jmbo_analytics.urls')),
 
     url(r'^send/$', views.send, name='send'),
     url(r'^send/thanks/$', views.send_thanks, name='send_thanks'),
-
-    url(r'^community/jobs/$', views.community_jobs, name='community_jobs'),
-    url(r'^community/jobs/(?P<id>\d+)/$', views.community_job, name='community_jobs'),
 
     #Jmbo
     url(r'^jmbo/', include('jmbo.urls')),

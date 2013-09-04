@@ -1,0 +1,37 @@
+<MODULE backgroundColor="MiGreen">
+    <HEADER><LABEL>Apply</LABEL></HEADER>
+    {% if request.is_authorized %}
+        {% if user_profile.missing_fields %}
+            <CONTAINER type="data">
+                <TITLE>Missing fields</TITLE>
+                <TEXT><color value="red">
+                    Your CV is incomplete. Please make sure that the following information is
+                    completed before you can send your CV.</color></TEXT><br/>
+            {% for field in user_profile.missing_fields %}
+                <TEXT><color value="red">- {{field}}</color></TEXT><br/>
+            {% endfor %}
+            </CONTAINER>
+        {% endif %}
+        <CONTAINER type="form">
+            <FORM method="POST" href="{% url opportunity_apply object.slug %}" submit_text="Apply">
+                <TEXT position="ABOVE">Email CV to:*</TEXT>
+                <FIELD name="send_to" type="text"/><br/>
+                <FIELD type='hidden' name='send_via' value='email' />
+                <FIELD type='hidden' name='_action' value='POST' />
+                <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+            </FORM>
+        </CONTAINER>
+    {% else %}
+        <CONTAINER type="data">
+        <TEXT><color value="red">You are not signed in. Please sign in to be able to
+        respond to a job advert.</color>
+        <br/>
+        <LINK href="{% url login %}?next={{ object.get_absolute_url }}">
+            <TEXT>Sign In</TEXT>
+        </LINK>
+        </TEXT>
+        </CONTAINER>
+    {% endif %}
+</MODULE>
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>

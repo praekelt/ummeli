@@ -5,19 +5,10 @@
         Community Board
     </h2>
     <strong>Submitted by Ummeli users</strong><br />
-    {% for article in articles.object_list %}
-        <div class="img-article list-separated">
-            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left">
-            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatechars:30 }}</a> {{ article.text|truncatechars:50 }}
-            <br/>
-            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
-            <small>
-                {{ article.date|date:"D, j M Y, H:i" }}
-                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
-            </small>
-        </div>
+    {% for object in articles.object_list %}
+        {% include 'opportunities/community_opportunity_listing.html' %}
     {% endfor %}
-        
+
     <div id="pagination">
         {% if articles.has_previous %}
             <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |

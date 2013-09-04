@@ -1,9 +1,7 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.decorators import login_required
 from ummeli.opportunities.models import *
-from ummeli.opportunities.views import (OpportunityDetailView,
-    OpportunityListView, CampaignDetailView, MicroTaskListView,
-    MyMicroTaskListView, MicroTaskDetailView, VliveMicroTaskListView)
+from ummeli.opportunities.views import *
 from atlas.views import location_required
 
 
@@ -18,6 +16,12 @@ urlpatterns = patterns('',
         'ummeli.opportunities.views.microtask_change_province',
         name='microtask_change_province'),
 
+    #Opportunity listing
+    url(r'^jobs/$', 'ummeli.opportunities.views.jobs_list', name='jobs_list'),
+    url(r'^jobs/(?P<category_id>\d+)/$',
+        JobListView.as_view(model=Job,
+            template_name='opportunities/jobs/jobs.html'),
+        name='jobs'),
     url(r'^internships/$',
         OpportunityListView.as_view(model=Internship,
             template_name='opportunities/internships.html'),
@@ -53,6 +57,10 @@ urlpatterns = patterns('',
             template_name='opportunities/vlive_campaigns_tasks.html'),
         name='vlive_campaigns_tasks'),
 
+    url(r'^jobs/detail/(?P<slug>[\w-]+)/$',
+        OpportunityDetailView.as_view(model=Job,
+            template_name='opportunities/jobs/job_detail.html'),
+        name='job'),
     url(r'^internships/(?P<slug>[\w-]+)/$',
         OpportunityDetailView.as_view(model=Internship,
             template_name='opportunities/internship_detail.html'),
@@ -103,30 +111,15 @@ urlpatterns = patterns('',
     url(r'^tomtom/', include('ummeli.opportunities.tomtom.urls')),
 
     #Jobs from Ummeli 1.0
-    url(r'^jobs/$',
-        'ummeli.vlive.views.jobs_list',
-        name='jobs_list'),
-    url(r'^jobs/(?P<id>\d+)/$',
-        'ummeli.vlive.views.jobs',
-        name='jobs'),
-    url(r'^jobs/(?P<cat_id>\d+)/(?P<id>\d+)/$',
-        'ummeli.vlive.views.job',
-        name='job'),
-    url(r'^jobs/(?P<cat_id>\d+)/(?P<id>\d+)/(?P<user_submitted>\d+)/$',
-        'ummeli.vlive.views.job',
-        name='job'),
-
-    #Jobs from Ummeli 2.0
-    url(r'^jobs/new/(?P<slug>[\w-]+)/$',
-        OpportunityDetailView.as_view(model=Job,
-            template_name='opportunities/jobs/job_detail.html'),
-        name='job_detail'),
-
     url(r'jobs/connection/apply/(?P<user_id>\d+)/jobs/(?P<pk>\d+)/$',
         'ummeli.vlive.views.connection_job',
         name='connection_job_apply'),
+    url(r'apply/(?P<slug>[\w-]+)/$',
+        'ummeli.opportunities.views.opportunity_apply',
+        name='opportunity_apply'),
 
     url(r'^jobs/cron/$', 'ummeli.vlive.views.jobs_cron', name='jobs_cron'),
     url(r'^jobs/create/$', 'ummeli.vlive.views.jobs_create', name='jobs_create'),
+    url(r'^create/$', 'ummeli.vlive.views.opportunity_create', name='opportunity_create'),
 
 )

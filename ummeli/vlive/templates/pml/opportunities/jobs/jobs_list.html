@@ -11,9 +11,9 @@
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
-    {% for category in categories %}
-        <LINK href="{% url jobs category.pk %}">
-            <TEXT>{{category.title}} ({{category.articles_count}})</TEXT>
+    {% for key, category in categories %}
+        <LINK href="{% url jobs key %}">
+            <TEXT>{{category}}</TEXT>
         </LINK>
     {% endfor %}
 </CONTAINER>

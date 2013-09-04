@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import MultipleObjectsReturned
 from jmbo.models import ModelBase
-from ummeli.base.models import PROVINCE_CHOICES
+from ummeli.base.models import *
 from ummeli.vlive.templatetags.vlive_tags import sanitize_html
 from ummeli.vlive.utils import get_lat_lon
 from datetime import datetime, timedelta, date
@@ -27,6 +27,17 @@ SALARY_FREQUENCY_CHOICES = (
 
 
 class Province(models.Model):
+    ALL = ALL
+    EASTERN_CAPE = EASTERN_CAPE
+    FREE_STATE = FREE_STATE
+    GAUTENG = GAUTENG
+    KWAZULU_NATAL = KWAZULU_NATAL
+    LIMPOPO = LIMPOPO
+    MPUMALANGA = MPUMALANGA
+    NORTH_WEST = NORTH_WEST
+    NORTHERN_CAPE = NORTHERN_CAPE
+    WESTERN_CAPE = WESTERN_CAPE
+
     province = models.PositiveIntegerField(choices=PROVINCE_CHOICES, default=0)
 
     def __unicode__(self):  # pragma: no cover
@@ -41,7 +52,7 @@ class Province(models.Model):
         if len(result) > 1:
             raise MultipleObjectsReturned
 
-        if any(result):
+        if len(result) > 0:
             return cls.objects.get(province=result[0])
         return None
 
@@ -62,6 +73,45 @@ class Salary(models.Model):
         verbose_name_plural = "salaries"
 
 
+class UmmeliOpportunity(ModelBase):
+    province = models.ManyToManyField(
+                    Province,
+                    blank=True,
+                    null=True,
+                    default=None)
+    education = models.PositiveIntegerField(
+                    choices=EDUCATION_LEVEL_CHOICES,
+                    default=0)
+    salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
+    place = models.TextField(null=True, blank=True, default=None)
+    is_community = models.BooleanField(default=False)
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s' % self.title
+
+    def get_education(self):
+        return dict(EDUCATION_LEVEL_CHOICES)[self.education]
+
+    def get_provinces(self):
+        return ', '.join(['%s' % a for a in self.province.all()])
+
+    def save(self, *args, **kwargs):
+        self.description = sanitize_html(self.description or '')
+        self.place = sanitize_html(self.place or '')
+        super(UmmeliOpportunity, self).save(*args, **kwargs)
+
+    def as_leaf_class(self):
+        try:
+            instance = self.__getattribute__(self.class_name.lower())
+        except AttributeError:
+            content_type = self.content_type
+            model = content_type.model_class()
+            if(model == ModelBase):
+                return self
+            instance = model.objects.get(id=self.id)
+        return instance
+
+
 class Opportunity(ModelBase):
     province = models.ManyToManyField(
                     Province,
@@ -73,6 +123,7 @@ class Opportunity(ModelBase):
                     default=0)
     salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
     place = models.TextField(null=True, blank=True, default=None)
+    is_community = models.BooleanField(default=False)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.title
@@ -81,7 +132,6 @@ class Opportunity(ModelBase):
         return dict(EDUCATION_LEVEL_CHOICES)[self.education]
 
     def get_provinces(self):
-        print self.province.all()
         return ', '.join(['%s' % a for a in self.province.all()])
 
     def save(self, *args, **kwargs):
@@ -107,7 +157,7 @@ Opportunity._meta.get_field_by_name('sites')[0].blank = False
 
 
 CATEGORY_CHOICES = (
-    (0, '---------'),
+    (0, 'All'),
     (1, 'Admin/Clerical'),
     (2, 'Artisans/Trade'),
     (3, 'Au Pairs/Childcare'),
@@ -140,12 +190,13 @@ CATEGORY_CHOICES = (
 )
 
 
-class Job(Opportunity):
+class Job(UmmeliOpportunity):
     category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
+    hash_key = models.CharField(max_length=32, db_index=True, blank=True, null=True)
 
     @models.permalink
     def get_absolute_url(self):
-        return ('job_detail', (self.slug,))
+        return ('job', (self.slug,))
 
     def to_view_model(self):
         class JobViewModel(object):
@@ -175,13 +226,13 @@ class Job(Opportunity):
         return cls.objects.none()
 
 
-class Internship(Opportunity):
+class Internship(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('internship_detail', (self.slug,))
 
 
-class Volunteer(Opportunity):
+class Volunteer(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('volunteer_detail', (self.slug,))
@@ -190,7 +241,7 @@ class Volunteer(Opportunity):
         verbose_name_plural = "volunteering"
 
 
-class Bursary(Opportunity):
+class Bursary(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('bursary_detail', (self.slug,))
@@ -199,7 +250,7 @@ class Bursary(Opportunity):
         verbose_name_plural = "bursaries"
 
 
-class Training(Opportunity):
+class Training(UmmeliOpportunity):
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     @models.permalink
@@ -425,3 +476,11 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
 
     def get_lat_lon(self):
         return get_lat_lon(self.file)
+
+
+class StatusUpdate(UmmeliOpportunity):
+    pass
+
+
+class SkillsUpdate(UmmeliOpportunity):
+    pass

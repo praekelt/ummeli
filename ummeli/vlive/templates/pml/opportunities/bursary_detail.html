@@ -20,6 +20,10 @@
     <br/>
     <br/>
     {{ object.description|safe }}
+    {% if object.ummeliopportunity.is_community %}
+    <br/><br/>
+    {% include 'opportunities/community_opportunity_meta.html' %}
+    {% endif %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -31,4 +35,8 @@
         <TEXT>Back</TEXT>
     </LINK>
 </CONTAINER>
+</MODULE>
+
+{% include 'opportunities/opportunity_apply.html' %}
+
 {% endblock %}

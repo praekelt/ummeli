@@ -3,25 +3,10 @@
 {% block content %}
     <HEADER><LABEL>Community Board</LABEL></HEADER>
 </MODULE>
-{% for article in articles.object_list %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-    <CONTAINER type="image">
-    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
-    <TITLE>
-        <LINK href="{% url community_jobs article.pk %}?{{uuid}}">
-            <TEXT>{{ article.title|truncatewords:10 }}</TEXT>
-        </LINK>
-    </TITLE>
-    <TEXT>
-        {{ article.text|truncatewords:10 }}<br/>
-        {% if article.province %}{{article.province}}<br/>{% endif %}
-        {{ article.date|date:"D, j M Y, H:i" }} <br/>
-        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
-    </TEXT>
-    </CONTAINER>
-</MODULE>
+{% for object in articles.object_list %}
+    {% include 'opportunities/community_opportunity_listing.html' %}
 {% endfor %}
-    
+
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">

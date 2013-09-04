@@ -1,0 +1,66 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; View Work Profile</div>
+    {% with user_profile=user.get_profile %}
+    <div class="h2">
+        Advertise your skills: Share your Work Profile
+    </div>
+    {% if user_profile.is_complete %}
+    <div class="wrap">
+        Tell us what you're good at. All your experience and skills have
+        value. Sharing these on Ummeli will help opportunity providers find
+        you. You can do this by sharing your Work Profile Preview.
+    </div>
+    <div class="h2">Your Work Profile Preview <a href="{% url profile %}">[edit]</a></div>
+    <div class="h2">
+        {{user_profile.fullname}}
+    </div>
+    <div class="img-article">
+        <img src="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left">
+        <div>
+            <div class="h3">{{user_profile.primary_skill}}</div>
+            {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
+            {% if user_profile.gender %}{{user_profile.gender}}{% endif %}
+        </div>
+    </div>
+    <div style="clear: both"></div><br/>
+    {% if user_profile.other_skills.all %}
+        <strong>Other areas of interest:</strong><br/>
+        {% for skill in user_profile.other_skills.all %}
+        <div class="bullet">{{skill}}</div>
+        {% endfor %}
+    {% endif %}
+    <p><em>"{{user_profile.about_me}}"</em></p>
+
+    <form action="{% url advertise_skills_post %}" method="POST" class="content-form">
+        <fieldset>
+        {% csrf_token %}
+        <input type="submit" class="btn" value="Post to Community Board">
+        </fieldset>
+    </form>
+    {% else %}
+    <p>
+        Whoops! You need to complete your work profile in order to
+        advertise your skills.
+        <br/>
+        <br/>
+        No worries you can do this in a few minutes. Don't worry if you
+        have no experience all you need to complete to post here is your
+        name, date of birth, city, languages and your school education.
+        <br/>
+        <p>
+        <a href="{% url profile %}">Complete your profile</a>
+        </p>
+        <div>
+            <div class="warning">Missing information</div>
+            <ul>
+            {% for field in user_profile.missing_fields %}
+            <li>* {{field}}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </p>
+    {% endif %}
+    {% endwith %}
+{% endblock %}

@@ -31,8 +31,8 @@
     <div class="bullet">
         <a href="{% url connection_jobs other_user_pk %}">Jobs Posted ({{other_user_jobs}})</a>
     </div>
-    
-    
+
+
     {% if not connected_to_user and not is_self %}
         <h2>Connect</h2>
         {% if not already_requested %}
@@ -46,7 +46,7 @@
             <small>[request pending]</small>
         {% endif %}
     {% endif %}
-    
+
     {% if connected_to_user or is_self %}
         {% include "profile/user_profile_detailed.html" with a_user_profile=other_user_profile user_is_self=is_self %}
     {% endif %}

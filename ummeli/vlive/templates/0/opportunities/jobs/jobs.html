@@ -4,61 +4,63 @@
     <div class="h2">
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
-        {{category_title}}
+        {{category}}
     </div>
     <div class="list">
         Province: <strong><a href="{% url change_province %}?next={% url jobs_list %}">{{province}} (change)</a></strong>
     </div>
     <div id="pagination">
-        {% if articles.has_previous %}
-            <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |
+        {% if page_obj.has_previous %}
+            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
         {% else %}
             <span>Previous</span> |
         {% endif %}
 
         <span class="current">
-            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
         </span>
 
-        {% if articles.has_next %}
-            | <span><a href="?page={{ articles.next_page_number }}">Next</a></span>
+        {% if page_obj.has_next %}
+            | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
         {% else %}
             | <span>Next</span>
         {% endif %}
     </div>
     <strong>*** = Submitted by Ummeli user</strong><br />
-    {% for article in articles.object_list %}
+    {% for article in object_list %}
         <div class="list">
-            {% if article.user_submitted == 2 %}
-            <a href="{% url job_detail article.slug %}">
-                {{ article.text }}
+            {% if article.is_community %}
+            <a href="{% url job article.slug %}">
+            <color value="blue">***</color>
+            {{ article.title|truncatewords:10 }}
             </a>
+            {{ article.description|truncatewords:10 }}
             {% else %}
-            {% if article.user_submitted == 1 %}<color value="blue">***</color>{% endif %}
-            <a href="{% url job cat_id article.pk article.user_submitted %}">
-                {% if article.user_submitted %}{{ article.source|truncatewords:10 }} - {% endif %}
-                {{ article.text|truncatewords:10 }}
-            </a>
+            <a href="{% url job article.slug %}">{{ article.title }}</a>
+
             {% endif %}
+            <br/><small>{{ article.get_provinces }}</small>
             <br/>
             <small>
-                {{ article.date|date:"D, j M Y" }}
+                {{ article.publish_on|timesince }} ago
             </small>
         </div>
+    {% empty %}
+        <p>0 Jobs in this category.</p>
     {% endfor %}
     <div id="pagination">
-        {% if articles.has_previous %}
-            <span><a href="?page={{ articles.previous_page_number }}">Previous</a></span> |
+        {% if page_obj.has_previous %}
+            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
         {% else %}
             <span>Previous</span> |
         {% endif %}
 
         <span class="current">
-            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
         </span>
 
-        {% if articles.has_next %}
-            | <span><a href="?page={{ articles.next_page_number }}">Next</a></span>
+        {% if page_obj.has_next %}
+            | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
         {% else %}
             | <span>Next</span>
         {% endif %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_jobs %}">My Jobs</a> &raquo; add</h2>
+<h2>Add a job</h2>
+<p>Ummeli is unlike any other jobs network. We're a community of young
+    people looking out for each other. You can help by adding jobs you have seen
+    advertised in your community, or that you are not interested in yourself, but
+    want to share so that others can apply. If you are a formal jobs provider, you
+    are a VIP here on Ummeli and we welcome you to our community!
+</p>
+<form method="POST" class="content-form">
+    <fieldset>
+    <strong>* = Required</strong><br />
+    <div class="form-fields">
+        <label for="category">Opportunity Type*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.opportunity_type %}
+        {{form.opportunity_type}}
+
+        <label for="province">Province*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.province %}
+        {{form.province}}
+
+        <label>Title*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.title %}
+        {{form.title}}
+        <label>Description*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.description %}
+        <div>{{form.description.help_text}}</div>
+        {{form.description}}
+    </div>
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    <input type='submit' value='Add' class="btn"/>
+    </fieldset>
+</form>
+{% endblock %}

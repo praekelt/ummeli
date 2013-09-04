@@ -3,11 +3,10 @@ from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
                                 EducationDetailsForm, CertificateForm,
                                 WorkExperienceForm, LanguageForm,
                                 ReferenceForm, SkillForm,
-                                PersonalStatementForm,
-                                UserSubmittedJobArticleForm,
-                                UserSubmittedJobArticleEditForm)
+                                PersonalStatementForm)
 from ummeli.vlive.profile.forms import IndustrySearchForm,\
                                         ConnectionNameSearchForm
+from ummeli.vlive.community.forms import JobEditForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
@@ -21,14 +20,14 @@ from django.contrib import messages
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
-                                UserSubmittedJobArticle,
-                                Province,  Category, PROVINCE_CHOICES)
+                                PROVINCE_CHOICES)
+from ummeli.opportunities.models import UmmeliOpportunity, Job, CATEGORY_CHOICES
 from ummeli.graphing.models import Person
 from ummeli.vlive.utils import pin_required
 from ummeli.graphing.utils import add_connection_for_user
 
 from jmbowordsuggest.models import AcceptedWord, AcceptedWordCategory
-from jmbowordsuggest.utils import suggest_words
+
 
 @login_required
 @pin_required
@@ -49,7 +48,7 @@ def profile_view(request, user_id):
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
     return render(request, 'profile/profile_view.html',
                 {'other_user_profile': other_user.get_profile(),
-                'other_user_jobs': other_user.user_submitted_job_article_user.count(),
+                 'other_user_jobs': other_user.modelbase_set.filter(ummeliopportunity__isnull=False).count(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
@@ -530,7 +529,7 @@ class MyJobsListView(ListView):
     template_name = 'my_jobs_list.html'
 
     def get_queryset(self):
-        return self.request.user.user_submitted_job_article_user.all().order_by('-date')
+        return self.request.user.modelbase_set.filter(ummeliopportunity__isnull=False).order_by('-created')
 
 class ConnectionJobsListView(ListView):
     paginate_by = 5
@@ -549,7 +548,7 @@ class ConnectionJobsListView(ListView):
 
 
 class ConnectionJobsDetailView(DetailView):
-    model = UserSubmittedJobArticle
+    model = UmmeliOpportunity
     template_name = 'connection_jobs_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -561,8 +560,8 @@ class ConnectionJobsDetailView(DetailView):
 
 
 class MyJobsEditView(UpdateView):
-    model = UserSubmittedJobArticle
-    form_class = UserSubmittedJobArticleEditForm
+    model = UmmeliOpportunity
+    form_class = JobEditForm
     template_name = 'my_jobs_create.html'
 
     def get_success_url(self):
@@ -570,14 +569,29 @@ class MyJobsEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyJobsEditView, self).get_context_data(**kwargs)
-
-        context['provinces'] = Province.objects.all().order_by('name').exclude(pk=1)
-        context['categories'] = Category.objects.all().values('title').distinct().order_by('title')
+        context['categories'] = CATEGORY_CHOICES
         return context
 
 
+@pin_required
+@login_required
+def my_jobs_edit(request, pk):
+    opportunity = get_object_or_404(Job, pk=pk)
+    if request.method == 'POST':
+        form = JobEditForm(request.POST, instance=opportunity)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.save()
+            job.province = [form.cleaned_data['province'], ]
+            return redirect(reverse("my_jobs"))
+    else:
+        form = JobEditForm(instance=opportunity)
+
+    return render(request, 'my_jobs_create.html', {'form': form})
+
+
 class MyJobsDeleteView(DeleteView):
-    model = UserSubmittedJobArticle
+    model = UmmeliOpportunity
     template_name = 'my_jobs_delete.html'
 
     def get_success_url(self):

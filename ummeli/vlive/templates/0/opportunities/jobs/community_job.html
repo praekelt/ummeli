@@ -2,47 +2,51 @@
 
 {% block content %}
     <div class="h2">
-        <a href="{% url community_jobs %}">Community Board</a> &raquo; 
-        Job</a>
+        <a href="{% url community_jobs %}">Community Board</a> &raquo;
+        Opportunity</a>
     </div>
     <div class="article">
         <strong>{{job.title}}</strong><br/>
-        {% if job.province %}<small><strong>{{job.province}}</strong></small><br/>{% endif %}
-        {{ job.text }}
+        <small><strong>{{job.get_provinces}}</strong></small><br/>
+        {{ job.description }}
         <br/><br/>
-        <small>{{ job.date|date:"D, j M Y, H:i" }}</small>    
-        <br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
+        <small>{{ job.created|timesince }} ago</small>
+        <br/>submitted by
+        {% if job.owner.get_profile.fullname %}
+            <a href="{% url profile_view job.owner.pk %}">{{ job.owner.get_profile.fullname }}</a>
+        {% else %}
+            Anon.
+        {% endif %}
     </div>
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
-    
-    <div class="h2">Apply for this job</div>
-    <form name="pd" method="POST" class="content-form"> 
+    <br/>
+    <div class="h2">Apply for this opportunity</div>
+    <form name="pd" method="POST" class="content-form">
     {% if user.is_authenticated %}
         {% if user_profile.missing_fields %}
             <strong>Missing fields</strong>
             <div class="warning">
-                Your CV is incomplete. Please make sure that the following information is 
+                Your CV is incomplete. Please make sure that the following information is
                 completed before you can send your CV.
             </div>
             {% for field in user_profile.missing_fields %}
                 - {{field}}<br/>
             {% endfor %}
         {% else %}
-        <fieldset> 
+        <fieldset>
         <strong>* = Required</strong><br />
           <label for="email">Email CV To:*</label>
           <span class="subtext">(example) someone@email.com</span>
           {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
           <input type="text" class="txt" name="send_to"/>
           <input type="submit" name="signin-btn" value="Send" class="btn" />
-          <input type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
           <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
           <input type="hidden" name="send_via" value="email" />
         </fieldset>
         {% endif %}
     {% else %}
-        <div class="warning">Please <a href="{% url login %}?next={% url community_jobs job.pk %}">sign in</a> 
-        or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
+        <div class="warning">Please <a href="{% url login %}?next={% url community_jobs job.slug %}">sign in</a>
+        or <a href="{% url register %}">register</a> with Ummeli to apply for this opportunity</div>
     {% endif %}
     </form>
 {% endblock %}

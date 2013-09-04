@@ -30,22 +30,17 @@
     {% endfor %}
 
     <div class="h2">Community Board</div>
-    {% for article in community_list %}
-        <div class="img-article list">
-            <img src="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" width="50" alt="Title Here" class="left">
-            <a href="{% url community_jobs article.pk %}">{{ article.title|truncatewords:10 }}</a> {{ article.text|truncatewords:10 }}
-            <br/>
-            {% if article.province %}<small>{{article.province}}</small><br/>{% endif %}
-            <small>
-                {{ article.date|date:"D, j M Y, H:i" }}
-                <a href="{% url profile_view article.user.pk %}">{{article.user.get_profile.fullname}}</a>
-            </small>
-        </div>
+    {% for object in community_list %}
+        {% include 'opportunities/community_opportunity_listing.html' %}
     {% endfor %}
+
     <div class="list"><a href="{% url community_jobs %}">more...</a></div>
 
     <div class="h2">Have something to share?</div>
     <div class="list"><a href="{% url jobs_create %}">Add a job</a></div>
+    <div class="list"><a href="{% url opportunity_create %}">Add an opportunity</a></div>
+    <div class="list"><a href="{% url status_update %}">Update your status</a></div>
+    <div class="list"><a href="{% url advertise_skills %}">Advertise your skills</a></div>
     <div class="h2">Connect with others?</div>
     <div class="list"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
     <div class="list"><a href="{% url add_connection_by_surname %}">Search by Surname</a></div>

@@ -1,44 +1,28 @@
 {% extends "base.xml" %}
 
 {% block content %}
-<HEADER><LABEL>{{category_title}}</LABEL></HEADER>
+<HEADER><LABEL>{{category}}</LABEL></HEADER>
 <CONTAINER type="list">
     <LINK href="{% url change_province %}?next={% url jobs_list %}">
         <TEXT>{{province}} (change)</TEXT>
     </LINK>
 </CONTAINER>
 </MODULE>
-{% for article in articles.object_list %}
-{% if article.user_submitted == 2 %}
+{% for article in object_list %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    <LINK href="{% url job_detail article.slug %}">
-        <TEXT>{{ article.text }}</TEXT>
+    {% if article.is_community %}
+    <color value="blue">***</color>
+    {% endif %}
+    <LINK href="{% url job article.slug %}">
+        <TEXT>{{ article.description|truncatewords:10 }}</TEXT>
     </LINK>
-    <br/>{{article.date|date:'d M y'}}
+    <br/>{{article.created|timesince}} ago
     </TEXT>
     </CONTAINER>
 </MODULE>
-{% else %}
-<MODULE backgroundColor="false" palette="MiDove">
-    <HEADER><LABEL> </LABEL></HEADER>
-    <CONTAINER type="data">
-    <TEXT>
-    <LINK href="{% url job cat_id article.pk article.user_submitted %}">
-        <TEXT>
-            {% if article.user_submitted == 1 %}
-            <color value="blue">***</color>
-            {% endif %}
-            {{ article.text|truncatewords:10 }}
-        </TEXT>
-    </LINK>
-    <br/>{{article.date|date:'d M y'}}
-    </TEXT>
-    </CONTAINER>
-</MODULE>
-{% endif %}
 {% endfor %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</LABEL></HEADER>

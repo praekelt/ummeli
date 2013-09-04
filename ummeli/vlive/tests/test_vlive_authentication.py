@@ -17,7 +17,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.pin = '1234'
         self.client = VLiveClient(HTTP_X_UP_CALLING_LINE_ID=self.msisdn)
         settings.CELERY_ALWAYS_EAGER = True
-        
+
     def tearDown(self):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
@@ -92,7 +92,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         self.assertContains(resp,  'Submitted successfully')
         # ensure the session's pin has been cleared
         self.assertNotIn(settings.UMMELI_PIN_SESSION_KEY, self.client.session)
-        
+
         resp = self.client.get(reverse('login'))
         self.assertContains(resp, 'Enter PIN to sign in.')
         self.assertContains(resp, 'Forgot your PIN?')
@@ -131,7 +131,7 @@ class VliveAuthenticationTestCase(VLiveTestCase):
             'new_password2': self.pin,
         })
         self.assertContains(resp, 'Submitted successfully')
-        
+
         # authorize with pin
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
@@ -139,7 +139,6 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         })
 
         resp = self.client.get(reverse('password_change'))
-        # print resp
         self.assertContains(resp, 'Change PIN for %s' % self.msisdn)
 
         resp = self.client.post(reverse('password_change'),{
@@ -155,40 +154,40 @@ class VliveAuthenticationTestCase(VLiveTestCase):
         })
 
         self.assertContains(resp, 'Submitted successfully')
-    
+
     def test_phone_number_to_international(self):
         self.assertEquals(phone_number_to_international('0123456789'), '27123456789')
         self.assertEquals(phone_number_to_international('27123456789'), '27123456789')
         self.assertEquals(phone_number_to_international('271234567'), 'invalid no')
         self.assertEquals(phone_number_to_international('01234567'), 'invalid no')
         self.assertEquals(phone_number_to_international('username'), 'invalid no')
-        
+
     def test_user_deactivated(self):
         self.register()
         user = User.objects.get(username=self.msisdn)
         user.is_active = False
         user.save()
-        
+
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
             'password': self.pin,
         })
-        
+
         self.assertContains(resp, 'Your account has been deactivated')
-        
+
         resp = self.client.get(reverse('contactsupport'))
         self.assertEquals(resp.status_code, 200)
-        
+
         resp = self.client.post(reverse('contactsupport'), {
             'username': self.msisdn,
             'message': 'Im sorry I did this.',
         })
-        
+
         self.assertEqual(len(mail.outbox), 1)
         self.assertEquals(mail.outbox[0].subject, 'Blocked User: %s' % self.msisdn)
         self.assertEqual(mail.outbox[0].from_email, settings.SEND_FROM_EMAIL_ADDRESS)
         self.assertEqual(mail.outbox[0].to[0], settings.UMMELI_SUPPORT)
-        
+
         #restore user status
         user.is_active = True
         user.save()

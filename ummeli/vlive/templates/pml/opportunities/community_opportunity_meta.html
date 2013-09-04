@@ -1,0 +1,13 @@
+{% if object.ummeliopportunity.is_community %}
+<br/>
+<small>{{object.publish_on|timesince}} ago </small> |
+    <LINK href="{% url profile_view object.owner.pk %}">
+    <TEXT>
+        {% if article.owner.get_profile.fullname %}
+            {{ article.owner.get_profile.fullname }}
+        {% else %}
+            Anon.
+        {% endif %}
+    </TEXT>
+    </LINK>
+{% endif %}

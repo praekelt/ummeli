@@ -10,7 +10,7 @@
         <div>
             <div class="h3">{{user_profile.primary_skill}}</div>
             {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
-            {% if user_profile.date_of_birth %}DOB: {{user_profile.date_of_birth}} <br/>{% endif %}
+            {% if user_profile.gender %}{{user_profile.gender}}{% endif %}
         </div>
     </div>
     <div style="clear: both"></div><br/>
@@ -21,7 +21,7 @@
         {% endfor %}
     {% endif %}
     <p><em>"{{user_profile.about_me}}"</em></p>
-    
+
     <h2>Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></h2>
     <div class="bullet"><a href="{% url edit_personal %}">Personal Details</a></div>
     <div class="bullet"><a href="{% url language_list %}">Languages</a></div>
