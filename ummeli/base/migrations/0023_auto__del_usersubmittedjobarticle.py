@@ -5,9 +5,12 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
+    depends_on = (
+        ("ummeli.opportunities", "0018_migrate_user_submitted_jobs_to_opportunity_model"),
+    )
 
     def forwards(self, orm):
-        
+
         # Deleting model 'UserSubmittedJobArticle'
         db.delete_table('base_usersubmittedjobarticle')
 
@@ -16,7 +19,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Adding model 'UserSubmittedJobArticle'
         db.create_table('base_usersubmittedjobarticle', (
             ('province', self.gf('django.db.models.fields.TextField')(default='')),
