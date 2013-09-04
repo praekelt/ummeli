@@ -20,12 +20,35 @@
 <LABEL>Ummeli</LABEL>
 </PARTNER-HEADER>
 
+{% if messages %}
+    <MODULE backgroundColor="false" palette="MiDove">
+        <HEADER><LABEL>Thank you</LABEL></HEADER>
+        <CONTAINER type="data">
+        <TEXT>
+            {% for message in messages %}
+            {% if message.tags == 'success' %}
+            <color value="green">{{ message|safe }}</color><br/>
+            {% else %}
+            <color value="red">{{ message|safe }}</color><br/>
+            {% endif %}
+            {% endfor %}
+        </TEXT>
+        </CONTAINER>
+    </MODULE>
+{% else %}
+    <MODULE backgroundColor="false" palette="MiDove">
+        <HEADER><LABEL>Thank you</LABEL></HEADER>
+        <CONTAINER type="data">
+        <TEXT>{{redirect_message}}</TEXT>
+        </CONTAINER>
+    </MODULE>
+{% endif %}
+
 <MODULE backgroundColor="false" palette="MiDove">
-    <HEADER><LABEL>Thank you</LABEL></HEADER>
-    <CONTAINER  type="data">
-    <TEXT>{{redirect_message}}
-    <br/>
-    Please wait while we automatically redirect you 
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    Please wait while we automatically redirect you
     <LINK href="{{redirect_url}}?{{uuid}}"><TEXT>...</TEXT></LINK>
     </TEXT>
     </CONTAINER>

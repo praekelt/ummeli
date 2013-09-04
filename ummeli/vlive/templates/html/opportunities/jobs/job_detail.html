@@ -29,5 +29,6 @@
         {% endif %}{% endif %}
     </p>
     <div class="more"><a href="{% url jobs_list %}">&larr; Back to jobs</a></div>
-    </form>
+
+    {% include 'opportunities/opportunity_apply.html' %}
 {% endblock %}

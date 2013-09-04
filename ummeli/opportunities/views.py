@@ -9,6 +9,7 @@ from django.contrib import messages
 from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
 from ummeli.opportunities.tomtom.forms import SelectLocationForm
+from ummeli.vlive.forms import FaxCVForm, EmailCVForm
 from django.contrib.gis.geos import Point
 
 
@@ -206,3 +207,37 @@ def select_location(request):
 def jobs_list(request):
     return render(request, 'opportunities/jobs/jobs_list.html',
                               {'categories': CATEGORY_CHOICES})
+
+
+def opportunity_apply(request, slug):
+    form = None
+    if not UmmeliOpportunity.objects.filter(slug=slug):
+        return redirect(reverse('opportunities'))  # Sorry, this ad has been removed.
+    opportunity = UmmeliOpportunity.objects.get(slug=slug).as_leaf_class()
+
+    if request.method == 'POST':
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data=request.POST)
+        else:
+            form = FaxCVForm(data=request.POST)
+
+        user_profile = request.user.get_profile()
+
+        if form.is_valid() and not user_profile.missing_fields():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+
+            if send_via == 'email':
+                user_profile.email_cv(send_to,  opportunity.description)
+                msg = 'You email has been sent.'
+                messages.success(request, msg)
+                return redirect(opportunity.get_absolute_url())
+            else:
+                user_profile.fax_cv(send_to, opportunity.description)
+                msg = 'You fax has been sent.'
+                messages.success(request, msg)
+                return redirect(opportunity.get_absolute_url())
+        else:
+            messages.error(request, 'Please enter a valid email')
+
+    return redirect(opportunity.get_absolute_url())

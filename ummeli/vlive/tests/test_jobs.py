@@ -80,7 +80,7 @@ class JobsTestCase(VLiveTestCase):
 
         # apply via email
         slug = 'accounts-administrator-west-rand-kzn-limpopo-eebcompt-accounts-qualif-mon'
-        self.client.post(reverse('job', kwargs={'slug':slug}),
+        self.client.post(reverse('opportunity_apply', kwargs={'slug':slug}),
                                         {'send_via':'email',
                                          'send_to':'me@home.com'})
 
@@ -103,7 +103,7 @@ class JobsTestCase(VLiveTestCase):
         resp = self.client.get(reverse('jobs', args=[1]))
 
         slug = 'accounts-administrator-west-rand-kzn-limpopo-eebcompt-accounts-qualif-mon'
-        resp = self.client.post(reverse('job', kwargs={'slug':slug}),
+        resp = self.client.post(reverse('opportunity_apply', kwargs={'slug':slug}),
                                         {'send_via':'fax',
                                          'send_to':'+27123456789'})
 
@@ -116,8 +116,7 @@ class JobsTestCase(VLiveTestCase):
         self.assertEqual(self.get_user().get_profile().nr_of_faxes_sent,  1)
 
         # negative test case for require send_to
-        resp = self.client.post(reverse('job', kwargs={'slug':slug}),
+        resp = self.client.post(reverse('opportunity_apply', kwargs={'slug':slug}),
                                         {'send_via':'fax',
                                          'send_to':''})
-
-        self.assertContains(resp,  'This field is required')
+        self.assertContains(resp,  'Please enter a valid email')
