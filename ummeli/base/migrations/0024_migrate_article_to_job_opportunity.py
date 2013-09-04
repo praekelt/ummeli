@@ -8,7 +8,7 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         from ummeli.base.utils import category_from_str
-        from ummeli.base.models import Province as BaseProvince
+        BaseProvince = orm['base.Province']
         BaseProvince.objects.filter(name='KZN').update(name='KwaZulu Natal')
         BaseProvince.objects.filter(name='All').update(name='All Provinces')
 
