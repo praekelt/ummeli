@@ -16,7 +16,8 @@ class JobEditForm(PMLModelForm):
     title = forms.CharField(label='title', required=True)
     description = forms.CharField(label='Description',
                                   required=True,
-                                  help_text='Please provide as much information about the job as possible including contact details.')
+                                  help_text='Please provide as much information about the job as possible including contact details.',
+                                  widget=forms.Textarea)
 
     class Meta:
         model = Job

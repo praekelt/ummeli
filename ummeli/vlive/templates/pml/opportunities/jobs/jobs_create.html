@@ -16,28 +16,28 @@
 </CONTAINER>
 <CONTAINER  type="form">
     <FORM method="POST" href="{{request.path}}" submit_text="Save">
-        <TEXT position="ABOVE">Province</TEXT>
+        <TEXT position="ABOVE">Province*</TEXT>
         <SELECT name="province">
-            <ITEM value="">Please select province</ITEM>
-            {% for p in provinces %}
-            <ITEM value="{{p.pk}}">{{p.name}}</ITEM>
-            {% endfor %}
-        </SELECT>
-        <TEXT position="ABOVE">Category</TEXT>
-        <SELECT name="category">
-            <ITEM value="">Please select category</ITEM>
-            {% for category in categories %}
-            <ITEM value="{{category.title}}">{{category.title}}</ITEM>
+            {% for key, value in form.fields.province.widget.choices %}
+            <ITEM value="{{key}}">{{value}}</ITEM>
             {% endfor %}
         </SELECT>
 
-        <TEXT position="ABOVE">Job Title</TEXT>
-        <FIELD name="title" type="text"/><br/>
-        <TEXT position="ABOVE">Description<br/>
-        Please provide as much information about the job as possible including
-        contact details.
+        <TEXT position="ABOVE">Category*</TEXT>
+        <SELECT name="category">
+            {% for key, value in form.fields.category.widget.choices %}
+            <ITEM value="{{key}}">{{value}}</ITEM>
+            {% endfor %}
+        </SELECT>
+
+        <TEXT position="ABOVE">Job Title*</TEXT>
+        <FIELD name="title" type="text" default="{% if form.title.value %}{{form.title.value}}{% endif %}"/><br/>
+
+        <TEXT position="ABOVE">Description*<br/>
+        {{form.description.help_text}}
         </TEXT>
-        <FIELD name="text" type="text"/><br/>
+        <FIELD name="description" type="text" default="{% if form.description.value %}{{form.description.value}}{% endif %}"/><br/>
+
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
