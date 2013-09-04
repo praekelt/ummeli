@@ -41,7 +41,7 @@ class Province(models.Model):
         if len(result) > 1:
             raise MultipleObjectsReturned
 
-        if any(result):
+        if len(result) > 0:
             return cls.objects.get(province=result[0])
         return None
 
