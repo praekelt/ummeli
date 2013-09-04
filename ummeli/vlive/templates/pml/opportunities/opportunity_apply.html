@@ -1,46 +1,6 @@
-{% extends "base.xml" %}
-
-{% block content %}
-    <HEADER><LABEL>Community Board - Job</LABEL></HEADER>
-    <CONTAINER type="data">
-    <TITLE>{{job.title}}</TITLE>
-    <TEXT>
-        <strong>{{job.get_provinces}}</strong><br>
-        <small>{{ job.created|timesince }} ago</small>
-        <br/>
-        <br/>
-        {{ job.description }}
-        <br/>
-        <br/><color value="blue">submitted by </color>
-        {% if job.owner.get_profile.fullname %}
-            <LINK href="{% url profile_view job.owner.pk %}"><TEXT>{{job.owner.get_profile.fullname}}</TEXT></LINK>
-        {% else %}
-            Anon.
-        {% endif %}
-    </TEXT>
-    </CONTAINER>
-</MODULE>
-<MODULE backgroundColor="false" palette="MiDove">
-<HEADER><LABEL> </LABEL></HEADER>
-<CONTAINER  type="list">
-    <LINK href="{% url community_jobs %}">
-        <TEXT>Back</TEXT>
-    </LINK>
-</CONTAINER>
-</MODULE>
-
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
     {% if request.is_authorized %}
-        {% if form.errors %}
-            <CONTAINER type="data">
-            {% for field in form %}
-            {% for error in field.errors %}
-                <TEXT><color value="red">{{field.label}} - {{error}}</color></TEXT><br/>
-            {% endfor %}
-            {% endfor %}
-            </CONTAINER>
-        {% endif %}
         {% if user_profile.missing_fields %}
             <CONTAINER type="data">
                 <TITLE>Missing fields</TITLE>
@@ -53,7 +13,7 @@
             </CONTAINER>
         {% endif %}
         <CONTAINER type="form">
-            <FORM method="POST" href="{{request.path}}" submit_text="Apply">
+            <FORM method="POST" href="{% url opportunity_apply object.slug %}" submit_text="Apply">
                 <TEXT position="ABOVE">Email CV to:*</TEXT>
                 <FIELD name="send_to" type="text"/><br/>
                 <FIELD type='hidden' name='send_via' value='email' />
@@ -66,7 +26,7 @@
         <TEXT><color value="red">You are not signed in. Please sign in to be able to
         respond to a job advert.</color>
         <br/>
-        <LINK href="{% url login %}?next={% url community_jobs job.pk %}">
+        <LINK href="{% url login %}?next={{ object.get_absolute_url }}">
             <TEXT>Sign In</TEXT>
         </LINK>
         </TEXT>
@@ -75,4 +35,3 @@
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
-{% endblock %}
