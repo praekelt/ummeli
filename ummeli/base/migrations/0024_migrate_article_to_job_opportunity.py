@@ -5,6 +5,9 @@ from south.v2 import DataMigration
 from django.db import models
 
 class Migration(DataMigration):
+    depends_on = (
+        ("ummeli.opportunities", "0021_migrate_old_opportunities_to_new_opportunity_base_class"),
+    )
 
     def forwards(self, orm):
         from ummeli.base.utils import category_from_str
