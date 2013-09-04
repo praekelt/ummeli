@@ -28,7 +28,7 @@ class OpportunityEditForm(PMLForm):
     TRAINING = 2
     VOLUNTEERING = 3
     INTERNSHIP = 4
-    OPPORTUNITY_CHOICES = [(0, 'Please select'),
+    OPPORTUNITY_CHOICES = [(0, 'Please choose opportunity type'),
                            (BURSARY, 'Bursary'),
                            (TRAINING, 'Training'),
                            (VOLUNTEERING, 'Volunteering'),
@@ -42,7 +42,8 @@ class OpportunityEditForm(PMLForm):
     title = forms.CharField(label='title', required=True)
     description = forms.CharField(label='Description',
                                   required=True,
-                                  help_text='Please provide as much information about the opportunity as possible including contact details.')
+                                  help_text='Please provide as much information about the opportunity as possible including contact details.',
+                                  widget=forms.Textarea)
 
     def get_model(self):
         if self.is_valid():
