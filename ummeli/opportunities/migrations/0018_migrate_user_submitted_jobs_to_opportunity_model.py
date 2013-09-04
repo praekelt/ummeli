@@ -10,9 +10,8 @@ from django.contrib.sites.models import Site
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        from ummeli.base.models import UserSubmittedJobArticle
         from ummeli.opportunities.models import Province
-        Job = orm['opportunities.Job']
+        UserSubmittedJobArticle = orm['base.UserSubmittedJobArticle']
 
         for old_article in UserSubmittedJobArticle.objects.iterator():
             job = convert_community_job_to_opportunity(old_article)
@@ -28,6 +27,41 @@ class Migration(DataMigration):
 
 
     models = {
+        'base.article': {
+            'Meta': {'object_name': 'Article'},
+            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 8, 6, 17, 17, 10, 664946)', 'blank': 'True'}),
+            'hash_key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '32'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'source': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'text': ('django.db.models.fields.TextField', [], {})
+        },
+        'base.province': {
+            'Meta': {'object_name': 'Province'},
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '45'}),
+            'search_id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
+        },
+        'base.category': {
+            'Meta': {'object_name': 'Category'},
+            'articles': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['base.Article']", 'null': 'True', 'blank': 'True'}),
+            'hash_key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '32'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_allowed': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'province': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['base.Province']"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '45'}),
+            'user_submitted_job_articles': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['base.UserSubmittedJobArticle']", 'null': 'True', 'blank': 'True'})
+        },
+        'base.usersubmittedjobarticle': {
+            'Meta': {'object_name': 'UserSubmittedJobArticle'},
+            'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'date_updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'job_category': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            'moderated': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'province': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            'text': ('django.db.models.fields.TextField', [], {'default': "''"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'user_submitted_job_article_user'", 'to': "orm['auth.User']"})
+        },
         'atlas.city': {
             'Meta': {'ordering': "('name',)", 'object_name': 'City'},
             'coordinates': ('atlas.fields.CoordinateField', [], {'null': 'True', 'blank': 'True'}),
