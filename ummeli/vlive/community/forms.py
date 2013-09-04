@@ -28,7 +28,7 @@ class OpportunityEditForm(PMLForm):
     TRAINING = 2
     VOLUNTEERING = 3
     INTERNSHIP = 4
-    OPPORTUNITY_CHOICES = [(0, 'Please choose opportunity type'),
+    OPPORTUNITY_CHOICES = [(0, 'Please choose'),
                            (BURSARY, 'Bursary'),
                            (TRAINING, 'Training'),
                            (VOLUNTEERING, 'Volunteering'),
