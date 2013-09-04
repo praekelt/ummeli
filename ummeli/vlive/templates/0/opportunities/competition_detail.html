@@ -14,9 +14,6 @@
         <br/>
         <br/>
         {{ object.description|safe }}
-        {% if not object.owner %}
-            <p>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a></p>
-        {% else %}
         {% if object.is_community %}
         <p>submitted by
             <a href="{% url profile_view object.owner.pk %}">
@@ -27,7 +24,7 @@
                 {% endif %}
             </a>
         </p>
-        {% endif %}{% endif %}
+        {% endif %}
     </div>
     <div class="more"><a href="{% url competitions %}">&larr; Back</a></div>
 {% endblock %}

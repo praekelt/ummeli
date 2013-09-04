@@ -15,9 +15,15 @@
         <br/>
         <br/>
         {{ object.description|safe }}
-        {% if object.ummeliopportunity.is_community %}
-        <p>
-        {% include 'opportunities/community_opportunity_meta.html' %}
+        {% if object.is_community %}
+        <p>submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a>
         </p>
         {% endif %}
     </p>

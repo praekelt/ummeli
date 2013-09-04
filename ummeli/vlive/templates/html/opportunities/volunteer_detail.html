@@ -14,6 +14,17 @@
         <br/>
         <br/>
         {{ object.description|safe }}
+        {% if object.is_community %}
+        <p>submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a>
+        </p>
+        {% endif %}
     </p>
     <div class="more"><a href="{% url volunteering %}">&larr; Back</a></div>
 {% endblock %}
