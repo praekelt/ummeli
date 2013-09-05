@@ -3,12 +3,12 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from ummeli.opportunities.models import JobTemp, BursaryTemp, InternshipTemp, TrainingTemp, VolunteerTempTemp
 
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
+        from ummeli.opportunities.models import JobTemp, BursaryTemp, InternshipTemp, TrainingTemp, VolunteerTempTemp
         from ummeli.opportunities.models import Job, Bursary, Internship, Training, Volunteer
 
         for job in Job.objects.all():
@@ -78,6 +78,7 @@ class Migration(DataMigration):
             i.save()
 
     def backwards(self, orm):
+        from ummeli.opportunities.models import JobTemp, BursaryTemp, InternshipTemp, TrainingTemp, VolunteerTempTemp
         JobTemp.objects.all().delete()
         BursaryTemp.objects.all().delete()
         InternshipTemp.objects.all().delete()

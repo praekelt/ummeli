@@ -7,14 +7,189 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        pass
+
+        # Deleting model 'Province'
+        db.delete_table('base_province')
+
+        # Deleting model 'UserSubmittedJobArticle'
+        db.delete_table('base_usersubmittedjobarticle')
+
+        # Deleting model 'Category'
+        db.delete_table('base_category')
+
+        # Removing M2M table for field articles on 'Category'
+        db.delete_table('base_category_articles')
+
+        # Removing M2M table for field user_submitted_job_articles on 'Category'
+        db.delete_table('base_category_user_submitted_job_articles')
+
+        # Deleting model 'Article'
+        db.delete_table('base_article')
 
 
     def backwards(self, orm):
-        pass
+
+        # Adding model 'Province'
+        db.create_table('base_province', (
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=45)),
+            ('search_id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
+        ))
+        db.send_create_signal('base', ['Province'])
+
+        # Adding model 'UserSubmittedJobArticle'
+        db.create_table('base_usersubmittedjobarticle', (
+            ('province', self.gf('django.db.models.fields.TextField')(default='')),
+            ('date_updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('moderated', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='user_submitted_job_article_user', to=orm['auth.User'])),
+            ('text', self.gf('django.db.models.fields.TextField')(default='')),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('job_category', self.gf('django.db.models.fields.TextField')(default='')),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal('base', ['UserSubmittedJobArticle'])
+
+        # Adding model 'Category'
+        db.create_table('base_category', (
+            ('province', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['base.Province'])),
+            ('hash_key', self.gf('django.db.models.fields.CharField')(max_length=32, unique=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=45)),
+            ('is_allowed', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal('base', ['Category'])
+
+        # Adding M2M table for field articles on 'Category'
+        db.create_table('base_category_articles', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('category', models.ForeignKey(orm['base.category'], null=False)),
+            ('article', models.ForeignKey(orm['base.article'], null=False))
+        ))
+        db.create_unique('base_category_articles', ['category_id', 'article_id'])
+
+        # Adding M2M table for field user_submitted_job_articles on 'Category'
+        db.create_table('base_category_user_submitted_job_articles', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('category', models.ForeignKey(orm['base.category'], null=False)),
+            ('usersubmittedjobarticle', models.ForeignKey(orm['base.usersubmittedjobarticle'], null=False))
+        ))
+        db.create_unique('base_category_user_submitted_job_articles', ['category_id', 'usersubmittedjobarticle_id'])
+
+        # Adding model 'Article'
+        db.create_table('base_article', (
+            ('hash_key', self.gf('django.db.models.fields.CharField')(max_length=32, unique=True)),
+            ('text', self.gf('django.db.models.fields.TextField')()),
+            ('source', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 11, 6, 17, 0, 48, 268194), blank=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal('base', ['Article'])
 
 
     models = {
+        'auth.group': {
+            'Meta': {'object_name': 'Group'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        'auth.permission': {
+            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
+            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'auth.user': {
+            'Meta': {'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 52, 46, 503841)'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 52, 46, 503751)'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
+        },
+        'base.certificate': {
+            'Meta': {'object_name': 'Certificate'},
+            'duration': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'institution': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '45'}),
+            'year': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'})
+        },
+        'base.curriculumvitae': {
+            'Meta': {'object_name': 'CurriculumVitae'},
+            'about_me': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'certificates': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['base.Certificate']", 'symmetrical': 'False', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'comment_as_anon': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'connection_requests': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'connection_requests'", 'blank': 'True', 'to': "orm['auth.User']"}),
+            'date_of_birth': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'email': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'gender': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'highest_grade': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'highest_grade_year': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_complete': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'languages': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['base.Language']", 'symmetrical': 'False', 'blank': 'True'}),
+            'nr_of_faxes_sent': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'preferred_skill': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'profiles_preferred'", 'null': 'True', 'to': "orm['base.Skill']"}),
+            'province': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'references': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['base.Reference']", 'symmetrical': 'False', 'blank': 'True'}),
+            'school': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'show_address': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'show_contact_number': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'skills': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'profiles'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['base.Skill']"}),
+            'surname': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'telephone_number': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'}),
+            'work_experiences': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['base.WorkExperience']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        'base.language': {
+            'Meta': {'object_name': 'Language'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.CharField', [], {'max_length': '45'}),
+            'read_write': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
+        'base.reference': {
+            'Meta': {'object_name': 'Reference'},
+            'contact_no': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'fullname': ('django.db.models.fields.CharField', [], {'max_length': '45'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'relationship': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'})
+        },
+        'base.skill': {
+            'Meta': {'object_name': 'Skill'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'level': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
+            'primary': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'skill': ('django.db.models.fields.CharField', [], {'max_length': '45'})
+        },
+        'base.workexperience': {
+            'Meta': {'object_name': 'WorkExperience'},
+            'company': ('django.db.models.fields.CharField', [], {'max_length': '45', 'null': 'True', 'blank': 'True'}),
+            'end_year': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'start_year': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '45'})
+        },
+        'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
         'atlas.city': {
             'Meta': {'ordering': "('name',)", 'object_name': 'City'},
             'coordinates': ('atlas.fields.CoordinateField', [], {'null': 'True', 'blank': 'True'}),
@@ -50,35 +225,6 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['atlas.Country']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '128'})
-        },
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 11, 41, 608155)'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 11, 41, 608070)'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'category.category': {
             'Meta': {'ordering': "('title',)", 'object_name': 'Category'},
@@ -137,15 +283,7 @@ class Migration(SchemaMigration):
             'view_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },
         'opportunities.bursary': {
-            'Meta': {'object_name': 'Bursary'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.bursarytemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'BursaryTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Bursary', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'opportunities.campaign': {
@@ -177,28 +315,11 @@ class Migration(SchemaMigration):
             'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'opportunities.internship': {
-            'Meta': {'object_name': 'Internship'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.internshiptemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'InternshipTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Internship', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'opportunities.job': {
-            'Meta': {'object_name': 'Job'},
-            'category': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.jobtemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'JobTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Job', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'category': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'hash_key': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '32', 'null': 'True', 'blank': 'True'}),
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
@@ -276,16 +397,7 @@ class Migration(SchemaMigration):
             'website': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
         },
         'opportunities.training': {
-            'Meta': {'object_name': 'Training'},
-            'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.trainingtemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'TrainingTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Training', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
@@ -299,15 +411,7 @@ class Migration(SchemaMigration):
             'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'opportunities.volunteer': {
-            'Meta': {'object_name': 'Volunteer'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.volunteertemptemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'VolunteerTempTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Volunteer', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'photologue.photo': {
@@ -363,4 +467,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['opportunities']
+    complete_apps = ['base', 'opportunities']

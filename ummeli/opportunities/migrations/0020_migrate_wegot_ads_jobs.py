@@ -3,7 +3,6 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from ummeli.opportunities.models import Province, JobTemp
 
 class Migration(DataMigration):
 
@@ -16,6 +15,7 @@ class Migration(DataMigration):
                     return key
             return 0
 
+        from ummeli.opportunities.models import Province, JobTemp
         from ummeli.base.models import Province as BaseProvince
 
         BaseProvince.objects.filter(name='KZN').update(name='KwaZulu Natal')
@@ -38,6 +38,7 @@ class Migration(DataMigration):
             j.save()
 
     def backwards(self, orm):
+        from ummeli.opportunities.models import Province, JobTemp
         JobTemp.objects.filter(owner__isnull=True).delete()
 
     models = {
