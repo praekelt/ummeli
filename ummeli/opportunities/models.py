@@ -41,7 +41,7 @@ class Province(models.Model):
         if len(result) > 1:
             raise MultipleObjectsReturned
 
-        if any(result):
+        if len(result) > 0:
             return cls.objects.get(province=result[0])
         return None
 
@@ -60,6 +60,45 @@ class Salary(models.Model):
 
     class Meta:
         verbose_name_plural = "salaries"
+
+
+class UmmeliOpportunity(ModelBase):
+    province = models.ManyToManyField(
+                    Province,
+                    blank=True,
+                    null=True,
+                    default=None)
+    education = models.PositiveIntegerField(
+                    choices=EDUCATION_LEVEL_CHOICES,
+                    default=0)
+    salary = models.ForeignKey(Salary, blank=True, null=True, default=None)
+    place = models.TextField(null=True, blank=True, default=None)
+    is_community = models.BooleanField(default=False)
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s' % self.title
+
+    def get_education(self):
+        return dict(EDUCATION_LEVEL_CHOICES)[self.education]
+
+    def get_provinces(self):
+        return ', '.join(['%s' % a for a in self.province.all()])
+
+    def save(self, *args, **kwargs):
+        self.description = sanitize_html(self.description or '')
+        self.place = sanitize_html(self.place or '')
+        super(UmmeliOpportunity, self).save(*args, **kwargs)
+
+    def as_leaf_class(self):
+        try:
+            instance = self.__getattribute__(self.class_name.lower())
+        except AttributeError:
+            content_type = self.content_type
+            model = content_type.model_class()
+            if(model == ModelBase):
+                return self
+            instance = model.objects.get(id=self.id)
+        return instance
 
 
 class Opportunity(ModelBase):
@@ -425,3 +464,79 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
 
     def get_lat_lon(self):
         return get_lat_lon(self.file)
+
+
+
+"""
+******************************* Data migration models ************************
+"""
+
+class JobTemp(UmmeliOpportunity):
+    category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
+    hash_key = models.CharField(max_length=32, db_index=True, blank=True, null=True)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('job', (self.slug,))
+
+    def to_view_model(self):
+        class JobViewModel(object):
+            def __init__(self,  article):
+                self.pk = article.pk
+                self.source = article.description
+                self.text = article.title
+                self.date = article.created
+                self.user = article.owner
+                self.slug = article.slug
+
+            def user_submitted(self):
+                return 2
+        return JobViewModel(self)
+
+    @classmethod
+    def from_str(cls, str):
+        result = [i for i, p in CATEGORY_CHOICES
+                    if re.sub('[\s-]', '', p.lower()) ==
+                        re.sub('[\s-]', '', str.lower())]
+
+        if len(result) > 1:
+            return cls.objects.none()
+
+        if any(result):
+            return cls.permitted.filter(category=result[0])
+        return cls.objects.none()
+
+
+class InternshipTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('internship_detail', (self.slug,))
+
+
+class VolunteerTempTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('volunteer_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "volunteering"
+
+
+class BursaryTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('bursary_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "bursaries"
+
+
+class TrainingTemp(UmmeliOpportunity):
+    cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('training_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "training"
