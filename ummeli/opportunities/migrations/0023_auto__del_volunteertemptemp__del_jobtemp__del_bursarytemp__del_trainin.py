@@ -1,90 +1,39 @@
 # encoding: utf-8
 import datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-
-class Migration(DataMigration):
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        from ummeli.opportunities.models import JobTemp, BursaryTemp, InternshipTemp, TrainingTemp, VolunteerTempTemp
-        from ummeli.opportunities.models import Job, Bursary, Internship, Training, Volunteer
 
-        for job in Job.objects.all():
-            j = JobTemp.objects.create(title=job.title,
-                                         description=job.description,
-                                         category=job.category,
-                                         education=job.education,
-                                         salary=job.salary,
-                                         place=job.place,
-                                         owner=job.owner,
-                                         state=job.state,
-                                         created=job.created)
-            j.sites.add(*[a.pk for a in job.sites.all()])
-            j.province.add(*[a.pk for a in job.province.all()])
-            j.save()
+        # Rename model 'VolunteerTempTemp'
+        db.rename_table('opportunities_volunteertemptemp', 'opportunities_volunteer')
+        db.send_create_signal('opportunities', ['Volunteer'])
 
-        for item in Bursary.objects.all():
-            i = BursaryTemp.objects.create(title=item.title,
-                                             description=item.description,
-                                             education=item.education,
-                                             salary=item.salary,
-                                             place=item.place,
-                                             owner=item.owner,
-                                             state=item.state,
-                                             created=item.created)
-            i.sites.add(*[a.pk for a in item.sites.all()])
-            i.province.add(*[a.pk for a in item.province.all()])
-            i.save()
+        # Rename model 'JobTemp'
+        db.delete_table('opportunities_jobtemp', 'opportunities_job')
+        db.send_create_signal('opportunities', ['Job'])
 
-        for item in Internship.objects.all():
-            i = InternshipTemp.objects.create(title=item.title,
-                                             description=item.description,
-                                             education=item.education,
-                                             salary=item.salary,
-                                             place=item.place,
-                                             owner=item.owner,
-                                             state=item.state,
-                                             created=item.created)
-            i.sites.add(*[a.pk for a in item.sites.all()])
-            i.province.add(*[a.pk for a in item.province.all()])
-            i.save()
+        # Rename model 'BursaryTemp'
+        db.rename_table('opportunities_bursarytemp', 'opportunities_bursary')
+        db.send_create_signal('opportunities', ['Bursary'])
 
-        for item in Training.objects.all():
-            i = TrainingTemp.objects.create(title=item.title,
-                                             description=item.description,
-                                             education=item.education,
-                                             salary=item.salary,
-                                             place=item.place,
-                                             owner=item.owner,
-                                             state=item.state,
-                                             created=item.created)
-            i.sites.add(*[a.pk for a in item.sites.all()])
-            i.province.add(*[a.pk for a in item.province.all()])
-            i.save()
+        # Rename model 'TrainingTemp'
+        db.rename_table('opportunities_trainingtemp', 'opportunities_training')
+        db.send_create_signal('opportunities', ['Training'])
 
-        for item in Volunteer.objects.all():
-            i = VolunteerTempTemp.objects.create(title=item.title,
-                                             description=item.description,
-                                             education=item.education,
-                                             salary=item.salary,
-                                             place=item.place,
-                                             owner=item.owner,
-                                             state=item.state,
-                                             created=item.created)
-            i.sites.add(*[a.pk for a in item.sites.all()])
-            i.province.add(*[a.pk for a in item.province.all()])
-            i.save()
+        # Rename model 'InternshipTemp'
+        db.rename_table('opportunities_internshiptemp', 'opportunities_internship')
+        db.send_create_signal('opportunities', ['Internship'])
 
     def backwards(self, orm):
-        from ummeli.opportunities.models import JobTemp, BursaryTemp, InternshipTemp, TrainingTemp, VolunteerTempTemp
-        JobTemp.objects.all().delete()
-        BursaryTemp.objects.all().delete()
-        InternshipTemp.objects.all().delete()
-        TrainingTemp.objects.all().delete()
-        VolunteerTempTemp.objects.all().delete()
-
+        db.rename_table('opportunities_volunteer', 'opportunities_volunteertemptemp')
+        db.delete_table('opportunities_job', 'opportunities_jobtemp')
+        db.rename_table('opportunities_bursary', 'opportunities_bursarytemp')
+        db.rename_table('opportunities_training', 'opportunities_trainingtemp')
+        db.rename_table('opportunities_internship', 'opportunities_internshiptemp')
 
     models = {
         'atlas.city': {
@@ -138,7 +87,7 @@ class Migration(DataMigration):
         },
         'auth.user': {
             'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 0, 10, 29, 301519)'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 42, 18, 243063)'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -146,7 +95,7 @@ class Migration(DataMigration):
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 0, 10, 29, 301438)'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 9, 5, 11, 42, 18, 242974)'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -209,15 +158,7 @@ class Migration(DataMigration):
             'view_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'})
         },
         'opportunities.bursary': {
-            'Meta': {'object_name': 'Bursary'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.bursarytemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'BursaryTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Bursary', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'opportunities.campaign': {
@@ -249,28 +190,11 @@ class Migration(DataMigration):
             'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'opportunities.internship': {
-            'Meta': {'object_name': 'Internship'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.internshiptemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'InternshipTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Internship', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'opportunities.job': {
-            'Meta': {'object_name': 'Job'},
-            'category': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.jobtemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'JobTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Job', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'category': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'hash_key': ('django.db.models.fields.CharField', [], {'db_index': 'True', 'max_length': '32', 'null': 'True', 'blank': 'True'}),
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
@@ -348,16 +272,7 @@ class Migration(DataMigration):
             'website': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
         },
         'opportunities.training': {
-            'Meta': {'object_name': 'Training'},
-            'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.trainingtemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'TrainingTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Training', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'cost': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '12', 'decimal_places': '2'}),
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
@@ -371,15 +286,7 @@ class Migration(DataMigration):
             'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
         },
         'opportunities.volunteer': {
-            'Meta': {'object_name': 'Volunteer'},
-            'education': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
-            'modelbase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['jmbo.ModelBase']", 'unique': 'True', 'primary_key': 'True'}),
-            'place': ('django.db.models.fields.TextField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
-            'province': ('django.db.models.fields.related.ManyToManyField', [], {'default': 'None', 'to': "orm['opportunities.Province']", 'null': 'True', 'symmetrical': 'False', 'blank': 'True'}),
-            'salary': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['opportunities.Salary']", 'null': 'True', 'blank': 'True'})
-        },
-        'opportunities.volunteertemptemp': {
-            'Meta': {'ordering': "('-created',)", 'object_name': 'VolunteerTempTemp', '_ormbases': ['opportunities.UmmeliOpportunity']},
+            'Meta': {'ordering': "('-created',)", 'object_name': 'Volunteer', '_ormbases': ['opportunities.UmmeliOpportunity']},
             'ummeliopportunity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['opportunities.UmmeliOpportunity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'photologue.photo': {
