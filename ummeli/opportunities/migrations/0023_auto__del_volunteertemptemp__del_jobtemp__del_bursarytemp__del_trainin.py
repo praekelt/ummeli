@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
         db.send_create_signal('opportunities', ['Volunteer'])
 
         # Rename model 'JobTemp'
-        db.delete_table('opportunities_jobtemp', 'opportunities_job')
+        db.rename_table('opportunities_jobtemp', 'opportunities_job')
         db.send_create_signal('opportunities', ['Job'])
 
         # Rename model 'BursaryTemp'
@@ -30,7 +30,7 @@ class Migration(SchemaMigration):
 
     def backwards(self, orm):
         db.rename_table('opportunities_volunteer', 'opportunities_volunteertemptemp')
-        db.delete_table('opportunities_job', 'opportunities_jobtemp')
+        db.rename_table('opportunities_job', 'opportunities_jobtemp')
         db.rename_table('opportunities_bursary', 'opportunities_bursarytemp')
         db.rename_table('opportunities_training', 'opportunities_trainingtemp')
         db.rename_table('opportunities_internship', 'opportunities_internshiptemp')
