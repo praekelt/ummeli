@@ -7,8 +7,7 @@ from django.template.loader import render_to_string
 
 from jmbo.models import ModelBase
 from ummeli.base.utils import render_to_pdf
-from django.core.mail import send_mail,  EmailMessage
-from datetime import datetime
+from django.core.mail import EmailMessage
 
 from celery.task import task
 
