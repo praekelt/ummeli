@@ -25,6 +25,8 @@ class Migration(DataMigration):
                      state='published')
 
     def forwards(self, orm):
+        raise RuntimeError("You cannot continue with migrations. Please switch to v4.1 to continue. (`git checkout v4.1`)")
+
         from ummeli.opportunities.models import Province
         from ummeli.base.models import UserSubmittedJobArticle
         from django.contrib.sites.models import Site
