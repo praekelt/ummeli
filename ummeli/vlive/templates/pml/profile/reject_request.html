@@ -8,10 +8,10 @@
     <HEADER><LABEL>Reject connection request</LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
-    Are you sure you <strong>don't</strong> want to connect with {{other_user_profile.fullname}}?
+    Are you sure you <b>don't</b> want to connect with {{other_user_profile.fullname}}?
     <br/>
     <br/>
-    Adding someone to your connections means giving access to your full profile. 
+    Adding someone to your connections means giving access to your full profile.
     <br/><br/>To change your privacy settings click <a href="{% url my_contact_privacy %}">here</a>. [My Settings > Contact Details Privacy]
     </TEXT>
     </CONTAINER>
@@ -23,5 +23,5 @@
         <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     </FORM>
     </CONTAINER>
-        
+
 {% endblock %}

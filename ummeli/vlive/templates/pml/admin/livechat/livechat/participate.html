@@ -46,11 +46,11 @@
 <div>
     <field class="module aligned">
         <div class="form-row livechat_comment">
-            <label><strong>Title:</strong></label>
+            <label><b>Title:</b></label>
             <p>
                 {{livechat.title}}
             </p>
-            <label><strong>Description:</strong></label>
+            <label><b>Description:</b></label>
             <p>
                 {{livechat.description|safe}}
             </p>
@@ -69,7 +69,7 @@
 	<fieldset class="module aligned ">
 		<div class="form-row livechat_comment ">
 			<div>
-                <label><strong>Author:</strong></label>
+                <label><b>Author:</b></label>
                 <p>
                     <a href="{% url admin:livechat_livechatresponse_add %}?comment={{comment.pk}}&amp;livechat={{livechat.pk}}" class="add-another" id="add_livechatresponse_{{comment.pk}}_id" onclick="return showAddAnotherPopup(this);">
                         Respond to:
@@ -84,9 +84,9 @@
                         {% endif %}
                     </a>
                 </p>
-                <label><strong>Comment:</strong></label>
+                <label><b>Comment:</b></label>
                 <p>{{comment.comment}}</p>
-                <label><strong>Time posted:</strong></label>
+                <label><b>Time posted:</b></label>
                 <p>{{comment.submit_date}}</p>
             </div>
             <div id="livechatresponse_{{comment.pk}}_id_responses">

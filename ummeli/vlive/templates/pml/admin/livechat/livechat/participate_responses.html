@@ -3,11 +3,11 @@
         <h2>Response:</h2>
         {% for response in comment.livechatresponse_set.all %}
             <div class="{% cycle 'row1' 'row2' %}" style="padding:10px 50px">
-                <label><strong>Author:</strong></label>
+                <label><b>Author:</b></label>
                 <p>{{response.author}}</p>
-                <label><strong>Response:</strong></label>
+                <label><b>Response:</b></label>
                 <p>{{response.response}}</p>
-                <label><strong>Time posted:</strong></label>
+                <label><b>Time posted:</b></label>
                 <p>{{response.created_at}}</p>
             </div>
         {% endfor %}
