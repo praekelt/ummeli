@@ -465,3 +465,11 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
 
     def get_lat_lon(self):
         return get_lat_lon(self.file)
+
+
+class StatusUpdate(UmmeliOpportunity):
+    pass
+
+
+class SkillsUpdate(UmmeliOpportunity):
+    pass
