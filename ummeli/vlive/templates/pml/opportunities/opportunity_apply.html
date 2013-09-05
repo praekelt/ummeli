@@ -14,7 +14,9 @@
         {% endif %}
         <CONTAINER type="form">
             <FORM method="POST" href="{% url opportunity_apply object.slug %}" submit_text="Apply">
-                <TEXT position="ABOVE">Email CV to:*</TEXT>
+                <TEXT position="ABOVE">Email CV to:*<br/>
+                    <small>(example) someone@email.com</small>
+                </TEXT>
                 <FIELD name="send_to" type="text"/><br/>
                 <FIELD type='hidden' name='send_via' value='email' />
                 <FIELD type='hidden' name='_action' value='POST' />
