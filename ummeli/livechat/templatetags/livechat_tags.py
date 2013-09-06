@@ -42,7 +42,13 @@ def get_livechat_page(context, livechat, var_name):
         comments_qs = comments_qs.order_by('-like_count')
 
     paginator = Paginator(comments_qs, per_page=10)
-    page = paginator.page(request.GET.get('p', 1))
+
+    try:
+        page = paginator.page(page)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page = paginator.page(paginator.num_pages)
+
     context['page'] = page
     return ''
 
