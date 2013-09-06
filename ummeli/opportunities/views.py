@@ -61,7 +61,8 @@ class JobListView(OpportunityListView):
 
     def get_context_data(self, **kwargs):
         context = super(JobListView, self).get_context_data(**kwargs)
-        context['category'] = dict(CATEGORY_CHOICES)[int(self.kwargs['category_id'])]
+        category_id = int(self.kwargs['category_id'])
+        context['category'] = dict(CATEGORY_CHOICES).get(category_id)
         return context
 
 
