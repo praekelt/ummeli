@@ -44,6 +44,7 @@ class BannerAdmin(ModelBaseAdmin):
 
     list_display = (
         'title', 'description', 'thumbnail', 'schedule', 'state')
+    raw_id_fields = ('owner', 'location')
 
     def thumbnail(self, obj, *args, **kwargs):
         return '<img src="%s" />' % (obj.image.url,)
