@@ -44,6 +44,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # --- Environment Specific Settings ---
 ROOT_URLCONF = 'pml_urls'
+ROOT_URL = 'http://ummeli.praekeltfoundation.org'
 #ROOT_URLCONF = 'mobi_urls'
 
 TEMPLATE_DIRS = (

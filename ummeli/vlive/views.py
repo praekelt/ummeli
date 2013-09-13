@@ -9,7 +9,8 @@ from django.contrib.sites.models import Site
 site = Site.objects.get_current()
 
 from ummeli.opportunities.models import Job, UmmeliOpportunity
-from ummeli.base.models import CurriculumVitae
+from ummeli.base.models import CurriculumVitae, Base
+
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.community.forms import JobEditForm, OpportunityEditForm
 from ummeli.vlive.tasks import send_password_reset, send_email
@@ -35,7 +36,6 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm,\
     PasswordChangeForm, SetPasswordForm
 
 from jmboarticles.models import Article as EditorialArticle
-
 
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -309,6 +309,7 @@ def jobs_create(request):
                         .exists()
         if form.is_valid():
             if not duplicate:
+
                 user_article = form.save(commit=False)
                 user_article.owner = request.user
                 user_article.state = 'published'

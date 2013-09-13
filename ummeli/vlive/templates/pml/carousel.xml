@@ -1,0 +1,46 @@
+{% load cache %}<?xml version="1.0" encoding="UTF-8"?>
+
+<VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:vddr="http://namespaces.vodafone.com/applications/CRE#DDR"
+             xmlns:vmpml="http://namespaces.vodafone.com/applications/3PI#MPML"
+             xmlns:vsrch="http://namespaces.vodafone.com/applications/search#"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://www.via.vodafone.com/schema/VZV-PARTNER.xsd">
+    <PARTNER-PI>
+        <TRANSFORMER name="VZV-DEFAULT"/>
+    </PARTNER-PI>
+    <PARTNER-BODY>
+        <VZV-DEFAULT>
+            {% block body %}
+                {% cache 600 banner-detail %}
+                <MODULE backgroundColor="false" border="none" stripped="false">
+                    <HEADER>
+                        <LABEL>Ummeli</LABEL>
+                    </HEADER>
+                    {% if banner %}
+                    <CONTAINER type="data">
+                        <TEXT>
+                        <LINK href="{{ banner.url }}">
+                            <IMAGE href="{{ ROOT_URL }}{{ banner.image.url }}" align="full" type="image/jpeg"/>
+                        </LINK>
+                            <P>
+                                <LINK href="{{banner.url}}">{{ banner.title }}</LINK>
+                                {{ banner.description }}
+                            </P>
+                        </TEXT>
+                    </CONTAINER>
+                    {% else %}
+                    <CONTAINER type="data">
+                    <TEXT>
+                        <P><LINK href="/vlive/">Ummeli</LINK>
+                        lets you find opportunities, build a work profile &amp; connect with others.</P>
+                    </TEXT>
+                    </CONTAINER>
+                    {% endif %}
+                </MODULE>
+                {% endcache %}
+            {% endblock %}
+        </VZV-DEFAULT>
+    </PARTNER-BODY>
+</VZV-PARTNER>
