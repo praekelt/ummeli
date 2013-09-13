@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Community Board &raquo; My Status</h2>
+<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Status</h2>
 <h2>Update your status</h2>
 <div>Tell the Ummeli community how you are feeling today?</div>
 <form method="POST" class="content-form">
@@ -18,4 +18,5 @@
 {% for status in statuses %}
 <div class="list-separated">{{status.title}} - <small>{{status.created|timesince}} ago</small></div>
 {% endfor %}
+<div class="more"><a href="{% url my_community %}">&larr; Back</a></div>
 {% endblock %}

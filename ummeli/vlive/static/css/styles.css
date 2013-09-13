@@ -80,7 +80,9 @@ input, textarea, select {display: block; font:90% "Arial", Helvetica, sans-serif
 .form-fields input, input.txt {width: 98%; height: 18px}
 .form-fields textarea {width: 99%; border: 1px solid #bcc7ce;}
 input.radio {margin: 5px 5px 0 0; display:inline; }
-.buttons input, input.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; background: #F7F6F6;}
+.buttons input, input.btn, span.btn {margin: 5px 0 0; border: 1px solid #CDCDCD; padding: 3px 6px; background: #F7F6F6; cursor: pointer;}
+span.btn a{color: #000; font-weight: normal;}
+span.btn a:hover{text-decoration: none;}
 .ruler { background:url(../images/ruler.gif) 0 bottom repeat-x; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .dotted-ruler {border-bottom:2px dotted #999; clear:both; margin:0 0 10pt; padding:0; width:100%; height:9px;}
 .list, .list-separated, .comment_list {clear:both; margin:0; padding:5px; line-height:20px;overflow: hidden}

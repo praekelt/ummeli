@@ -8,9 +8,8 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 site = Site.objects.get_current()
 
-from ummeli.opportunities.models import Job, Province as OpportunityProvince,\
-    UmmeliOpportunity, CATEGORY_CHOICES
-from ummeli.base.models import CurriculumVitae, ALL
+from ummeli.opportunities.models import Job, UmmeliOpportunity
+from ummeli.base.models import CurriculumVitae
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.community.forms import JobEditForm, OpportunityEditForm
 from ummeli.vlive.tasks import send_password_reset, send_email
@@ -24,10 +23,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
+from django.contrib import messages
 
 #imports for login
 from django.http import HttpResponse
@@ -327,29 +325,33 @@ def jobs_create(request):
                                 {'form': form})
 
 @login_required
-def opportunity_create(request):
+def opportunity_create(request, slug=None):
     if request.method == 'POST':
         form = OpportunityEditForm(request.POST)
 
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        # check if the user hasn't placed the exact same job article
-        # with the exact same information in the last 5 minutes to prevent duplicates
-        delta = datetime.now() - timedelta(minutes=5)
-        duplicate = UmmeliOpportunity.objects \
-                        .filter(owner=request.user, created__gte=delta, title=title,  description=description) \
-                        .exists()
         if form.is_valid():
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+
+            # check if the user hasn't placed the exact same job article
+            # with the exact same information in the last 5 minutes to prevent duplicates
+            delta = datetime.now() - timedelta(minutes=5)
+            duplicate = UmmeliOpportunity.objects.filter(owner=request.user,
+                                                         created__gte=delta,
+                                                         title=title,
+                                                         description=description) \
+                                                 .exists()
             if not duplicate:
                 model = form.get_model()
-                user_article = model(title=title, description=description)
-                user_article.owner = request.user
-                user_article.state = 'published'
-                user_article.is_community = True
-                user_article.publish_on = datetime.now()
-                user_article.save()
-                user_article.sites.add(site)
-                user_article.province.add(form.cleaned_data['province'])
+                opportunity = model(title=title, description=description)
+                opportunity.owner = request.user
+                opportunity.state = 'published'
+                opportunity.is_community = True
+                opportunity.publish_on = datetime.now()
+                opportunity.save()
+                opportunity.sites.add(site)
+                opportunity.province.add(form.cleaned_data['province'])
+                messages.success(request, 'Your opportunity has been added')
             return redirect(reverse('my_jobs'))
     else:
         form = OpportunityEditForm()

@@ -5,7 +5,7 @@ from django.views.generic import FormView
 from django.contrib.sites.models import Site
 from django.contrib import messages
 
-from ummeli.opportunities.models import Job, UmmeliOpportunity, StatusUpdate, SkillsUpdate
+from ummeli.opportunities.models import UmmeliOpportunity, StatusUpdate, SkillsUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
 from ummeli.vlive.community.forms import StatusUpdateForm
 

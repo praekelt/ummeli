@@ -1,22 +1,19 @@
 from django.contrib.auth.models import User
-from ummeli.vlive.forms import (PersonalDetailsForm, ContactDetailsForm,
-                                EducationDetailsForm, CertificateForm,
-                                WorkExperienceForm, LanguageForm,
-                                ReferenceForm, SkillForm,
-                                PersonalStatementForm)
+from ummeli.vlive.forms import *
 from ummeli.vlive.profile.forms import IndustrySearchForm,\
                                         ConnectionNameSearchForm
-from ummeli.vlive.community.forms import JobEditForm
+from ummeli.vlive.community.forms import JobEditForm, OpportunityEditForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect,  render
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import UpdateView,  DeleteView,  CreateView
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 
 from ummeli.base.models import (Certificate,  WorkExperience,  Language,
                                 Reference,  CurriculumVitae, Skill,
@@ -531,6 +528,43 @@ class MyJobsListView(ListView):
     def get_queryset(self):
         return self.request.user.modelbase_set.filter(ummeliopportunity__isnull=False).order_by('-created')
 
+class MyCommunityListView(TemplateView):
+    template_name = 'profile/community/my_community_board.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyCommunityListView, self).get_context_data(**kwargs)
+        status_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="statusupdate"
+        )
+        skills_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="skillsupdate"
+        )
+        context['status'] = self.request.user.modelbase_set.filter(content_type=status_content_type).latest('created')
+        context['skills'] = self.request.user.modelbase_set.filter(content_type=skills_content_type).all()[:3]
+        context['opportunities'] = self.request.user.modelbase_set.exclude(content_type__in=[status_content_type, skills_content_type]).all()[:3]
+        return context
+
+class MyOpportunitiesListView(ListView):
+    paginate_by = 10
+    template_name = 'profile/community/my_community_opportunities.html'
+
+    def get_queryset(self):
+        status_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="statusupdate"
+        )
+        skills_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="skillsupdate"
+        )
+        jmbo_models = self.request.user.modelbase_set
+        return jmbo_models.filter(ummeliopportunity__isnull=False)\
+                          .exclude(content_type__in=[status_content_type,
+                                                     skills_content_type])\
+                          .all()
+
 class ConnectionJobsListView(ListView):
     paginate_by = 5
     template_name = 'connection_jobs_list.html'
@@ -573,10 +607,9 @@ class MyJobsEditView(UpdateView):
         return context
 
 
-@pin_required
 @login_required
-def my_jobs_edit(request, pk):
-    opportunity = get_object_or_404(Job, pk=pk)
+def my_jobs_edit(request, slug):
+    opportunity = get_object_or_404(Job, slug=slug)
     if request.method == 'POST':
         form = JobEditForm(request.POST, instance=opportunity)
         if form.is_valid():
@@ -588,6 +621,58 @@ def my_jobs_edit(request, pk):
         form = JobEditForm(instance=opportunity)
 
     return render(request, 'my_jobs_create.html', {'form': form})
+
+@login_required
+def my_opportunity_edit(request, slug):
+    opportunity = get_object_or_404(UmmeliOpportunity,
+                                    slug=slug,
+                                    owner=request.user)
+    if request.method == 'POST':
+        form = OpportunityEditForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+
+            opportunity.title = title
+            opportunity.description = description
+            opportunity.province = [form.cleaned_data['province'], ]
+            opportunity.save()
+            messages.success(request, 'Your opportunity has been updated')
+            return redirect(reverse('my_community'))
+    else:
+        if opportunity.province.exists():
+            init_pk = opportunity.province.latest('pk').pk
+        else:
+            init_pk = 0
+
+        initial = {'title': opportunity.title,
+                   'description': opportunity.description,
+                   'province': init_pk,
+                   }
+        form = OpportunityEditForm(initial=initial)
+        print initial
+
+    return render(request, 'opportunities/opportunity_edit.html', {'form': form})
+
+
+
+class UmmeliOpportunityEditView(UpdateView):
+    model = CurriculumVitae
+    form_class = OpportunityEditForm
+    template_name = 'opportunities/opportunities/opportunity_create.html'
+
+    def get_success_url(self):
+        return reverse("my_community")
+
+    def get_object(self,  queryset=None):
+        return get_object_or_404(UmmeliOpportunity,
+                                 slug=slug,
+                                 owner=request.user)
+
+    def form_valid(self, form):
+        new_reference = form.save()
+        self.request.user.get_profile().references.add(new_reference)
+        return redirect(self.get_success_url())
 
 
 class MyJobsDeleteView(DeleteView):
