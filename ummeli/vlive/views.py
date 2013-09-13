@@ -10,7 +10,7 @@ from django.conf import settings
 from ummeli.opportunities.models import Job, Province as OpportunityProvince
 from ummeli.base.models import (Certificate, Language, WorkExperience,
     Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
-    UserSubmittedJobArticle, ALL)
+    UserSubmittedJobArticle, ALL, Banner)
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.tasks import send_password_reset, send_email
 from ummeli.vlive.utils import pin_required, process_post_data_username
@@ -24,11 +24,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
 from django.utils.hashcompat import md5_constructor
-from django.db.models import Count
+from django.db.models import Q, F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.views.generic.base import TemplateView
 
 #imports for login
 from django.http import  HttpResponse
@@ -492,3 +493,28 @@ def jobs_create(request):
     return render(request, 'opportunities/jobs/jobs_create.html',
                                 {'form': form,  'provinces': provinces,
                                 'categories': categories})
+
+
+class BannerView(TemplateView):
+    template_name = "carousel.xml"
+
+    def get_context_data(self, **kwargs):
+        context = super(BannerView, self).get_context_data(**kwargs)
+        now = datetime.now().time()
+
+        banners = Banner.permitted.filter(
+                    # in between on & off
+                    Q(time_on__lte=now, time_off__gte=now) |
+                    # roll over night, after on, before 24:00
+                    Q(time_on__lte=now, time_off__lte=F('time_on')) |
+                    # roll over night, before off, after 24:00
+                    Q(time_off__gte=now, time_off__lte=F('time_on')) |
+                    # either time on or time of not specified.
+                    Q(time_on__isnull=True) | Q(time_off__isnull=True)
+                ).order_by('?')
+
+        context.update({
+            'banner': banners[0] if banners.exists() else None,
+            'ROOT_URL': settings.ROOT_URL,
+        })
+        return context

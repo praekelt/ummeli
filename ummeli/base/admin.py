@@ -1,9 +1,8 @@
-from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae, CurriculumVitaeForm,  Article,  Province,  Category,
-    UserSubmittedJobArticle)
+from ummeli.base.models import *
 from django.contrib import admin
 from jmbocomments.models import UserComment
 from jmbocomments.admin import UserCommentAdmin
+from jmbo.admin import ModelBaseAdmin
 
 
 class UserSubmittedJobArticleAdmin(admin.ModelAdmin):
@@ -40,6 +39,22 @@ class JobCategoryAdmin(admin.ModelAdmin):
     list_filter = ('is_allowed','province')
     ordering = ('title',)
 
+
+class BannerAdmin(ModelBaseAdmin):
+
+    list_display = (
+        'title', 'description', 'thumbnail', 'schedule', 'state')
+
+    def thumbnail(self, obj, *args, **kwargs):
+        return '<img src="%s" />' % (obj.image.url,)
+    thumbnail.allow_tags = True
+
+    def schedule(self, obj, *args, **kwargs):
+        if(obj.time_on and obj.time_off):
+            return 'Randomly selected by Vlive between %s and %s' % (
+                obj.time_on, obj.time_off)
+        return 'Randomly selected by Vlive'
+
 admin.site.register(CurriculumVitae)
 admin.site.register(Certificate)
 admin.site.register(Language)
@@ -49,6 +64,7 @@ admin.site.register(Article, ArticleAdmin)
 admin.site.register(Province)
 admin.site.register(Category, JobCategoryAdmin)
 admin.site.register(UserSubmittedJobArticle, UserSubmittedJobArticleAdmin)
+admin.site.register(Banner, BannerAdmin)
 
 if UserComment in admin.site._registry:
     admin.site.unregister(UserComment)

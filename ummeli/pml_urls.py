@@ -22,4 +22,5 @@ urlpatterns = patterns('',
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/register/$', views.register, name='register'),
     url(r'^vlive/', include('ummeli.vlive.urls')),
+    url(r'^carousel\.xml$', views.BannerView.as_view()),
 )

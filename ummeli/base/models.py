@@ -11,6 +11,30 @@ from datetime import datetime
 
 from celery.task import task
 
+from jmbo.models import ModelBase
+
+
+class Banner(ModelBase):
+    url = models.CharField(
+        max_length=256,
+        help_text="Root relative URL to which the banner will redirect."
+    )
+    time_on = models.TimeField(
+        blank=True,
+        null=True,
+        help_text="Time at which the banner will start displaying. If "
+                  "either time on or time off is not specified the banner "
+                  "will always be eligable for display (can be randomly selected)."
+    )
+    time_off = models.TimeField(
+        blank=True,
+        null=True,
+        help_text="Time at which the banner will stop displaying. If either "
+                  "time on or time off is not specified the banner will "
+                  "always be eligable for display (can be randomly selected)."
+    )
+
+
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
     date = models.DateTimeField(blank=True,  default = datetime.now())
