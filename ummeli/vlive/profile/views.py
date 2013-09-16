@@ -541,7 +541,12 @@ class MyCommunityListView(TemplateView):
             app_label="opportunities",
             model="skillsupdate"
         )
-        context['status'] = self.request.user.modelbase_set.filter(content_type=status_content_type).latest('created')
+
+        try:
+            context['status'] = self.request.user.modelbase_set.filter(content_type=status_content_type).latest('created')
+        except:
+            context['status'] = None
+
         context['skills'] = self.request.user.modelbase_set.filter(content_type=skills_content_type).all()[:3]
         context['opportunities'] = self.request.user.modelbase_set.exclude(content_type__in=[status_content_type, skills_content_type]).all()[:3]
         return context
