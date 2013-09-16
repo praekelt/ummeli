@@ -9,7 +9,7 @@ from django.contrib.sites.models import Site
 site = Site.objects.get_current()
 
 from ummeli.opportunities.models import Job, UmmeliOpportunity
-from ummeli.base.models import CurriculumVitae, Base
+from ummeli.base.models import CurriculumVitae, Banner
 
 from ummeli.vlive.jobs import tasks
 from ummeli.vlive.community.forms import JobEditForm, OpportunityEditForm
@@ -27,6 +27,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic.edit import UpdateView
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.db.models import Q, F
+from django.views.generic.base import TemplateView
 
 #imports for login
 from django.http import HttpResponse
@@ -359,3 +361,28 @@ def opportunity_create(request, slug=None):
 
     return render(request, 'opportunities/opportunity_create.html',
                                 {'form': form})
+
+
+class BannerView(TemplateView):
+    template_name = "carousel.xml"
+
+    def get_context_data(self, **kwargs):
+        context = super(BannerView, self).get_context_data(**kwargs)
+        now = datetime.now().time()
+
+        banners = Banner.permitted.filter(
+                    # in between on & off
+                    Q(time_on__lte=now, time_off__gte=now) |
+                    # roll over night, after on, before 24:00
+                    Q(time_on__lte=now, time_off__lte=F('time_on')) |
+                    # roll over night, before off, after 24:00
+                    Q(time_off__gte=now, time_off__lte=F('time_on')) |
+                    # either time on or time of not specified.
+                    Q(time_on__isnull=True) | Q(time_off__isnull=True)
+                ).order_by('?')
+
+        context.update({
+            'banner': banners[0] if banners.exists() else None,
+            'ROOT_URL': settings.ROOT_URL,
+        })
+        return context
