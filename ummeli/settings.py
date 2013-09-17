@@ -300,3 +300,9 @@ GEOIP_COUNTRY = 'GeoIPv6.dat'
 SERIALIZATION_MODULES = {
     'csv': 'snippetscream.csv_serializer',
 }
+
+REDIS_SETTINGS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 0
+}

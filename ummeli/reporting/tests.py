@@ -7,11 +7,7 @@ import fakeredis
 
 from django.core.urlresolvers import reverse
 
-def mock_redis(**kwargs):
-    return fakeredis.FakeStrictRedis()
-
-
-@patch('redis.StrictRedis', mock_redis)
+@patch('reporting.helpers.redis_server', fakeredis.FakeStrictRedis())
 class ReportingTest(VLiveTestCase):
     fixtures = [
         'vlive/tests/auth/fixtures/sample.json',
