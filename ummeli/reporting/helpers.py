@@ -23,7 +23,7 @@ def has_voted(user, obj, report_key_field):
     redis_server = redis.StrictRedis(host='localhost', port=6379, db=0)
 
     key = get_user_vote_key(user, obj, report_key_field)
-    return redis_server.get(key)
+    return redis_server.exists(key)
 
 def vote(user, obj, report_key_field):
     redis_server = redis.StrictRedis(host='localhost', port=6379, db=0)
