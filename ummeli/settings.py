@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ummeli.base',
     'ummeli.vlive',
+    'ummeli.opportunities',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'south',
@@ -198,8 +199,10 @@ INSTALLED_APPS = (
     'publisher',
     'photologue',
     'secretballot',
-    'ummeli.opportunities',
+
+    #Ummeli Apps
     'livechat',
+    'reporting',
 
     # 3rd party
     'ckeditor',

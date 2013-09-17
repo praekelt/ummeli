@@ -43,6 +43,7 @@ urlpatterns = patterns('',
     url(r'^community/', include('ummeli.vlive.community.urls')),
     url(r'^livechat/', include('livechat.urls', namespace='livechat')),
     url(r'^jmbo-analytics/', include('jmbo_analytics.urls')),
+    url(r'^reporting/', include('reporting.urls')),
 
     url(r'^send/$', views.send, name='send'),
     url(r'^send/thanks/$', views.send_thanks, name='send_thanks'),
