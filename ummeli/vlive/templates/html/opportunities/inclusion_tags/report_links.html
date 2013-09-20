@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+<p>Report opportunity as:<br/>
+    <a href="{% url report_object object.slug scam_key %}">scam</a>,
+    <a href="{% url report_object object.slug inappropriate_key %}">inappropriate</a>,
+    <a href="{% url report_object object.slug position_filled_key %}">position-filled</a>
+</p>
+{% endif %}

@@ -1,0 +1,11 @@
+{% if is_scam %}
+    <div class="warning"><strong>Warning:</strong> This opportunity may be a scam, proceed with caution.</div>
+{% else %}{% if is_position_filled %}
+    <div class="position-filled">
+        <strong>Position Filled:</strong>
+        The Ummeli community has
+        indicated that this position may have been filled,
+        however you are still free to apply.
+    </div>
+{% endif %}
+{% endif %}
