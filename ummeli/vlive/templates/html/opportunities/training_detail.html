@@ -8,8 +8,9 @@
         {{object.title}}
     </h2>
 
-    {% opportunity_report_warnings object %}
+    {% opportunity_report_warnings object 'training' %}
 
+    {% if not object.is_removed_by_community %}
     <p>
         <strong>{{object.title}}</strong>
         <br/><small>Cost: R {{ object.cost }}</small>
@@ -37,4 +38,5 @@
     <div class="more"><a href="{% url training %}">&larr; Back</a></div>
 
     {% include 'opportunities/opportunity_apply.html' %}
+    {% endif %}
 {% endblock %}

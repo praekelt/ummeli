@@ -6,17 +6,10 @@
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
         <a href="{% url jobs cat_id %}">{{category_title}}</a>
     </h2>
-    {% get_votes_for_object job 'ummeli_inappropriate' %}
 
-    {% if ummeli_inappropriate >= 3 %}
-    <div>Title: {{job.title|truncatewords:5 }}</div>
-    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community</div>
-    <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
-    <br/>
-    {% else %}
+    {% opportunity_report_warnings job 'jobs' %}
 
-    {% opportunity_report_warnings job %}
-
+    {% if not object.is_removed_by_community %}
     <p>
         {% if job.user_submitted %}
         <strong>{{job.source}}</strong><br/>

@@ -4,16 +4,9 @@
 
 {% block content %}
     <h2><a href="{% url community_jobs %}">Community Board</a> &raquo;Opportunity</a></h2>
-    {% get_votes_for_object job 'ummeli_inappropriate' %}
+    {% opportunity_report_warnings job 'community_jobs' %}
 
-    {% if ummeli_inappropriate >= 3 %}
-    <div>Title: {{job.title|truncatewords:5 }}</div>
-    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community</div>
-    <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
-    <br/>
-    {% else %}
-
-    {% opportunity_report_warnings job %}
+    {% if not object.is_removed_by_community %}
 
     <div class="article">
         <strong>{{job.title}}</strong><br/>
