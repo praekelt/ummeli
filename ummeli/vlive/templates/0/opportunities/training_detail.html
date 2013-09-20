@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <div class="h2">
@@ -6,6 +7,9 @@
         <a href="{% url training %}">Training</a> &raquo;
         {{object.title}}
     </div>
+    {% opportunity_report_warnings object 'training' %}
+
+    {% if not object.is_removed_by_community %}
     <div class="wrap">
         <strong>{{object.title}}</strong>
         {% if object.cost %}<br/><small>Cost: R {{ object.cost  }}</small>{% endif %}
@@ -26,7 +30,11 @@
         </p>
         {% endif %}
     </div>
+
+    {% opportunity_report_links object %}
+
     <div class="more"><a href="{% url training %}">&larr; Back</a></div>
 
     {% include 'opportunities/opportunity_apply.html' %}
+    {% endif %}
 {% endblock %}
