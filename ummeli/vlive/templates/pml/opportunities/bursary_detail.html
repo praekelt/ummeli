@@ -1,4 +1,5 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
 <HEADER><LABEL>Bursaries</LABEL></HEADER>
@@ -9,6 +10,9 @@
 </CONTAINER>
 </MODULE>
 
+{% opportunity_report_warnings object 'bursaries' %}
+
+{% if not object.is_removed_by_community %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
@@ -24,6 +28,8 @@
     <br/><br/>
     {% include 'opportunities/community_opportunity_meta.html' %}
     {% endif %}
+
+    {% opportunity_report_links object %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -39,4 +45,5 @@
 
 {% include 'opportunities/opportunity_apply.html' %}
 
+{% endif %}
 {% endblock %}

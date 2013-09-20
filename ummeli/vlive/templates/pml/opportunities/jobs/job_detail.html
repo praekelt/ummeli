@@ -1,6 +1,14 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
+<HEADER><LABEL>Job</LABEL></HEADER>
+</MODULE>
+
+{% opportunity_report_warnings object 'jobs_list' %}
+
+{% if not object.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{object.get_category_display}}</LABEL></HEADER>
     <CONTAINER type="data">
         <TITLE>{{object.title}}</TITLE>
@@ -25,6 +33,8 @@
                 </LINK>
             </p>
             {% endif %}
+
+            {% opportunity_report_links object %}
         </TEXT>
     </CONTAINER>
 </MODULE>
@@ -39,4 +49,5 @@
 
 {% include 'opportunities/opportunity_apply.html' %}
 
+{% endif %}
 {% endblock %}
