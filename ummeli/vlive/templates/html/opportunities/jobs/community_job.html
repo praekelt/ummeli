@@ -1,10 +1,13 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
+
 
 {% block content %}
-    <h2>
-        <a href="{% url community_jobs %}">Community Board</a> &raquo;
-        Opportunity</a>
-    </h2>
+    <h2><a href="{% url community_jobs %}">Community Board</a> &raquo;Opportunity</a></h2>
+    {% opportunity_report_warnings job 'community_jobs' %}
+
+    {% if not object.is_removed_by_community %}
+
     <div class="article">
         <strong>{{job.title}}</strong><br/>
         <small><strong>{{job.get_provinces}}</strong></small><br/>
@@ -18,6 +21,9 @@
             Anon.
         {% endif %}
     </div>
+
+    {% opportunity_report_links job %}
+
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>
     <h2>Apply for this opportunity</h2>
@@ -49,4 +55,5 @@
         or <a href="{% url register %}">register</a> with Ummeli to apply for this opportunity</div>
     {% endif %}
     </form>
+    {% endif %}
 {% endblock %}

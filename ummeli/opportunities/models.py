@@ -74,6 +74,11 @@ class Salary(models.Model):
 
 
 class UmmeliOpportunity(ModelBase):
+    ABUSE_REPORT_KEY_FIELD = 'ummeli_abuse'
+    INAPPROPRIATE_REPORT_KEY_FIELD = 'ummeli_inappropriate'
+    SCAM_REPORT_KEY_FIELD = 'ummeli_scam'
+    POSITION_FILLED_REPORT_KEY_FIELD = 'ummeli_position_filled'
+
     province = models.ManyToManyField(
                     Province,
                     blank=True,

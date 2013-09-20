@@ -44,3 +44,5 @@ django-simple-autocomplete
 django-object-tools
 django-export
 -e git://github.com/praekelt/praekelt-payment.git@develop#egg=praekelt-payment
+mock,
+fakeredis

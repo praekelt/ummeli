@@ -1,7 +1,15 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
-    <HEADER><LABEL>Community Board - Job</LABEL></HEADER>
+<HEADER><LABEL>Community Board</LABEL></HEADER>
+</MODULE>
+
+{% opportunity_report_warnings job 'community_jobs' %}
+
+{% if not job.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Job</LABEL></HEADER>
     <CONTAINER type="data">
     <TITLE>{{job.title}}</TITLE>
     <TEXT>
@@ -17,6 +25,8 @@
         {% else %}
             Anon.
         {% endif %}
+
+        {% opportunity_report_links object %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -75,4 +85,5 @@
 </MODULE>
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
+{% endif %}
 {% endblock %}

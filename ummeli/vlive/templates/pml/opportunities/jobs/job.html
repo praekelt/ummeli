@@ -1,6 +1,14 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
+<HEADER><LABEL>Job</LABEL></HEADER>
+</MODULE>
+
+{% opportunity_report_warnings job 'jobs_list' %}
+
+{% if not object.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{category_title}}</LABEL></HEADER>
     <CONTAINER type="data">
         <TITLE>{{job.date|date:'d M y'}} ::  {{province}}</TITLE>
@@ -13,6 +21,8 @@
             <br/><br/>
             as advertised on <color value="blue">www.wegotads.co.za</color>
         {% endif %}
+
+        {% opportunity_report_links object %}
         </TEXT>
     </CONTAINER>
     <br/>
@@ -67,4 +77,6 @@
     </TEXT>
     </CONTAINER>
     {% endif %}
+
+{% endif %}
 {% endblock %}
