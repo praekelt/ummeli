@@ -1,31 +1,19 @@
 {% extends "base.html" %}
-{% load reporting_tags %}
+{% load reporting_tags opportunities_tags %}
 
 
 {% block content %}
     <h2><a href="{% url community_jobs %}">Community Board</a> &raquo;Opportunity</a></h2>
-
-    {% get_votes_for_object job 'ummeli_scam' %}
     {% get_votes_for_object job 'ummeli_inappropriate' %}
-    {% get_votes_for_object job 'ummeli_position_filled' %}
 
     {% if ummeli_inappropriate >= 3 %}
     <div>Title: {{job.title|truncatewords:5 }}</div>
-    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the community</div>
+    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community</div>
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>
     {% else %}
-    {% if ummeli_scam >= 1 %}
-        <div class="warning"><strong>Warning:</strong> This opportunity may be a scam, proceed with caution.</div>
-    {% else %}{% if ummeli_scam >= 1 %}
-        <div class="position-filled">
-            <strong>Position Filled:</strong>
-            The Ummeli community has
-            indicated that this position may have been filled,
-            however you are still free to apply.
-        </div>
-    {% endif %}
-    {% endif %}
+
+    {% opportunity_report_warnings job %}
 
     <div class="article">
         <strong>{{job.title}}</strong><br/>
@@ -41,13 +29,7 @@
         {% endif %}
     </div>
 
-    {% if user.is_authenticated %}
-    <p>Report opportunity as:<br/>
-        <a href="{% url report_object job.slug 'ummeli_scam' %}">scam</a>,
-        <a href="{% url report_object job.slug 'ummeli_inappropriate' %}">inappropriate</a>,
-        <a href="{% url report_object job.slug 'ummeli_position_filled' %}">position-filled</a>
-    </p>
-    {% endif %}
+    {% opportunity_report_links job %}
 
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>

@@ -44,7 +44,7 @@ def opportunity_report_warnings(context, obj):
     scam_votes = helpers.get_object_votes(obj, UmmeliOpportunity.SCAM_REPORT_KEY_FIELD)
     postion_filled_votes = helpers.get_object_votes(obj, UmmeliOpportunity.POSITION_FILLED_REPORT_KEY_FIELD)
 
-    REPORT_LIMIT = 3
+    REPORT_LIMIT = 1
 
     context['is_scam'] = scam_votes >= REPORT_LIMIT
     context['is_position_filled'] = postion_filled_votes >= REPORT_LIMIT

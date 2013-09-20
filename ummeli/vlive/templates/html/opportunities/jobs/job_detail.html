@@ -1,10 +1,22 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
         {{object.get_category_display}}
     </h2>
+    {% get_votes_for_object job 'ummeli_inappropriate' %}
+
+    {% if ummeli_inappropriate >= 3 %}
+    <p>Title: {{object.title|truncatewords:5}}</p>
+    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community</div>
+    <div class="more"><a href="{% url jobs_list %}">&larr; Back</a></div>
+    <br/>
+    {% else %}
+
+    {% opportunity_report_warnings job %}
+
     <p>
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
@@ -28,7 +40,11 @@
         </p>
         {% endif %}{% endif %}
     </p>
+
+    {% opportunity_report_links object %}
+
     <div class="more"><a href="{% url jobs_list %}">&larr; Back to jobs</a></div>
 
     {% include 'opportunities/opportunity_apply.html' %}
+    {% endif %}
 {% endblock %}

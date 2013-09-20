@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <h2>
@@ -6,6 +7,9 @@
         <a href="{% url internships %}">Internships</a> &raquo;
         {{object.title}}
     </h2>
+
+    {% opportunity_report_warnings object %}
+
     <p>
         <strong>{{object.title}}</strong>
         {% if object.salary %}<br/><small>Salary: R {{ object.salary }}</small>{% endif %}
@@ -27,6 +31,9 @@
         </p>
         {% endif %}
     </p>
+
+    {% opportunity_report_links object %}
+
     <div class="more"><a href="{% url internships %}">&larr; Back</a></div>
 
     {% include 'opportunities/opportunity_apply.html' %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <h2>
@@ -6,6 +7,9 @@
         <a href="{% url volunteering %}">Volunteering</a> &raquo;
         {{object.title}}
     </h2>
+
+    {% opportunity_report_warnings object %}
+
     <p>
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
@@ -26,6 +30,9 @@
         </p>
         {% endif %}
     </p>
+
+    {% opportunity_report_links object %}
+
     <div class="more"><a href="{% url volunteering %}">&larr; Back</a></div>
 
     {% include 'opportunities/opportunity_apply.html' %}

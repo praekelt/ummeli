@@ -1,10 +1,22 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <h2><a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
         <a href="{% url jobs cat_id %}">{{category_title}}</a>
     </h2>
+    {% get_votes_for_object job 'ummeli_inappropriate' %}
+
+    {% if ummeli_inappropriate >= 3 %}
+    <div>Title: {{job.title|truncatewords:5 }}</div>
+    <div class="warning"><strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community</div>
+    <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
+    <br/>
+    {% else %}
+
+    {% opportunity_report_warnings job %}
+
     <p>
         {% if job.user_submitted %}
         <strong>{{job.source}}</strong><br/>
@@ -21,6 +33,9 @@
             <br/><span style="color: blue">submitted by <a href="{% url profile_view job.user.pk %}">{{job.user.get_profile.fullname}}</a></span>
         {% endif %}
     </p>
+
+    {% opportunity_report_links job %}
+
     <div class="more"><a href="{% url jobs cat_id %}">&larr; Back to jobs</a></div>
 
     <div class="ruler"></div>
@@ -54,4 +69,5 @@
         or <a href="{% url register %}">register</a> with Ummeli to apply for this job</div>
     {% endif %}
     </form>
+    {% endif %}
 {% endblock %}
