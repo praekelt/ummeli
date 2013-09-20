@@ -92,6 +92,7 @@ div.message .error{background-color: #ea2415}
 .info {clear: both; height: margin: -10px 0 5px; padding: 5px; color: #fff; background: #E99324;}
 .info a{color: #fff; font-weight: bold;text-decoration:underline}
 .warning{background-color:#ea2415;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
+.position-filled{background-color:#21c0c2;color:#fff;font-size:.9em;margin:3px 0;padding:3px}
 .success a,.warning a, div.message .error a{color:#fff;text-decoration:underline}
 .more{clear:both;padding:3px}
 span.subtext,span.subtext a,span.subtext a:link,span.subtext a:visited{color:#666;font-size: 0.9em;}
