@@ -1,13 +1,13 @@
 from django.contrib import admin
 from ummeli.opportunities.models import *
 from jmbo.admin import ModelBaseAdmin
-from ckeditor.widgets import AdminCKEditor
+from ckeditor.widgets import CKEditorWidget
 
 
 class OpportunityAdmin(ModelBaseAdmin):
     raw_id_fields = ('owner', 'location')
     formfield_overrides = {
-        models.TextField: {'widget': AdminCKEditor},
+        models.TextField: {'widget': CKEditorWidget},
     }
 
 
