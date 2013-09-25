@@ -268,6 +268,7 @@ BROKER_PASSWORD = "ummeli"
 BROKER_VHOST = "/ummeli/production"
 
 # CKEDITOR
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
