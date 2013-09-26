@@ -47,3 +47,4 @@ mock
 redis
 fakeredis
 django-ckeditor
+django-pummel
