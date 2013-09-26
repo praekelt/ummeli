@@ -15,5 +15,6 @@ def report(request, slug, report_key_field):
         report_key_field
     )
 
-    messages.success(request, 'Thank you. Your vote has been cast.')
+    msg = 'Thank you for your report. A notification will appear if 3 separate users report this.'
+    messages.success(request, msg)
     return redirect(request.META['HTTP_REFERER'])
