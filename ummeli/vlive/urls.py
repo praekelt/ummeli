@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     ),
     url(r'^', include('atlas.urls')),
     url(r'^object-tools/', include(object_tools.tools.urls)),
+    url(r'^ckeditor/', include('ckeditor.urls')),
 )
 
 

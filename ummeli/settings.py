@@ -208,6 +208,7 @@ INSTALLED_APPS = (
     'tastypie',
     'simple_autocomplete',
     'export',
+    'pml',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
@@ -265,6 +266,7 @@ BROKER_PASSWORD = "ummeli"
 BROKER_VHOST = "/ummeli/production"
 
 # CKEDITOR
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [

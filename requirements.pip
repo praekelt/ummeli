@@ -18,12 +18,13 @@ pyxml
 pytidylib
 Fabric==1.2.2
 lxml
+django-pummel
 -e git+git://github.com/smn/vumi-client.git#egg=vumi-client
 -e git+git://github.com/praekelt/jmbo-vlive.git@develop#egg=jmbo-vlive
 -e git+git://github.com/praekelt/jmbo-articles.git@develop#egg=jmbo-articles
 -e git+git://github.com/praekelt/jmbo-comments.git@develop#egg=jmbo-comments
 django-category>=0.1
--e git+https://github.com/dwaiter/django-ckeditor.git#egg=django_ckeditor-dev
+django-ckeditor
 django-dirtyfields
 pillow
 http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip

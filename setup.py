@@ -5,7 +5,7 @@ def listify(filename):
 
 setup(
     name = "ummeli",
-    version = "1.9",
+    version = "4.0",
     url = 'http://github.com/praekelt/ummeli',
     license = 'BSD',
     description = "",
