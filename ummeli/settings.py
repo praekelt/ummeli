@@ -212,6 +212,7 @@ INSTALLED_APPS = (
     'tastypie',
     'simple_autocomplete',
     'export',
+    'pml',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
