@@ -60,7 +60,7 @@ def enable_commenting():
 def disable_comments_scheduler():
     from datetime import datetime, time
     now = datetime.now().time()
-    if now > time(22, 0, 0) or now < time(6, 0, 0):
+    if now > time(21, 0, 0) or now < time(11, 0, 0):
         disable_commenting()
     else:
         enable_commenting()
