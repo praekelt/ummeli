@@ -19,8 +19,8 @@
         {% endif %}
         </TEXT>
     </LINK>
-    <LINK href="{% url my_jobs %}?{{uuid}}">
-        <TEXT>My Jobs ({{request.user.user_submitted_job_article_user.count}})</TEXT>
+    <LINK href="{% url my_community %}?{{uuid}}">
+        <TEXT>My Community Board</TEXT>
     </LINK>
     <LINK href="{% url my_settings %}?{{uuid}}">
         <TEXT>My Settings</TEXT>

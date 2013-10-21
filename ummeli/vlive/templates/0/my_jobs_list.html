@@ -17,7 +17,7 @@
             </div>
         {% endfor %}
         {% endif %}
-        
+
         <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
@@ -35,7 +35,7 @@
             | <span>Next</span>
         {% endif %}
         </div>
-    
+
         <div class="more"><a href="{% url jobs_create %}">+ Add another</a></div>
         <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
     </form>

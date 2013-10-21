@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; Sign in</div>
     <h2>Sign In</h2>
+    <div class="wrap">
     <p><span>Not registered? <a href="{% url register %}">Sign up here</a></span></p>
+    </div>
     <form class="content-form" method="post">
     <fieldset>
         {% if form.errors %}

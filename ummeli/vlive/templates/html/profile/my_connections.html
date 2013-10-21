@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Connections</div>
     <h2>Add Connections</h2>
     <div class="bullet"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
     <div class="bullet"><a href="{% url add_connection_by_surname %}">Search by Surname</a></div>

@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Jobs</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Jobs</div>
     <h2>Jobs Posted</h2>
         {% if object_list %}
         {% for item in object_list %}

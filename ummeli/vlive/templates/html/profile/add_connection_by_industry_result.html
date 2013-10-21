@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url my_connections %}">My Connections</a> &raquo; add</div>
 <h2>Search: "{{industry}}" | "{{province}}"</h2>
 {% for profile in user_profiles.object_list %}
     <div class="list">

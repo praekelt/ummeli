@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; View Work Profile</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; View Work Profile</div>
     {% with user_profile=user.get_profile %}
     <h2>
         Advertise your skills: Share your Work Profile
@@ -38,6 +38,7 @@
         <input type="submit" class="btn" value="Post to Community Board">
     </form>
     {% else %}
+    <div class="wrap">
     <p>
         Whoops! You need to complete your work profile in order to
         advertise your skills.
@@ -54,11 +55,12 @@
             <div class="warning">Missing information</div>
             <ul>
             {% for field in user_profile.missing_fields %}
-            <li>* {{field}}</li>
+            <li>{{field}}</li>
             {% endfor %}
             </ul>
         </div>
     </p>
+    </div>
     {% endif %}
     {% endwith %}
 {% endblock %}

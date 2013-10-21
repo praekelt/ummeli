@@ -1,9 +1,9 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Status</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Status</div>
 <h2>Update your status</h2>
-<div>Tell the Ummeli community how you are feeling today?</div>
+<div class="wrap">Tell the Ummeli community how you are feeling today?</div>
 <form method="POST" class="content-form">
 <fieldset>
     <div class="form-fields">

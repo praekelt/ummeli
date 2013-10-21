@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Province</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;<a href="{% url opportunities %}">Opportunities</a> &raquo; Province</div>
+    <div class="intro">
     <p>
         {% if request.session.override_location %}
         You are in: <strong>{{province}}</strong>
         {% else %}
         You are near: <strong>{{request.session.location.city.name}}</strong><br/>
         {% endif %}
+    </p>
+    </div>
+    <div class="wrap">
         <p><a href="{% url select-location %}?next={{next}}">Near me..</a></p>
         <p><strong>OR</strong></p>
         {% for id, province in provinces %}
@@ -15,6 +19,6 @@
             <a href="{% url microtask_change_province id %}?next={{next}}">{{province}}</a>
         </div>
         {% endfor %}
-    </p>
+    </div>
     <div class="more"><a href="{% url index %}">&larr; Back</a></div>
 {% endblock %}

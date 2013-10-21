@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; edit</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a></div>
+<h2>Edit</h2>
 <form method="POST" class="content-form">
     <fieldset>
     <strong>* = Required</strong><br />
