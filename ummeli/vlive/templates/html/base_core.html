@@ -16,10 +16,6 @@
         <a href="{% url tips %}">Tips</a>&nbsp;|&nbsp;
         <a href="{% url my_ummeli %}">My Ummeli</a>
     </div>
-
-    {% block banner %}
-    {% endblock %}
-
     {% if messages %}
         <div class="message">
         {% for message in messages %}
@@ -29,6 +25,9 @@
         {% endfor %}
         </div>
     {% endif %}
+
+    {% block banner %}
+    {% endblock %}
 
     {% block body %}
     {% endblock %}
