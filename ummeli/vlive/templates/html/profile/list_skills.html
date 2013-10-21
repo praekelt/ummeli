@@ -1,10 +1,11 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; My Work</h2>
-        <div class="list">What is your field of work or interest?</div>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a></div>
+    <h2>My Work</h2>
+        <div class="wrap">What is your field of work or interest?</div>
         {% for item in object_list %}
-            <div class="list">
+            <div class="bullet">
             {% if item.primary %}
             <strong>
             <a href='{% url skills item.pk %}'>{{ item.skill }}</a> <span class="subtext">({{ item.get_level }})</span>
@@ -16,7 +17,7 @@
             </div>
         {% endfor %}
         <br/>
-        {% if object_list.count < 3 %} 
+        {% if object_list.count < 3 %}
         <div class="more"><a href="{% url skills_new %}">+ Add another</a></div>
         {% endif %}
         <div class="more"><a href="{% url profile %}">&larr; Back</a></div>

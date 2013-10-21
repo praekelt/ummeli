@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url campaigns %}">Campaigns</a> &raquo;
-        Device Instructions
-    </h2>
-    <h2>Instructions</h2>
+        <a href="{% url campaigns %}">Campaigns</a>
+    </div>
+    <h2>Device Instructions</h2>
     <div class="wrap">
         <p>Instructions for: <strong><a href="{% url qualify_device_change %}?next={{request.path}}">{{device.name}} (change)</a></strong></p>
 
@@ -14,6 +13,5 @@
 
         {% include device.template %}
     </div>
-    <br/>
     <div class="more"><a href="{{next}}">&larr; Back</a></div>
 {% endblock %}

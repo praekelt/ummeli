@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url campaigns %}">Campaigns</a> &raquo;
-        <a href="{% url campaign_qualify object.slug %}">Test</a>
-    </h2>
+    </div>
     <h2>Qualification Task</h2>
     <div class="wrap">
         <p>Instructions for: <strong>{{device.name}}</strong></p>

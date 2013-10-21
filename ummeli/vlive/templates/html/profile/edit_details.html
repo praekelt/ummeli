@@ -1,7 +1,8 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url profile %}">Profile</a> &raquo; <a href="{% url edit_basic %}">Basic info</a> &raquo; {{page_title}}</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url profile %}">Profile</a> &raquo; <a href="{% url edit_basic %}">Basic info</a> &raquo; {{page_title}}</div>
+    <h2>Edit</h2>
     <form class='content-form' method="post">
     <fieldset>
         <div class="form-fields">{{ form}}</div>

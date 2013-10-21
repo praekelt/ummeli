@@ -1,17 +1,14 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2>
-        <a href="{% url profile %}">Work Profile</a>
-            &raquo; Connection Requests
-    </h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a></div>
+
+    <h2>Connection Requests</h2>
     {% for other_user in requests %}
-        <a href='{% url profile_view other_user.pk %}'>&rarr; {{ other_user.get_profile.fullname }}</a>
-        <a href="{% url confirm_request other_user.pk %}?next={{request.path}}">[+ accept]</a>
-        <a href="{% url reject_request other_user.pk %}?next={{request.path}}">[- reject]</a>
-        <br/>
+        <div class="list-separated"><a href='{% url profile_view other_user.pk %}'>&rarr; {{ other_user.get_profile.fullname }}</a></div>
+        <div class="list-separated"><a href="{% url confirm_request other_user.pk %}?next={{request.path}}">[+ accept]</a></div>
+        <div class="list-separated"><a href="{% url reject_request other_user.pk %}?next={{request.path}}">[- reject]</a></div>
     {% empty %}
-        0 connection requests.
+        <div class="wrap">0 connection requests.</div>
     {% endfor %}
-    <br/>
 {% endblock %}

@@ -7,9 +7,9 @@
 {% block content %}
     <HEADER><LABEL>{{other_user_profile.fullname}}'s Jobs Posted</LABEL></HEADER>
     <CONTAINER  type="data">
-        <TITLE>{{object.date|date:'d M y'}} ::  {{object.title}}</TITLE>
+        <TITLE>{{object.created|timesince}} ago ::  {{object.title}}</TITLE>
         <TEXT>
-            {{ object.text }}
+            {{ object.description }}
         </TEXT>
     </CONTAINER>
     <CONTAINER  type="list">
@@ -34,7 +34,7 @@
         <CONTAINER type="data">
             <TITLE>Missing fields</TITLE>
             <TEXT><color value="red">
-                Your CV is incomplete. Please make sure that the following information is 
+                Your CV is incomplete. Please make sure that the following information is
                 completed before you can send your CV.</color></TEXT><br/>
         {% for field in user_profile.missing_fields %}
             <TEXT><color value="red">- {{field}}</color></TEXT><br/>
@@ -53,7 +53,7 @@
     {% else %}
     <br/>
     <CONTAINER type="data">
-    <TEXT><color value="red">You are not logged in. Please log in to be able to 
+    <TEXT><color value="red">You are not logged in. Please log in to be able to
     respond to a job advert.</color>
     <br/>
         <LINK href="{% url login %}?next={% url connection_jobs user_id %}">

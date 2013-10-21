@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load opportunities_tags %}
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        {{object.title}}
-    </h2>
+        Tasks
+    </div>
+    <h2>{{object.title}}</h2>
 
     {% include 'opportunities/tomtom/campaign_detail.html' %}
 

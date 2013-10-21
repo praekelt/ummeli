@@ -1,10 +1,13 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url profile %}">My Work</a> &raquo; new</div>
     <h2>{{skill}} already added.</h2>
+    <div class="wrap">
     <p>
     <strong>{{skill}}</strong> is already add to your profile.
     </p>
+    </div>
     <div class="more"><a href="{% url skills %}">&larr; Back</a></div>
-        
+
 {% endblock %}

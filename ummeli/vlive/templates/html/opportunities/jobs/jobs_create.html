@@ -5,14 +5,16 @@
 {% endblock %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; add</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; add</div>
 <h2>Add a job</h2>
+<div class="wrap">
 <p>Ummeli is unlike any other jobs network. We're a community of young
     people looking out for each other. You can help by adding jobs you have seen
     advertised in your community, or that you are not interested in yourself, but
     want to share so that others can apply. If you are a formal jobs provider, you
     are a VIP here on Ummeli and we welcome you to our community!
 </p>
+</div>
 <form method="POST" class="content-form">
     <fieldset>
     <strong>* = Required</strong><br />

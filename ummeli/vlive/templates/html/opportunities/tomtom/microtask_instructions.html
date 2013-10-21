@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
-    <a href="{% url campaigns %}">Campaigns</a> &raquo;
-    {{object.title}}
-</h2>
+    <a href="{% url campaigns %}">Campaigns</a>
+</div>
+<h2>{{object.title}}</h2>
 <div class="wrap">
     <div>
         <p>
@@ -24,12 +24,12 @@
     {% if object.is_available %}
     <h2>Want to do it?</h2>
     <ul>
-        <li class="bullet">You have {{object.hours_per_task}}hrs and the task will expire</li>
-        <li class="bullet">You have to physically go to the location</li>
-        <li class="bullet">Make sure your GPS is enabled when taking the picture</li>
-        <li class="bullet">You will only receive your airtime when we have checked that the data you submitted is correct.</li>
+        <li>You have {{object.hours_per_task}}hrs and the task will expire</li>
+        <li>You have to physically go to the location</li>
+        <li>Make sure your GPS is enabled when taking the picture</li>
+        <li>You will only receive your airtime when we have checked that the data you submitted is correct.</li>
     </ul>
-    <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
+    <p><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></p>
     {% endif %}
 </div>
 

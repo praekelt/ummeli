@@ -1,12 +1,14 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; Connections</div>
     <h2>Accept connection request for <a href="{% url profile_view other_user_pk %}">{{other_user_profile.fullname}}</a></h2>
+    <div class="wrap">
     <p>
     Are you sure you want to connect with <strong>{{other_user_profile.fullname}}</strong>?
     <br/>
     <br/>
-    Adding <strong>{{other_user_profile.fullname}}</strong> to your connections means giving access to your full profile. 
+    Adding <strong>{{other_user_profile.fullname}}</strong> to your connections means giving access to your full profile.
     <br/><br/>To change your privacy settings click <a href="{% url my_contact_privacy %}">here</a>. [My Settings > Contact Details Privacy]
     </p>
     <form class="content-form" action='{% url confirm_request other_user_pk %}' method='POST'>
@@ -14,5 +16,5 @@
         <input type="hidden" name="next" value="{{next}}"/>
         {% csrf_token %}
     </form>
-        
+    </div>
 {% endblock %}

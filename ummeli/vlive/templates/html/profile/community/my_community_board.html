@@ -1,8 +1,9 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Community Board</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Community Board</div>
     <h2>Status Update</h2>
+    <div class="wrap">
     {% if status %}
         <p>{{status.title}} <br/>
         <span class="subtext">{{status.created|timesince}} ago</span>
@@ -13,6 +14,7 @@
         </p>
     {% endif %}
     <p><span class="btn"><a href="{% url status_update %}">Change</a></span></p>
+    </div>
     <h2>Add an opportunity</h2>
     {% for object in opportunities %}
     <div class="img-article">
@@ -29,6 +31,7 @@
         </small><br/>
     </div>
     {% empty %}
+    <div class="wrap">No opportunities posted.</div>
     {% endfor %}
     <div id="pagination"><span><a href="{% url my_community_opportunities %}">View More</a></span></div>
     <div class="more"><a href="{% url opportunity_create %}">+ Add another opportunity</a></div>

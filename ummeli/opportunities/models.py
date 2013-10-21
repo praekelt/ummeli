@@ -116,6 +116,20 @@ class UmmeliOpportunity(ModelBase):
             instance = model.objects.get(id=self.id)
         return instance
 
+    def to_view_model(self):
+        class OpportunityViewModel(object):
+            def __init__(self,  article):
+                self.pk = article.pk
+                self.source = article.description
+                self.text = article.title
+                self.date = article.created
+                self.user = article.owner
+                self.slug = article.slug
+
+            def user_submitted(self):
+                return 2
+        return OpportunityViewModel(self)
+
 
 class Opportunity(ModelBase):
     province = models.ManyToManyField(
@@ -202,20 +216,6 @@ class Job(UmmeliOpportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('job', (self.slug,))
-
-    def to_view_model(self):
-        class JobViewModel(object):
-            def __init__(self,  article):
-                self.pk = article.pk
-                self.source = article.description
-                self.text = article.title
-                self.date = article.created
-                self.user = article.owner
-                self.slug = article.slug
-
-            def user_submitted(self):
-                return 2
-        return JobViewModel(self)
 
     @classmethod
     def from_str(cls, str):

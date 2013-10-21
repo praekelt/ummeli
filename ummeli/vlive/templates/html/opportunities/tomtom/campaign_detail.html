@@ -1,24 +1,16 @@
 {% load opportunities_tags %}
 <div class="wrap">
-    <strong>{{object.title}}</strong>
-    <br/>
-    <br/>
     {{ object.description|safe }}
 </div>
-<br/>
 {% if object.must_qualify and not has_qualified %}
 <h2>
     You need to qualify
 </h2>
 <div class="wrap">
     Before you begin, you must successfully complete this phone-check qualification task.
-    <br/>
-    <a href="{% url campaign_qualify object.slug %}">
-        Qualification Task
-    </a>
+    <p><a href="{% url campaign_qualify object.slug %}">Qualification Task</a></p>
 </div>
 {% else %}
-<div class="wrap">
     {% get_tasks_for_user object as user_tasks %}
     {% if user_tasks %}
     <div class="list-separated">
@@ -33,7 +25,6 @@
         Availabe Tasks ({{object.available_tasks.count}})
     </a>
     </div>
-</div>
 {% endif %}
 <br/>
 <div class="more"><a href="{% url opportunities %}">&larr; Back</a></div>

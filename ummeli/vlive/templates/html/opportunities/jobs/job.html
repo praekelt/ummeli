@@ -2,12 +2,14 @@
 {% load reporting_tags opportunities_tags %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo;
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url jobs_list %}">Jobs</a> &raquo;
-        <a href="{% url jobs cat_id %}">{{category_title}}</a>
-    </h2>
+    </div>
+    <h2>Job</h2>
 
+    <div class="wrap">
     {% opportunity_report_warnings job 'jobs' %}
+        <strong>{{category_title}}</strong>
 
     {% if not object.is_removed_by_community %}
     <p>
@@ -15,10 +17,10 @@
         <strong>{{job.source}}</strong><br/>
         {% endif %}
 
-        {{ job.text }}
+        {{ job.description }}
         <br/>
         <br/>
-        <small>{{ job.date|date:"D, j M Y"  }}</small>
+        <small>{{ job.created|timesince  }} ago</small>
         {% if not job.user_submitted %}
             <br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>
@@ -28,6 +30,7 @@
     </p>
 
     {% opportunity_report_links job %}
+    </div>
 
     <div class="more"><a href="{% url jobs cat_id %}">&larr; Back to jobs</a></div>
 

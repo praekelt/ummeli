@@ -11,12 +11,12 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{category_title}}</LABEL></HEADER>
     <CONTAINER type="data">
-        <TITLE>{{job.date|date:'d M y'}} ::  {{province}}</TITLE>
+        <TITLE>{{job.created|timesince}} ago ::  {{province}}</TITLE>
         {% if job.user_submitted %}
         <TEXT><color value="blue">submitted by Ummeli user</color></TEXT><br/>
         {% endif %}
         <TEXT>
-            {{ job.text }}
+            {{ job.description }}
         {% if not job.user_submitted %}
             <br/><br/>
             as advertised on <color value="blue">www.wegotads.co.za</color>

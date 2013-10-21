@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url campaigns %}">Campaigns</a> &raquo;
         <a href="{% url campaign_detail campaign.slug %}">{{campaign.title}}</a> &raquo;
         Tasks
-    </h2>
+    </div>
+    <div class="intro">
     <p>
         You are near: <a href="{% url select-location %}?next={{request.path}}">{{city.name}} (change)</a><br/>
+    </p>
+    </div>
+
         {% for object in object_list %}
-        <div class="img-article list-separated">
+        <div class="list-separated">
             <a href="{% url micro_task_detail object.slug %}">
                 {% if object.title %}{{object.title}}
                 {% else%}{{object.location.city.name}}{% endif %}
@@ -18,9 +22,9 @@
             <small>{{object.location.city}}</small><br/>
         </div>
         {% empty %}
-        <p>0 tasks available.</p>
+        <div class="wrap"><p>0 tasks available.</p></div>
         {% endfor %}
-    </p>
+
     {% if object_list %}
     {% if page_obj.has_previous or page_obj.has_next %}
     <div id="pagination">

@@ -1,29 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
         <a href="{% url campaign_detail campaign.slug %}">{{campaign.title}}</a> &raquo;
         Tasks
-    </h2>
+    </div>
+    <div class="intro">
     <p>
         {% if request.session.override_location %}
         Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% else %}
         You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}} (change)</a><br/>
         {% endif %}
-        {% for object in object_list %}
-        <div class="img-article list-separated">
-            <a href="{{object.get_absolute_url}}">
-                {% if object.title %}{{object.title}}
-                {% else%}{{object.location.city.name}}{% endif %}
-            </a><br/>
-            <small>{{object.location.city}}</small><br/>
-        </div>
-        {% empty %}
-        <p>0 tasks available.</p>
-        {% endfor %}
     </p>
+    </div>
+
+    {% for object in object_list %}
+    <div class="list-separated">
+        <a href="{{object.get_absolute_url}}">
+            {% if object.title %}{{object.title}}
+            {% else%}{{object.location.city.name}}{% endif %}
+        </a><br/>
+        <small>{{object.location.city}}</small><br/>
+    </div>
+    {% empty %}
+    <div class="list-separated"><p>0 tasks available.</p></div>
+    {% endfor %}
+
     {% if object_list %}
     {% if page_obj.has_previous or page_obj.has_next %}
     <div id="pagination">

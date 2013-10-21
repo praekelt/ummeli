@@ -17,7 +17,7 @@
     </a>
     <a href="{% url community_jobs object.slug %}">{{ object.title|truncatechars:30 }}</a> {{ object.description|truncatechars:50 }}
     <br/>
-    {{object.get_provinces}}
+    <small class="blue">{{object.get_provinces}}</small>
 {% endif %}{% endif %}
     <br/>
     <small>

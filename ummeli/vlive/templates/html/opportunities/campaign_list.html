@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo; Tasks</div>
+    <div class="intro">
     <p>
         {% if request.session.override_location or not request.session.location %}
         Province: <strong><a href="{% url microtask_change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
         {% else %}
-        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}} (change)</a><br/>
+        You are near: <a href="{% url microtask_change_province %}?next={{request.path}}">{{request.session.location.city.name}} (change)</a>
         {% endif %}
+    </p>
+    </div>
+
         <p>Welcome to Tasks! Here you can earn some extra airtime by successfully completing a task.</p>
-
-
 
         {% for object in object_list %}
         <div class="list-separated">
@@ -20,6 +22,7 @@
         {% empty %}
         <p>0 tasks in <a href="{% url microtask_change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
+
     {% if object_list %}
     {% if page_obj.has_previous or page_obj.has_next %}
     <div id="pagination">
@@ -45,11 +48,15 @@
     </p>
 
     <h2>Quick Menu</h2>
-    <div class="bullet"><a href="{% url qualify_device_change %}?next={{request.path}}">Change device ({{device.name}})</a></div>
-    <div class="bullet"><a href="{% url device_privacy %}?next={{request.path}}">Device Settings</a></div>
-    <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a>
+    <div class="wrap">
+    <ul>
+    <li><a href="{% url qualify_device_change %}?next={{request.path}}">Change device ({{device.name}})</a></li>
+    <li><a href="{% url device_privacy %}?next={{request.path}}">Device Settings</a></li>
+    <li><a href="{% url my_microtasks %}">My Tasks</a>
         {% if request.user.taskcheckout_set %}
         <span class="subtext"> &rarr; {{request.user.taskcheckout_set.count}} task{{request.user.taskcheckout_set.count|pluralize}}</span>
     {% endif %}
+    </li>
+    </ul>
     </div>
 {% endblock %}

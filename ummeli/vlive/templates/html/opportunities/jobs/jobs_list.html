@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Jobs</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo; Jobs</div>
+    <div class="wrap">
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
-        {% for key, category in categories %}
-            <div class="list"><a href="{% url jobs key %}">{{category}}</a></div>
-        {% endfor %}
     </p>
+        {% for key, category in categories %}
+            <div class="bullet"><a href="{% url jobs key %}">{{category}}</a></div>
+        {% endfor %}
+</div>
     <div class="more"><a href="{% url opportunities %}">&larr; Back to opportunities</a></div>
 {% endblock %}

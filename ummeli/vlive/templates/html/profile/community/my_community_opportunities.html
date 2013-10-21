@@ -1,9 +1,8 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Opportunities</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Opportunities</div>
     <h2>My Opportunities</h2>
-        {% if object_list %}
         {% for item in object_list %}
             <div class="img-article">
                 <a href='{% url my_community_opportunities item.slug %}'>{{ item.title|truncatewords:10 }} ({{item.ummeliopportunity.get_provinces}})</a>
@@ -16,8 +15,9 @@
             <br/>
             <div class="more"><a href="{% url my_jobs_delete item.pk %}">Delete</a></div>
             </div>
+        {% empty %}
+        <div class="wrap">No opportunities posted</div>
         {% endfor %}
-        {% endif %}
 
         <div id="pagination">
         {% if page_obj.has_previous %}

@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
+        <a href="{% url community_jobs %}">Community Board</a>
+    </div>
     <h2>
         Community Board
     </h2>
-    <strong>Submitted by Ummeli users</strong><br />
+    <div class="intro"><p><strong>Submitted by Ummeli users</strong></p></div>
     {% for object in articles.object_list %}
         {% include 'opportunities/community_opportunity_listing.html' %}
     {% endfor %}

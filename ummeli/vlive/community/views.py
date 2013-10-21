@@ -74,7 +74,7 @@ class StatusUpdateView(FormView):
     def get_context_data(self, *args, **kwargs):
         context = super(StatusUpdateView, self).get_context_data(*args, **kwargs)
         context.update({
-            'statuses': StatusUpdate.objects.order_by('-created')[:5],
+            'statuses': StatusUpdate.objects.filter(owner=self.request.user).order_by('-created')[:5],
         })
         return context
 

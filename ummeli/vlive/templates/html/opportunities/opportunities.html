@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Opportunities</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; Opportunities</div>
+    <div class="wrap">
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
 
@@ -51,5 +52,6 @@
         </div>
         {% endif %}
     </p>
+</div>
     <div class="more"><a href="{% url index %}">&larr; Back</a></div>
 {% endblock %}
