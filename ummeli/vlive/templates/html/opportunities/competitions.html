@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Competitions</h2>
-    <p>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
-        {% for object in object_list %}
-        <div class="img-article list-separated">
-            <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
-        </div>
-        {% empty %}
-        <p>0 competitions in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
-        {% endfor %}
-    </p>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo; Competitions</div>
+    <div class="intro">
+        <p>Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></p>
+    </div>
+    {% for object in object_list %}
+    <div class="list-separated">
+        <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
+        {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
+    </div>
+    {% empty %}
+    <p>0 competitions in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
+    {% endfor %}
     {% if object_list %}
     <div id="pagination">
         {% if page_obj.has_previous %}

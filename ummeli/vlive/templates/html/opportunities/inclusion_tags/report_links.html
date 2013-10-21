@@ -1,5 +1,5 @@
 {% if user.is_authenticated %}
-<p>Report opportunity as:<br/>
+<p><strong>Report opportunity as:</strong><br/>
     <a href="{% url report_object object.slug scam_key %}">scam</a>,
     {% if object.as_leaf_class.is_community %}
     <a href="{% url report_object object.slug inappropriate_key %}">inappropriate</a>,

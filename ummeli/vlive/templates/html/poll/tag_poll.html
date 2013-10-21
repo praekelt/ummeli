@@ -1,5 +1,5 @@
 {% load poll_tags %}
-<h4><em>{{ poll.question }}</em></h4>
+<h4>{{ poll.question }}</h4>
 
 {% if poll|has_user_voted:user or show_results %}
     {% get_poll_results poll %}

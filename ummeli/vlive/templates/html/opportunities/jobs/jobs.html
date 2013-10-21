@@ -1,36 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url jobs_list %}">Jobs</a> &raquo;
-        {{category}}
-    </h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo;
+        Jobs
+    </div>
+    <h2>{{category}}</h2>
+    <div class="intro">
     <p>
         Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
     </p>
-    {% if object_list %}
-    <div id="pagination">
-        {% if page_obj.has_previous %}
-            <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
-        {% else %}
-            <span>Previous</span> |
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </span>
-
-        {% if page_obj.has_next %}
-            | <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
-        {% else %}
-            | <span>Next</span>
-        {% endif %}
+    <p><strong>*** = Submitted by Ummeli user</strong></p>
     </div>
-    {% endif %}
-
-    <strong>*** = Submitted by Ummeli user</strong>
-    <br/>
-    <br/>
 
     {% for article in object_list %}
         <div class="list-separated">
@@ -44,11 +24,9 @@
             <a href="{% url job article.slug %}">{{ article.title }}</a>
 
             {% endif %}
-            <br/><small>{{ article.get_provinces }}</small>
-            <br/>
-            <small>
-                {{ article.publish_on|timesince }} ago
-            </small>
+            <br/><strong><small>{{ article.get_provinces }}</small></strong>
+            |
+            <small>{{ article.publish_on|timesince }} ago</small>
         </div>
     {% empty %}
         <p>0 Jobs in this category.</p>
