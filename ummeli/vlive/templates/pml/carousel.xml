@@ -14,30 +14,43 @@
         <VZV-DEFAULT>
             {% block body %}
                 {% cache 600 banner-detail %}
-                <MODULE backgroundColor="false" border="none" stripped="false">
-                    <HEADER>
-                        <LABEL>Ummeli</LABEL>
-                    </HEADER>
-                    {% if banner %}
-                    <CONTAINER type="data">
-                        <TEXT>
-                        <LINK href="{{ banner.url }}">
-                            <IMAGE href="{{ ROOT_URL }}{{ banner.image.url }}" align="full" type="image/jpeg"/>
-                        </LINK>
-                            <P>
-                                <LINK href="{{banner.url}}">{{ banner.title }}</LINK>
-                                {{ banner.description }}
-                            </P>
-                        </TEXT>
-                    </CONTAINER>
-                    {% else %}
-                    <CONTAINER type="data">
+                <MODULE backgroundColor="false" border="module">
+                <HEADER backgroundColor="true"><LABEL>Ummeli</LABEL></HEADER>
+                {% if banner %}
+                <CONTAINER type="table">
+                <TABLE border="false">
+                <TR><TD>
+                <CONTAINER type="data">
                     <TEXT>
-                        <P><LINK href="/vlive/">Ummeli</LINK>
-                        lets you find opportunities, build a work profile &amp; connect with others.</P>
+                        <LINK href="{{ banner.url}}">
+                        <IMAGE align="left" type="image/jpeg"
+                               href="{{ ROOT_URL }}{{ banner.image.url }}"
+                               caption="ummeli"/>
+                        </LINK>
                     </TEXT>
-                    </CONTAINER>
-                    {% endif %}
+                </CONTAINER>
+                </TD></TR>
+                <TR><TD>
+                    <TEXT>
+                        <LINK href="{{banner.url}}">{{ banner.title }}</LINK>
+                        {{ banner.description }}
+                    </TEXT>
+                </TD></TR>
+                </TABLE>
+                </CONTAINER>
+                {% else %}
+                <CONTAINER type="table">
+                <TABLE border="false">
+                <TR><TD>
+                    <TEXT>
+                        <LINK href="/vlive/">Ummeli</LINK>
+                        lets you find opportunities, build a work profile &amp; connect with others.
+                    </TEXT>
+                </TD></TR>
+                </TABLE>
+                </CONTAINER>
+                {% endif %}
+                <FOOTER></FOOTER>
                 </MODULE>
                 {% endcache %}
             {% endblock %}

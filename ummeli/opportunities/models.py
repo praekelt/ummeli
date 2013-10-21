@@ -179,9 +179,8 @@ CATEGORY_CHOICES = (
 )
 
 
-class Job(UmmeliOpportunity):
+class Job(Opportunity):
     category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
-    hash_key = models.CharField(max_length=32, db_index=True, blank=True, null=True)
 
     @models.permalink
     def get_absolute_url(self):
@@ -215,13 +214,13 @@ class Job(UmmeliOpportunity):
         return cls.objects.none()
 
 
-class Internship(UmmeliOpportunity):
+class Internship(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('internship_detail', (self.slug,))
 
 
-class Volunteer(UmmeliOpportunity):
+class Volunteer(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('volunteer_detail', (self.slug,))
@@ -230,7 +229,7 @@ class Volunteer(UmmeliOpportunity):
         verbose_name_plural = "volunteering"
 
 
-class Bursary(UmmeliOpportunity):
+class Bursary(Opportunity):
     @models.permalink
     def get_absolute_url(self):
         return ('bursary_detail', (self.slug,))
@@ -239,7 +238,7 @@ class Bursary(UmmeliOpportunity):
         verbose_name_plural = "bursaries"
 
 
-class Training(UmmeliOpportunity):
+class Training(Opportunity):
     cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
 
     @models.permalink
@@ -467,9 +466,77 @@ class TomTomMicroTaskResponse(MicroTaskResponse):
         return get_lat_lon(self.file)
 
 
-class StatusUpdate(UmmeliOpportunity):
-    pass
+
+"""
+******************************* Data migration models ************************
+"""
+
+class JobTemp(UmmeliOpportunity):
+    category = models.PositiveIntegerField(choices=CATEGORY_CHOICES, default=0)
+    hash_key = models.CharField(max_length=32, db_index=True, blank=True, null=True)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('job', (self.slug,))
+
+    def to_view_model(self):
+        class JobViewModel(object):
+            def __init__(self,  article):
+                self.pk = article.pk
+                self.source = article.description
+                self.text = article.title
+                self.date = article.created
+                self.user = article.owner
+                self.slug = article.slug
+
+            def user_submitted(self):
+                return 2
+        return JobViewModel(self)
+
+    @classmethod
+    def from_str(cls, str):
+        result = [i for i, p in CATEGORY_CHOICES
+                    if re.sub('[\s-]', '', p.lower()) ==
+                        re.sub('[\s-]', '', str.lower())]
+
+        if len(result) > 1:
+            return cls.objects.none()
+
+        if any(result):
+            return cls.permitted.filter(category=result[0])
+        return cls.objects.none()
 
 
-class SkillsUpdate(UmmeliOpportunity):
-    pass
+class InternshipTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('internship_detail', (self.slug,))
+
+
+class VolunteerTempTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('volunteer_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "volunteering"
+
+
+class BursaryTemp(UmmeliOpportunity):
+    @models.permalink
+    def get_absolute_url(self):
+        return ('bursary_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "bursaries"
+
+
+class TrainingTemp(UmmeliOpportunity):
+    cost = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('training_detail', (self.slug,))
+
+    class Meta:
+        verbose_name_plural = "training"

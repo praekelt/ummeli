@@ -6,8 +6,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from ummeli.base.utils import render_to_pdf
-from django.core.mail import EmailMessage
-
+from django.core.mail import send_mail,  EmailMessage
+from datetime import datetime
 from celery.task import task
 
 from jmbo.models import ModelBase
@@ -32,6 +32,77 @@ class Banner(ModelBase):
                   "time on or time off is not specified the banner will "
                   "always be eligable for display (can be randomly selected)."
     )
+
+
+class Article(models.Model):
+    hash_key = models.CharField(max_length=32, unique=True)
+    date = models.DateTimeField(blank=True,  default = datetime.now())
+    source = models.CharField(max_length=100)
+    text = models.TextField()
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s - %s - %s' % (self.date,  self.source,  self.text)
+
+    def user_submitted(self):
+                return 0
+
+
+class UserSubmittedJobArticle(models.Model):
+    title = models.CharField(max_length=100)
+    text = models.TextField(default='')
+    province = models.TextField(default='')
+    job_category = models.TextField(default='')
+    moderated = models.BooleanField(default = False)
+    date = models.DateTimeField(auto_now_add = True)
+    date_updated = models.DateTimeField(auto_now = True)
+    user = models.ForeignKey(User, related_name='user_submitted_job_article_user')
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s - %s - %s - %s' % (self.date, self.user.username, self.title, self.text)
+
+    def user_submitted(self):
+                return 1
+
+    def to_view_model(self):
+        class UserSubmittedJobArticleViewModel(object):
+            def __init__(self,  user_article):
+                self.pk = user_article.pk
+                self.source = user_article.title
+                self.text = user_article.text
+                self.date = user_article.date
+                self.user = user_article.user
+
+            def user_submitted(self):
+                return 1
+        return UserSubmittedJobArticleViewModel(self)
+
+
+class Province(models.Model):
+    search_id = models.IntegerField(primary_key = True)
+    name = models.CharField(max_length=45)
+
+    def __unicode__(self):  # pragma: no cover
+        return self.name
+
+
+class Category(models.Model):
+    hash_key = models.CharField(max_length=32, unique=True)
+    title = models.CharField(max_length=45)
+    province = models.ForeignKey(Province)
+    articles = models.ManyToManyField(Article, blank=True,  null=True)
+    user_submitted_job_articles = models.ManyToManyField(UserSubmittedJobArticle, blank=True,  null=True)
+    is_allowed = models.BooleanField(default=True)
+
+    def must_show(self):
+        return (self.articles.exists() or\
+            self.user_submitted_job_articles.exists()) and\
+            self.is_allowed
+
+    def articles_count(self):
+        return self.articles.count() + self.user_submitted_job_articles.count()
+
+    def __unicode__(self):  # pragma: no cover
+        return '%s - %s (%s)' % (self.province.name, self.title, self.articles_count())
 
 
 class Certificate (models.Model):
