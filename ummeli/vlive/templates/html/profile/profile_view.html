@@ -13,7 +13,6 @@
             {% if other_user_profile.gender %}{{other_user_profile.gender}}{% endif %}
         </div>
     </div>
-    <div style="clear: both"></div>
     <div class="wrap">
     {% if other_user_profile.other_skills.all %}
         <strong>Other areas of interest:</strong><br/>
@@ -26,7 +25,6 @@
     {% endif %}
     <p>
     </div>
-    <div class="ruler"></div>
     <div class="bullet">
         <a href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</a>
     </div>
@@ -37,16 +35,18 @@
 
     {% if not connected_to_user and not is_self %}
         <h2>Connect</h2>
+        <div class="wrap">
         {% if not already_requested %}
             {% if connection_requested %}
-                <div class="list"><a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ Accept]</a></div>
-                <div class="list"><a href="{% url reject_request other_user_pk %}?next={{request.path}}">[- Decline]</a></div>
+                <p><a href="{% url confirm_request other_user_pk %}?next={{request.path}}">[+ Accept]</a></p>
+                <p><a href="{% url reject_request other_user_pk %}?next={{request.path}}">[- Decline]</a></p>
             {% else %}
-                <div class="list"><a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ Invite]</a></div>
+                <p><a href="{% url add_connection other_user_pk %}?next={{request.path}}">[+ Invite]</a></p>
             {% endif %}
         {% else %}
             <small>[request pending]</small>
         {% endif %}
+        </div>
     {% endif %}
 
     {% if connected_to_user or is_self %}

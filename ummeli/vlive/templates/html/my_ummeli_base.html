@@ -4,8 +4,8 @@
     {% block content %}
     {% endblock %}
 
+    <div class="my">
     <h2>My Ummeli</h2>
-    <div id="menu">
     <div><a href="{% url profile %}">Work Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
     <div><a href="{% url my_connections %}">My Connections</a>
         {% if user_profile.connection_requests.exists %}

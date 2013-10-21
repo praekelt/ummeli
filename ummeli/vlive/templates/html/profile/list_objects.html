@@ -4,7 +4,7 @@
     <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; {{page_title}}</div>
         {% if object_list %}
         {% for item in object_list %}
-            <div class="bullet"><a href='{% url profile %}{{list_name}}/{{ item.pk }}'>&rarr; {{ item }}</a></div>
+            <div class="list-separated"><a href='{% url profile %}{{list_name}}/{{ item.pk }}'>&rarr; {{ item }}</a></div>
         {% endfor %}
 
         {% endif %}
