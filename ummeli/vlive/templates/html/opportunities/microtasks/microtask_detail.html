@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
     <a href="{% url campaign_detail object.campaign.slug %}">{{object.campaign.title}}</a> &raquo;
-    <a href="{% url micro_tasks object.campaign.slug %}">Tasks</a> &raquo;
-    {{object.title}}
-</h2>
+    <a href="{% url micro_tasks object.campaign.slug %}">Tasks</a>
+</div>
+<h2>{{object.title}}</h2>
 <div class="wrap">
-    <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
     <div><strong>GPS:</strong> {{object.location.coordinates.0}}, {{object.location.coordinates.1}}</div>
@@ -29,7 +28,7 @@
 
     {% if device.name == 'Apple' %}
     {% include device.template %}
-    <p>Not your phone? <a href="{% url qualify_device_change %}?next={{request.path}}">Click here</a></p>
+    <div class="wrap"><p>Not your phone? <a href="{% url qualify_device_change %}?next={{request.path}}">Click here</a></p></div>
     {% else %}
 
     {% if object.is_available %}
@@ -42,9 +41,8 @@
         <li class="bullet">You will only receive your airtime when we have checked that the data you submitted is correct.</li>
     </ul>
     </p>
-    <div><span class="likes"><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></span></div>
+    <p><a href="{% url micro_task_checkout object.slug %}">Yes, I'll do it!</a></p>
     {% else %}
-    <br/>
     <p><a href="{% url micro_task_conditions object.slug %}">Complete Task</a><br/>
         Has this location changed? <a href="{% url micro_task_moved object.slug %}">Click here</a></p>
     {% endif %}

@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
-    <a href="{% url campaigns %}">Campaigns</a> &raquo;
-    {{object.title}}
-</h2>
+    <a href="{% url campaigns %}">Campaigns</a>
+</div>
+<h2>{{object.title}}</h2>
 <div class="wrap">
-    <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
     {% if device.name == 'Apple' %}
@@ -16,7 +15,7 @@
 
     {% if task_checkout.microtaskresponse.state == 2 %}
     <br/>
-    <h2 class="warning">Your response was reject</h2>
+    <h4>Your response was rejected</h4>
     <strong>Reason</strong>
     <ul>
         <li class="bullet">{{task_checkout.microtaskresponse.get_reject_reason_display}}</li>
