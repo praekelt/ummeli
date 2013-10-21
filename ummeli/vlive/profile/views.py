@@ -43,9 +43,20 @@ def profile_view(request, user_id):
 
     already_requested = other_user.get_profile().is_connection_requested(request.user.pk)
     connection_requested = request.user.get_profile().is_connection_requested(user_id)
+    status_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="statusupdate"
+        )
+    skills_content_type = ContentType.objects.get(
+        app_label="opportunities",
+        model="skillsupdate"
+    )
     return render(request, 'profile/profile_view.html',
                 {'other_user_profile': other_user.get_profile(),
-                 'other_user_jobs': other_user.modelbase_set.filter(ummeliopportunity__isnull=False).count(),
+                 'other_user_jobs': other_user.modelbase_set.filter(ummeliopportunity__isnull=False)\
+                                                            .exclude(content_type__in=[status_content_type,
+                                                                skills_content_type])\
+                                                            .order_by('-created').count(),
                  'other_user_pk':other_user.pk,
                  'num_connections': num_connections,
                  'connected_to_user': user_node.is_connected_to(other_user_node),
