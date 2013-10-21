@@ -14,7 +14,7 @@
                 {% else%}{{object.task.location.city.name}}{% endif %}
             </a></div>
             <div><small>{{object.expires_on|timeuntil}} left</small></div>
-            <div class="bullet"><a href="{% url micro_task_detail object.task.slug %}">Complete Task</a></div>
+            <p><a href="{% url micro_task_detail object.task.slug %}">Complete Task</a></p>
         </div>
         {% else %}{% if object.state == 1 %}
         <div class="list-separated">
