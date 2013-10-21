@@ -17,6 +17,8 @@
 <h2>Recent updates</h2>
 {% for status in statuses %}
 <div class="list-separated">{{status.title}} - <small>{{status.created|timesince}} ago</small></div>
+{% empty %}
+<div class="wrap">No status updates posted.</div
 {% endfor %}
 <div class="more"><a href="{% url my_community %}">&larr; Back</a></div>
 {% endblock %}
