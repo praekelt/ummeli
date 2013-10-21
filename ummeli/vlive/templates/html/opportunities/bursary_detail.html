@@ -2,15 +2,16 @@
 {% load reporting_tags opportunities_tags %}
 
 {% block content %}
-    <h2>
-        <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url bursaries %}">Bursaries</a> &raquo;
-        {{object.title}}
-    </h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
+        <a href="{% url opportunities %}">Opportunities</a>
+    </div>
+
+    <h2>Bursaries</h2>
+
     {% opportunity_report_warnings object 'bursaries' %}
 
     {% if not object.is_removed_by_community %}
-    <p>
+    <div class="wrap">
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
         <br/><small>Province: {{ object.get_provinces }}</small>
@@ -29,9 +30,9 @@
             </a>
         </p>
         {% endif %}
-    </p>
 
     {% opportunity_report_links object %}
+    </div>
 
     <div class="more"><a href="{% url bursaries %}">&larr; Back</a></div>
 

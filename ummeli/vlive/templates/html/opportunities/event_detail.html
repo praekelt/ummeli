@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
-        <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url events %}">Events</a> &raquo;
-        {{object.title}}
-    </h2>
-    <p>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
+        <a href="{% url opportunities %}">Opportunities</a>
+    </div>
+    <h2>Events</h2>
+    <div class="wrap">
         <strong>{{object.title}}</strong>
         <br/><small>Province: {{ object.get_provinces }}</small>
         <br/><small>Location: {{ object.place }}</small>
@@ -14,6 +13,6 @@
         <br/>
         <br/>
         {{ object.description|safe }}
-    </p>
+    </div>
     <div class="more"><a href="{% url events %}">&larr; Back</a></div>
 {% endblock %}

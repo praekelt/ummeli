@@ -5,8 +5,8 @@
 
 {% block banner %}
 <div class="info">Vodacom Users: <a href="http://live.vodafone.com/ummeli">Click here to Access Ummeli for FREE!</a></div>
-<div class="banner">Ummeli lets you find opportunities, build a work profile &amp; connect with others.
-    <a href="/about/">Learn more...</a>
+<div class="banner">
+    Ummeli lets you <a href="{% url opportunities %}">find opportunities</a>, <a href="{% url profile %}">build a work profile</a> &amp; <a href="{% url my_connections %}">connect with others</a>. <a href="/about/">Learn more...</a>
 </div>
 {% endblock %}
 

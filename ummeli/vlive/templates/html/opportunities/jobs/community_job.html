@@ -3,12 +3,15 @@
 
 
 {% block content %}
-    <h2><a href="{% url community_jobs %}">Community Board</a> &raquo;Opportunity</a></h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
+        <a href="{% url community_jobs %}">Community Board</a>
+    </div>
+    <h2>Opportunity</h2>
     {% opportunity_report_warnings job 'community_jobs' %}
 
     {% if not object.is_removed_by_community %}
 
-    <div class="article">
+    <div class="wrap">
         <strong>{{job.title}}</strong><br/>
         <small><strong>{{job.get_provinces}}</strong></small><br/>
         {{ job.description }}
@@ -20,9 +23,9 @@
         {% else %}
             Anon.
         {% endif %}
-    </div>
 
     {% opportunity_report_links job %}
+    </div>
 
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
     <br/>
