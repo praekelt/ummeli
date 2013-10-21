@@ -9,9 +9,9 @@
 
     <div class="wrap">
         <strong>{{object.title}}</strong><br/>
-        {{ object.text }}
+        {{ object.description }}
         <br/><br/>
-        <small>{{ object.date|date:"D, j M Y, H:i" }}</small>
+        <small>{{ object.created|timesince }} ago</small>
     </div>
     <div class="more"><a href="{% url connection_jobs user_id %}">&larr; Back to jobs</a></div>
 

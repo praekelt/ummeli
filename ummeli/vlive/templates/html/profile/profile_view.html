@@ -13,7 +13,8 @@
             {% if other_user_profile.gender %}{{other_user_profile.gender}}{% endif %}
         </div>
     </div>
-    <div style="clear: both"></div><br/>
+    <div style="clear: both"></div>
+    <div class="wrap">
     {% if other_user_profile.other_skills.all %}
         <strong>Other areas of interest:</strong><br/>
         {% for skill in other_user_profile.other_skills.all %}
@@ -24,6 +25,7 @@
     <p><em>"{{other_user_profile.about_me}}"</em></p>
     {% endif %}
     <p>
+    </div>
     <div class="ruler"></div>
     <div class="bullet">
         <a href="{% url connections other_user_pk %}">Connections ({{other_user_profile.get_connnections_count}})</a>

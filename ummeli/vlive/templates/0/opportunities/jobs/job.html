@@ -15,10 +15,10 @@
         <strong>{{job.source}}</strong><br/>
         {% endif %}
 
-        {{ job.text }}
+        {{ job.description }}
         <br/>
         <br/>
-        <small>{{ job.date|date:"D, j M Y"  }}</small>
+        <small>{{ job.created|timesince  }} ago</small>
         {% if not job.user_submitted %}
             <br /><strong>Source:</strong> {{job.source}}
             <br/>as advertised on <a href="http://www.wegotads.co.za">www.wegotads.co.za</a>

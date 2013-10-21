@@ -17,8 +17,8 @@
         </LINK>
     </TITLE>
     <TEXT>
-        {{item.text|truncatewords:10}}<br/>
-        {{ item.date|date:"D, j M Y, H:i" }}
+        {{item.descrition|truncatewords:10}}<br/>
+        {{ item.created|timesince }} ago
     </TEXT>
     </CONTAINER>
     <CONTAINER type="list">
@@ -28,7 +28,7 @@
     </CONTAINER>
 </MODULE>
 {% endfor %}
-    
+
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">

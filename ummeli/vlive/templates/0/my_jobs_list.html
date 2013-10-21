@@ -7,10 +7,10 @@
         {% for item in object_list %}
             <div class="list"><a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
             <br/>
-            {{item.text|truncatewords:10}}
+            {{item.description|truncatewords:10}}
             <br/>
             <small>
-                {{ item.date|date:"D, j M Y, H:i" }}
+                {{ item.created|timesince }} ago
             </small>
             <br/>
             <a href="{% url my_jobs_delete item.pk %}">Delete</a>

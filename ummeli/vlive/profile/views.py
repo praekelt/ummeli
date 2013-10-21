@@ -568,7 +568,7 @@ class MyOpportunitiesListView(ListView):
         return jmbo_models.filter(ummeliopportunity__isnull=False)\
                           .exclude(content_type__in=[status_content_type,
                                                      skills_content_type])\
-                          .all()
+                          .order_by('-created')
 
 class ConnectionJobsListView(ListView):
     paginate_by = 5
@@ -576,7 +576,19 @@ class ConnectionJobsListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
-        return user.user_submitted_job_article_user.all().order_by('-date')
+        status_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="statusupdate"
+        )
+        skills_content_type = ContentType.objects.get(
+            app_label="opportunities",
+            model="skillsupdate"
+        )
+        jmbo_models = user.modelbase_set
+        return jmbo_models.filter(ummeliopportunity__isnull=False)\
+                          .exclude(content_type__in=[status_content_type,
+                                                     skills_content_type])\
+                          .order_by('-created')
 
     def get_context_data(self, **kwargs):
         context = super(ConnectionJobsListView, self).get_context_data(**kwargs)
