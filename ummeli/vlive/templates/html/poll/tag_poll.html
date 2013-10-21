@@ -5,8 +5,7 @@
     {% get_poll_results poll %}
     {% for c in poll_result_list %}
         <p>
-            {{ c.choice }}<br />
-            <b>{{ c.percentage }}%</b>
+            {{ c.choice }} - <b>{{ c.percentage }}%</b>
         </p>
     {% endfor %}
 {% else %}

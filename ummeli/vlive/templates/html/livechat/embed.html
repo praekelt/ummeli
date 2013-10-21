@@ -4,15 +4,16 @@
 {% get_livechat_page livechat "page" %}
 
 
-<h2 id="comment_list">{{livechat.title}}</h2>
-
-<p>
-    {{livechat.description|safe}}
-</p>
 
 {% if livechat.active %}
 
-    <div class="wrap" id="comment_form">
+<div class="comments" id="comment_form">
+<h2 class="comment_list" id="comment_list">{{livechat.title}}</h2>
+<div class="wrap">
+<p>
+    {{livechat.description|safe}}
+</p>
+</div>
         {% if user.is_authenticated %}
 
             {% get_comment_form for livechat as form %}
@@ -80,8 +81,9 @@
 <div class="comment_list">
 {% for comment in my_comments %}
     <div class="comment {% cycle 'even' 'odd' %}">
-    <div>{{ comment.submit_date|date:"D, j M Y, H:i" }}</div>
-    <div>{% spaceless %}
+    <div class="head">
+            <span class="subtext">{{ comment.submit_date|timesince }} ago</span>
+        <div>{% spaceless %}
         {% if comment.is_community_moderated %}
             <strong>Moderated:</strong> {{ comment.community_moderation_flags.latest.reason }}
         {% else %}
@@ -91,21 +93,22 @@
                 {{ comment.comment }}
             {% endif %}
         {% endif %}{% endspaceless %}
+        </div>
     </div>
-
-    <div>
+    <div class="base">
         <span class="likes">
             {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
         </span>
     </div>
+
     {% if comment.livechatresponse_set.exists %}
-    <div class="livechatresponses">
+    <div class="head">
         {% for response in comment.livechatresponse_set.all %}
             <div class="t {% cycle 'even' 'odd' %}">
             <span>
                 <strong>{{response.author.first_name}}</strong>
                 -
-                {{ response.updated_at|date:"D, j M Y, H:i" }}
+                {{ response.updated_at|timesince }} ago
             </span><br/>
             <span>{{response.response}}</span>
             </div>
@@ -130,7 +133,7 @@ You haven't asked any questions.
 <div class="comment_list">
     {% for comment in page.object_list %}
     <div class="comment {% cycle 'even' 'odd' %}">
-        <div>
+        <div class="head">
             <strong>
                 {% if comment.user.get_profile.comment_as_anon %}
                     Anon.
@@ -145,7 +148,6 @@ You haven't asked any questions.
          -
 
         {{ comment.submit_date|date:"D, j M Y, H:i" }}
-        </div>
 
         <div>{% spaceless %}
             {% if comment.is_community_moderated %}
@@ -158,8 +160,9 @@ You haven't asked any questions.
                 {% endif %}
             {% endif %}{% endspaceless %}
         </div>
+        </div>
 
-        <div>
+        <div class="base">
             <span class="likes">
                 {{ comment.like_count }} Like{{ comment.like_count|pluralize }}
             </span>
@@ -171,10 +174,18 @@ You haven't asked any questions.
                     {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
                     {% endwith %}
                 </span>
+            {% else %}
+                <span class="tag"><a href="{% url login %}?next={{request.path}}">+Like</a></span>
+                <span class="tag report"><a href="{% url login %}?next={{request.path}}">Report</a></span>
+                <span class="reports tag">
+                    {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+                    {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+                    {% endwith %}
+                </span>
             {% endif %}
         </div>
         {% if comment.livechatresponse_set.exists %}
-        <div class="livechatresponses">
+        <div class="head">
             {% for response in comment.livechatresponse_set.all %}
                 <div class="t {% cycle 'even' 'odd' %}">
                 <span>

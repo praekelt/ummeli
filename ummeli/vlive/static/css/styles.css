@@ -25,7 +25,7 @@ body {font:10pt "Arial", Helvetica, sans-serif; color:#727c83; background:#f1f5f
 .wrapper {margin:0; padding:0; border:0px none; min-width:180px; margin:0 auto; text-align:left;}
 *html .wrapper {width:400px;}
 .right{float: right;}
-input, textarea, select { -webkit-appearance: none; -webkit-border-radius: 0; }
+input[type="submit"] { -webkit-appearance: none; -webkit-border-radius: 0; }
 
 /*---------------------------
 2.  Header

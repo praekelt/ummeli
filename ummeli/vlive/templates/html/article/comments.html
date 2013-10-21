@@ -1,7 +1,7 @@
 {% load comments%}
+<div class="comments" id="comment_form">
 <h2>{{ comment_count }} comment{{ comment_count|pluralize }}</h2>
 
-<div class="wrap" id="comment_form">
     {% if article.comments_enabled %}
         {% if user.is_authenticated %}
 
@@ -67,7 +67,7 @@
 <div id="comment_list" class="comment_list">
     {% for comment in comment_list.object_list %}
         <div class="comment {% cycle 'even' 'odd' %}">
-            <div>
+            <div class="head">
                 <!-- link to user profile -->
                         {% if comment.user.get_profile.fullname %}
                             <a href="{% url profile_view comment.user.pk %}">{{ comment.user.get_profile.fullname }}</a>
@@ -79,7 +79,7 @@
                 </span>
                 <div>{{ comment.comment }}</div>
             </div>
-            <div>
+            <div class="base">
                 <span class="likes">
                     {{ comment.like_count }}
                 </span>
@@ -89,6 +89,18 @@
                 </span>
                 <span class="tag report">
                     <a href="{% url comment_flag comment.pk %}">Report</a>
+                </span>
+                <span class="reports tag">
+                    {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
+                    {% if flag_count %}{{ flag_count }}{% else%} 0 {%endif%}
+                    {% endwith %}
+                </span>
+                {% else %}
+                <span class="tag">
+                    <a href="{% url login %}?next={% url comment_like comment.pk %}">+Like</a>
+                </span>
+                <span class="tag report">
+                    <a href="{% url login %}?next={% url comment_flag comment.pk %}">Report</a>
                 </span>
                 <span class="reports tag">
                     {% with flag_count=comment.community_moderation_flags.latest.flag_count %}
