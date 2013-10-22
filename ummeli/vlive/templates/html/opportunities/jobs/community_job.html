@@ -17,12 +17,13 @@
         {{ job.description }}
         <br/><br/>
         <small>{{ job.created|timesince }} ago</small>
-        <br/>submitted by
+        <p>submitted by
         {% if job.owner.get_profile.fullname %}
             <a href="{% url profile_view job.owner.pk %}">{{ job.owner.get_profile.fullname }}</a>
         {% else %}
             Anon.
         {% endif %}
+        </p>
 
     {% opportunity_report_links job %}
     </div>
