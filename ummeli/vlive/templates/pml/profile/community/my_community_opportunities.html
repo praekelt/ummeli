@@ -1,0 +1,57 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>My Opportunities</LABEL></HEADER>
+</MODULE>
+
+{% for object in object_list %}
+<CONTAINER type="image">
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url my_community_opportunities object.slug %}?{{uuid}}">
+            <TEXT>
+                {{ object.title|truncatechars:30 }}
+            </TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ object.description|truncatechars:50 }}
+        <small>
+        <br/> {{object.get_provinces}}
+        <br/> {{ object.created|timesince }} ago
+        </small>
+    </TEXT>
+</CONTAINER>
+{% empty %}
+<CONTAINER type="data">
+<TEXT>
+    No opportunities posted.
+</TEXT>
+</CONTAINER>
+{% endfor %}
+
+{% if object_list %}
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
+<CONTAINER type="list">
+    {% if page_obj.has_previous %}
+    <LINK href="?page={{ page_obj.previous_page_number }}?{{uuid}}">
+        <TEXT>Previous</TEXT>
+    </LINK>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <LINK href="?page={{ page_obj.next_page_number }}?{{uuid}}">
+        <TEXT>Next</TEXT>
+    </LINK>
+    {% endif %}
+</CONTAINER>
+</MODULE>
+{% endif %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="list">
+    <LINK href="{% url my_ummeli %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}
