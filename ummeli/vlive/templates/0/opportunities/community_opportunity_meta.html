@@ -1,8 +1,8 @@
 {% if object.ummeliopportunity.is_community %}
 <small>{{object.publish_on|timesince}} ago |
     <a href="{% url profile_view object.owner.pk %}">
-        {% if article.owner.get_profile.fullname %}
-            {{ article.owner.get_profile.fullname }}
+        {% if object.owner.get_profile.fullname %}
+            {{ object.owner.get_profile.fullname }}
         {% else %}
             Anon.
         {% endif %}
