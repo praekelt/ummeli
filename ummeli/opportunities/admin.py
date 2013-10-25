@@ -10,6 +10,9 @@ class OpportunityAdmin(ModelBaseAdmin):
         models.TextField: {'widget': CKEditorWidget},
     }
 
+class UmmeliOpportunityAdmin(OpportunityAdmin):
+    list_filter = ('state', 'created', 'is_community',)
+
 
 class CampaignAdmin(OpportunityAdmin):
     raw_id_fields = ('qualifiers', )
@@ -19,15 +22,15 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ('user', 'task', 'state')
     raw_id_fields = ('user', 'task')
 
-admin.site.register(Job, OpportunityAdmin)
-admin.site.register(Internship, OpportunityAdmin)
-admin.site.register(Volunteer, OpportunityAdmin)
-admin.site.register(Bursary, OpportunityAdmin)
-admin.site.register(Training, OpportunityAdmin)
+admin.site.register(Job, UmmeliOpportunityAdmin)
+admin.site.register(Internship, UmmeliOpportunityAdmin)
+admin.site.register(Volunteer, UmmeliOpportunityAdmin)
+admin.site.register(Bursary, UmmeliOpportunityAdmin)
+admin.site.register(Training, UmmeliOpportunityAdmin)
 admin.site.register(Event, OpportunityAdmin)
 admin.site.register(Competition, OpportunityAdmin)
-admin.site.register(StatusUpdate, OpportunityAdmin)
-admin.site.register(SkillsUpdate, OpportunityAdmin)
+admin.site.register(StatusUpdate, UmmeliOpportunityAdmin)
+admin.site.register(SkillsUpdate, UmmeliOpportunityAdmin)
 admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(TomTomCampaign, OpportunityAdmin)
 admin.site.register(MicroTask, OpportunityAdmin)
