@@ -8,7 +8,7 @@ from django.contrib import messages
 from ummeli.opportunities.models import UmmeliOpportunity, StatusUpdate, SkillsUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
 from ummeli.vlive.community.forms import StatusUpdateForm
-
+from datetime import datetime, timedelta
 
 current_site = Site.objects.get_current()
 
@@ -79,13 +79,22 @@ class StatusUpdateView(FormView):
         return context
 
     def form_valid(self, form):
+        # check if the user hasn't placed the exact status update
+        # with the exact same information in the last 5 minutes to prevent duplicates
         title = form.cleaned_data['title']
-        s = StatusUpdate.objects.create(title=title,
-                                        owner=self.request.user,
-                                        state='published',
-                                        is_community=True)
-        s.sites.add(current_site)
-        s.save()
+        delta = datetime.now() - timedelta(minutes=5)
+        duplicate = StatusUpdate.objects \
+                                .filter(owner=self.request.user, created__gte=delta, title=title) \
+                                .exists()
+
+        if not duplicate:
+            s = StatusUpdate.objects.create(title=title,
+                                            owner=self.request.user,
+                                            state='published',
+                                            is_community=True)
+            s.sites.add(current_site)
+            s.save()
+
         msg = 'You status has been updated.'
         messages.success(self.request, msg)
         return redirect(reverse('status_update'))
@@ -93,12 +102,20 @@ class StatusUpdateView(FormView):
 
 def advertise_skills_post(request):
     if request.method == 'POST':
-        s = SkillsUpdate.objects.create(title=request.user.username,
-                                        owner=request.user,
-                                        is_community=True,
-                                        state='published')
-        s.sites.add(current_site)
-        s.save()
+        # check if the user hasn't placed the exact status update
+        # with the exact same information in the last 5 minutes to prevent duplicates
+        delta = datetime.now() - timedelta(minutes=1)
+        duplicate = SkillsUpdate.objects \
+                                .filter(owner=request.user, created__gte=delta)\
+                                .exists()
+
+        if not duplicate:
+            s = SkillsUpdate.objects.create(title=request.user.username,
+                                            owner=request.user,
+                                            is_community=True,
+                                            state='published')
+            s.sites.add(current_site)
+            s.save()
         msg = 'You skills have been posted.'
         messages.success(request, msg)
     return redirect(reverse('index'))
