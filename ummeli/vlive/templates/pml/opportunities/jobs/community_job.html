@@ -26,7 +26,7 @@
             Anon.
         {% endif %}
 
-        {% opportunity_report_links object %}
+        {% opportunity_report_links job %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -39,6 +39,7 @@
 </CONTAINER>
 </MODULE>
 
+{% if not job.statusupdate %}
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
     {% if request.is_authorized %}
@@ -83,7 +84,9 @@
         </CONTAINER>
     {% endif %}
 </MODULE>
+{% endif %}
+{% endif %}
+
 <MODULE backgroundColor="false" palette="MiDove">
 <HEADER><LABEL> </LABEL></HEADER>
-{% endif %}
 {% endblock %}

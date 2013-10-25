@@ -6,16 +6,28 @@
     <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url community_jobs %}">Community Board</a>
     </div>
+
+    {% if job.statusupdate %}
+        <h2>
+        {% if job.owner.get_profile.fullname %}
+            {{ job.owner.get_profile.fullname }}
+        {% else %}
+            Anon.
+        {% endif %}
+        </h2>
+    {% else %}
     <h2>Opportunity</h2>
+    {% endif %}
+
     {% opportunity_report_warnings job 'community_jobs' %}
 
-    {% if not object.is_removed_by_community %}
+    {% if not job.is_removed_by_community %}
 
     <div class="wrap">
         <strong>{{job.title}}</strong><br/>
         <small><strong>{{job.get_provinces}}</strong></small><br/>
         {{ job.description }}
-        <br/><br/>
+        <br/>
         <small>{{ job.created|timesince }} ago</small>
         <p>submitted by
         {% if job.owner.get_profile.fullname %}
@@ -29,6 +41,7 @@
     </div>
 
     <div class="more"><a href="{% url community_jobs %}">&larr; Back</a></div>
+    {% if not job.statusupdate %}
     <br/>
     <h2>Apply for this opportunity</h2>
     <form name="pd" method="POST" class="content-form">
@@ -59,5 +72,6 @@
         or <a href="{% url register %}">register</a> with Ummeli to apply for this opportunity</div>
     {% endif %}
     </form>
+    {% endif %}
     {% endif %}
 {% endblock %}

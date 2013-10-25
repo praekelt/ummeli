@@ -1,7 +1,7 @@
 <div class="img-article list">
 {% if object.statusupdate %}
     <img src="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
-    {{ object.title }}
+    <a href="{% url community_jobs object.slug %}">{{ object.title }}</a>
 {% else %}{% if object.skillsupdate %}
     {% with user_profile=object.owner.get_profile %}
         <a href="{% url profile_view object.owner.pk %}">
