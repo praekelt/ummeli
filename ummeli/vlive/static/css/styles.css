@@ -246,3 +246,5 @@ img.left{float: left;margin: 5px 10px 0 0;}
 
 .list { padding: 0 10px 10px 10px; font-family: "Roboto", sans-serif; font-weight: 300; }
     .list a { font-weight: 500; }
+
+.position-filled{background-color:#21c0c2;color:#fff;font-size:.9em;margin:3px 0;padding:3px 3px 3px 10px}
