@@ -2,6 +2,7 @@ from django import template
 from django.template.loader import render_to_string
 from reporting import helpers
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 register = template.Library()
 
@@ -46,11 +47,9 @@ def opportunity_report_warnings(context, obj, back):
     postion_filled_votes = helpers.get_object_votes(obj, UmmeliOpportunity.POSITION_FILLED_REPORT_KEY_FIELD)
     inappropriate_votes = helpers.get_object_votes(obj, UmmeliOpportunity.INAPPROPRIATE_REPORT_KEY_FIELD)
 
-    REPORT_LIMIT = 3
-
-    context['is_scam'] = scam_votes >= REPORT_LIMIT
-    context['is_position_filled'] = postion_filled_votes >= REPORT_LIMIT
-    obj.is_removed_by_community = inappropriate_votes >= REPORT_LIMIT
+    context['is_scam'] = scam_votes >= settings.REPORT_FLAG_LIMIT
+    context['is_position_filled'] = postion_filled_votes >= settings.REPORT_FLAG_LIMIT
+    obj.is_removed_by_community = inappropriate_votes >= settings.REPORT_FLAG_LIMIT
     context['object'] = obj
     context['back'] = reverse(back)
     return context

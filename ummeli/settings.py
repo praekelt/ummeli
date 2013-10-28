@@ -309,3 +309,6 @@ REDIS_SETTINGS = {
     'port': 6379,
     'db': 0
 }
+
+# minimum reports required to mark an object as flagged
+REPORT_FLAG_LIMIT = 3
