@@ -15,7 +15,6 @@
             {% block body %}
                 {% cache 600 banner-detail %}
                 <MODULE backgroundColor="false" border="module">
-                <HEADER backgroundColor="true"><LABEL>Ummeli</LABEL></HEADER>
                 {% if banner %}
                 <CONTAINER type="table">
                 <TABLE border="false">
