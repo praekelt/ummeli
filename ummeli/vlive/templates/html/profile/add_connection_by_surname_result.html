@@ -20,7 +20,7 @@
 {% endfor %}
 <div id="pagination">
     {% if user_profiles.has_previous %}
-        <span><a href="{% url add_connection_by_surname_result province_pk user_profiles.previous_page_number %}">Previous</a></span> |
+        <span><a href="{% url add_connection_by_surname_result province_pk user_profiles.previous_page_number %}?name={{name}}">Previous</a></span> |
     {% else %}
         <span>Previous</span> |
     {% endif %}
@@ -30,7 +30,7 @@
     </span>
 
     {% if user_profiles.has_next %}
-        | <span><a href="{% url add_connection_by_surname_result province_pk user_profiles.next_page_number %}">Next</a></span>
+        | <span><a href="{% url add_connection_by_surname_result province_pk user_profiles.next_page_number %}?name={{name}}">Next</a></span>
     {% else %}
         | <span>Next</span>
     {% endif %}

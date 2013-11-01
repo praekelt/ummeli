@@ -33,12 +33,12 @@
 <HEADER><LABEL> </LABEL></HEADER>
 <CONTAINER type="list">
     {% if user_profiles.has_previous %}
-    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk user_profiles.previous_page_number %}?{{uuid}}">
+    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk user_profiles.previous_page_number %}?industry={{industry}}&amp;{{uuid}}">
         <TEXT>Previous</TEXT>
     </LINK>
     {% endif %}
     {% if user_profiles.has_next %}
-    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk  user_profiles.next_page_number %}?{{uuid}}">
+    <LINK href="{% url add_connection_by_industry_result industry_pk province_pk  user_profiles.next_page_number %}?industry={{industry}}&amp;{{uuid}}">
         <TEXT>Next</TEXT>
     </LINK>
     {% endif %}
