@@ -130,6 +130,9 @@ class UmmeliOpportunity(ModelBase):
                 return 2
         return OpportunityViewModel(self)
 
+    class Meta:
+        verbose_name_plural = "Ummeli opportunities"
+
 
 class Opportunity(ModelBase):
     province = models.ManyToManyField(

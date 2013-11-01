@@ -47,6 +47,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ('user', 'task', 'state')
     raw_id_fields = ('user', 'task')
 
+admin.site.register(UmmeliOpportunity, UmmeliOpportunityAdmin)
 admin.site.register(Job, UmmeliOpportunityAdmin)
 admin.site.register(Internship, UmmeliOpportunityAdmin)
 admin.site.register(Volunteer, UmmeliOpportunityAdmin)
