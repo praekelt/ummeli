@@ -212,9 +212,10 @@ def jobs_list(request):
 
 def opportunity_apply(request, slug):
     form = None
-    if not UmmeliOpportunity.objects.filter(slug=slug):
-        return redirect(reverse('opportunities'))  # Sorry, this ad has been removed.
-    opportunity = UmmeliOpportunity.objects.get(slug=slug).as_leaf_class()
+    if not UmmeliOpportunity.permitted.filter(slug=slug):
+        messages.error(request, 'Sorry, this post has been removed.')
+        return redirect(reverse('opportunities'))
+    opportunity = UmmeliOpportunity.permitted.get(slug=slug).as_leaf_class()
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):

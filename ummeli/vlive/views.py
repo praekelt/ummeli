@@ -161,7 +161,7 @@ def password_change_view(request):
     return render(request, 'password_change.html', {'form': form})
 
 def index(request):
-    community_list = UmmeliOpportunity.objects.filter(is_community=True).order_by('-created')[:3]
+    community_list = UmmeliOpportunity.permitted.filter(is_community=True).order_by('-created')[:3]
     return render(request, 'index.html', {'community_list': community_list})
 
 @login_required
@@ -294,7 +294,7 @@ def stats(request):
                                 {'users': users_count,
                                 'cvs_complete': cvs_complete,
                                 'cvs_complete_percent': cvs_complete_percent,
-                                'user_articles': UmmeliOpportunity.objects.count()})
+                                'user_articles': UmmeliOpportunity.permitted.count()})
 
 @login_required
 def jobs_create(request):
@@ -339,7 +339,7 @@ def opportunity_create(request, slug=None):
             # check if the user hasn't placed the exact same job article
             # with the exact same information in the last 5 minutes to prevent duplicates
             delta = datetime.now() - timedelta(minutes=5)
-            duplicate = UmmeliOpportunity.objects.filter(owner=request.user,
+            duplicate = UmmeliOpportunity.permitted.filter(owner=request.user,
                                                          created__gte=delta,
                                                          title=title,
                                                          description=description) \

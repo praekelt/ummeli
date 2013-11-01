@@ -14,7 +14,7 @@ current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
-    posts = UmmeliOpportunity.objects.filter(is_community=True).order_by('-created')
+    posts = UmmeliOpportunity.permitted.filter(is_community=True).order_by('-created')
 
     paginator = Paginator(posts, 15)  # Show 15 contacts per page
     page = request.GET.get('page', 'none')
@@ -33,9 +33,10 @@ def community_jobs(request):
 
 def community_job(request, slug):
     form = None
-    if not UmmeliOpportunity.objects.filter(slug=slug):
-        return redirect(reverse('community_jobs'))  # Sorry, this ad has been removed.
-    article = UmmeliOpportunity.objects.get(slug=slug)
+    if not UmmeliOpportunity.permitted.filter(slug=slug):
+        messages.error(request, 'Sorry, this post has been removed.')
+        return redirect(reverse('community_jobs'))
+    article = UmmeliOpportunity.permitted.get(slug=slug)
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
