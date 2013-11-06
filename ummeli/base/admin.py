@@ -34,7 +34,14 @@ class BannerAdmin(ModelBaseAdmin):
                 obj.time_on, obj.time_off)
         return 'Randomly selected by Vlive'
 
-admin.site.register(CurriculumVitae)
+class CurriculumVitaeAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'first_name', 'surname']
+    list_display = ('user', 'fullname', 'fields_complete', 'gender')
+    raw_id_fields = ('user', 'certificates', 'languages', 'work_experiences',
+                     'references', 'preferred_skill', 'skills',
+                     'connection_requests')
+
+admin.site.register(CurriculumVitae, CurriculumVitaeAdmin)
 admin.site.register(Certificate)
 admin.site.register(Language)
 admin.site.register(WorkExperience)
