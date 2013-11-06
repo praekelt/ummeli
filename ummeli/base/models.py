@@ -124,7 +124,7 @@ class CurriculumVitae(models.Model):
 
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=45, null=True, blank=True)
-    province = models.IntegerField(default=0)
+    province = models.IntegerField(default=0, choices=PROVINCE_CHOICES)
 
     school = models.CharField(max_length=45, null=True, blank=True)
     highest_grade = models.CharField(max_length=45, null=True, blank=True)

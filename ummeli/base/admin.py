@@ -36,10 +36,14 @@ class BannerAdmin(ModelBaseAdmin):
 
 class CurriculumVitaeAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'first_name', 'surname']
-    list_display = ('user', 'fullname', 'fields_complete', 'gender')
+    list_display = ('user', 'first_name', 'surname', 'province')
     raw_id_fields = ('user', 'certificates', 'languages', 'work_experiences',
                      'references', 'preferred_skill', 'skills',
                      'connection_requests')
+    readonly_fields = ('user', 'province', 'certificates', 'languages',
+                     'work_experiences', 'references', 'preferred_skill',
+                     'skills', 'connection_requests')
+    list_filter = ('province', )
 
 admin.site.register(CurriculumVitae, CurriculumVitaeAdmin)
 admin.site.register(Certificate)
