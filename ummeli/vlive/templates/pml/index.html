@@ -3,6 +3,7 @@
 {% load article_tags %}
 {% load poll_tags %}
 {% load your_words_tags %}
+{% load vlive_tags %}
 
 {% block title %}
     Welcome
@@ -19,6 +20,9 @@
     </TEXT>
 </CONTAINER>
 </MODULE>
+
+{% render_homepage_banner %}
+
 {% get_articles 3 "article_list" %}
 {% if article_list %}
 <MODULE backgroundColor="false" palette="MiDove">

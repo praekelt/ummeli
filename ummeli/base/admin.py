@@ -21,7 +21,7 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
 class BannerAdmin(ModelBaseAdmin):
 
     list_display = (
-        'title', 'description', 'thumbnail', 'schedule', 'state')
+        'title', 'description', 'thumbnail', 'schedule', '_actions')
     raw_id_fields = ('owner', 'location')
 
     def thumbnail(self, obj, *args, **kwargs):

@@ -1,0 +1,40 @@
+{% load cache %}
+{% cache 600 vlive-banner-detail %}
+{% if banner %}
+<MODULE backgroundColor="false" border="module">
+<CONTAINER type="table">
+<TABLE border="false">
+<TR><TD>
+<CONTAINER type="data">
+    <TEXT>
+        <LINK href="{{ banner.url}}">
+        <IMAGE align="left" type="image/jpeg"
+               href="{{ ROOT_URL }}{{ banner.image.url }}"
+               caption="ummeli"/>
+        </LINK>
+    </TEXT>
+</CONTAINER>
+</TD></TR>
+<TR><TD>
+    <TEXT>
+        <LINK href="{{banner.url}}">{{ banner.title }}</LINK>
+        {{ banner.description }}
+    </TEXT>
+</TD></TR>
+</TABLE>
+</CONTAINER>
+{% else %}
+<CONTAINER type="table">
+<TABLE border="false">
+<TR><TD>
+    <TEXT>
+        <LINK href="/vlive/">Ummeli</LINK>
+        lets you find opportunities, build a work profile &amp; connect with others.
+    </TEXT>
+</TD></TR>
+</TABLE>
+</CONTAINER>
+<FOOTER></FOOTER>
+</MODULE>
+{% endif %}
+{% endcache %}
