@@ -1,7 +1,7 @@
 {% load cache %}
-{% cache 600 vlive-banner-detail %}
-{% if banner %}
+{% cache 600 vlive-banner-detail-1 %}
 <MODULE backgroundColor="false" border="module">
+{% if banner %}
 <CONTAINER type="table">
 <TABLE border="false">
 <TR><TD>
@@ -34,7 +34,7 @@
 </TD></TR>
 </TABLE>
 </CONTAINER>
+{% endif %}
 <FOOTER></FOOTER>
 </MODULE>
-{% endif %}
 {% endcache %}
