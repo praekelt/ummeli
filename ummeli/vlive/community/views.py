@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic import FormView
 from django.contrib.sites.models import Site
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from ummeli.vlive.utils import pin_required
 
 from ummeli.opportunities.models import UmmeliOpportunity, StatusUpdate, SkillsUpdate
 from ummeli.vlive.forms import EmailCVForm, FaxCVForm
@@ -101,6 +103,8 @@ class StatusUpdateView(FormView):
         return redirect(reverse('status_update'))
 
 
+@login_required
+@pin_required
 def advertise_skills_post(request):
     if request.method == 'POST':
         # check if the user hasn't placed the exact status update
