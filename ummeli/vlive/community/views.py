@@ -123,20 +123,24 @@ class StatusUpdateView(FormView):
 def advertise_skills_post(request):
     if request.method == 'POST':
         # check if the user hasn't placed the exact status update
-        # with the exact same information in the last 5 minutes to prevent duplicates
+        # with the exact same information in the last 5 minutes
+        # to prevent duplicates
         delta = datetime.now() - timedelta(minutes=1)
-        duplicate = SkillsUpdate.objects \
-                                .filter(owner=request.user, created__gte=delta)\
-                                .exists()
+        duplicate = SkillsUpdate.objects.filter(
+            owner=request.user,
+            created__gte=delta
+        ).exists()
 
         daily_limit_exceeded = UmmeliOpportunity.objects.filter(
-            owner=self.request.user,
+            owner=request.user,
             created__gte=datetime.now().date()
         ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
 
         if daily_limit_exceeded:
-            msg = "You can only update your status 3 times a day"
-            messages.error(self.request, msg)
+            msg = "You can only post to the community board %s times a day"
+            messages.error(
+                request,
+                msg % settings.COMMUNITY_BOARD_POST_LIMIT)
             return redirect(reverse('index'))
 
         if not duplicate:
