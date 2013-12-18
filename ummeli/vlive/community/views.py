@@ -83,12 +83,23 @@ class StatusUpdateView(FormView):
 
     def form_valid(self, form):
         # check if the user hasn't placed the exact status update
-        # with the exact same information in the last 5 minutes to prevent duplicates
+        # with the exact same information in the last 5 minutes
+        # to prevent duplicates
         title = form.cleaned_data['title']
         delta = datetime.now() - timedelta(minutes=5)
-        duplicate = StatusUpdate.objects \
-                                .filter(owner=self.request.user, created__gte=delta, title=title) \
-                                .exists()
+        duplicate = StatusUpdate.objects.filter(
+            owner=self.request.user,
+            created__gte=delta,
+            title=title).exists()
+
+        daily_limit_exceeded = StatusUpdate.objects.filter(
+            owner=self.request.user,
+            created__gte=datetime.now().date()).count() >= 3
+
+        if daily_limit_exceeded:
+            msg = "You can only update your status 3 times a day"
+            messages.error(self.request, msg)
+            return redirect(reverse('status_update'))
 
         if not duplicate:
             s = StatusUpdate.objects.create(title=title,
