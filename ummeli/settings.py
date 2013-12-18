@@ -312,3 +312,6 @@ REDIS_SETTINGS = {
 
 # minimum reports required to mark an object as flagged
 REPORT_FLAG_LIMIT = 3
+
+# limit on community board posts
+COMMUNITY_BOARD_POST_LIMIT = 3

@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.contrib.sites.models import Site
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from ummeli.vlive.utils import pin_required
 
 from ummeli.opportunities.models import UmmeliOpportunity, StatusUpdate, SkillsUpdate
@@ -92,13 +93,16 @@ class StatusUpdateView(FormView):
             created__gte=delta,
             title=title).exists()
 
-        daily_limit_exceeded = StatusUpdate.objects.filter(
+        daily_limit_exceeded = UmmeliOpportunity.objects.filter(
             owner=self.request.user,
-            created__gte=datetime.now().date()).count() >= 3
+            created__gte=datetime.now().date()
+        ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
 
         if daily_limit_exceeded:
-            msg = "You can only update your status 3 times a day"
-            messages.error(self.request, msg)
+            msg = "You can only post to the community board %s times a day"
+            messages.error(
+                self.request,
+                msg % settings.COMMUNITY_BOARD_POST_LIMIT)
             return redirect(reverse('status_update'))
 
         if not duplicate:
@@ -124,6 +128,16 @@ def advertise_skills_post(request):
         duplicate = SkillsUpdate.objects \
                                 .filter(owner=request.user, created__gte=delta)\
                                 .exists()
+
+        daily_limit_exceeded = UmmeliOpportunity.objects.filter(
+            owner=self.request.user,
+            created__gte=datetime.now().date()
+        ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
+
+        if daily_limit_exceeded:
+            msg = "You can only update your status 3 times a day"
+            messages.error(self.request, msg)
+            return redirect(reverse('index'))
 
         if not duplicate:
             s = SkillsUpdate.objects.create(title=request.user.username,

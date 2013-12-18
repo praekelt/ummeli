@@ -304,11 +304,28 @@ def jobs_create(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         # check if the user hasn't placed the exact same job article
-        # with the exact same information in the last 5 minutes to prevent duplicates
+        # with the exact same information in the last 5 minutes
+        # to prevent duplicates
         delta = datetime.now() - timedelta(minutes=5)
-        duplicate = Job.objects \
-                        .filter(owner=request.user, created__gte=delta, title=title,  description=description) \
-                        .exists()
+        duplicate = Job.objects.filter(
+            owner=request.user,
+            created__gte=delta,
+            title=title,
+            description=description
+        ).exists()
+
+        daily_limit_exceeded = UmmeliOpportunity.objects.filter(
+            owner=request.user,
+            created__gte=datetime.now().date()
+        ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
+
+        if daily_limit_exceeded:
+            msg = "You can only post to the community board %s times a day"
+            messages.error(
+                request,
+                msg % settings.COMMUNITY_BOARD_POST_LIMIT)
+            return redirect(reverse('index'))
+
         if form.is_valid():
             if not duplicate:
 
@@ -339,12 +356,25 @@ def opportunity_create(request, slug=None):
             # check if the user hasn't placed the exact same job article
             # with the exact same information in the last 5 minutes to prevent duplicates
             delta = datetime.now() - timedelta(minutes=5)
-            duplicate = UmmeliOpportunity.permitted.filter(owner=request.user,
-                                                         created__gte=delta,
-                                                         title=title,
-                                                         description=description) \
-                                                 .exists()
-            if not duplicate:
+            duplicate = UmmeliOpportunity.permitted.filter(
+                owner=request.user,
+                created__gte=delta,
+                title=title,
+                description=description).exists()
+
+            daily_limit_exceeded = UmmeliOpportunity.objects.filter(
+                owner=request.user,
+                created__gte=datetime.now().date()
+            ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
+
+            if daily_limit_exceeded:
+                msg = "You can only post to the community board %s times a day"
+                messages.error(
+                    request,
+                    msg % settings.COMMUNITY_BOARD_POST_LIMIT)
+                return redirect(reverse('index'))
+
+            if not duplicate and not daily_limit_exceeded:
                 model = form.get_model()
                 opportunity = model(title=title, description=description)
                 opportunity.owner = request.user
