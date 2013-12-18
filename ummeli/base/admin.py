@@ -5,13 +5,6 @@ from jmbocomments.admin import UserCommentAdmin
 from jmbo.admin import ModelBaseAdmin
 
 
-class UserSubmittedJobArticleAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'text', 'user__username')
-    list_display = ('date', 'title', 'text', 'province', 'job_category')
-    list_filter = ('province', 'job_category')
-    ordering = ('-date',)
-    date_hierarchy = 'date'
-    raw_id_fields = ('user', )
 
 
 class UmmeliUserCommentAdmin(UserCommentAdmin):
@@ -25,25 +18,10 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
                 if not instance.user.get_profile().comment_as_anon\
                 else "Anon."
 
-class ArticleAdmin(admin.ModelAdmin):
-    search_fields = ('text',)
-    list_display = ('date', 'text', 'source')
-    list_filter = ('source',)
-    ordering = ('-date',)
-    date_hierarchy = 'date'
-    list_per_page = 10
-
-class JobCategoryAdmin(admin.ModelAdmin):
-    search_fields = ('title',)
-    list_display = ('title', 'province')
-    list_filter = ('is_allowed','province')
-    ordering = ('title',)
-
-
 class BannerAdmin(ModelBaseAdmin):
 
     list_display = (
-        'title', 'description', 'thumbnail', 'schedule', 'state')
+        'title', 'description', 'thumbnail', 'schedule', '_actions')
     raw_id_fields = ('owner', 'location')
 
     def thumbnail(self, obj, *args, **kwargs):
@@ -56,15 +34,22 @@ class BannerAdmin(ModelBaseAdmin):
                 obj.time_on, obj.time_off)
         return 'Randomly selected by Vlive'
 
-admin.site.register(CurriculumVitae)
+class CurriculumVitaeAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'first_name', 'surname']
+    list_display = ('user', 'first_name', 'surname', 'province')
+    raw_id_fields = ('user', 'certificates', 'languages', 'work_experiences',
+                     'references', 'preferred_skill', 'skills',
+                     'connection_requests')
+    readonly_fields = ('user', 'province', 'certificates', 'languages',
+                     'work_experiences', 'references', 'preferred_skill',
+                     'skills', 'connection_requests')
+    list_filter = ('province', )
+
+admin.site.register(CurriculumVitae, CurriculumVitaeAdmin)
 admin.site.register(Certificate)
 admin.site.register(Language)
 admin.site.register(WorkExperience)
 admin.site.register(Reference)
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(Province)
-admin.site.register(Category, JobCategoryAdmin)
-admin.site.register(UserSubmittedJobArticle, UserSubmittedJobArticleAdmin)
 admin.site.register(Banner, BannerAdmin)
 
 if UserComment in admin.site._registry:

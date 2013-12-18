@@ -1,15 +1,15 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url my_ummeli %}">My Ummeli</a>
         &raquo; <a href="{% url my_connections %}">My Connections</a>
         &raquo; <a href="{% url profile_view user_node.user_id %}">{{ other_user_node.name }}</a>
-        &raquo; Connections
-    </h2>
+        </div>
+    <h2>Connections</h2>
         {% if connections %}
             {% for node, is_connected, is_already_requested, is_request_received in connections %}
-                <div class="list">
+                <div class="list-separated">
                 {% if node.user_id == user.pk %}
                     <a href='{% url profile %}'>{{ node.name }}</a>
                     <strong>(me)</strong>
@@ -19,10 +19,9 @@
                 {% endif %}
                 </div>
             {% endfor %}
-            <br/>
         {% else %}
-            <p>0 connections.</p>
+            <div class="wrap">0 connections.</div>
         {% endif %}
-        
+
         <div class="more"><a href="{% url profile_view user_node.user_id %}">&larr; Back</a></div>
 {% endblock %}

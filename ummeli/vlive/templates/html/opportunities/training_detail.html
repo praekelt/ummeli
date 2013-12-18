@@ -1,12 +1,17 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url training %}">Training</a> &raquo;
-        {{object.title}}
-    </h2>
-    <p>
+        <a href="{% url training %}">Training</a>
+    </div>
+    <h2>Training</h2>
+
+    {% opportunity_report_warnings object 'training' %}
+
+    {% if not object.is_removed_by_community %}
+    <div class="wrap">
         <strong>{{object.title}}</strong>
         <br/><small>Cost: R {{ object.cost }}</small>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
@@ -15,6 +20,23 @@
         <br/>
         <br/>
         {{ object.description|safe }}
-    </p>
+        {% if object.is_community %}
+        <p>submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a>
+        </p>
+        {% endif %}
+
+    {% opportunity_report_links object %}
+    </div>
+
     <div class="more"><a href="{% url training %}">&larr; Back</a></div>
+
+    {% include 'opportunities/opportunity_apply.html' %}
+    {% endif %}
 {% endblock %}

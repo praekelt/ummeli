@@ -1,4 +1,5 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
 <HEADER><LABEL>Internships</LABEL></HEADER>
@@ -9,18 +10,27 @@
 </CONTAINER>
 </MODULE>
 
+{% opportunity_report_warnings object 'internships' %}
+
+{% if not object.is_removed_by_community %}
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL> </LABEL></HEADER>
     <CONTAINER type="data">
     <TEXT>
     <b>{{object.title}}</b>
-    <br/>Salary: R {{ object.salary }}
+    {% if object.salary %}<br/>Salary: R {{ object.salary }}{% endif %}
     {% if object.retract_on %}<br/>Deadline: <b>{{ object.retract_on|date:"D, j M Y" }}</b>{% endif %}
     <br/>Province: {{ object.get_provinces }}
     <br/>Min. education required: {{ object.get_education}}
     <br/>
     <br/>
     {{ object.description|safe }}
+    {% if object.ummeliopportunity.is_community %}
+    <br/><br/>
+    {% include 'opportunities/community_opportunity_meta.html' %}
+    {% endif %}
+
+    {% opportunity_report_links object %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -32,4 +42,9 @@
         <TEXT>Back</TEXT>
     </LINK>
 </CONTAINER>
+</MODULE>
+
+{% include 'opportunities/opportunity_apply.html' %}
+
+{% endif %}
 {% endblock %}

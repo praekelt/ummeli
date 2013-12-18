@@ -7,7 +7,7 @@
 
 
 {% block content %}
-<h2><a href="{% url article_list %}">Latest</a></h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url article_list %}">Latest</a></div>
 <div class="article">
     <div class="article">
     <img src="{% if article.image %}{{ article.image.url }}{% else %}/ummeli-static/media/latest.jpg{% endif %}" width="56" height="56" alt="Title Here" class="left">
@@ -17,11 +17,12 @@
         {{ article.published_on|date:"D, j M Y" }}
     </small>
     <div class="item-tools no-clear">
-        <span class="comments"><a href="#comment_list">{{ comment_count }}</a></span>
-        <span class="likes">{{ article.like_count }}</span>
+        <span class="comments"><a href="#comment_list">{{ comment_count }} Comments</a></span>
+        <span class="likes">{{ article.like_count }} Likes
         {% if user.is_authenticated %}
-        <span class="tag"><a href="{% url article_detail article.pk %}like/" class="like">+Like</a></span>
+        <a href="{% url article_detail article.pk %}like/" class="like">+Like</a>
         {% endif %}
+    </span>
     </div>
 </div>
 
@@ -30,9 +31,8 @@
 
     {% if article.linked_article or article.linked_page %}
         <br/>
-        <br/>
-        <strong>See also:</strong>
-        <div>
+        <div class="also">
+        <p><strong>See also:</strong></p>
         {% if article.linked_article %}
             <div class="bullet">
                 <a href="{% url article_detail_redo article.linked_article.pk %}">
@@ -57,7 +57,7 @@
 {% if poll and poll.published %}
     <div class="poll">
         <h2>Poll</h2>
-        <div class="list">
+        <div class="list-separated">
         {% show_poll poll %}
         </div>
     </div>
@@ -75,7 +75,7 @@
 
 {% if article.downloads.exists %}
     <h2>Downloads</h2>
-    <div class="list">
+    <div class="list-separated">
     {% for download in article.downloads.all %}
         {% if download.state == 'published' %}
         <a href="{{ download.get_absolute_url }}">

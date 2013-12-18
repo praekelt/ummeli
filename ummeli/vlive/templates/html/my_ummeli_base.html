@@ -4,8 +4,8 @@
     {% block content %}
     {% endblock %}
 
+    <div class="my">
     <h2>My Ummeli</h2>
-    <div id="menu">
     <div><a href="{% url profile %}">Work Profile</a> <span class="subtext">&rarr; {{user_profile.fields_complete|floatformat:0}}% complete</span></div>
     <div><a href="{% url my_connections %}">My Connections</a>
         {% if user_profile.connection_requests.exists %}
@@ -14,7 +14,7 @@
         <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connection{{user_profile.get_connnections_count|pluralize}}</span>
         {% endif %}
     </div>
-    <div><a href="{% url my_jobs %}">My Jobs</a><span class="subtext"> &rarr; {{request.user.user_submitted_job_article_user.count}} posted</span></div>
+    <div class="bullet"><a href="{% url my_community %}">My Community Board &rarr; </a></div>
     <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a><span class="subtext">  &rarr; {{request.user.taskcheckout_set.count}} tasks</span></div>
     <div><a href="{% url my_settings %}">My Settings &rarr; </a></div>
     <div><a href="{% url send %}">Send as CV &rarr; </a></div>

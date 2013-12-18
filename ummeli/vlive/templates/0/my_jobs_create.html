@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="h2"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_jobs %}">My Jobs</a> &raquo; edit</div>
+<div class="crumbs"><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_jobs %}">My Jobs</a> &raquo; edit</div>
 <form method="POST" class="content-form">
-    <fieldset> 
+    <fieldset>
     <strong>* = Required</strong><br />
     <label for="province">Province:*</label>
     {% include "form_field_errors_snippet.html" with form_field=form.province %}
@@ -29,16 +29,16 @@
     <label >Job Title:*</label>
     {% include "form_field_errors_snippet.html" with form_field=form.title %}
     <input name="title" type="text" class="txt" value="{{form.title.value}}"/>
-    
+
     <label>Description:*</label>
-    <div>Please provide as much information about the job as possible including 
+    <div>Please provide as much information about the job as possible including
     contact details.
     </div>
     {% include "form_field_errors_snippet.html" with form_field=form.description %}
     <textarea id="id_text" rows="10" name="text" class="txt">{{form.text.value}}</textarea>
     <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     <input type='submit' value='Save' class="btn"/>
-    </fieldset> 
+    </fieldset>
 </form>
 <div class="more"><a href="{% url my_jobs %}">&larr; Back</a></div>
 {% endblock %}

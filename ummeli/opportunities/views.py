@@ -9,6 +9,7 @@ from django.contrib import messages
 from ummeli.base.models import PROVINCE_CHOICES, ALL
 from ummeli.opportunities.models import *
 from ummeli.opportunities.tomtom.forms import SelectLocationForm
+from ummeli.vlive.forms import FaxCVForm, EmailCVForm
 from django.contrib.gis.geos import Point
 
 
@@ -43,7 +44,26 @@ class OpportunityListView(ListView):
             province_qs = province_qs.filter(province__province__in=[province,
                                                                     ALL])
 
-        return province_qs.order_by('-created')
+        return province_qs.order_by('-publish_on')
+
+
+class JobListView(OpportunityListView):
+    template_name='opportunities/jobs/jobs.html'
+    def get_queryset(self):
+        qs = super(JobListView, self).get_queryset()
+
+        category_id = int(self.kwargs['category_id'])
+
+        if category_id != 0:
+            qs = qs.filter(category=category_id)
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(JobListView, self).get_context_data(**kwargs)
+        category_id = int(self.kwargs['category_id'])
+        context['category'] = dict(CATEGORY_CHOICES).get(category_id)
+        return context
 
 
 class MicroTaskListView(ListView):
@@ -183,3 +203,43 @@ def select_location(request):
 
     return render(request, 'atlas/select_location.html',
         {'next': next, 'form': form})
+
+
+def jobs_list(request):
+    return render(request, 'opportunities/jobs/jobs_list.html',
+                              {'categories': CATEGORY_CHOICES})
+
+
+def opportunity_apply(request, slug):
+    form = None
+    if not UmmeliOpportunity.permitted.filter(slug=slug):
+        messages.error(request, 'Sorry, this post has been removed.')
+        return redirect(reverse('opportunities'))
+    opportunity = UmmeliOpportunity.permitted.get(slug=slug).as_leaf_class()
+
+    if request.method == 'POST':
+        if(request.POST.get('send_via') == 'email'):
+            form = EmailCVForm(data=request.POST)
+        else:
+            form = FaxCVForm(data=request.POST)
+
+        user_profile = request.user.get_profile()
+
+        if form.is_valid() and not user_profile.missing_fields():
+            send_via = form.cleaned_data['send_via']
+            send_to = form.cleaned_data['send_to']
+
+            if send_via == 'email':
+                user_profile.email_cv(send_to,  opportunity.description)
+                msg = 'You email has been sent.'
+                messages.success(request, msg)
+                return redirect(opportunity.get_absolute_url())
+            else:
+                user_profile.fax_cv(send_to, opportunity.description)
+                msg = 'You fax has been sent.'
+                messages.success(request, msg)
+                return redirect(opportunity.get_absolute_url())
+        else:
+            messages.error(request, 'Please enter a valid email')
+
+    return redirect(opportunity.get_absolute_url())

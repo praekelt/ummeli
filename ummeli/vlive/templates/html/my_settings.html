@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Settings</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a></div>
     <h2>My Settings</h2>
     <div class="bullet"><a href="{% url password_change %}">Change PIN</a></div>
     <div class="bullet"><a href="{% url my_contact_privacy %}">Contact Details Privacy</a></div>

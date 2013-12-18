@@ -1,10 +1,10 @@
 {% extends "my_ummeli_base.xml" %}
-    
+
 {% block content %}
 <HEADER><LABEL>Add work</LABEL></HEADER>
 <CONTAINER  type="data">
 <TEXT>
-Rate your experience in <strong>{{object.skill}}</strong>.
+Rate your experience in <b>{{object.skill}}</b>.
 </TEXT>
 </CONTAINER>
 <CONTAINER type="data">
@@ -20,7 +20,7 @@ Rate your experience in <strong>{{object.skill}}</strong>.
             <CHOICE value="10" {% if object.level == 10 %}checked="true"{% endif %}>5 - 10 yrs</CHOICE>
             <CHOICE value="20" {% if object.level == 20 %}checked="true"{% endif %}>10+ yrs</CHOICE>
         </CHOICE-GROUP>
-    
+
         <FIELD type='hidden' name='_action' value='POST' />
         <FIELD type='hidden' name='skill' value='{{object.skill}}' />
         <FIELD type='hidden' name='primary' value='{{object.primary}}' />

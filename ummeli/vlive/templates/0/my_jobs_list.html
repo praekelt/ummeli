@@ -7,17 +7,17 @@
         {% for item in object_list %}
             <div class="list"><a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
             <br/>
-            {{item.text|truncatewords:10}}
+            {{item.description|truncatewords:10}}
             <br/>
             <small>
-                {{ item.date|date:"D, j M Y, H:i" }}
+                {{ item.created|timesince }} ago
             </small>
             <br/>
             <a href="{% url my_jobs_delete item.pk %}">Delete</a>
             </div>
         {% endfor %}
         {% endif %}
-        
+
         <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |
@@ -35,7 +35,7 @@
             | <span>Next</span>
         {% endif %}
         </div>
-    
+
         <div class="more"><a href="{% url jobs_create %}">+ Add another</a></div>
         <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
     </form>

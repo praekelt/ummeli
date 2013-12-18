@@ -7,8 +7,9 @@
         {% for object in object_list %}
         <div class="img-article article">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Salary: R {{object.salary}}</small><br/>
+            {% if not object.is_community %}<small>Salary: R {{object.salary}}</small><br/>{% endif %}
             {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
+            {% include 'opportunities/community_opportunity_meta.html' %}
         </div>
         {% empty %}
         <p>0 internships in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>

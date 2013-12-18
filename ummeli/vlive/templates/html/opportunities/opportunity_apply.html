@@ -1,0 +1,29 @@
+<br/>
+<h2>Apply for this opportunity</h2>
+<form name="pd" method="POST" class="content-form" action="{% url opportunity_apply object.slug %}">
+{% if user.is_authenticated %}
+    {% if user_profile.missing_fields %}
+        <strong>Missing fields</strong>
+        <div class="warning">
+            Your CV is incomplete. Please make sure that the following information is
+            completed before you can send your CV.
+        </div>
+        {% for field in user_profile.missing_fields %}
+            - {{field}}<br/>
+        {% endfor %}
+    {% else %}
+    <fieldset>
+    <strong>* = Required</strong><br />
+      <label for="email">Email CV To:*</label>
+      <span class="subtext">(example) someone@email.com</span>
+      <input type="text" class="txt" name="send_to"/>
+      <input type="submit" name="signin-btn" value="Send" class="btn" />
+      <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+      <input type="hidden" name="send_via" value="email" />
+    </fieldset>
+    {% endif %}
+{% else %}
+    <div class="warning">Please <a href="{% url login %}?next={{ object.get_absolute_url }}">sign in</a>
+    or <a href="{% url register %}">register</a> with Ummeli to apply for this opportunity</div>
+{% endif %}
+</form>

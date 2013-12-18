@@ -1,26 +1,26 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2>
-        <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; 
+    <div class="crumbs">
+        <a href="{% url my_ummeli %}">My Ummeli</a> &raquo;
         <a href="{% url my_connections %}">My Connections</a> &raquo;
         <a href="{% url profile_view user_id %}">{{other_user_profile.fullname}}</a>
-    </h2>
-        
+    </div>
+
     <h2>Jobs Posted</h2>
         {% if object_list %}
         {% for item in object_list %}
-            <div class="img-article"><a href='{% url connection_jobs user_id item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
+            <div class="list-separated"><a href='{% url connection_jobs user_id item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
             <br/>
-            {{item.text|truncatewords:10}}
+            {{item.description|truncatewords:10}}
             <br/>
             <small>
-                {{ item.date|date:"D, j M Y, H:i" }}
+                {{ item.created|timesince }} ago
             </small>
             </div>
         {% endfor %}
         {% endif %}
-        
+
         <div id="pagination">
         {% if page_obj.has_previous %}
             <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span> |

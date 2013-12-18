@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; Latest</div>
 <h2>Latest</h2>
 <ul class="list">
     {% for article in article_list %}

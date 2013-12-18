@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2><a href="{% url opportunities %}">Opportunities</a> &raquo; Internships</h2>
-    <p>
-        Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url opportunities %}">Opportunities</a> &raquo; Internships</div>
+    <div class="intro">
+        <p>Province: <strong><a href="{% url change_province %}?next={{request.path}}">{{province}} (change)</a></strong></p>
+    </div>
         {% for object in object_list %}
-        <div class="img-article list-separated">
+        <div class="list-separated">
             <a href="{{object.get_absolute_url}}">{{object.title}}</a><br/>
-            <small>Salary: R {{object.salary}}</small><br/>
+            {% if object.salary %}<small>Salary: R {{object.salary}}</small><br/>{% endif %}
             {% if object.retract_on %}<small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small><br/>{% endif %}
+            {% include 'opportunities/community_opportunity_meta.html' %}
         </div>
         {% empty %}
         <p>0 internships in <a href="{% url change_province %}?next={{request.path}}">{{province}}</a>.</p>
         {% endfor %}
-    </p>
     {% if object_list %}
     <div id="pagination">
         {% if page_obj.has_previous %}

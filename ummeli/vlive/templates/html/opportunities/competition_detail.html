@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
         <a href="{% url opportunities %}">Opportunities</a> &raquo;
-        <a href="{% url competitions %}">Competitions</a> &raquo;
-        {{object.title}}
-    </h2>
+    </div>
+    <h2>Competitions</h2>
     <p>
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}

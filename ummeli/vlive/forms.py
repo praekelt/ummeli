@@ -1,5 +1,5 @@
 from ummeli.base.models import (Certificate, Language, WorkExperience,
-    Reference, CurriculumVitae,  UserSubmittedJobArticle, Skill, SKILL_LEVEL_CHOICES)
+    Reference, CurriculumVitae, Skill, SKILL_LEVEL_CHOICES)
 from django.forms import *
 
 from django.contrib.auth.forms import UserCreationForm
@@ -174,25 +174,6 @@ class FaxCVForm(PMLForm):
                                     error_message = 'Please enter a valid fax number.')
     send_message = CharField(required = False)
 
-class UserSubmittedJobArticleForm(PMLModelForm):
-    province = IntegerField(required = True)
-    category = CharField(required = True)
-    title = CharField(required = True)
-    text = CharField(required = True,  widget = Textarea,  label = 'Description')
-
-    class Meta:
-        model = UserSubmittedJobArticle
-        fields = ('title',  'text')
-
-class UserSubmittedJobArticleEditForm(PMLModelForm):
-    province = CharField(required = True)
-    job_category = CharField(required = True)
-    title = CharField(required = True)
-    text = CharField(required = True,  widget = Textarea,  label = 'Description')
-
-    class Meta:
-        model = UserSubmittedJobArticle
-        fields = ('title',  'text', 'province', 'job_category')
 
 class ForgotPasswordForm(Form):
     username = RegexField('[0-9+]', required = True,

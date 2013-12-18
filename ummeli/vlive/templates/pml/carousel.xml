@@ -1,5 +1,4 @@
-{% load cache %}<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
              xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
              xmlns:vddr="http://namespaces.vodafone.com/applications/CRE#DDR"
@@ -13,46 +12,8 @@
     <PARTNER-BODY>
         <VZV-DEFAULT>
             {% block body %}
-                {% cache 600 banner-detail %}
-                <MODULE backgroundColor="false" border="module">
-                <HEADER backgroundColor="true"><LABEL>Ummeli</LABEL></HEADER>
-                {% if banner %}
-                <CONTAINER type="table">
-                <TABLE border="false">
-                <TR><TD>
-                <CONTAINER type="data">
-                    <TEXT>
-                        <LINK href="{{ banner.url}}">
-                        <IMAGE align="left" type="image/jpeg"
-                               href="{{ ROOT_URL }}{{ banner.image.url }}"
-                               caption="ummeli"/>
-                        </LINK>
-                    </TEXT>
-                </CONTAINER>
-                </TD></TR>
-                <TR><TD>
-                    <TEXT>
-                        <LINK href="{{banner.url}}">{{ banner.title }}</LINK>
-                        {{ banner.description }}
-                    </TEXT>
-                </TD></TR>
-                </TABLE>
-                </CONTAINER>
-                {% else %}
-                <CONTAINER type="table">
-                <TABLE border="false">
-                <TR><TD>
-                    <TEXT>
-                        <LINK href="/vlive/">Ummeli</LINK>
-                        lets you find opportunities, build a work profile &amp; connect with others.
-                    </TEXT>
-                </TD></TR>
-                </TABLE>
-                </CONTAINER>
-                {% endif %}
-                <FOOTER></FOOTER>
-                </MODULE>
-                {% endcache %}
+                {% load vlive_tags %}
+                {% render_vlive_banner %}
             {% endblock %}
         </VZV-DEFAULT>
     </PARTNER-BODY>

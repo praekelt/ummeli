@@ -17,7 +17,7 @@
     {% if node.user_id == user.pk %}
         <LINK href="{% url profile %}?{{uuid}}">
             <TEXT>{{ node.name }}</TEXT>
-        </LINK> <strong>(me)</strong>
+        </LINK> <b>(me)</b>
     {% else %}
         <LINK href="{% url profile_view node.user_id %}?{{uuid}}">
             <TEXT>{{ node.name }}</TEXT>

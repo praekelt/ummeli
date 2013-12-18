@@ -1,0 +1,30 @@
+{% load cache %}
+{% cache 600 homepage-banner-detail %}
+{% if banner %}
+<MODULE backgroundColor="false" border="module">
+<HEADER><LABEL>{{ banner.title }}</LABEL></HEADER>
+<CONTAINER type="table">
+<TABLE border="false">
+<TR><TD>
+<CONTAINER type="data">
+    <TEXT>
+        <LINK href="{{ banner.url}}">
+        <IMAGE align="left" type="image/jpeg"
+               href="{{ ROOT_URL }}{{ banner.image.url }}"
+               caption="ummeli-banner"/>
+        </LINK>
+    </TEXT>
+</CONTAINER>
+</TD></TR>
+{% if banner.description %}
+<TR><TD>
+    <TEXT>
+        {{ banner.description }}
+    </TEXT>
+</TD></TR>
+{% endif %}
+</TABLE>
+</CONTAINER>
+</MODULE>
+{% endif %}
+{% endcache %}

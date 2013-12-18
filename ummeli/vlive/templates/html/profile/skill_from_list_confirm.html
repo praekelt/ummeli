@@ -1,10 +1,13 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a> &raquo; <a href="{% url profile %}">My Work</a> &raquo; new</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url profile %}">Work Profile</a></div>
+<h2>My Work</h2>
+<div class="wrap">
 <p>
 Rate your experience in <strong>{{skill}}</strong>.
 </p>
+</div>
 <form class="content-form" action='{{request.path}}' method='POST'>
     <strong>Experience Level</strong><br/>
     {% include "form_field_errors_snippet.html" with form_field=form.level %}
@@ -18,5 +21,5 @@ Rate your experience in <strong>{{skill}}</strong>.
     {% csrf_token %}
     <br/>
 </form>
-        
+
 {% endblock %}

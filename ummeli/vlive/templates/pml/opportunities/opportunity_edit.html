@@ -1,0 +1,34 @@
+{% extends "base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>Edit opportunity</LABEL></HEADER>
+<CONTAINER type="data">
+{{ form.errors_as_pml }}
+</CONTAINER>
+<CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Save">
+        <TEXT position="ABOVE">Province*</TEXT>
+        <SELECT name="province">
+            {% for key, value in form.fields.province.widget.choices %}
+            <ITEM value="{{key}}">{{value}}</ITEM>
+            {% endfor %}
+        </SELECT>
+
+        <TEXT position="ABOVE">Title*</TEXT>
+        <FIELD name="title" type="text" default="{% if form.title.value %}{{form.title.value}}{% endif %}"/><br/>
+
+        <TEXT position="ABOVE">Description*<br/>
+        {{form.description.help_text}}
+        </TEXT>
+        <FIELD name="description" type="text" default="{% if form.description.value %}{{form.description.value}}{% endif %}"/><br/>
+
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+</CONTAINER>
+<CONTAINER  type="list">
+    <LINK href="{% url home %}">
+        <TEXT>Cancel</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

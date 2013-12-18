@@ -1,0 +1,38 @@
+{% if object.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiRed">
+    <HEADER><LABEL>Removed</LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+        Title: {{object.title|truncatewords:5 }}<br/>
+
+        <strong>Inappropriate:</strong> This opportunity has been removed by the Ummeli community.
+    </TEXT>
+    </CONTAINER>
+
+    <CONTAINER type="list">
+        <LINK href="{{back}}"><TEXT>Back</TEXT></LINK>
+    </CONTAINER>
+{% else %}
+{% if is_scam %}
+<MODULE backgroundColor="false" palette="MiOrange">
+    <HEADER><LABEL>Warning</LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+        This opportunity may be a scam, proceed with caution.
+    </TEXT>
+    </CONTAINER>
+{% else %}
+{% if is_position_filled %}
+<MODULE backgroundColor="false" palette="MiGreen">
+    <HEADER><LABEL>Position Filled</LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+        The Ummeli community has
+        indicated that this position may have been filled,
+        however you are still free to apply.
+    </TEXT>
+    </CONTAINER>
+{% endif %}
+{% endif %}
+{% endif %}
+

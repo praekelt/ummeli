@@ -1,0 +1,24 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Status</div>
+<h2>Update your status</h2>
+<div class="wrap">Tell the Ummeli community how you are feeling today?</div>
+<form method="POST" class="content-form">
+<fieldset>
+    <div class="form-fields">
+        {{form.title}}
+    </div>
+    <input type="submit" value="Update" class="btn"/>
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+</fieldset>
+</form>
+
+<h2>Recent updates</h2>
+{% for status in statuses %}
+<div class="list-separated">{{status.title}} - <small>{{status.created|timesince}} ago</small></div>
+{% empty %}
+<div class="wrap">No status updates posted.</div
+{% endfor %}
+<div class="more"><a href="{% url my_community %}">&larr; Back</a></div>
+{% endblock %}

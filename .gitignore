@@ -10,8 +10,7 @@ nosetests.xml
 *.log
 MANIFEST.in
 /*.egg-info/
-/logs/*.err
-/logs/*.log
+/logs/
 /tmp/pids/*.pid
 /ummeli/local_settings.py
 /ummeli/cover/

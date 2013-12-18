@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
     <div class="h2">
@@ -6,6 +7,9 @@
         <a href="{% url bursaries %}">Bursaries</a> &raquo;
         {{object.title}}
     </div>
+    {% opportunity_report_warnings object 'bursaries' %}
+
+    {% if not object.is_removed_by_community %}
     <div class="wrap">
         <strong>{{object.title}}</strong>
         {% if object.retract_on %}<br/><small>Deadline: <strong>{{ object.retract_on|date:"D, j M Y" }}</strong></small>{% endif %}
@@ -14,6 +18,23 @@
         <br/>
         <br/>
         {{ object.description|safe }}
+        {% if object.is_community %}
+        <p>submitted by
+            <a href="{% url profile_view object.owner.pk %}">
+                {% if object.owner.get_profile.fullname %}
+                    {{object.owner.get_profile.fullname}}
+                {% else %}
+                    Anon.
+                {% endif %}
+            </a>
+        </p>
+        {% endif %}
     </div>
+
+    {% opportunity_report_links object %}
+
     <div class="more"><a href="{% url bursaries %}">&larr; Back</a></div>
+
+    {% include 'opportunities/opportunity_apply.html' %}
+    {% endif %}
 {% endblock %}

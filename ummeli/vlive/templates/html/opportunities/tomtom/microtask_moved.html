@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo;
     <a href="{% url opportunities %}">Opportunities</a> &raquo;
-    <a href="{% url campaigns %}">Campaigns</a> &raquo;
-    {{object.title}}
-</h2>
+    <a href="{% url campaigns %}">Campaigns</a>
+</div>
+<h2>{{object.title}}</h2>
 <div class="wrap">
-    <div>{{object.title}}</div>
     <div>{{object.description}}</div>
     <div>{{object.tomtommicrotask.location.city}}</div>
     {% if device.name == 'Apple' %}
@@ -29,8 +28,8 @@
     </div>
     <h2 class="warning">Location has changed</h2>
     <ul>
-        <li class="bullet">Tell us why you say this location has changed or moved</li>
-        <li class="bullet">You are still required to give the picture of the location</li>
+        <li>Tell us why you say this location has changed or moved</li>
+        <li>You are still required to give the picture of the location</li>
     </ul><br/>
     <form method="post" enctype="multipart/form-data">
         <fieldset>

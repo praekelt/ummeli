@@ -1,6 +1,11 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 from tidylib import tidy_fragment
+from django.conf import settings
+from copy import copy
+from datetime import datetime
+from ummeli.base.models import Banner
+from django.db.models import Q, F
 
 register = template.Library()
 
@@ -68,3 +73,34 @@ def sanitize_html(value):
             .replace('&ldquo;', '"') \
             .replace('&rdquo;', '"') \
             .replace('&ndash;', "-")
+
+def choose_featured_banner(context, category_slug):
+    context = copy(context)
+    now = datetime.now().time()
+
+    banners = Banner.permitted.filter(
+        # in between on & off
+        Q(time_on__lte=now, time_off__gte=now) |
+        # roll over night, after on, before 24:00
+        Q(time_on__lte=now, time_off__lte=F('time_on')) |
+        # roll over night, before off, after 24:00
+        Q(time_off__gte=now, time_off__lte=F('time_on')) |
+        # either time on or time of not specified.
+        Q(time_on__isnull=True) | Q(time_off__isnull=True),
+        primary_category__slug=category_slug
+    ).order_by('?')
+
+    context.update({
+        'banner': banners[0] if banners.exists() else None,
+        'ROOT_URL': settings.ROOT_URL,
+    })
+    return context
+
+@register.inclusion_tag('banner/inclusion_tags/vlive_banner.html', takes_context=True)
+def render_vlive_banner(context):
+    return choose_featured_banner(context, 'vlive-banner')
+
+@register.inclusion_tag('banner/inclusion_tags/homepage_banner.html', takes_context=True)
+def render_homepage_banner(context):
+    return choose_featured_banner(context, 'homepage-banner')
+

@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from ummeli.vlive import views
 from django.views.generic.simple import redirect_to
+from django.views.generic import TemplateView
 
 admin.autodiscover()
 
@@ -22,5 +23,5 @@ urlpatterns = patterns('',
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/register/$', views.register, name='register'),
     url(r'^vlive/', include('ummeli.vlive.urls')),
-    url(r'^carousel\.xml$', views.BannerView.as_view()),
+    url(r'^carousel\.xml$', TemplateView.as_view(template_name="carousel.xml")),
 )

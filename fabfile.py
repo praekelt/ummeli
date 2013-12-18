@@ -1,45 +1,49 @@
 from fabric.api import *
 
 env.path = '/var/praekelt/ummeli'
+env.sudo_user = 'ubuntu'
+env.shell = '/bin/bash -c'
 
-def qa(user='ubuntu'):
-    env.user = user
-    env.hosts = ['%s@cloud.praekeltfoundation.org' % user]
+def qa(ssh_user=None):
+    if not ssh_user:
+        print 'You must provide your login username.'
+        print 'format: fab <env>:<username> <command> e.g fab qa:miltontony push'
+        raise RuntimeError('Username required')
 
-def production(user='ubuntu'):
-    env.user = user
-    env.hosts = ['%s@cloud.praekeltfoundation.org' % user]
+    env.hosts = ['%s@qa-ummeli.za.prk-host.net' % ssh_user]
+
+def production(ssh_user=None):
+    if not ssh_user:
+        print 'You must provide your login username.'
+        print 'format: fab <env>:<username> <command> e.g fab production:ubuntu push'
+        raise RuntimeError('Username required')
+
+    env.hosts = ['%s@app1.praekeltfoundation.org' % ssh_user]
 
 def push():
-    run('sudo su ubuntu' % env)
     with cd(env.path):
-        run('git pull')
+        sudo('git pull')
 
 def static():
-    run('sudo su ubuntu' % env)
     with cd(env.path):
-        run('ve/bin/python %(path)s/ummeli/manage.py collectstatic --noinput' % env)
+        sudo('ve/bin/python %(path)s/ummeli/manage.py collectstatic --noinput' % env, user=env.user)
 
 def migrate(app='ummeli.base'):
-    run('sudo su ubuntu' % env)
     with cd(env.path):
         env.app = app
-        run('ve/bin/python %(path)s/ummeli/manage.py migrate %(app)s' % env)
-
+        sudo('ve/bin/python %(path)s/ummeli/manage.py migrate %(app)s' % env, user=env.user)
 
 def deploy():
-    run('sudo su ubuntu' % env)
     with cd(env.path):
-        run('git pull')
-        run('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
-        run('sudo supervisorctl restart ummeli:u_celery' % env)
+        sudo('git pull')
+        sudo('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
+        sudo('sudo supervisorctl restart ummeli:u_celery')
 
 def reload():
-    run('sudo su ubuntu' % env)
     with cd(env.path):
-        run('git pull')
-        run('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
+        sudo('git pull')
+        sudo('kill -HUP `cat tmp/pids/u_gunicorn_*.pid`')
 
 def restart(app=''):
     env.app = app
-    run('sudo supervisorctl restart ummeli:%(app)s' % env)
+    sudo('sudo supervisorctl restart ummeli:%(app)s' % env)

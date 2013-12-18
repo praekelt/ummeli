@@ -27,6 +27,11 @@
             <td><a href="/admin/auth/user/" class="changelink">{% trans 'Change' %}</a></td>
         </tr>
         <tr>
+            <th scope="row"><a href="/admin/base/curriculumvitae/">User Profiles</a></th>
+            <td><a href="/admin/base/curriculumvitae/add/" class="addlink">{% trans 'Add' %}</a></td>
+            <td><a href="/admin/base/curriculumvitae/" class="changelink">{% trans 'Change' %}</a></td>
+        </tr>
+        <tr>
             <th scope="row"><a href="/admin/sites/site/">Sites</a></th>
             <td><a href="/admin/sites/site/add/" class="addlink">{% trans 'Add' %}</a></td>
             <td><a href="/admin/sites/site/" class="changelink">{% trans 'Change' %}</a></td>
@@ -124,6 +129,11 @@
         <table summary="Models available in the Opportunities application.">
         <caption><a href="" class="section">Opportunities</a></caption>
             <tbody><tr>
+                <th scope="row"><a href="/admin/opportunities/ummeliopportunity/?is_community__exact=1">Community Board </a></th>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
                 <th scope="row"><a href="/admin/opportunities/job/">Jobs</a></th>
                 <td><a href="/admin/opportunities/job/add/" class="addlink">Add</a></td>
                 <td><a href="/admin/opportunities/job/" class="changelink">Change</a></td>
@@ -158,64 +168,17 @@
                 <td><a href="/admin/opportunities/competition/add/" class="addlink">Add</a></td>
                 <td><a href="/admin/opportunities/competition/" class="changelink">Change</a></td>
             </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/statusupdate/">Status Updates</a></th>
+                <td><a href="/admin/opportunities/statusupdate/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/statusupdate/" class="changelink">Change</a></td>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/admin/opportunities/skillsupdate/">Advertise Skills</a></th>
+                <td><a href="/admin/opportunities/skillsupdate/add/" class="addlink">Add</a></td>
+                <td><a href="/admin/opportunities/skillsupdate/" class="changelink">Change</a></td>
+            </tr>
         </tbody></table>
-    </div>
-
-    <div class="module">
-    <table summary="Models available in the Django application.">
-    <caption>Jobs Content</caption>
-        <tr>
-            <th scope="row"><a href="/admin/base/article/">Job Articles</a></th>
-            <td><a href="/admin/base/article/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/article/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/province/">Provinces</a></th>
-            <td><a href="/admin/base/province/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/province/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/category/">Job Categories</a></th>
-            <td><a href="/admin/base/category/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/category/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/usersubmittedjobarticle/">User Submitted Job Articles</a></th>
-            <td><a href="/admin/base/usersubmittedjobarticle/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/usersubmittedjobarticle/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-    </table>
-    </div>
-
-    <div class="module">
-    <table summary="Models available in the Django application.">
-    <caption>User Profile Data</caption>
-        <tr>
-            <th scope="row"><a href="/admin/base/curriculumvitae/">User Profiles</a></th>
-            <td><a href="/admin/base/curriculumvitae/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/curriculumvitae/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/certificate/">Certificates</a></th>
-            <td><a href="/admin/base/certificate/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/certificate/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/language/">Languages</a></th>
-            <td><a href="/admin/base/language/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/language/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/reference/">References</a></th>
-            <td><a href="/admin/base/reference/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/reference/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="/admin/base/workexperience/">Work Experiences</a></th>
-            <td><a href="/admin/base/workexperience/add/" class="addlink">{% trans 'Add' %}</a></td>
-            <td><a href="/admin/base/workexperience/" class="changelink">{% trans 'Change' %}</a></td>
-        </tr>
-    </table>
     </div>
 
     <div class="module">

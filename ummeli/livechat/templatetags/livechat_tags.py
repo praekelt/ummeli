@@ -1,7 +1,6 @@
 from django import template
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.contrib.sites.models import Site
-from jmbocomments.models import UserComment, UserCommentFlag
 
 current_site = Site.objects.get_current()
 
@@ -26,8 +25,6 @@ def get_livechat_page(context, livechat, var_name):
 
     comments_qs = livechat.comment_set()\
         .exclude(is_removed=True)\
-        .exclude(flag_set__flag=UserCommentFlag.COMMUNITY_REMOVAL)\
-        .exclude(flag_set__flag=UserCommentFlag.MODERATOR_DELETION)\
         .distinct()\
         .select_related('user')\
         .order_by('-submit_date')
@@ -42,7 +39,14 @@ def get_livechat_page(context, livechat, var_name):
         comments_qs = comments_qs.order_by('-like_count')
 
     paginator = Paginator(comments_qs, per_page=10)
-    page = paginator.page(request.GET.get('p', 1))
+    pg = request.GET.get('p', 1)
+
+    try:
+        page = paginator.page(pg)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page = paginator.page(paginator.num_pages)
+
     context['page'] = page
     return ''
 

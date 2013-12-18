@@ -1,0 +1,92 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+    <HEADER><LABEL>Advertise your skills: Share your Work Profile</LABEL></HEADER>
+    <CONTAINER type="data">
+        <TEXT>
+            Tell us what you're good at. All your experience and skills have value. Sharing these on Ummeli will help opportunity providers find you. You can do this by sharing your Work Profile Preview.
+        </TEXT>
+    </CONTAINER>
+</MODULE>
+{% with user_profile=user.get_profile %}
+{% if user_profile.is_complete %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>{{user_profile.fullname}}</LABEL></HEADER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove" role="MOD17">
+<CONTAINER type="image">
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{user_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>{{user_profile.primary_skill}}</TITLE>
+    <TEXT>
+        {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
+        {% if user_profile.gender %}{{user_profile.gender}} <br/>{% endif %}
+    </TEXT>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+    {% if user_profile.other_skills.exists %}
+        <b>Other areas of interest:</b><br/>
+        {% for skill in user_profile.other_skills.all %}
+        {{skill}}<br/>
+        {% endfor %}
+    {% endif %}
+    </TEXT>
+    <TEXT>
+    <p><i>"{{user_profile.about_me}}"</i></p>
+    </TEXT>
+    </CONTAINER>
+
+    <CONTAINER  type="form">
+    <FORM method="POST" href="{{request.path}}" submit_text="Post to Community Board">
+        <FIELD type='hidden' name='_action' value='POST' />
+        <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </FORM>
+    </CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="list">
+        <LINK href="{% url profile %}"><TEXT>Edit profile</TEXT></LINK>
+    </CONTAINER>
+</MODULE>
+{% else %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL> </LABEL></HEADER>
+    <CONTAINER type="data">
+    <TEXT>
+        Whoops! You need to complete your work profile in order to
+        advertise your skills.
+        <br/>
+        <br/>
+        No worries you can do this in a few minutes. Don't worry if you
+        have no experience all you need to complete to post here is your
+        name, date of birth, city, languages and your school education.
+        <br/>
+        <p>
+        <LINK href="{% url profile %}"><TEXT>Complete your profile</TEXT></LINK>
+        </p>
+        <p>
+            <color value="red">Missing information</color>
+            {% for field in user_profile.missing_fields %}
+            ** {{field}}<br/>
+            {% endfor %}
+        </p>
+    </TEXT>
+    </CONTAINER>
+</MODULE>
+{% endif %}
+{% endwith %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="list">
+    <LINK href="{% url index %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

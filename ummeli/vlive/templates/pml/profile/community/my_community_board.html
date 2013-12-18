@@ -1,0 +1,82 @@
+{% extends "my_ummeli_base.xml" %}
+
+{% block content %}
+<HEADER><LABEL>My Community Board</LABEL></HEADER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>Status Update</LABEL></HEADER>
+<CONTAINER type="data">
+<TEXT>
+    {% if status %}
+        <p>{{status.title}} <br/>
+        <small>{{status.created|timesince}} ago</small>
+        </p>
+    {% else %}
+        <p><i>No status update</i><br/>
+            Tell the Ummeli community how you are feeling today?
+        </p>
+    {% endif %}
+    <p><a href="{% url status_update %}">Update status</a></p>
+</TEXT>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL>Opportunities</LABEL></HEADER>
+{% for object in opportunities %}
+<CONTAINER type="image">
+    <IMAGE href="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
+    <TITLE>
+        <LINK href="{% url my_community_opportunities object.slug %}?{{uuid}}">
+            <TEXT>
+                {{ object.title|truncatechars:30 }}
+            </TEXT>
+        </LINK>
+    </TITLE>
+    <TEXT>
+        {{ object.description|truncatechars:50 }}
+        <small>
+        <br/> {{object.get_provinces}}
+        <br/> {{ object.created|timesince }} ago
+        </small>
+    </TEXT>
+</CONTAINER>
+{% empty %}
+<CONTAINER type="data">
+<TEXT>
+    No opportunities posted.
+</TEXT>
+</CONTAINER>
+{% endfor %}
+
+{% if opportunities %}
+<CONTAINER type="data">
+<TEXT>
+<LINK href="{% url my_community_opportunities %}?{{uuid}}">
+    <TEXT>more...</TEXT>
+</LINK>
+</TEXT>
+</CONTAINER>
+{% endif %}
+
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+    <CONTAINER type="list">
+    <LINK href="{% url opportunity_create %}?{{uuid}}">
+        <TEXT>Add an opportunity</TEXT>
+    </LINK>
+    <LINK href="{% url jobs_create %}?{{uuid}}">
+        <TEXT>Add a job</TEXT>
+    </LINK>
+</CONTAINER>
+</MODULE>
+
+<MODULE backgroundColor="false" palette="MiDove">
+<CONTAINER type="list">
+    <LINK href="{% url my_ummeli %}?{{uuid}}">
+        <TEXT>Back</TEXT>
+    </LINK>
+</CONTAINER>
+{% endblock %}

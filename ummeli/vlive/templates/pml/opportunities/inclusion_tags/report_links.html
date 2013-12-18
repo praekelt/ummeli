@@ -1,0 +1,10 @@
+{% if user.is_authenticated %}
+<br/>
+<p>Report opportunity as:<br/>
+    <LINK href="{% url report_object object.slug scam_key %}"><TEXT>scam</TEXT></LINK>,
+    {% if object.as_leaf_class.is_community %}
+    <LINK href="{% url report_object object.slug inappropriate_key %}"><TEXT>inappropriate</TEXT></LINK>,
+    {% endif %}
+    <LINK href="{% url report_object object.slug position_filled_key %}"><TEXT>position filled</TEXT></LINK>
+</p>
+{% endif %}

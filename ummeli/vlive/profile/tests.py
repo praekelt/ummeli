@@ -40,8 +40,6 @@ class ProfileTestCase(VLiveTestCase):
         settings.CELERY_ALWAYS_EAGER = settings.DEBUG
 
     def test_own_profile_page(self):
-        #self.register()
-        print User.objects.all()
         self.login()
         self.fill_in_basic_info()
 

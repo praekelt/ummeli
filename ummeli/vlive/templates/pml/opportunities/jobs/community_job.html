@@ -1,16 +1,32 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
-    <HEADER><LABEL>Community Board - Job</LABEL></HEADER>
+<HEADER><LABEL>Community Board</LABEL></HEADER>
+</MODULE>
+
+{% opportunity_report_warnings job 'community_jobs' %}
+
+{% if not job.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiDove">
+    <HEADER><LABEL>Job</LABEL></HEADER>
     <CONTAINER type="data">
     <TITLE>{{job.title}}</TITLE>
     <TEXT>
-        {% if job.province %}<strong>{{job.province}}</strong><br/>{% endif %}
-        {{ job.text }}
-        <br/><br/>
-        <small>{{ job.date|date:"D, j M Y, H:i" }}</small>    
+        <b>{{job.get_provinces}}</b><br/>
+        <small>{{ job.created|timesince }} ago</small>
+        <br/>
+        <br/>
+        {{ job.description }}
+        <br/>
         <br/><color value="blue">submitted by </color>
-        <LINK href="{% url profile_view job.user.pk %}"><TEXT>{{job.user.get_profile.fullname}}</TEXT></LINK>
+        {% if job.owner.get_profile.fullname %}
+            <LINK href="{% url profile_view job.owner.pk %}"><TEXT>{{job.owner.get_profile.fullname}}</TEXT></LINK>
+        {% else %}
+            Anon.
+        {% endif %}
+
+        {% opportunity_report_links job %}
     </TEXT>
     </CONTAINER>
 </MODULE>
@@ -23,6 +39,7 @@
 </CONTAINER>
 </MODULE>
 
+{% if not job.statusupdate %}
 <MODULE backgroundColor="MiGreen">
     <HEADER><LABEL>Apply</LABEL></HEADER>
     {% if request.is_authorized %}
@@ -39,7 +56,7 @@
             <CONTAINER type="data">
                 <TITLE>Missing fields</TITLE>
                 <TEXT><color value="red">
-                    Your CV is incomplete. Please make sure that the following information is 
+                    Your CV is incomplete. Please make sure that the following information is
                     completed before you can send your CV.</color></TEXT><br/>
             {% for field in user_profile.missing_fields %}
                 <TEXT><color value="red">- {{field}}</color></TEXT><br/>
@@ -50,7 +67,6 @@
             <FORM method="POST" href="{{request.path}}" submit_text="Apply">
                 <TEXT position="ABOVE">Email CV to:*</TEXT>
                 <FIELD name="send_to" type="text"/><br/>
-                <FIELD type='hidden' name='user_submitted' value='{{job.user_submitted}}' />
                 <FIELD type='hidden' name='send_via' value='email' />
                 <FIELD type='hidden' name='_action' value='POST' />
                 <FIELD type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
@@ -58,7 +74,7 @@
         </CONTAINER>
     {% else %}
         <CONTAINER type="data">
-        <TEXT><color value="red">You are not signed in. Please sign in to be able to 
+        <TEXT><color value="red">You are not signed in. Please sign in to be able to
         respond to a job advert.</color>
         <br/>
         <LINK href="{% url login %}?next={% url community_jobs job.pk %}">
@@ -67,4 +83,10 @@
         </TEXT>
         </CONTAINER>
     {% endif %}
+</MODULE>
+{% endif %}
+{% endif %}
+
+<MODULE backgroundColor="false" palette="MiDove">
+<HEADER><LABEL> </LABEL></HEADER>
 {% endblock %}

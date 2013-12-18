@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Send as CV</h2>
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Send as CV</div>
+<h2>Send as CV</h2>
+<div class="wrap">
 <p>
-    Sending your CV by email is always free on Ummeli - simply enter the 
-    email address of the recipient in the field below and Ummeli will automatically 
+    Sending your CV by email is always free on Ummeli - simply enter the
+    email address of the recipient in the field below and Ummeli will automatically
     send it for you!
 </p>
+</div>
 <form method="POST" class="content-form">
-<fieldset> 
+<fieldset>
 <div class="form-fields">
 {% if user_profile.missing_fields %}
     <strong>Missing fields</strong>
     <div class="warning">
-        Your CV is incomplete. Please make sure that the following information is 
+        Your CV is incomplete. Please make sure that the following information is
         completed before you can send your CV.
     </div>
     {% for field in user_profile.missing_fields %}
@@ -21,11 +24,11 @@
     {% endfor %}
 {% else %}
     <strong>* = Required</strong><br />
-    <label for="send_to">Email CV To:*</label> 
+    <label for="send_to">Email CV To:*</label>
     <span class="subtext">(example) someone@email.com</span>
     {% include "form_field_errors_snippet.html" with form_field=form.send_to %}
     <input type="text" class="txt" name="send_to" id="send_to"/>
-    <label>Personal Message:</label> 
+    <label>Personal Message:</label>
     <span class="subtext">(example) I am sending you my CV in connection with the position available for a clerk at 53 Some Street, Johannesburg.</span>
     <textarea id="send_message" rows="10" name="send_message" class="txt"></textarea>
     </div>
@@ -33,6 +36,6 @@
     <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
     <input type="hidden" name="send_via" value="email" />
 {% endif %}
-</fieldset> 
+</fieldset>
 </form>
 {% endblock %}

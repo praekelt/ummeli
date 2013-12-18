@@ -167,6 +167,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ummeli.base',
     'ummeli.vlive',
+    'ummeli.opportunities',
+    'pml',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'south',
@@ -198,8 +200,10 @@ INSTALLED_APPS = (
     'publisher',
     'photologue',
     'secretballot',
-    'ummeli.opportunities',
+
+    #Ummeli Apps
     'livechat',
+    'reporting',
 
     # 3rd party
     'ckeditor',
@@ -299,3 +303,12 @@ GEOIP_COUNTRY = 'GeoIPv6.dat'
 SERIALIZATION_MODULES = {
     'csv': 'snippetscream.csv_serializer',
 }
+
+REDIS_SETTINGS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 0
+}
+
+# minimum reports required to mark an object as flagged
+REPORT_FLAG_LIMIT = 3

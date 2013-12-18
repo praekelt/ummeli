@@ -1,7 +1,7 @@
 {% extends "my_ummeli_base.html" %}
 
 {% block content %}
-    <h2><a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Work Profile</h2>
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; Work Profile</div>
     <h2>
         {{user_profile.fullname}}
     </h2>
@@ -10,25 +10,32 @@
         <div>
             <div class="h3">{{user_profile.primary_skill}}</div>
             {% if user_profile.city %}{{user_profile.city}} <br/>{% endif %}
-            {% if user_profile.date_of_birth %}DOB: {{user_profile.date_of_birth}} <br/>{% endif %}
+            {% if user_profile.gender %}{{user_profile.gender}}{% endif %}
         </div>
     </div>
-    <div style="clear: both"></div><br/>
+    <br/>
+    <div class="wrap">
     {% if user_profile.other_skills.all %}
         <strong>Other areas of interest:</strong><br/>
         {% for skill in user_profile.other_skills.all %}
         <div class="bullet">{{skill}}</div>
         {% endfor %}
     {% endif %}
+    <br/>
     <p><em>"{{user_profile.about_me}}"</em></p>
-    
+    </div>
     <h2>Full Profile <a href="{% url profile_view request.user.pk %}">[Preview]</a></h2>
-    <div class="bullet"><a href="{% url edit_personal %}">Personal Details</a></div>
-    <div class="bullet"><a href="{% url language_list %}">Languages</a></div>
-    <div class="bullet"><a href="{% url edit_contact %}">My Contact Info</a></div>
-    <div class="bullet"><a href="{% url edit_about_me %}">About Me</a></div>
-    <div class="bullet"><a href="{% url skills %}">My Work</a></div>
-    <!-- <div class="list"><a href="{% url skills %}">Attributes</a></div> -->
-    <div class="bullet"><a href="{% url work_experience_list %}">Work Experience</a></div>
-    <div class="bullet"><a href="{% url certificate_list %}">My Education</a></div>
+    <div class="crumbs">Edit profile</div>
+    <div class="wrap">
+    <ul>
+    <li><a href="{% url edit_personal %}">Personal Details</a></li>
+    <li><a href="{% url language_list %}">Languages</a></li>
+    <li><a href="{% url edit_contact %}">My Contact Info</a></li>
+    <li><a href="{% url edit_about_me %}">About Me</a></li>
+    <li><a href="{% url skills %}">My Work</a></li>
+    <!-- <li class="list"><a href="{% url skills %}">Attributes</a></li> -->
+    <li><a href="{% url work_experience_list %}">Work Experience</a></li>
+    <li><a href="{% url certificate_list %}">My Education</a></li>
+    </div>
+</ul>
 {% endblock %}

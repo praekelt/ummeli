@@ -3,6 +3,7 @@
 {% load article_tags %}
 {% load poll_tags %}
 {% load your_words_tags %}
+{% load vlive_tags %}
 
 {% block title %}
     Welcome
@@ -19,6 +20,9 @@
     </TEXT>
 </CONTAINER>
 </MODULE>
+
+{% render_homepage_banner %}
+
 {% get_articles 3 "article_list" %}
 {% if article_list %}
 <MODULE backgroundColor="false" palette="MiDove">
@@ -61,23 +65,11 @@
 <MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>Community Board</LABEL></HEADER>
 </MODULE>
-{% for article in community_list %}
-<MODULE backgroundColor="false" palette="MiDove" role="MOD16">
-    <CONTAINER type="image">
-    <IMAGE href="{{STATIC_URL}}media/avatar_{{article.user.get_profile.primary_skill.level}}.jpg" float="true" align="left" mime-type="image/jpeg"/>
-    <TITLE>
-        <LINK href="{% url community_jobs article.pk %}?{{uuid}}">
-            <TEXT>{{ article.title|truncatewords:10 }}</TEXT>
-        </LINK>
-    </TITLE>
-    <TEXT>
-        {{ article.text|truncatewords:10 }}<br/>
-        {{ article.date|date:"D, j M Y, H:i" }}<br/>
-        <LINK href="{% url profile_view article.user.pk %}"><TEXT>{{article.user.get_profile.fullname}}</TEXT></LINK>
-    </TEXT>
-    </CONTAINER>
-</MODULE>
+
+{% for object in community_list %}
+    {% include 'opportunities/community_opportunity_listing.html' %}
 {% endfor %}
+
 <MODULE backgroundColor="false" palette="MiDove">
 <CONTAINER type="data">
 <TEXT>
@@ -95,6 +87,15 @@
     <CONTAINER type="list">
     <LINK href="{% url jobs_create %}?{{uuid}}">
         <TEXT>Add a job</TEXT>
+    </LINK>
+    <LINK href="{% url opportunity_create %}?{{uuid}}">
+        <TEXT>Add an opportunity</TEXT>
+    </LINK>
+    <LINK href="{% url status_update %}?{{uuid}}">
+        <TEXT>Update your status</TEXT>
+    </LINK>
+    <LINK href="{% url advertise_skills %}?{{uuid}}">
+        <TEXT>Advertise your skills</TEXT>
     </LINK>
 </CONTAINER>
 </MODULE>
@@ -155,8 +156,8 @@
             {% endif %}
             </TEXT>
         </LINK>
-        <LINK href="{% url my_jobs %}?{{uuid}}">
-            <TEXT>My Jobs ({{request.user.user_submitted_job_article_user.count}})</TEXT>
+        <LINK href="{% url my_community %}?{{uuid}}">
+            <TEXT>My Community Board</TEXT>
         </LINK>
         <LINK href="{% url my_settings %}?{{uuid}}">
             <TEXT>My Settings</TEXT>

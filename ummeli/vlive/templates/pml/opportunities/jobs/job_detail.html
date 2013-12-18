@@ -1,6 +1,14 @@
 {% extends "base.xml" %}
+{% load reporting_tags opportunities_tags %}
 
 {% block content %}
+<HEADER><LABEL>Job</LABEL></HEADER>
+</MODULE>
+
+{% opportunity_report_warnings object 'jobs_list' %}
+
+{% if not object.is_removed_by_community %}
+<MODULE backgroundColor="false" palette="MiDove">
     <HEADER><LABEL>{{object.get_category_display}}</LABEL></HEADER>
     <CONTAINER type="data">
         <TITLE>{{object.title}}</TITLE>
@@ -11,6 +19,22 @@
             <br/>
             <br/>
             {{ object.description|safe }}
+
+            {% if object.is_community %}
+            <p>submitted by
+                <LINK href="{% url profile_view object.owner.pk %}">
+                <TEXT>
+                    {% if object.owner.get_profile.fullname %}
+                        {{object.owner.get_profile.fullname}}
+                    {% else %}
+                        Anon.
+                    {% endif %}
+                </TEXT>
+                </LINK>
+            </p>
+            {% endif %}
+
+            {% opportunity_report_links object %}
         </TEXT>
     </CONTAINER>
 </MODULE>
@@ -21,4 +45,9 @@
         <TEXT>Back</TEXT>
     </LINK>
 </CONTAINER>
+</MODULE>
+
+{% include 'opportunities/opportunity_apply.html' %}
+
+{% endif %}
 {% endblock %}

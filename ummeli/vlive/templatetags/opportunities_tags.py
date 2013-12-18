@@ -1,5 +1,9 @@
 from django import template
 from django.template.loader import render_to_string
+from reporting import helpers
+from django.core.urlresolvers import reverse
+from django.conf import settings
+
 register = template.Library()
 
 
@@ -34,3 +38,29 @@ def get_tasks_for_user(context, campaign):
         if tasks.exists():
             return tasks
     return None
+
+
+@register.inclusion_tag('opportunities/inclusion_tags/report_warnings.html', takes_context=True)
+def opportunity_report_warnings(context, obj, back):
+    from ummeli.opportunities.models import UmmeliOpportunity
+    scam_votes = helpers.get_object_votes(obj, UmmeliOpportunity.SCAM_REPORT_KEY_FIELD)
+    postion_filled_votes = helpers.get_object_votes(obj, UmmeliOpportunity.POSITION_FILLED_REPORT_KEY_FIELD)
+    inappropriate_votes = helpers.get_object_votes(obj, UmmeliOpportunity.INAPPROPRIATE_REPORT_KEY_FIELD)
+
+    context['is_scam'] = scam_votes >= settings.REPORT_FLAG_LIMIT
+    context['is_position_filled'] = postion_filled_votes >= settings.REPORT_FLAG_LIMIT
+    obj.is_removed_by_community = inappropriate_votes >= settings.REPORT_FLAG_LIMIT
+    context['object'] = obj
+    context['back'] = reverse(back)
+    return context
+
+
+@register.inclusion_tag('opportunities/inclusion_tags/report_links.html', takes_context=True)
+def opportunity_report_links(context, obj):
+    from ummeli.opportunities.models import UmmeliOpportunity
+
+    context['scam_key'] = UmmeliOpportunity.SCAM_REPORT_KEY_FIELD
+    context['inappropriate_key'] = UmmeliOpportunity.INAPPROPRIATE_REPORT_KEY_FIELD
+    context['position_filled_key'] = UmmeliOpportunity.POSITION_FILLED_REPORT_KEY_FIELD
+    context['object'] = obj
+    return context

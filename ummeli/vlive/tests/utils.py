@@ -22,7 +22,7 @@ class VLiveTestCase(TestCase):
     def register(self, msisdn = None):
         if not msisdn:
             msisdn = self.msisdn
-            
+
         resp = self.client.post(reverse('register'), {
             'username': msisdn,
             'new_password1': self.pin,
@@ -34,7 +34,7 @@ class VLiveTestCase(TestCase):
     def login(self, msisdn = None):
         if not msisdn:
             msisdn = self.msisdn
-            
+
         resp = self.client.post(reverse('login'), {
             'username': msisdn,
             'password': self.pin,
@@ -55,7 +55,7 @@ class VLiveTestCase(TestCase):
     def assertNotVLiveRedirects(self, resp, url):
         timer_html = '<TIMER href="%s' % url
         self.assertNotContains(resp, timer_html)
-        
+
     def fill_in_basic_info(self):
         cv = self.get_user().get_profile()
         cv.first_name = 'Test'
@@ -64,10 +64,12 @@ class VLiveTestCase(TestCase):
         cv.telephone_number = '0123456789'
         cv.date_of_birth = '01 Jan 1900'
         cv.highest_grade = '12'
-        
+        cv.about_me = 'This is about me'
+        cv.city = 'Jozi'
+
         lang = Language(language = 'Afrikaans',  read_write = True)
         lang.save()
         cv.languages.add(lang)
-        
+
         cv.save()
 

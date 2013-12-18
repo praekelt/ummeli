@@ -14,7 +14,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
         self.msisdn = '27123400000'
         self.pin = '1234'
         self.client = Client()
-        
+
         settings.ROOT_URLCONF = 'mobi_urls'
         settings.TEMPLATE_DIRS = ("vlive/templates/0", )
         settings.AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
@@ -24,7 +24,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
             'django.middleware.csrf.CsrfViewMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',
-            'vlive.middleware.AddMessageToResponseMiddleware', 
+            'vlive.middleware.AddMessageToResponseMiddleware',
         )
 
     def tearDown(self):
@@ -84,11 +84,11 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
             'password1': self.pin,
             'password2': self.pin,
         })
-        
+
         # check that the PIN has been set and that we can now authenticate
         # with the ModelBackend using the msisdn and pin
         user = ModelBackend().authenticate(username=self.msisdn, password=self.pin)
-        
+
         self.assertEqual(user.username, self.msisdn)
         self.assertEquals(resp.status_code, 302)
         # ensure the session's pin has been set
@@ -112,7 +112,7 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
             'password1': password,
             'password2': 'wrong',
         })
-        
+
         self.assertContains(resp, 'The two password fields didn&#39;t match')
 
     def test_forgot_pin(self):
@@ -137,9 +137,8 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
             'password1': self.pin,
             'password2': self.pin,
         })
-        print resp
         self.assertEquals(resp.status_code, 302)
-        
+
         # authorize with pin
         resp = self.client.post(reverse('login'), {
             'username': self.msisdn,
@@ -147,7 +146,6 @@ class UmmeliZeroAuthenticationTestCase(VLiveTestCase):
         })
 
         resp = self.client.get(reverse('password_change'))
-        # print resp
         self.assertContains(resp, 'Change PIN for %s' % self.msisdn)
 
         resp = self.client.post(reverse('password_change'),{
