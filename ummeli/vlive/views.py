@@ -337,7 +337,7 @@ def jobs_create(request):
                 user_article.save()
                 user_article.sites.add(site)
                 user_article.province.add(form.cleaned_data['province'])
-            return redirect(reverse('my_jobs'))
+            return redirect(reverse('my_community_opportunities'))
     else:
         form = JobEditForm()
 
@@ -385,7 +385,7 @@ def opportunity_create(request, slug=None):
                 opportunity.sites.add(site)
                 opportunity.province.add(form.cleaned_data['province'])
                 messages.success(request, 'Your opportunity has been added')
-            return redirect(reverse('my_jobs'))
+            return redirect(reverse('my_community_opportunities'))
     else:
         form = OpportunityEditForm()
 
