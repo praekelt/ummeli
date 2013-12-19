@@ -5,7 +5,7 @@
     <div class="h2">Jobs Posted</div>
         {% if object_list %}
         {% for item in object_list %}
-            <div class="list"><a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
+            <div class="list"><a href='{% url my_jobs item.slug %}'>{{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}</a>
             <br/>
             {{item.description|truncatewords:10}}
             <br/>
@@ -13,7 +13,7 @@
                 {{ item.created|timesince }} ago
             </small>
             <br/>
-            <a href="{% url my_jobs_delete item.pk %}">Delete</a>
+            <a href="{% url my_jobs_delete item.slug %}">Delete</a>
             </div>
         {% endfor %}
         {% endif %}

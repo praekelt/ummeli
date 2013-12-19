@@ -1,0 +1,38 @@
+{% extends "my_ummeli_base.html" %}
+
+{% block content %}
+    <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; My Community Board</div>
+    <div class="h2">Status Update</div>
+    <div class="wrap">
+    {% if status %}
+        {{status.title}} <br/>
+        <span class="subtext">{{status.created|timesince}} ago</span>
+    {% else %}
+        <i>No status update</i><br/>
+            <span class="subtext">Tell the Ummeli community how you are feeling today?</span>
+    {% endif %}
+    <div><span class="btn"><a href="{% url status_update %}">Change</a></span></div>
+    </div>
+    <div class="h2">Add an opportunity</div>
+    {% for object in opportunities %}
+    <div class="img-article">
+        <a href="{% url my_community_opportunities object.slug %}">
+            <img src="{{STATIC_URL}}media/avatar_{{object.owner.get_profile.primary_skill.level}}.jpg" width="56" height="56" alt="Title Here" class="left"/>
+        </a>
+        <a href="{% url my_community_opportunities object.slug %}">{{ object.title|truncatechars:30 }}</a> {{ object.description|truncatechars:50 }}
+        <br/>
+        {{object.ummeliopportunity.get_provinces}}
+        <br/>
+        <small>
+            {{ object.created|timesince }} ago
+            </a>
+        </small><br/>
+    </div>
+    {% empty %}
+    <div class="wrap">No opportunities posted.</div>
+    {% endfor %}
+    <div id="pagination"><span><a href="{% url my_community_opportunities %}">View More</a></span></div>
+    <div class="more"><a href="{% url opportunity_create %}">+ Add another opportunity</a></div>
+    <div class="more"><a href="{% url jobs_create %}">+ Add another job</a></div>
+    <div class="more"><a href="{% url my_ummeli %}">&larr; Back</a></div>
+{% endblock %}

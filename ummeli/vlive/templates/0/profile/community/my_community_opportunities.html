@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; Opportunities</div>
-    <h2>My Opportunities</h2>
+    <div class="h2">My Opportunities</div>
         {% for item in object_list %}
             <div class="img-article">
                 <a href='{% url my_community_opportunities item.slug %}'>{{ item.title|truncatewords:10 }} ({{item.ummeliopportunity.get_provinces}})</a>
