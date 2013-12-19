@@ -22,6 +22,11 @@
         </small>
     </TEXT>
 </CONTAINER>
+<CONTAINER type="list">
+    <LINK href="{% url my_jobs_delete object.slug %}?next={% url my_community_opportunities %}">
+        <TEXT>Delete</TEXT>
+    </LINK>
+</CONTAINER>
 {% empty %}
 <CONTAINER type="data">
 <TEXT>

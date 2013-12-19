@@ -16,11 +16,12 @@
 <form method="POST" class="content-form">
 <fieldset>
     <strong>* = Required</strong><br />
-    {{ form.errors }}
     <label for="province">Province*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.province %}
     {{form.province}}
 
     <label for="category">Category*</label>
+    {% include "form_field_errors_snippet.html" with form_field=form.category %}
     {{form.category}}
 
     <label >Job Title*</label>

@@ -8,5 +8,5 @@
         <input type="submit" class="btn" value="Delete" name="submit" />
         {% csrf_token %}
     </form>
-    <div class="more"><a href="{% url my_jobs %}">&larr; Cancel</a></div>
+    <div class="more"><a href="{{cancel_url}}">&larr; Cancel</a></div>
 {% endblock %}
