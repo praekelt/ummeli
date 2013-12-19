@@ -537,7 +537,10 @@ class MyJobsListView(ListView):
     template_name = 'my_jobs_list.html'
 
     def get_queryset(self):
-        return self.request.user.modelbase_set.filter(ummeliopportunity__isnull=False).order_by('-created')
+        return self.request.user.modelbase_set.filter(
+            ummeliopportunity__is_community=True,
+            content_type__model="job"
+        ).order_by('-created')
 
 class MyCommunityListView(TemplateView):
     template_name = 'profile/community/my_community_board.html'
@@ -554,12 +557,18 @@ class MyCommunityListView(TemplateView):
         )
 
         try:
-            context['status'] = self.request.user.modelbase_set.filter(content_type=status_content_type).latest('created')
+            context['status'] = self.request.user.modelbase_set.filter(
+                content_type=status_content_type
+            ).latest('created')
         except:
             context['status'] = None
 
-        context['skills'] = self.request.user.modelbase_set.filter(content_type=skills_content_type).all()[:3]
-        context['opportunities'] = self.request.user.modelbase_set.exclude(content_type__in=[status_content_type, skills_content_type]).all()[:3]
+        context['skills'] = self.request.user.modelbase_set.filter(
+            content_type=skills_content_type
+        ).all()[:3]
+        context['opportunities'] = self.request.user.modelbase_set.exclude(
+            content_type__in=[status_content_type, skills_content_type]
+        ).filter(ummeliopportunity__is_community=True).all()[:3]
         return context
 
 class MyOpportunitiesListView(ListView):
@@ -576,7 +585,7 @@ class MyOpportunitiesListView(ListView):
             model="skillsupdate"
         )
         jmbo_models = self.request.user.modelbase_set
-        return jmbo_models.filter(ummeliopportunity__isnull=False)\
+        return jmbo_models.filter(ummeliopportunity__is_community=True)\
                           .exclude(content_type__in=[status_content_type,
                                                      skills_content_type])\
                           .order_by('-created')
@@ -627,7 +636,7 @@ class MyJobsEditView(UpdateView):
     template_name = 'my_jobs_create.html'
 
     def get_success_url(self):
-        return reverse("my_jobs")
+        return reverse("my_community_opportunities")
 
     def get_context_data(self, **kwargs):
         context = super(MyJobsEditView, self).get_context_data(**kwargs)
@@ -644,7 +653,7 @@ def my_jobs_edit(request, slug):
             job = form.save(commit=False)
             job.save()
             job.province = [form.cleaned_data['province'], ]
-            return redirect(reverse("my_jobs"))
+            return redirect(reverse("my_community_opportunities"))
     else:
         form = JobEditForm(instance=opportunity)
 
@@ -692,10 +701,12 @@ class UmmeliOpportunityEditView(UpdateView):
     def get_success_url(self):
         return reverse("my_community")
 
-    def get_object(self,  queryset=None):
-        return get_object_or_404(UmmeliOpportunity,
-                                 slug=slug,
-                                 owner=request.user)
+    def get_object(self, queryset=None):
+        return get_object_or_404(
+            UmmeliOpportunity,
+            slug=self.kwargs['slug'],
+            owner=self.request.user
+        )
 
     def form_valid(self, form):
         new_reference = form.save()
@@ -707,8 +718,28 @@ class MyJobsDeleteView(DeleteView):
     model = UmmeliOpportunity
     template_name = 'my_jobs_delete.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(MyJobsDeleteView, self).get_context_data(**kwargs)
+        context['cancel_url'] = self.request.GET.get(
+            'next',
+            reverse('my_jobs')
+        )
+        return context
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(
+            UmmeliOpportunity,
+            slug=self.kwargs['slug'],
+            owner=self.request.user
+        )
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        self.model.objects.filter(pk=obj).delete()
+        return redirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse("my_jobs")
+        return reverse("my_community_opportunities")
 
 
 class SkillListView(ListView):
