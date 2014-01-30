@@ -1,3 +1,5 @@
+{% load vlive_tags %}
+{% load cache %}
 <?xml version="1.0" encoding="UTF-8"?>
 <VZV-PARTNER xmlns:dc="http://purl.org/dc/elements/1.1/"
              xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -12,8 +14,9 @@
     <PARTNER-BODY>
         <VZV-DEFAULT>
             {% block body %}
-                {% load vlive_tags %}
+                {% cache 600 vlive-banner-detail 'banner' %}
                 {% render_vlive_banner %}
+                {% endcache %}
             {% endblock %}
         </VZV-DEFAULT>
     </PARTNER-BODY>

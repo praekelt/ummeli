@@ -18,8 +18,14 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
                 if not instance.user.get_profile().comment_as_anon\
                 else "Anon."
 
-class BannerAdmin(ModelBaseAdmin):
 
+class BannerAdmin(ModelBaseAdmin):
+    list_filter = (
+        'state',
+        'created',
+        'categories',
+        'banner_type'
+    )
     list_display = (
         'title', 'description', 'thumbnail', 'schedule', '_actions')
     raw_id_fields = ('owner', 'location')

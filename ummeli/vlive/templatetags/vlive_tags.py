@@ -74,7 +74,7 @@ def sanitize_html(value):
             .replace('&rdquo;', '"') \
             .replace('&ndash;', "-")
 
-def choose_featured_banner(context, category_slug):
+def choose_featured_banner(context, category_slug, banner_type=Banner.TYPE_BANNER):
     context = copy(context)
     now = datetime.now().time()
 
@@ -87,7 +87,8 @@ def choose_featured_banner(context, category_slug):
         Q(time_off__gte=now, time_off__lte=F('time_on')) |
         # either time on or time of not specified.
         Q(time_on__isnull=True) | Q(time_off__isnull=True),
-        primary_category__slug=category_slug
+        primary_category__slug=category_slug,
+        banner_type=banner_type
     ).order_by('?')
 
     context.update({
@@ -96,11 +97,17 @@ def choose_featured_banner(context, category_slug):
     })
     return context
 
+
 @register.inclusion_tag('banner/inclusion_tags/vlive_banner.html', takes_context=True)
 def render_vlive_banner(context):
     return choose_featured_banner(context, 'vlive-banner')
 
+
+@register.inclusion_tag('banner/inclusion_tags/vlive_banner_thumbnail.html', takes_context=True)
+def render_vlive_banner_thumbnail(context):
+    return choose_featured_banner(context, 'vlive-banner', Banner.TYPE_THUMBNAIL)
+
+
 @register.inclusion_tag('banner/inclusion_tags/homepage_banner.html', takes_context=True)
 def render_homepage_banner(context):
     return choose_featured_banner(context, 'homepage-banner')
-

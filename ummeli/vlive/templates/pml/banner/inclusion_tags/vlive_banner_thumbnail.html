@@ -1,0 +1,29 @@
+<MODULE backgroundColor="false" border="module">
+    {% if banner %}
+    <CONTAINER type="data">
+    <GALLERY>
+    <ITEM>
+        <IMAGE align="left" href="{{ ROOT_URL }}{{ banner.image.url }}" caption="ummeli" />
+        <TEXT>
+        <p>
+         <LINK href="{{banner.url}}"> {{ banner.title }}</LINK><br/>
+         {{ banner.description }} <br/>
+        </p>
+        </TEXT>
+    </ITEM>
+    </GALLERY>
+    </CONTAINER>
+    {% else %}
+    <CONTAINER type="table">
+    <TABLE border="false">
+    <TR><TD>
+        <TEXT>
+            <LINK href="/vlive/">Ummeli</LINK>
+            lets you find opportunities, build a work profile &amp; connect with others.
+        </TEXT>
+    </TD></TR>
+    </TABLE>
+    </CONTAINER>
+    {% endif %}
+    <FOOTER></FOOTER>
+</MODULE>

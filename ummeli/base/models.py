@@ -15,6 +15,18 @@ from jmbo.models import ModelBase
 
 
 class Banner(ModelBase):
+    TYPE_BANNER = 'banner'
+    TYPE_THUMBNAIL = 'thumbnail'
+    BANNER_TYPE_CHOICES = (
+        (TYPE_BANNER, 'Banner'),
+        (TYPE_THUMBNAIL, 'Thumbnail'),
+    )
+    banner_type = models.CharField(
+        max_length=10,
+        choices=BANNER_TYPE_CHOICES,
+        help_text='Type of vlive module.',
+        default=TYPE_BANNER,
+    )
     url = models.CharField(
         max_length=256,
         help_text="Root relative URL to which the banner will redirect."
