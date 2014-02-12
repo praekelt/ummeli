@@ -1,10 +1,9 @@
 from ummeli.base.models import *
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 from jmbocomments.models import UserComment
 from jmbocomments.admin import UserCommentAdmin
 from jmbo.admin import ModelBaseAdmin
-
-
 
 
 class UmmeliUserCommentAdmin(UserCommentAdmin):
@@ -13,10 +12,24 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
                     'latest_flag')
     list_filter = ('submit_date', 'site', 'is_removed')
 
-    def comment_alias(self, instance):
-        return instance.user.get_profile().fullname()\
-                if not instance.user.get_profile().comment_as_anon\
-                else "Anon."
+    def comment_alias(self, obj):
+        comment_alias = obj.user.get_profile().fullname()\
+            if not obj.user.get_profile().comment_as_anon\
+            else "Anon."
+
+        url = reverse('admin:auth_user_change', args=(obj.user.id,))
+        return '<a href="%s?user=%s">%s</a>' % (
+            reverse(
+                'admin:%s_%s_changelist' % (
+                    obj._meta.app_label,
+                    obj._meta.module_name
+                ),
+            ),
+            obj.user.id,
+            comment_alias,
+        ) + ' (<a href="%s">edit</a>)' % url
+    comment_alias.allow_tags = True
+    comment_alias.short_description = 'Comment Alias'
 
 
 class BannerAdmin(ModelBaseAdmin):
