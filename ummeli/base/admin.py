@@ -44,7 +44,8 @@ class BannerAdmin(ModelBaseAdmin):
     raw_id_fields = ('owner', 'location')
 
     def thumbnail(self, obj, *args, **kwargs):
-        return '<img src="%s" />' % (obj.image.url,)
+        url = obj.image.url if obj.image else None
+        return '<img src="%s" />' % (url, )
     thumbnail.allow_tags = True
 
     def schedule(self, obj, *args, **kwargs):
