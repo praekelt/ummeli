@@ -1,32 +1,43 @@
+import json
+import requests
 from celery.task import task
-from celery.task.sets import TaskSet
-from vumiclient.client import Client
 from django.conf import settings
-from django.core.mail import send_mail,  EmailMessage
+from django.core.mail import EmailMessage
 from jmboarticles.models import Article
-from django.db.models import Q
 
 
 @task(ignore_result=True)
 def send_password_reset(msisdn, new_password):
     message = 'Ummeli on YAL :) Your new password is: %s' % new_password
-    client = Client(settings.VUMI_USERNAME, settings.VUMI_PASSWORD)
-    resp = client.send_sms(to_msisdn = msisdn,
-        from_msisdn = '1',
-        message = message)
+    send_sms(msisdn, message)
 
 
 @task(ignore_result=True)
 def send_email(username, message):
-    email = EmailMessage('Blocked User: %s' % username, message,
-                                            settings.SEND_FROM_EMAIL_ADDRESS,
-                                            [settings.UMMELI_SUPPORT])
+    email = EmailMessage(
+        'Blocked User: %s' % username,
+        message,
+        settings.SEND_FROM_EMAIL_ADDRESS,
+        [settings.UMMELI_SUPPORT]
+    )
     email.send(fail_silently=False)
 
 
-def send_sms(msisdn, message):
-    client = Client(settings.VUMI_USERNAME, settings.VUMI_PASSWORD)
-    client.send_sms(to_msisdn = msisdn, from_msisdn = '1', message = message)
+def send_sms(to_msisdn, msg):
+    base_url = 'https://go.vumi.org/api/v1'
+    url = '%s/go/http_api_nostream/%s/messages.json' % (
+        base_url,
+        settings.VUMI_SMS_CONVERSATION_KEY
+    )
+    data = {
+        "content": msg,
+        "to_addr": to_msisdn
+    }
+    requests.put(
+        url,
+        json.dumps(data),
+        auth=(settings.VUMI_ACCOUNT_KEY, settings.VUMI_ACCESS_TOKEN),
+    )
 
 
 def disable_commenting():
