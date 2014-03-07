@@ -141,7 +141,7 @@ def forgot_password_view(request):
             user = User.objects.get(username = username)
             user.set_password(new_password)
             user.save()
-
+            messages.success(request, 'An SMS has been sent with your new PIN')
             return redirect(reverse('login'))
     else:
         form = ForgotPasswordForm()
