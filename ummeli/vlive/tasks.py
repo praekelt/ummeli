@@ -8,7 +8,7 @@ from jmboarticles.models import Article
 
 @task(ignore_result=True)
 def send_password_reset(msisdn, new_password):
-    message = 'Ummeli on YAL :) Your new password is: %s' % new_password
+    message = 'Ummeli :) Your new password is: %s' % new_password
     send_sms(msisdn, message)
 
 
