@@ -127,18 +127,19 @@ def logout_view(request):
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
 
+
 def forgot_password_view(request):
     if request.method == 'POST':
         post_data = process_post_data_username(request.POST)
         form = ForgotPasswordForm(post_data)
 
-        if(form.is_valid()):
+        if form.is_valid():
             username = form.cleaned_data['username']
-            new_password = generate_password(chars = string.digits)
+            new_password = generate_password(chars=string.digits)
 
-            send_password_reset.delay(username,  new_password)
+            send_password_reset.delay(username, new_password)
 
-            user = User.objects.get(username = username)
+            user = User.objects.get(username=username)
             user.set_password(new_password)
             user.save()
             messages.success(request, 'An SMS has been sent with your new PIN')
@@ -146,7 +147,7 @@ def forgot_password_view(request):
     else:
         form = ForgotPasswordForm()
 
-    return render(request,'forgot_password.html', {'form': form})
+    return render(request, 'forgot_password.html', {'form': form})
 
 @login_required
 def password_change_view(request):
