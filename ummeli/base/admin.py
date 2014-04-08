@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from ummeli.base.models import *
 from django.contrib import admin
 from django.core.urlresolvers import reverse
@@ -30,6 +31,31 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
         ) + ' (<a href="%s">edit</a>)' % url
     comment_alias.allow_tags = True
     comment_alias.short_description = 'Comment Alias'
+
+    def queryset(self, request):
+        """
+        Due to the volume of comments, moderation of comments is becoming
+        unwieldy. We're limiting the number of comments displayed in the CMS
+
+        Only show comments in the last month
+        """
+        qs = super(UmmeliUserCommentAdmin, self).queryset(request)
+
+        #only apply date filter if no date filter in query string
+        query_string = request.GET.copy()
+        if ('submit_date' in query_string or
+            'submit_date__gte' in query_string or
+            'submit_date__lte' in query_string or
+            'submit_date__lt' in query_string or
+                'submit_date__gt' in query_string):
+            return qs
+
+        recent_qs = qs.filter(
+            submit_date__gte=datetime.now()-timedelta(days=30))
+        if recent_qs.exists():
+            return recent_qs
+
+        return qs
 
 
 class BannerAdmin(ModelBaseAdmin):
