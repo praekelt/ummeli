@@ -72,6 +72,9 @@ def sanitize_html(value):
             .replace('&quot;', '"') \
             .replace('&ldquo;', '"') \
             .replace('&rdquo;', '"') \
+            .replace('&bull;', '- ') \
+            .replace('&eacute;', 'e') \
+            .replace('&Eacute;', 'E') \
             .replace('&ndash;', "-")
 
 def choose_featured_banner(context, category_slug, banner_type=Banner.TYPE_BANNER):
