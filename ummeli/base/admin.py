@@ -142,6 +142,7 @@ class UserBanAdmin(admin.ModelAdmin):
     list_filter = ('ban_on', 'unban_on', 'user__is_active')
     raw_id_fields = ('user', )
     ordering = ('-ban_on', )
+    exclude = ('is_unbanned', )
     form = UserBanAdminForm
 
     def _active(self, obj, *args, **kwargs):
