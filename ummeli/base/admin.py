@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from ummeli.base.models import *
 from django.contrib import admin
 from django.core.urlresolvers import reverse
+from django import forms
 from jmbocomments.models import UserComment
 from jmbocomments.admin import UserCommentAdmin
 from jmbo.admin import ModelBaseAdmin
@@ -19,6 +20,7 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
             else "Anon."
 
         url = reverse('admin:auth_user_change', args=(obj.user.id,))
+        ban_url = reverse('admin:base_userban_add') + '?user=%s' % obj.user.id
         return '<a href="%s?user=%s">%s</a>' % (
             reverse(
                 'admin:%s_%s_changelist' % (
@@ -28,7 +30,9 @@ class UmmeliUserCommentAdmin(UserCommentAdmin):
             ),
             obj.user.id,
             comment_alias,
-        ) + ' (<a href="%s">edit</a>)' % url
+        ) + ' (<a href="%s">edit</a>) (<a href="%s">ban</a>)' % (
+            url, ban_url)
+
     comment_alias.allow_tags = True
     comment_alias.short_description = 'Comment Alias'
 
@@ -91,12 +95,77 @@ class CurriculumVitaeAdmin(admin.ModelAdmin):
                      'skills', 'connection_requests')
     list_filter = ('province', )
 
+
+class UserBanAdminForm(forms.ModelForm):
+    bans = forms.IntegerField(required=False)
+    last_ban = forms.DateTimeField(required=False)
+    last_ban_duration = forms.IntegerField(required=False)
+
+    def get_last_ban(self, user):
+        for ban in user.userban_set.all():
+            last_ban = ban.ban_on
+            last_ban_duration = ban.get_ban_duration()
+            return (last_ban, last_ban_duration)
+        return (None, None)
+
+    def __init__(self, *args, **kwargs):
+        super(UserBanAdminForm, self).__init__(*args, **kwargs)
+        initial = kwargs.get('initial')
+        instance = kwargs.get('instance')
+        bans_count = last_ban = last_ban_duration = None
+        if instance:
+            bans_count = instance.user.userban_set.all().count()
+            last_ban, last_ban_duration = self.get_last_ban(instance.user)
+        if initial:
+            user_pk = initial.get('user')
+            if User.objects.filter(pk=user_pk).exists():
+                user = User.objects.get(pk=user_pk)
+                bans = user.userban_set.all().order_by('-ban_on')
+                bans_count = bans.count()
+                last_ban, last_ban_duration = self.get_last_ban(user)
+
+        self.fields['bans'].initial = bans_count
+        self.fields['last_ban'].initial = last_ban
+        self.fields['last_ban_duration'].initial = last_ban_duration
+
+        self.fields['bans'].widget.attrs['disabled'] = 'disabled'
+        self.fields['last_ban'].widget.attrs['disabled'] = 'disabled'
+        self.fields['last_ban_duration'].widget.attrs['disabled'] = 'disabled'
+
+    class Meta:
+        model = UserBan
+
+
+class UserBanAdmin(admin.ModelAdmin):
+    list_display = ('user', 'ban_on', 'unban_on', '_bans', '_duration',
+                    '_active')
+    list_filter = ('ban_on', 'unban_on', 'user__is_active')
+    raw_id_fields = ('user', )
+    ordering = ('-ban_on', )
+    form = UserBanAdminForm
+
+    def _active(self, obj, *args, **kwargs):
+        return obj.user.is_active
+    _active.allow_tags = True
+    _active.boolean = True
+    _active.short_description = "active"
+
+    def _bans(self, obj, *args, **kwargs):
+        return obj.user.userban_set.all().count()
+    _bans.allow_tags = True
+    _bans.short_description = "bans"
+
+    def _duration(self, obj, *args, **kwargs):
+        return obj.get_ban_duration()
+    _duration.short_description = "duration"
+
 admin.site.register(CurriculumVitae, CurriculumVitaeAdmin)
 admin.site.register(Certificate)
 admin.site.register(Language)
 admin.site.register(WorkExperience)
 admin.site.register(Reference)
 admin.site.register(Banner, BannerAdmin)
+admin.site.register(UserBan, UserBanAdmin)
 
 if UserComment in admin.site._registry:
     admin.site.unregister(UserComment)

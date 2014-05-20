@@ -14,6 +14,7 @@ class OpportunityAdmin(ModelBaseAdmin):
 
     def _user(self, obj):
         url = reverse('admin:auth_user_change', args=(obj.owner.id,))
+        ban_url = reverse('admin:base_userban_add') + '?user=%s' % obj.owner.id
         return '<a href="%s?owner=%s">%s</a>' % (
             reverse(
                 'admin:%s_%s_changelist' % (
@@ -23,7 +24,8 @@ class OpportunityAdmin(ModelBaseAdmin):
             ),
             obj.owner.id,
             obj.owner,
-        ) + ' (<a href="%s">edit</a>)' % url
+        ) + ' (<a href="%s">edit</a>) (<a href="%s">ban</a>)' % (
+            url, ban_url)
     _user.allow_tags = True
     _user.short_description = 'User'
 

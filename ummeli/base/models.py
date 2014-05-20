@@ -47,6 +47,28 @@ class Banner(ModelBase):
     )
 
 
+class UserBan(models.Model):
+    user = models.ForeignKey(User)
+    is_unbanned = models.BooleanField()
+    ban_on = models.DateTimeField(
+        db_index=True,
+        help_text=("Date and time on which to ban a user (state will "
+                   "change to 'inactive')."),
+    )
+    unban_on = models.DateTimeField(
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text=("Date and time on which to unban this user (state will "
+                   "change to 'active'). If empty, user will remain banned"),
+    )
+
+    def get_ban_duration(self):
+        if self.unban_on:
+            return '%s days' % (self.unban_on - self.ban_on).days
+        return 'permanently'
+
+
 class Certificate (models.Model):
     name = models.CharField(max_length=45)
     institution = models.CharField(max_length=200, null=True, blank=True)
