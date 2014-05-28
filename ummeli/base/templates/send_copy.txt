@@ -1,17 +1,28 @@
-[THIS IS AN AUTO-GENERATED EMAIL. DO NOT REPLY DIRECTLY]
+Hello,
 
+My name is {{sender}}. My CV is attached and will tell you more about my
+qualifications and work experience, which I believe are relevant to your
+employee search.
 
-Hi,
-
-{{sender}} has chosen to send you their CV.
-See attachment for details.
-
+{% if message %}
 {{message}}
 
-To contact {{sender}}:
-Phone number: {{phone}}
+{%endif %}
+Please contact me directly on {{phone}} for more information or if my
+application has progressed further.
+
+I hope to hear from you soon and thank you for your time.
+
+Sincerely,
+
+{{sender}}
 
 
-Brought to you by,
-Ummeli
-www.ummeli.com
+
+_______________________________________________________________________________
+This job application was powered by Ummeli, a social work finder and
+community collaboration tool that helps young people create and email
+their CV for free using their mobile phones. Find out more at www.ummeli.com.
+Ummeli is not a work placement company. Please consider all applications
+received from Ummeli as individual applications. To contact the applicant,
+use the contact information above.

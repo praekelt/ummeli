@@ -13,7 +13,7 @@
                 {{ item.created|timesince }} ago
             </small>
             <br/>
-            <div class="more"><a href="{% url my_jobs_delete item.pk %}">Delete</a></div>
+            <div class="more"><a href="{% url my_jobs_delete item.slug %}?next={% url my_community_opportunities %}">Delete</a></div>
             </div>
         {% empty %}
         <div class="wrap">No opportunities posted</div>

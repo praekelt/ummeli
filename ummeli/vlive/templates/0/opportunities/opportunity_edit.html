@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Ummeli
+{% endblock %}
+
+{% block content %}
+<div class="crumbs"><a href="{% url index %}">Home</a> &raquo; <a href="{% url my_ummeli %}">My Ummeli</a> &raquo; <a href="{% url my_community %}">My Community Board</a> &raquo; edit</div>
+<div class="h2">Edit opportunity</div>
+<form method="POST" class="content-form">
+    <fieldset>
+    <strong>* = Required</strong><br />
+    <div class="form-fields">
+        <label for="province">Province*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.province %}
+        {{form.province}}
+
+        <label>Title*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.title %}
+        {{form.title}}
+        <label>Description*</label>
+        {% include "form_field_errors_snippet.html" with form_field=form.description %}
+        <div>{{form.description.help_text}}</div>
+        {{form.description}}
+    </div>
+    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    <input type='hidden' name='opportunity_type' value='1' />
+    <input type='submit' value='Save' class="btn"/>
+    </fieldset>
+</form>
+{% endblock %}

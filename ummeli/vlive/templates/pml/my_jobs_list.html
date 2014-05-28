@@ -12,7 +12,7 @@
     <CONTAINER type="image">
     <IMAGE href="/ummeli-static/media/write.jpg" float="true" align="left" mime-type="image/jpeg"/>
     <TITLE>
-        <LINK href="{% url my_jobs item.pk %}?{{uuid}}">
+        <LINK href="{% url my_jobs item.slug %}?{{uuid}}">
             {{ item.title|truncatewords:10 }} {% if item.province %}({{item.province}}){%endif%}
         </LINK>
     </TITLE>
@@ -22,7 +22,7 @@
     </TEXT>
     </CONTAINER>
     <CONTAINER type="list">
-        <LINK href="{% url my_jobs_delete item.pk %}?{{uuid}}">
+        <LINK href="{% url my_jobs_delete item.slug %}?{{uuid}}">
             <TEXT>Delete</TEXT>
         </LINK>
     </CONTAINER>

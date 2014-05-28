@@ -6,7 +6,7 @@
         {% if object_list %}
         {% for item in object_list %}
             <div class="img-article">
-                <a href='{% url my_jobs item.pk %}'>{{ item.title|truncatewords:10 }} ({{item.as_leaf_class.get_provinces}})</a>
+                <a href='{% url my_jobs item.slug %}'>{{ item.title|truncatewords:10 }} ({{item.as_leaf_class.get_provinces}})</a>
             <br/>
             {{item.description|truncatewords:10}}
             <br/>
@@ -14,7 +14,7 @@
                 {{ item.created|timesince }} ago
             </small>
             <br/>
-            <div class="more"><a href="{% url my_jobs_delete item.pk %}">Delete</a></div>
+            <div class="more"><a href="{% url my_jobs_delete item.slug %}">Delete</a></div>
             </div>
         {% endfor %}
         {% endif %}

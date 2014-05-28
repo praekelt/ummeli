@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 from ummeli.opportunities.models import *
 from jmbo.admin import ModelBaseAdmin
 from ckeditor.widgets import CKEditorWidget
@@ -11,10 +12,28 @@ class OpportunityAdmin(ModelBaseAdmin):
         models.TextField: {'widget': CKEditorWidget},
     }
 
+    def _user(self, obj):
+        url = reverse('admin:auth_user_change', args=(obj.owner.id,))
+        ban_url = reverse('admin:base_userban_add') + '?user=%s' % obj.owner.id
+        return '<a href="%s?owner=%s">%s</a>' % (
+            reverse(
+                'admin:%s_%s_changelist' % (
+                    obj._meta.app_label,
+                    obj._meta.module_name
+                ),
+            ),
+            obj.owner.id,
+            obj.owner,
+        ) + ' (<a href="%s">edit</a>) (<a href="%s">ban</a>)' % (
+            url, ban_url)
+    _user.allow_tags = True
+    _user.short_description = 'User'
+
+
 class UmmeliOpportunityAdmin(OpportunityAdmin):
     list_filter = ('state', 'created', 'is_community',)
-    list_display = ('title', 'publish_on', 'retract_on',
-                    '_get_absolute_url', 'owner', 'created',
+    list_display = ('title', 'description', 'publish_on', 'retract_on',
+                    '_user', 'created',
                     '_community_moderation', '_actions')
 
     def _community_moderation(self, obj):

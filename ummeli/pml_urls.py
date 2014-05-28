@@ -23,5 +23,10 @@ urlpatterns = patterns('',
     url(r'^vlive$', views.index, name='index'),
     url(r'^vlive/register/$', views.register, name='register'),
     url(r'^vlive/', include('ummeli.vlive.urls')),
-    url(r'^carousel\.xml$', TemplateView.as_view(template_name="carousel.xml")),
+    url(
+        r'^vlivebanner/banner/$',
+        TemplateView.as_view(template_name="banner_banner.html")),
+    url(
+        r'^vlivebanner/thumbnail/$',
+        TemplateView.as_view(template_name="banner_thumbnail.html")),
 )

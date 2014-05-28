@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.contrib.sites.models import Site
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from ummeli.vlive.utils import pin_required
 
 from ummeli.opportunities.models import UmmeliOpportunity, StatusUpdate, SkillsUpdate
@@ -16,7 +17,8 @@ current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
-    posts = UmmeliOpportunity.permitted.filter(is_community=True).order_by('-created')
+    posts = UmmeliOpportunity.permitted.filter(
+        is_community=True).order_by('-created')
 
     paginator = Paginator(posts, 15)  # Show 15 contacts per page
     page = request.GET.get('page', 'none')
@@ -53,12 +55,18 @@ def community_job(request, slug):
             send_to = form.cleaned_data['send_to']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to,  article.description)
+                user_profile.email_cv(
+                    send_to,
+                    article.description,
+                    job_date=article.created)
                 msg = 'You email has been sent.'
                 messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
             else:
-                user_profile.fax_cv(send_to, article.description)
+                user_profile.fax_cv(
+                    send_to,
+                    article.description,
+                    job_date=article.created)
                 msg = 'You fax has been sent.'
                 messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
@@ -68,6 +76,7 @@ def community_job(request, slug):
 
 
 class StatusUpdateView(FormView):
+
     """
     Renders and handles user status update view/form.
     """
@@ -75,7 +84,8 @@ class StatusUpdateView(FormView):
     template_name = "profile/community/status_edit.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super(StatusUpdateView, self).get_context_data(*args, **kwargs)
+        context = super(StatusUpdateView, self).get_context_data(
+            *args, **kwargs)
         context.update({
             'statuses': StatusUpdate.objects.filter(owner=self.request.user).order_by('-created')[:5],
         })
@@ -83,12 +93,26 @@ class StatusUpdateView(FormView):
 
     def form_valid(self, form):
         # check if the user hasn't placed the exact status update
-        # with the exact same information in the last 5 minutes to prevent duplicates
+        # with the exact same information in the last 5 minutes
+        # to prevent duplicates
         title = form.cleaned_data['title']
         delta = datetime.now() - timedelta(minutes=5)
-        duplicate = StatusUpdate.objects \
-                                .filter(owner=self.request.user, created__gte=delta, title=title) \
-                                .exists()
+        duplicate = StatusUpdate.objects.filter(
+            owner=self.request.user,
+            created__gte=delta,
+            title=title).exists()
+
+        daily_limit_exceeded = UmmeliOpportunity.objects.filter(
+            owner=self.request.user,
+            created__gte=datetime.now().date()
+        ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
+
+        if daily_limit_exceeded:
+            msg = "You can only post to the community board %s times a day"
+            messages.error(
+                self.request,
+                msg % settings.COMMUNITY_BOARD_POST_LIMIT)
+            return redirect(reverse('status_update'))
 
         if not duplicate:
             s = StatusUpdate.objects.create(title=title,
@@ -108,11 +132,25 @@ class StatusUpdateView(FormView):
 def advertise_skills_post(request):
     if request.method == 'POST':
         # check if the user hasn't placed the exact status update
-        # with the exact same information in the last 5 minutes to prevent duplicates
+        # with the exact same information in the last 5 minutes
+        # to prevent duplicates
         delta = datetime.now() - timedelta(minutes=1)
-        duplicate = SkillsUpdate.objects \
-                                .filter(owner=request.user, created__gte=delta)\
-                                .exists()
+        duplicate = SkillsUpdate.objects.filter(
+            owner=request.user,
+            created__gte=delta
+        ).exists()
+
+        daily_limit_exceeded = UmmeliOpportunity.objects.filter(
+            owner=request.user,
+            created__gte=datetime.now().date()
+        ).count() >= settings.COMMUNITY_BOARD_POST_LIMIT
+
+        if daily_limit_exceeded:
+            msg = "You can only post to the community board %s times a day"
+            messages.error(
+                request,
+                msg % settings.COMMUNITY_BOARD_POST_LIMIT)
+            return redirect(reverse('index'))
 
         if not duplicate:
             s = SkillsUpdate.objects.create(title=request.user.username,
