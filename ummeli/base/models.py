@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
@@ -8,10 +6,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from jmbo.models import ModelBase
-from ummeli.base.utils import render_to_pdf
-from django.core.mail import EmailMessage
-
-from celery.task import task
+from ummeli.base.tasks import schedule_cv_email
 
 
 class Banner(ModelBase):
@@ -353,15 +348,3 @@ def create_cv(sender, instance, created, **kwargs):
 
 post_save.connect(create_cv, sender=User,
                   dispatch_uid="users-profilecreation-signal")
-
-
-@task
-def schedule_cv_email(cv,  email_address,  email_text, from_address):
-    email = EmailMessage('CV for %s' % cv.fullname(), email_text,
-                         from_address,
-                         [email_address], ['ummeli@praekeltfoundation.org'])
-    pdf = render_to_pdf('pdf_template.html', {'model': cv})
-    email.attach(
-        'curriculum_vitae_for_%s_%s.pdf' % (cv.first_name, cv.surname),
-        pdf,  'application/pdf')
-    email.send(fail_silently=False)

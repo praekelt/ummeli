@@ -244,12 +244,14 @@ LOGIN_URL = '/vlive/login/'
 LOGIN_REDIRECT_URL = '/vlive/'
 
 CELERY_ALWAYS_EAGER = False
-CELERY_IMPORTS = ('ummeli.vlive.jobs.tasks',
-                'ummeli.vlive.tasks',
-                'jmbo_analytics.tasks',
-                'praekeltpayment.flickswitch.api',
-                'ummeli.providers.tasks',
-                )
+CELERY_IMPORTS = (
+    'ummeli.base.tasks',
+    'ummeli.vlive.jobs.tasks',
+    'ummeli.vlive.tasks',
+    'ummeli.providers.tasks',
+    'jmbo_analytics.tasks',
+    'praekeltpayment.flickswitch.api',
+)
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_TASK_RESULT_EXPIRES = 60
 
