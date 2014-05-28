@@ -5,4 +5,4 @@ class Command(BaseCommand):
     help = 'update jobs from wegotads'
 
     def handle(self, **options):    
-        tasks.run_jobs_update.delay()
+        tasks.run_jobs_update()
