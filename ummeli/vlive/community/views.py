@@ -17,7 +17,8 @@ current_site = Site.objects.get_current()
 
 
 def community_jobs(request):
-    posts = UmmeliOpportunity.permitted.filter(is_community=True).order_by('-created')
+    posts = UmmeliOpportunity.permitted.filter(
+        is_community=True).order_by('-created')
 
     paginator = Paginator(posts, 15)  # Show 15 contacts per page
     page = request.GET.get('page', 'none')
@@ -54,12 +55,18 @@ def community_job(request, slug):
             send_to = form.cleaned_data['send_to']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to,  article.description)
+                user_profile.email_cv(
+                    send_to,
+                    article.description,
+                    job_date=article.created)
                 msg = 'You email has been sent.'
                 messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
             else:
-                user_profile.fax_cv(send_to, article.description)
+                user_profile.fax_cv(
+                    send_to,
+                    article.description,
+                    job_date=article.created)
                 msg = 'You fax has been sent.'
                 messages.success(request, msg)
                 return redirect(reverse('community_jobs'))
@@ -69,6 +76,7 @@ def community_job(request, slug):
 
 
 class StatusUpdateView(FormView):
+
     """
     Renders and handles user status update view/form.
     """
@@ -76,7 +84,8 @@ class StatusUpdateView(FormView):
     template_name = "profile/community/status_edit.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super(StatusUpdateView, self).get_context_data(*args, **kwargs)
+        context = super(StatusUpdateView, self).get_context_data(
+            *args, **kwargs)
         context.update({
             'statuses': StatusUpdate.objects.filter(owner=self.request.user).order_by('-created')[:5],
         })

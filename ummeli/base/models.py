@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.conf import settings
@@ -10,8 +12,6 @@ from ummeli.base.utils import render_to_pdf
 from django.core.mail import EmailMessage
 
 from celery.task import task
-
-from jmbo.models import ModelBase
 
 
 class Banner(ModelBase):
@@ -36,7 +36,8 @@ class Banner(ModelBase):
         null=True,
         help_text="Time at which the banner will start displaying. If "
                   "either time on or time off is not specified the banner "
-                  "will always be eligable for display (can be randomly selected)."
+                  "will always be eligable for display "
+                  "(can be randomly selected)."
     )
     time_off = models.TimeField(
         blank=True,
@@ -78,12 +79,14 @@ class Certificate (models.Model):
     def __unicode__(self):  # pragma: no cover
         return self.name + " @ " + self.institution
 
+
 class Language (models.Model):
     language = models.CharField(max_length=45)
     read_write = models.BooleanField(default=False)
 
     def __unicode__(self):  # pragma: no cover
         return self.language
+
 
 class WorkExperience (models.Model):
     title = models.CharField(max_length=45)
@@ -94,6 +97,7 @@ class WorkExperience (models.Model):
     def __unicode__(self):  # pragma: no cover
         return self.title + " @ " + self.company
 
+
 class Reference (models.Model):
     fullname = models.CharField(max_length=45)
     relationship = models.CharField(max_length=45, null=True, blank=True)
@@ -103,16 +107,18 @@ class Reference (models.Model):
         return self.fullname
 
 SKILL_LEVEL_CHOICES = (
-        (0, 'Laaitie'),
-        (2, 'Junior'),
-        (5, 'Middleweight'),
-        (10, 'Pro'),
-        (20, 'Bozza'),
-        )
+    (0, 'Laaitie'),
+    (2, 'Junior'),
+    (5, 'Middleweight'),
+    (10, 'Pro'),
+    (20, 'Bozza'),
+)
+
 
 class Skill (models.Model):
     skill = models.CharField(max_length=45, null=False, blank=False)
-    level = models.PositiveIntegerField(choices=SKILL_LEVEL_CHOICES, null=False, blank=False, default=0)
+    level = models.PositiveIntegerField(
+        choices=SKILL_LEVEL_CHOICES, null=False, blank=False, default=0)
     primary = models.BooleanField(default=False)
 
     def __unicode__(self):  # pragma: no cover
@@ -135,17 +141,18 @@ NORTHERN_CAPE = 8
 WESTERN_CAPE = 9
 
 PROVINCE_CHOICES = (
-        (ALL, 'All Provinces'),
-        (EASTERN_CAPE, 'Eastern Cape'),
-        (FREE_STATE, 'Free State'),
-        (GAUTENG, 'Gauteng'),
-        (KWAZULU_NATAL, 'KwaZulu Natal'),
-        (LIMPOPO, 'Limpopo'),
-        (MPUMALANGA, 'Mpumalanga'),
-        (NORTH_WEST, 'North West'),
-        (NORTHERN_CAPE, 'Northern Cape'),
-        (WESTERN_CAPE, 'Western Cape'),
-        )
+    (ALL, 'All Provinces'),
+    (EASTERN_CAPE, 'Eastern Cape'),
+    (FREE_STATE, 'Free State'),
+    (GAUTENG, 'Gauteng'),
+    (KWAZULU_NATAL, 'KwaZulu Natal'),
+    (LIMPOPO, 'Limpopo'),
+    (MPUMALANGA, 'Mpumalanga'),
+    (NORTH_WEST, 'North West'),
+    (NORTHERN_CAPE, 'Northern Cape'),
+    (WESTERN_CAPE, 'Western Cape'),
+)
+
 
 class CurriculumVitae(models.Model):
     first_name = models.CharField(max_length=45, null=True, blank=True)
@@ -172,10 +179,13 @@ class CurriculumVitae(models.Model):
     nr_of_faxes_sent = models.IntegerField(default=0,  editable=False)
     is_complete = models.BooleanField(default=False,  editable=False)
 
-    preferred_skill = models.ForeignKey(Skill, blank=True, null=True, related_name='profiles_preferred')
-    skills = models.ManyToManyField(Skill, blank=True, null=True, related_name='profiles')
+    preferred_skill = models.ForeignKey(
+        Skill, blank=True, null=True, related_name='profiles_preferred')
+    skills = models.ManyToManyField(
+        Skill, blank=True, null=True, related_name='profiles')
 
-    connection_requests = models.ManyToManyField('auth.User', related_name='connection_requests', blank=True)
+    connection_requests = models.ManyToManyField(
+        'auth.User', related_name='connection_requests', blank=True)
 
     show_contact_number = models.BooleanField(default=False)
     show_address = models.BooleanField(default=False)
@@ -185,11 +195,11 @@ class CurriculumVitae(models.Model):
         return self.connection_requests.filter(pk=user_id).exists()
 
     def primary_skill(self):
-        skills = self.skills.filter(primary = True)
+        skills = self.skills.filter(primary=True)
         return skills[0] if skills.exists() else ''
 
     def other_skills(self):
-        return self.skills.filter(primary = False)
+        return self.skills.filter(primary=False)
 
     def get_connection_node(self):
         from ummeli.graphing.models import Person
@@ -204,7 +214,8 @@ class CurriculumVitae(models.Model):
         return len(self.get_connections())
 
     def __str__(self):
-        return '%s - %s %s' % (self.user.username, self.first_name,  self.surname)
+        return '%s - %s %s' % (
+            self.user.username, self.first_name,  self.surname)
 
     def fullname(self):
         return ('%s %s' % (self.first_name,  self.surname)).strip()
@@ -231,39 +242,39 @@ class CurriculumVitae(models.Model):
 
     def fields_complete(self):
         count = 0.0
-        if  self.first_name:
+        if self.first_name:
             count += 1
-        if  self.surname:
+        if self.surname:
             count += 1
-        if  self.gender:
+        if self.gender:
             count += 1
-        if  self.email:
+        if self.email:
             count += 1
-        if  self.telephone_number:
+        if self.telephone_number:
             count += 1
-        if  self.address:
+        if self.address:
             count += 1
-        if  self.school:
+        if self.school:
             count += 1
-        if  self.highest_grade:
+        if self.highest_grade:
             count += 1
-        if  self.highest_grade_year:
+        if self.highest_grade_year:
             count += 1
-        if  self.date_of_birth:
+        if self.date_of_birth:
             count += 1
-        if  self.city:
+        if self.city:
             count += 1
-        if  self.about_me:
+        if self.about_me:
             count += 1
-        if  self.certificates.exists():
+        if self.certificates.exists():
             count += 1
-        if  self.languages.exists():
+        if self.languages.exists():
             count += 1
-        if  self.work_experiences.exists():
+        if self.work_experiences.exists():
             count += 1
-        if  self.references.exists():
+        if self.references.exists():
             count += 1
-        return (count/16)*100
+        return (count / 16) * 100
 
     def update_is_complete(self):
         if not self.missing_fields():
@@ -278,34 +289,41 @@ class CurriculumVitae(models.Model):
     def faxes_remaining(self):
         return settings.MAX_LAUNCH_FAXES_COUNT - self.nr_of_faxes_sent
 
-    def fax_cv(self,  fax_nr, article_text = None, email_message = None):
+    def fax_cv(self, fax_nr, article_text=None, email_message=None,
+               job_date=None):
         if(self.can_send_fax()):
             self.nr_of_faxes_sent += 1
             self.save()
             return self.email_cv('%s@faxfx.net' % fax_nr.replace(' ', ''),
                                  article_text,
                                  settings.SEND_FROM_FAX_EMAIL_ADDRESS,
-                                 email_message)
+                                 email_message,
+                                 job_date)
         return None
 
-    def email_cv(self, email_address, article_text = None,
-                        from_address = settings.SEND_FROM_EMAIL_ADDRESS,
-                        email_message = None):
+    def email_cv(self, email_address, article_text=None,
+                 from_address=settings.SEND_FROM_EMAIL_ADDRESS,
+                 email_message=None,
+                 job_date=None):
         email_text = ''
-        copy_context = {'sender': self.fullname(),
-                                'job_ad': article_text,
-                                'phone': self.telephone_number,
-                                'message': email_message}
+        copy_context = {
+            'sender': self.fullname(),
+            'job_ad': article_text,
+            'phone': self.telephone_number,
+            'message': email_message,
+            'date': job_date}
 
         if article_text:
             email_text = render_to_string('apply_copy.txt', copy_context)
         else:
             email_text = render_to_string('send_copy.txt', copy_context)
 
-        schedule_cv_email.delay(self,  email_address,  email_text,  from_address)
+        schedule_cv_email.delay(
+            self,  email_address,  email_text,  from_address)
 
     def __unicode__(self):  # pragma: no cover
         return u"CurriculumVitae %s - %s" % (self.pk, self.first_name)
+
 
 def update_is_complete_property(sender, **kwargs):
     instance = kwargs['instance']
@@ -315,28 +333,35 @@ def update_is_complete_property(sender, **kwargs):
         is_complete=not instance.missing_fields())
 
 post_save.connect(update_is_complete_property, sender=CurriculumVitae,
-    dispatch_uid='curriculum-vitae-is-complete-signal')
+                  dispatch_uid='curriculum-vitae-is-complete-signal')
+
 
 class CurriculumVitaeForm(ModelForm):
+
     class Meta:
         model = CurriculumVitae
         exclude = ('user')
 
+
 def create_cv(sender, instance, created, **kwargs):
     if created:
-        cv = CurriculumVitae.objects.create(first_name=instance.first_name,
-                surname=instance.last_name, email=instance.email,
-                user=instance)
+        CurriculumVitae.objects.create(
+            first_name=instance.first_name,
+            surname=instance.last_name,
+            email=instance.email,
+            user=instance)
 
-post_save.connect(create_cv, sender = User,
-                  dispatch_uid = "users-profilecreation-signal")
+post_save.connect(create_cv, sender=User,
+                  dispatch_uid="users-profilecreation-signal")
+
 
 @task
 def schedule_cv_email(cv,  email_address,  email_text, from_address):
     email = EmailMessage('CV for %s' % cv.fullname(), email_text,
-                                            from_address,
-                                            [email_address], ['ummeli@praekeltfoundation.org'])
+                         from_address,
+                         [email_address], ['ummeli@praekeltfoundation.org'])
     pdf = render_to_pdf('pdf_template.html', {'model': cv})
-    email.attach('curriculum_vitae_for_%s_%s.pdf' % (cv.first_name, cv.surname),
-                        pdf,  'application/pdf')
+    email.attach(
+        'curriculum_vitae_for_%s_%s.pdf' % (cv.first_name, cv.surname),
+        pdf,  'application/pdf')
     email.send(fail_silently=False)

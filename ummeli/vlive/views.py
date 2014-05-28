@@ -30,7 +30,7 @@ from django.contrib import messages
 from django.db.models import Q, F
 from django.views.generic.base import TemplateView
 
-#imports for login
+# imports for login
 from django.http import HttpResponse
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login,
                                  logout as auth_logout,  authenticate)
@@ -39,18 +39,19 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm,\
 
 from jmboarticles.models import Article as EditorialArticle
 
+
 def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
-
     """
     Displays the login form and handles the login action.
     """
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
-        form = authentication_form(data=process_post_data_username(request.POST))
+        form = authentication_form(
+            data=process_post_data_username(request.POST))
         if form.is_valid():
             netloc = urlparse.urlparse(redirect_to)[1]
 
@@ -79,7 +80,8 @@ def login(request, template_name='login.html',
     request.session.set_test_cookie()
 
     return render(request, template_name,
-              {'form': form, redirect_field_name: redirect_to})
+                  {'form': form, redirect_field_name: redirect_to})
+
 
 def register(request):
     if request.method == 'POST':
@@ -98,7 +100,8 @@ def register(request):
     else:
         form = UserCreationForm()
 
-    return render(request, 'register.html',{'form': form})
+    return render(request, 'register.html', {'form': form})
+
 
 def mobi_register(request):
     if request.method == 'POST':
@@ -107,7 +110,7 @@ def mobi_register(request):
         form = MobiUserCreationForm(post_data)
         if form.is_valid():
             form.save()
-            #auto-login user
+            # auto-login user
             password = request.POST.get('password1')
             user = authenticate(username=username,  password=password)
             auth_login(request, user)
@@ -116,13 +119,15 @@ def mobi_register(request):
     else:
         form = MobiUserCreationForm()
 
-    return render(request, 'register.html',{'form': form})
+    return render(request, 'register.html', {'form': form})
+
 
 def logout_view(request):
     # remove the pin from the session
     request.session.pop(settings.UMMELI_PIN_SESSION_KEY, None)
     auth_logout(request)
     return redirect(reverse('home'))
+
 
 def generate_password(length=6, chars=string.letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
@@ -149,10 +154,11 @@ def forgot_password_view(request):
 
     return render(request, 'forgot_password.html', {'form': form})
 
+
 @login_required
 def password_change_view(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user,  data = request.POST)
+        form = PasswordChangeForm(request.user,  data=request.POST)
         if form.is_valid():
             new_user = form.save()
             return redirect(reverse('home'))
@@ -161,17 +167,22 @@ def password_change_view(request):
 
     return render(request, 'password_change.html', {'form': form})
 
+
 def index(request):
-    community_list = UmmeliOpportunity.permitted.filter(is_community=True).order_by('-created')[:3]
+    community_list = UmmeliOpportunity.permitted.filter(
+        is_community=True).order_by('-created')[:3]
     return render(request, 'index.html', {'community_list': community_list})
+
 
 @login_required
 def my_ummeli(request):
     return render(request, 'my_ummeli.html')
 
+
 @login_required
 def my_settings(request):
     return render(request, 'my_settings.html')
+
 
 class MyContactPrivacyEditView(UpdateView):
     model = CurriculumVitae
@@ -184,6 +195,7 @@ class MyContactPrivacyEditView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user.get_profile()
 
+
 class MyCommentSettingsEditView(UpdateView):
     model = CurriculumVitae
     form_class = MyCommentSettingsForm
@@ -195,6 +207,7 @@ class MyCommentSettingsEditView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user.get_profile()
 
+
 @login_required
 @pin_required
 def send(request):
@@ -202,9 +215,9 @@ def send(request):
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
-            form = EmailCVForm(data = request.POST)
+            form = EmailCVForm(data=request.POST)
         else:
-            form = FaxCVForm(data = request.POST)
+            form = FaxCVForm(data=request.POST)
 
         user_profile = request.user.get_profile()
 
@@ -222,19 +235,20 @@ def send(request):
 
     return render(request, 'send_cv.html', {'form': form})
 
+
 @login_required
 def send_thanks(request):
     return redirect(reverse('my_ummeli'))
 
 
 def connection_job(request, user_id, pk):
-    article = get_object_or_404(UmmeliOpportunity, pk = pk).to_view_model()
+    article = get_object_or_404(UmmeliOpportunity, pk=pk).to_view_model()
 
     if request.method == 'POST':
         if(request.POST.get('send_via') == 'email'):
-            form = EmailCVForm(data = request.POST)
+            form = EmailCVForm(data=request.POST)
         else:
-            form = FaxCVForm(data = request.POST)
+            form = FaxCVForm(data=request.POST)
 
         user_profile = request.user.get_profile()
 
@@ -243,9 +257,15 @@ def connection_job(request, user_id, pk):
             send_to = form.cleaned_data['send_to']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to,  article.text)
+                user_profile.email_cv(
+                    send_to,
+                    article.text,
+                    job_date=article.created)
             else:
-                user_profile.fax_cv(send_to, article.text)
+                user_profile.fax_cv(
+                    send_to,
+                    article.text,
+                    job_date=article.created)
             return redirect(reverse('connection_jobs', args=[user_id]))
 
     return redirect(reverse('my_connections'))
@@ -254,15 +274,19 @@ def connection_job(request, user_id, pk):
 def send_thanks_job_apply(request,  cat_id):
     return redirect(reverse('jobs',  args=[cat_id]))
 
+
 def jobs_cron(request):
     tasks.run_jobs_update.delay()
     return render(request, 'cron.html')
 
+
 def about(request):
     return render(request, 'about.html')
 
+
 def terms(request):
     return render(request, 'terms.html')
+
 
 def tips(request):
     articles = EditorialArticle.objects.filter(published=True)\
@@ -270,6 +294,7 @@ def tips(request):
                                        .order_by('-published_on')
 
     return render(request, 'tips.html', {'articles': articles})
+
 
 def contact_support(request):
     if request.method == 'POST':
@@ -284,18 +309,22 @@ def contact_support(request):
 
     return render(request, 'contact_support.html', {'form': form})
 
+
 def health(request):
     return HttpResponse("")
 
+
 def stats(request):
     users_count = User.objects.count()
-    cvs_complete = len([cv for cv in CurriculumVitae.objects.all() if cv.is_complete])
-    cvs_complete_percent = (cvs_complete*1.00/users_count)*100.00
+    cvs_complete = len(
+        [cv for cv in CurriculumVitae.objects.all() if cv.is_complete])
+    cvs_complete_percent = (cvs_complete * 1.00 / users_count) * 100.00
     return render(request, 'stats.html',
-                                {'users': users_count,
-                                'cvs_complete': cvs_complete,
-                                'cvs_complete_percent': cvs_complete_percent,
-                                'user_articles': UmmeliOpportunity.permitted.count()})
+                  {'users': users_count,
+                   'cvs_complete': cvs_complete,
+                   'cvs_complete_percent': cvs_complete_percent,
+                   'user_articles': UmmeliOpportunity.permitted.count()})
+
 
 @login_required
 def jobs_create(request):
@@ -343,7 +372,8 @@ def jobs_create(request):
         form = JobEditForm()
 
     return render(request, 'opportunities/jobs/jobs_create.html',
-                                {'form': form})
+                  {'form': form})
+
 
 @login_required
 def opportunity_create(request, slug=None):
@@ -355,7 +385,8 @@ def opportunity_create(request, slug=None):
             description = form.cleaned_data['description']
 
             # check if the user hasn't placed the exact same job article
-            # with the exact same information in the last 5 minutes to prevent duplicates
+            # with the exact same information in the last 5 minutes to prevent
+            # duplicates
             delta = datetime.now() - timedelta(minutes=5)
             duplicate = UmmeliOpportunity.permitted.filter(
                 owner=request.user,
@@ -391,4 +422,4 @@ def opportunity_create(request, slug=None):
         form = OpportunityEditForm()
 
     return render(request, 'opportunities/opportunity_create.html',
-                                {'form': form})
+                  {'form': form})

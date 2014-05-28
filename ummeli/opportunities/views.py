@@ -230,12 +230,16 @@ def opportunity_apply(request, slug):
             send_to = form.cleaned_data['send_to']
 
             if send_via == 'email':
-                user_profile.email_cv(send_to,  opportunity.description)
+                user_profile.email_cv(
+                    send_to, opportunity.description,
+                    job_date=opportunity.created)
                 msg = 'You email has been sent.'
                 messages.success(request, msg)
                 return redirect(opportunity.get_absolute_url())
             else:
-                user_profile.fax_cv(send_to, opportunity.description)
+                user_profile.fax_cv(
+                    send_to, opportunity.description,
+                    job_date=opportunity.created)
                 msg = 'You fax has been sent.'
                 messages.success(request, msg)
                 return redirect(opportunity.get_absolute_url())
