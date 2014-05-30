@@ -123,6 +123,7 @@ class UmmeliOpportunity(ModelBase):
                 self.source = article.description
                 self.text = article.title
                 self.date = article.created
+                self.created = article.created
                 self.user = article.owner
                 self.slug = article.slug
 
