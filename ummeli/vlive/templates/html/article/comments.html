@@ -5,6 +5,7 @@
     {% if article.comments_enabled %}
         {% if user.is_authenticated %}
 
+            {% if user.is_active %}
             {% get_comment_form for article as form %}
 
             <form action="{% comment_form_target %}" method="post">
@@ -43,6 +44,17 @@
                     <input type="submit" name="post" value="Comment" class="btn"/>
                 </p>
             </form>
+            {% else %}
+            <div class="comments">
+            <form>
+                <p>
+                <strong>Your account has been deactivated</strong> for violating our <a href="/pages/terms/">terms and conditions</a>.<br/>
+                If you feel you should not have been removed from this community,
+                you may send a query <a href="{% url contactsupport %}">here</a>.
+                </p>
+            </form>
+            </div>
+            {% endif %}
 
         {% else %}
             <p><a href="{% url login %}?next={{request.path}}">Sign in</a> or <a href="{% url register %}?next={{request.path}}">register</a> to comment.</p>
