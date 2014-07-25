@@ -34,7 +34,7 @@ django_geckoboard
 -e git+git://github.com/praekelt/jmbo-your-words.git@develop#egg=jmbo-your-words
 BeautifulSoup>=3.0.8.1
 -e git+git://github.com/praekelt/jmbo-downloads.git@develop#egg=jmbo-downloads
-raven
+raven>4.0
 -e git+git://github.com/praekelt/django-atlas.git@develop#egg=django-atlas
 jmbo
 django-simple-autocomplete

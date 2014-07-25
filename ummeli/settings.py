@@ -213,6 +213,8 @@ INSTALLED_APPS = (
     'simple_autocomplete',
     'export',
     'pml',
+
+    'raven.contrib.django.celery',
 )
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
