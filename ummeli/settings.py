@@ -214,6 +214,7 @@ INSTALLED_APPS = (
     'export',
     'pml',
 
+    'raven.contrib.django.raven_compat',
     'raven.contrib.django.celery',
 )
 
@@ -254,8 +255,10 @@ CELERY_IMPORTS = (
     'jmbo_analytics.tasks',
     'praekeltpayment.flickswitch.api',
 )
-CELERY_RESULT_BACKEND = "amqp"
 CELERY_TASK_RESULT_EXPIRES = 60
+
+CELERY_RESULT_BACKEND = "redis://"
+BROKER_URL = "redis://"
 
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 
@@ -266,12 +269,6 @@ UMMELI_SUPPORT = 'ummeli.support@praekeltfoundation.org'
 
 # Session Key for PIN auth
 UMMELI_PIN_SESSION_KEY = 'ummeli_provided_pin'
-
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "ummeli"
-BROKER_PASSWORD = "ummeli"
-BROKER_VHOST = "/ummeli/production"
 
 # CKEDITOR
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
