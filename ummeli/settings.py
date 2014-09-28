@@ -214,6 +214,7 @@ INSTALLED_APPS = (
     'export',
     'pml',
 
+    'raven.contrib.django.raven_compat',
     'raven.contrib.django.celery',
 )
 
