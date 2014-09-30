@@ -11,7 +11,6 @@
         <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connection{{user_profile.get_connnections_count|pluralize}}</span>
         {% endif %}
     </div>
-    <div class="bullet"><a href="{% url my_community %}">My Community Board &rarr; </a></div>
     <div class="bullet"><a href="{% url my_microtasks %}">My Tasks</a><span class="subtext">  &rarr; {{request.user.taskcheckout_set.count}} tasks</span></div>
     <div class="bullet"><a href="{% url my_settings %}">My Settings &rarr; </a></div>
     <div class="bullet"><a href="{% url send %}">Send as CV &rarr; </a></div>

@@ -34,20 +34,7 @@
     {% endfor %}
     {% endif %}
 
-    <h2>Community Board</h2>
-    {% for object in community_list %}
-        {% include 'opportunities/community_opportunity_listing.html' %}
-    {% endfor %}
-    <div class="more"><a href="{% url community_jobs %}">more...</a></div>
-
     <br/>
-    <div class="share">
-    <h2>Have something to share?</h2>
-    <div class="bullet"><a href="{% url jobs_create %}">Add a job</a></div>
-    <div class="bullet"><a href="{% url opportunity_create %}">Add an opportunity</a></div>
-    <div class="bullet"><a href="{% url status_update %}">Update your status</a></div>
-    <div class="bullet"><a href="{% url advertise_skills %}">Advertise your skills</a></div>
-    </div>
     <div class="connect">
     <h2>Connect with others?</h2>
     <div class="bullet"><a href="{% url add_connection_by_first_name %}">Search by Name</a></div>
@@ -81,7 +68,6 @@
             <span class="subtext">&rarr; {{user_profile.get_connnections_count}} connections</span>
             {% endif %}
         </div>
-        <div><a href="{% url my_community %}">My Community Board &rarr; </a></div>
         <div><a href="{% url my_settings %}">My Settings &rarr; </a></div>
         <div><a href="{% url send %}">Send as CV &rarr; </a></div>
     </div>
