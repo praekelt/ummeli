@@ -44,7 +44,7 @@ class OpportunityListView(ListView):
             province_qs = province_qs.filter(province__province__in=[province,
                                                                     ALL])
 
-        return province_qs.order_by('-publish_on')
+        return province_qs.exclude(is_community=True).order_by('-publish_on')
 
 
 class JobListView(OpportunityListView):
