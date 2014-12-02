@@ -291,7 +291,7 @@ def terms(request):
 def tips(request):
     articles = EditorialArticle.objects.filter(published=True)\
                                        .filter(categories__slug="tips")\
-                                       .order_by('-published_on')
+                                       .order_by('-published_on')[:40]
 
     return render(request, 'tips.html', {'articles': articles})
 
