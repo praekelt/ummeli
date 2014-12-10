@@ -4,16 +4,17 @@ import djcelery
 djcelery.setup_loader()
 
 from datetime import timedelta
-CELERYBEAT_SCHEDULE = {
-    'exipire-microtasks-every-minute': {
-        'task': 'ummeli.opportunities.tasks.microtask_expire_tasks',
-        'schedule': timedelta(seconds=60)
-    },
-    'update-recharge-status-every-minute': {
-         'task': 'praekeltpayment.flickswitch.tasks.update_payment_status',
-         'schedule': timedelta(seconds=60)
-     },
-}
+CELERYBEAT_SCHEDULE = {}
+#CELERYBEAT_SCHEDULE = {
+#    'exipire-microtasks-every-minute': {
+#        'task': 'ummeli.opportunities.tasks.microtask_expire_tasks',
+#        'schedule': timedelta(seconds=60)
+#    },
+#    'update-recharge-status-every-minute': {
+#         'task': 'praekeltpayment.flickswitch.tasks.update_payment_status',
+#         'schedule': timedelta(seconds=60)
+#     },
+#}
 
 DEBUG = False
 
