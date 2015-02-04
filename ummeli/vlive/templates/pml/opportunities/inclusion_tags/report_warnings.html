@@ -12,6 +12,7 @@
     <CONTAINER type="list">
         <LINK href="{{back}}"><TEXT>Back</TEXT></LINK>
     </CONTAINER>
+</MODULE>
 {% else %}
 {% if is_scam %}
 <MODULE backgroundColor="false" palette="MiOrange">
@@ -21,6 +22,7 @@
         This opportunity may be a scam, proceed with caution.
     </TEXT>
     </CONTAINER>
+</MODULE>
 {% else %}
 {% if is_position_filled %}
 <MODULE backgroundColor="false" palette="MiGreen">
@@ -32,6 +34,7 @@
         however you are still free to apply.
     </TEXT>
     </CONTAINER>
+</MODULE>
 {% endif %}
 {% endif %}
 {% endif %}
