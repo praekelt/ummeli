@@ -89,8 +89,6 @@
 {% get_livechat_for_article article "livechat" %}
 {% if livechat %}
     {% include "livechat/embed.html" %}
-{% else %}
-    {% include "article/comments.html" %}
 {% endif %}
 
 {% endblock %}
