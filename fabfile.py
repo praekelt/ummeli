@@ -20,7 +20,7 @@ def production(ssh_user=None):
         print 'format: fab <env>:<username> <command> e.g fab production:ubuntu push'
         raise RuntimeError('Username required')
 
-    env.hosts = ['%s@app1.praekeltfoundation.org' % ssh_user]
+    env.hosts = ['%s@prd-ummeli.za.prk-host.net' % ssh_user]
 
 
 def push():

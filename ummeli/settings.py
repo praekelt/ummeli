@@ -288,7 +288,7 @@ CKEDITOR_CONFIGS = {
         'toolbarCanCollapse': False,
         'basicEntities': False,
         'forcePasteAsPlainText': True,
-        'enterMode': 2,
+        'enterMode': 1,
         'coreStyles_bold': {'element': 'b', 'overrides': 'strong'}
     }
 }
